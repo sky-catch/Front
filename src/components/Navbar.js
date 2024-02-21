@@ -1,35 +1,75 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
+const navItem = [
+  {
+    id: 0,
+    name: "home",
+    to: "/",
+    image: "dock-home",
+    imageOn: "dock-home-on",
+    selectItem: false,
+  },
+  {
+    id: 1,
+    name: "search",
+    to: "/search",
+    image: "dock-search",
+    imageOn: "dock-search-on",
+    selectItem: false,
+  },
+  {
+    id: 2,
+    name: "review",
+    to: "/review",
+    image: "dock-review",
+    imageOn: "dock-review-on",
+    selectItem: false,
+  },
+  {
+    id: 3,
+    name: "mydining",
+    to: "/mydining",
+    image: "dock-mydining",
+    imageOn: "dock-mydining-on",
+    selectItem: false,
+  },
+  {
+    id: 4,
+    name: "login",
+    to: "/login",
+    image: "dock-account",
+    imageOn: "dock-account-on",
+    selectItem: false,
+  },
+];
+
 const Navbar = () => {
+  const location = useLocation().pathname;
+  useEffect(() => {
+    console.log(`${location}`);
+  }, [location]);
+
   return (
     <NavbarContents>
       <NavbarWrap>
-        <Link to="/">
-          <i>
-            <img src={require("../assets/icons/dock-home.svg").default} />
-          </i>
-        </Link>
-        <Link to="/search">
-          <i>
-            <img src={require("../assets/icons/dock-search.svg").default} />
-          </i>
-        </Link>
-        <Link to="/review">
-          <i>
-            <img src={require("../assets/icons/dock-review.svg").default} />
-          </i>
-        </Link>
-        <Link to="/mydining">
-          <i>
-            <img src={require("../assets/icons/dock-mydining.svg").default} />
-          </i>
-        </Link>
-        <Link to="/account">
-          <i>
-            <img src={require("../assets/icons/dock-account.svg").default} />
-          </i>
-        </Link>
+        {navItem.map((item) => {
+          return (
+            <Link to={item.to} key={item.id}>
+              <i>
+                {item.to === location ? (
+                  <img
+                    src={require("../assets/icons/" + item.imageOn + ".svg")}
+                  />
+                ) : (
+                  <img
+                    src={require("../assets/icons/" + item.image + ".svg")}
+                  />
+                )}
+              </i>
+            </Link>
+          );
+        })}
       </NavbarWrap>
     </NavbarContents>
   );
@@ -40,6 +80,10 @@ const NavbarContents = styled.div`
   position: fixed;
   bottom: 0;
   right: 0;
+  border-top: 1px solid #f9f9f9;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 480px;
   left: 0;
 `;
 const NavbarWrap = styled.div`
