@@ -547,6 +547,11 @@ video {
   position: relative;
 }
 
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+}
+
 .bottom-\[0\] {
   bottom: 0;
 }
@@ -561,6 +566,18 @@ video {
 
 .top-\[4px\] {
   top: 4px;
+}
+
+.top-\[47px\] {
+  top: 47px;
+}
+
+.left-0 {
+  left: 0px;
+}
+
+.top-\[0px\] {
+  top: 0px;
 }
 
 .mx-\[auto\] {
@@ -578,6 +595,10 @@ video {
 
 .mt-\[10vh\] {
   margin-top: 10vh;
+}
+
+.mt-\[47px\] {
+  margin-top: 47px;
 }
 
 .block {

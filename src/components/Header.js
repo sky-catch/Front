@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 const HeaderItem = [
   {
@@ -28,12 +28,11 @@ const HeaderItem = [
   },
 ];
 const Header = () => {
-  const [isMenu, setIsPopUp] = useState({});
   const location = useLocation().pathname;
   useEffect(() => {
     console.log(`${location}`);
   }, [location]);
-  const menuClick = () => {};
+
   const headerContent = () => {
     switch (location) {
       case "/mydining":
@@ -42,20 +41,6 @@ const Header = () => {
             <h1 className="text-xl h-[47px] leading-[47px] font-bold px-[20px]">
               마이다이닝
             </h1>
-            <ul className="tab-menu">
-              <li
-                className=" w-[50%] leading-[48px] text-center"
-                onClick={menuClick}
-              >
-                나의 예약
-              </li>
-              <li
-                className="w-[50%] leading-[48px] text-center "
-                onClick={menuClick}
-              >
-                빈자리 알림
-              </li>
-            </ul>
           </div>
         );
 
