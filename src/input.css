@@ -15,3 +15,28 @@ em {
   min-height: 100%;
   box-shadow: 0 0 20px #0000000d;
 }
+header {
+  max-width: 480px;
+  margin: 0 auto;
+  width: auto;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+
+  background-color: #fff;
+}
+.tab-menu {
+  display: flex;
+  height: 48px;
+}
+.tab-menu > li {
+  cursor: pointer;
+  color: rgb(170, 170, 170);
+}
+.tab-menu > li.active {
+  color: #000;
+  font-weight: 700;
+  border-bottom: 2px solid #000;
+  box-sizing: border-box;
+}

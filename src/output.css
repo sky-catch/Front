@@ -572,12 +572,12 @@ video {
   margin-bottom: 10px;
 }
 
-.mt-\[10vh\] {
-  margin-top: 10vh;
-}
-
 .mb-\[7px\] {
   margin-bottom: 7px;
+}
+
+.mt-\[10vh\] {
+  margin-top: 10vh;
 }
 
 .block {
@@ -604,6 +604,10 @@ video {
   height: 32px;
 }
 
+.h-\[47px\] {
+  height: 47px;
+}
+
 .w-\[100\%\] {
   width: 100%;
 }
@@ -618,6 +622,10 @@ video {
 
 .w-\[20px\] {
   width: 20px;
+}
+
+.w-\[50\%\] {
+  width: 50%;
 }
 
 .items-center {
@@ -649,6 +657,11 @@ video {
   background-image: url('./assets/icons/kakao_button.svg');
 }
 
+.px-\[20px\] {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 .px-\[30px\] {
   padding-left: 30px;
   padding-right: 30px;
@@ -656,6 +669,15 @@ video {
 
 .pt-\[15vh\] {
   padding-top: 15vh;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .text-xs {
@@ -669,6 +691,14 @@ video {
 
 .font-light {
   font-weight: 300;
+}
+
+.leading-\[47px\] {
+  line-height: 47px;
+}
+
+.leading-\[48px\] {
+  line-height: 48px;
 }
 
 .text-loginText {
@@ -694,4 +724,32 @@ em {
   height: 100vh;
   min-height: 100%;
   box-shadow: 0 0 20px #0000000d;
+}
+
+header {
+  max-width: 480px;
+  margin: 0 auto;
+  width: auto;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  background-color: #fff;
+}
+
+.tab-menu {
+  display: flex;
+  height: 48px;
+}
+
+.tab-menu > li {
+  cursor: pointer;
+  color: rgb(170, 170, 170);
+}
+
+.tab-menu > li.active {
+  color: #000;
+  font-weight: 700;
+  border-bottom: 2px solid #000;
+  box-sizing: border-box;
 }
