@@ -556,6 +556,10 @@ video {
   bottom: 0;
 }
 
+.left-0 {
+  left: 0px;
+}
+
 .left-\[10px\] {
   left: 10px;
 }
@@ -564,20 +568,12 @@ video {
   top: 0px;
 }
 
-.top-\[4px\] {
-  top: 4px;
-}
-
 .top-\[47px\] {
   top: 47px;
 }
 
-.left-0 {
-  left: 0px;
-}
-
-.top-\[0px\] {
-  top: 0px;
+.top-\[4px\] {
+  top: 4px;
 }
 
 .mx-\[auto\] {
@@ -595,10 +591,6 @@ video {
 
 .mt-\[10vh\] {
   margin-top: 10vh;
-}
-
-.mt-\[47px\] {
-  margin-top: 47px;
 }
 
 .block {

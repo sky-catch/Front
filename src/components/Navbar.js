@@ -36,8 +36,8 @@ const navItem = [
   },
   {
     id: 4,
-    name: "login",
-    to: "/login",
+    name: "account",
+    to: "/account",
     image: "dock-account",
     imageOn: "dock-account-on",
     selectItem: false,
