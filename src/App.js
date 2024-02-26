@@ -12,8 +12,8 @@ import Login from "./pages/MyPage/Login.js";
 import MyPage from "./pages/MyPage/MyPage.js";
 import Review from "./pages/Review/Review.js";
 function App() {
-  // const [userInfo] = useRecoilState(userInfoState);
-  // console.log("userInfo", userInfo);
+  console.log("key", localStorage.getItem("id"));
+  console.log("key", JSON.parse(localStorage.getItem("data")));
   return (
     <div>
       <RecoilRoot>

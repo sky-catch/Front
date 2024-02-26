@@ -43,7 +43,10 @@ export default function KakoRedirectPage() {
           )
           .then((res) => {
             console.log("2번쨰", res);
-            navigate("/account", { state: res.data });
+            navigate("/");
+            localStorage.clear();
+            localStorage.setItem("id", res.data.id);
+            localStorage.setItem("data", JSON.stringify(res.data));
           })
           .catch((error) => {
             console.log("2번쨰 error", error);
