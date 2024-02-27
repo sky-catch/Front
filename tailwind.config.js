@@ -1,4 +1,3 @@
-// import './src/assets/icons/kakao_button.svg'
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{html,js}"],
@@ -10,6 +9,7 @@ module.exports = {
         loginText: "#ff3d00",
       },
       backgroundImage: {
+        main : "url('./assets/icons/logo.png')",
         kakaoIcon: "url('./assets/icons/kakao_button.svg')",
       },
     },
