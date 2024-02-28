@@ -29,9 +29,7 @@ const HeaderItem = [
 ];
 const Header = () => {
   const location = useLocation().pathname;
-  useEffect(() => {
-    console.log(`${location}`);
-  }, [location]);
+  useEffect(() => {}, [location]);
 
   const headerContent = () => {
     switch (location) {

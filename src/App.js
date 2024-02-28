@@ -12,8 +12,8 @@ import Login from "./pages/MyPage/Login.js";
 import MyPage from "./pages/MyPage/MyPage.js";
 import Review from "./pages/Review/Review.js";
 function App() {
-  console.log("key", localStorage.getItem("id"));
-  console.log("key", JSON.parse(localStorage.getItem("data")));
+  // console.log("key", localStorage.getItem("id"));
+  // console.log("key", JSON.parse(localStorage.getItem("data")));
   return (
     <div>
       <RecoilRoot>

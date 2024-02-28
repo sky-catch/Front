@@ -40,3 +40,31 @@ header {
   border-bottom: 2px solid #000;
   box-sizing: border-box;
 }
+.container {
+  padding: 0 30px;
+  box-sizing: border-box;
+}
+.icon {
+  display: block;
+  width: 25px;
+  height: 25px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+.how-to > div > span {
+  position: relative;
+}
+.how-to > div > span::after {
+  background: url("/src/assets/icons/arrow-right-20.svg") 50% 50% no-repeat;
+  /* background: url('/public/img/icons/arrow-right-20.svg') 50% 50% no-repeat; */
+  display: block;
+  background-size: contain;
+  width: 20px;
+  height: 20px;
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px;
+}

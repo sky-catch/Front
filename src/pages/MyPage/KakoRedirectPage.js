@@ -1,8 +1,6 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-// import { userInfoState } from "./recoil/atoms/userState";
 export default function KakoRedirectPage() {
   const PARAMS = new URL(document.location).searchParams;
   const KAKAO_CODE = PARAMS.get("code");
@@ -10,7 +8,6 @@ export default function KakoRedirectPage() {
   const client_id = `${process.env.REACT_APP_REST_API_KEY}`;
   const client_secret = "mwtfEbotahN7vZpDOg1K0QhSg1ol6SH0";
   const REDIRECT_URI = `${process.env.REACT_APP_REDIRECT_URI}`;
-  const [accessTokenFetching, setAccessTokenFetching] = useState(false);
   const navigate = useNavigate();
   console.log("client_id", client_id);
   console.log("REDIRECT_URI", REDIRECT_URI);

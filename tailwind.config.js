@@ -11,6 +11,7 @@ module.exports = {
       },
       backgroundImage: {
         kakaoIcon: "url('./assets/icons/kakao_button.svg')",
+        alarmIcon: "url('./assets/icons/alarm-normal.svg')",
       },
     },
   },
