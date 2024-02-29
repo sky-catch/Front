@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
 const stateList = [
   {
     id: "0",
@@ -130,20 +131,22 @@ export default function MyDining() {
               예약 취소 발생 시 알림을 받아보세요.
             </p>
             <div className=" border-t p-[30px]">
-              <span className="text-[14px] font-bold">
-                빈자리 알림 이용 방법
-                <p className="text-[#ccc] text-[12px] mt-[6px]">
-                  예약 취소 등의 이유로 마감된 시간에 빈자리가 발생하게 <br />
-                  되면 알림을 발송해 알려드립니다.
-                </p>
-              </span>
+              <Link to={"/emptySlotGuide"}>
+                <span className="text-[14px] font-bold">
+                  빈자리 알림 이용 방법
+                  <p className="text-[#ccc] text-[12px] mt-[6px]">
+                    예약 취소 등의 이유로 마감된 시간에 빈자리가 발생하게 <br />
+                    되면 알림을 발송해 알려드립니다.
+                  </p>
+                </span>
+              </Link>
             </div>
           </div>
         </div>
       );
     } else {
       return (
-        <span className="block text-center mb-[20px] mt-[80px] text-[#c8c8c8] text-[16px] font-bold">
+        <span className="block text-center mb-[20px] mt-[80px] text-[#c8c8c8] text-[16px] font-medium">
           신청하신 예약 오픈 알림 내역이 존재하지 않습니다.
         </span>
       );

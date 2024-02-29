@@ -5,6 +5,7 @@ import Header from "./components/Header.js";
 import Navbar from "./components/Navbar.js";
 import Restaurant from "./pages//Restaurant/Restaurant.js";
 import Home from "./pages/Home/Home.js";
+import EmptySlotGuide from "./pages/MyDining/EmptySlotGuide.js";
 import MyDining from "./pages/MyDining/MyDining.js";
 import Account from "./pages/MyPage/Account.js";
 import KakoRedirectPage from "./pages/MyPage/KakoRedirectPage.js";
@@ -30,6 +31,7 @@ function App() {
             path="/oauth/redirected/kakao"
             element={<KakoRedirectPage />}
           />
+          <Route path="/emptySlotGuide" element={<EmptySlotGuide />}></Route>
         </Routes>
         <Navbar />
       </RecoilRoot>

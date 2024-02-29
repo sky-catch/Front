@@ -602,16 +602,24 @@ video {
   top: 0px;
 }
 
-.top-\[47px\] {
-  top: 47px;
+.top-\[0px\] {
+  top: 0px;
 }
 
 .top-\[4px\] {
   top: 4px;
 }
 
-.top-\[0px\] {
-  top: 0px;
+.z-50 {
+  z-index: 50;
+}
+
+.float-right {
+  float: right;
+}
+
+.float-left {
+  float: left;
 }
 
 .mx-\[auto\] {
@@ -622,6 +630,11 @@ video {
 .my-\[30px\] {
   margin-top: 30px;
   margin-bottom: 30px;
+}
+
+.my-\[8px\] {
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 .mb-\[10px\] {
@@ -672,6 +685,26 @@ video {
   margin-top: 80px;
 }
 
+.mt-\[20px\] {
+  margin-top: 20px;
+}
+
+.ml-\[5px\] {
+  margin-left: 5px;
+}
+
+.ml-\[15px\] {
+  margin-left: 15px;
+}
+
+.ml-\[13px\] {
+  margin-left: 13px;
+}
+
+.ml-\[11px\] {
+  margin-left: 11px;
+}
+
 .box-border {
   box-sizing: border-box;
 }
@@ -688,12 +721,21 @@ video {
   display: grid;
 }
 
+.size-\[32px\] {
+  width: 32px;
+  height: 32px;
+}
+
 .h-12 {
   height: 3rem;
 }
 
 .h-8 {
   height: 2rem;
+}
+
+.h-\[100vh\] {
+  height: 100vh;
 }
 
 .h-\[16px\] {
@@ -710,6 +752,10 @@ video {
 
 .h-\[47px\] {
   height: 47px;
+}
+
+.h-\[48px\] {
+  height: 48px;
 }
 
 .w-\[100\%\] {
@@ -740,8 +786,16 @@ video {
   cursor: pointer;
 }
 
+.list-disc {
+  list-style-type: disc;
+}
+
 .flex-row {
   flex-direction: row;
+}
+
+.flex-col {
+  flex-direction: column;
 }
 
 .items-center {
@@ -760,6 +814,22 @@ video {
   column-gap: 10px;
 }
 
+.gap-x-\[5px\] {
+  column-gap: 5px;
+}
+
+.gap-x-\[20px\] {
+  column-gap: 20px;
+}
+
+.gap-y-2 {
+  row-gap: 0.5rem;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
 .text-nowrap {
   text-wrap: nowrap;
 }
@@ -772,12 +842,24 @@ video {
   border-radius: 0.5rem;
 }
 
+.rounded-\[6px\] {
+  border-radius: 6px;
+}
+
 .border-\[1px\] {
+  border-width: 1px;
+}
+
+.border {
   border-width: 1px;
 }
 
 .border-t {
   border-top-width: 1px;
+}
+
+.border-b-\[1px\] {
+  border-bottom-width: 1px;
 }
 
 .border-black {
@@ -787,6 +869,15 @@ video {
 
 .border-transparent {
   border-color: transparent;
+}
+
+.border-b-\[\#e8e8e8\] {
+  --tw-border-opacity: 1;
+  border-bottom-color: rgb(232 232 232 / var(--tw-border-opacity));
+}
+
+.border-b-\[1\] {
+  border-bottom-color: 1;
 }
 
 .bg-\[\#f9f9f9\] {
@@ -804,12 +895,26 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+}
+
+.bg-\[\#ff3d00\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 61 0 / var(--tw-bg-opacity));
+}
+
 .bg-\[url\(\'\.\/assets\/icons\/alarm-normal\.svg\'\)\] {
   background-image: url('./assets/icons/alarm-normal.svg');
 }
 
 .bg-\[url\(\'\.\/assets\/icons\/kakao_button\.svg\'\)\] {
   background-image: url('./assets/icons/kakao_button.svg');
+}
+
+.bg-closeIcon {
+  background-image: url('./assets/icons/close.svg');
 }
 
 .p-\[30px\] {
@@ -836,9 +941,9 @@ video {
   padding-bottom: 20px;
 }
 
-.py-\[30px\] {
-  padding-top: 30px;
-  padding-bottom: 30px;
+.py-\[40px\] {
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 .pt-\[15vh\] {
@@ -871,6 +976,10 @@ video {
   line-height: 1rem;
 }
 
+.text-\[20px\] {
+  font-size: 20px;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -881,6 +990,10 @@ video {
 
 .font-medium {
   font-weight: 500;
+}
+
+.font-normal {
+  font-weight: 400;
 }
 
 .leading-\[32px\] {
@@ -923,6 +1036,20 @@ video {
 .text-loginTitle {
   --tw-text-opacity: 1;
   color: rgb(102 102 102 / var(--tw-text-opacity));
+}
+
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.icon {
+  display: block;
+  width: 25px;
+  height: 25px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto;
 }
 
 em {
@@ -973,20 +1100,11 @@ header {
   box-sizing: border-box;
 }
 
-.icon {
-  display: block;
-  width: 25px;
-  height: 25px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: auto;
-}
-
-.how-to > div > span {
+.how-to > div span {
   position: relative;
 }
 
-.how-to > div > span::after {
+.how-to > div span::after {
   background: url("/src/assets/icons/arrow-right-20.svg") 50% 50% no-repeat;
   /* background: url('/public/img/icons/arrow-right-20.svg') 50% 50% no-repeat; */
   display: block;
