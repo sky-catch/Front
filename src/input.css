@@ -68,3 +68,20 @@ header {
   transform: translateY(-50%);
   right: 20px;
 }
+.btn-sort {
+  position: relative;
+  width: fit-content;
+  padding-right: 20px;
+}
+.btn-sort::after {
+  position: absolute;
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: url("/src/assets/icons/sort.svg") 50% 50% no-repeat;
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+}

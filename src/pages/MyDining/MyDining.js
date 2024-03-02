@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
+import Visitcomponent from "../../components/Visitcomponent";
 const stateList = [
   {
     id: "0",
@@ -16,6 +16,32 @@ const stateList = [
     title: "취소/노쇼",
   },
 ];
+const visitList = [
+  {
+    name: "매장 이름",
+    type: "한식",
+    visitType: "온라인 웨이팅",
+    img: "",
+    location: "혜화",
+    date: "20240301",
+  },
+  {
+    name: "매장 이름",
+    type: "한식",
+    visitType: "온라인 웨이팅",
+    img: "",
+    location: "혜화",
+    date: "20240301",
+  },
+  {
+    name: "매장 이름",
+    type: "한식",
+    visitType: "온라인 웨이팅",
+    img: "",
+    location: "혜화",
+    date: "20240301",
+  },
+];
 const alarmList = [
   {
     id: "0",
@@ -28,6 +54,7 @@ const alarmList = [
 ];
 export default function MyDining() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [loginState, setLoginState] = useState(false);
   const [isSelect, setIsSelect] = useState(true);
   const [listSelect, setListSelect] = useState(0);
@@ -54,6 +81,7 @@ export default function MyDining() {
     } else {
       setLoginState(true);
     }
+    console.log(location.state);
   }, [loginState]);
 
   const itemClick = (index) => {
@@ -82,8 +110,8 @@ export default function MyDining() {
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M8.56604 2.0625C5.28489 2.0625 2.625 4.72239 2.625 8.00354C2.625 11.2847 5.28489 13.9446 8.56604 13.9446C10.0188 13.9446 11.3498 13.4231 12.382 12.5572L14.4359 14.4396C14.7413 14.7195 15.2157 14.6988 15.4956 14.3935C15.7755 14.0881 15.7548 13.6137 15.4494 13.3338L13.4012 11.4565C14.0974 10.4834 14.5071 9.29132 14.5071 8.00354C14.5071 4.72239 11.8472 2.0625 8.56604 2.0625ZM4.125 8.00354C4.125 5.55082 6.11332 3.5625 8.56604 3.5625C11.0188 3.5625 13.0071 5.55082 13.0071 8.00354C13.0071 10.4563 11.0188 12.4446 8.56604 12.4446C6.11332 12.4446 4.125 10.4563 4.125 8.00354Z"
                 fill="#0091FF"
               ></path>
@@ -93,6 +121,25 @@ export default function MyDining() {
         </div>
       );
     } else if (listSelect === 1) {
+      return (
+        <div className="">
+          <div className="mt-[30px] flex items-center justify-between">
+            <span className="text-[18px] font-extrabold">
+              총 {visitList.length}권
+            </span>
+            <div className="btn-sort text-[13px] font-medium cursor-pointer">
+              방문일자
+            </div>
+          </div>
+          <div className="mt-[20px] flex flex-col gap-y-[20px]">
+            {visitList.map((item, index) => {
+              return (
+                <Visitcomponent key={index} itemList={item}></Visitcomponent>
+              );
+            })}
+          </div>
+        </div>
+      );
     } else {
       return (
         <span className="block text-center mb-[20px] mt-[100px] text-[#c8c8c8] text-[16px] text-bold">
@@ -123,7 +170,7 @@ export default function MyDining() {
             </small>
           </div>
           <div className="how-to">
-            <p class=" text-center  font-16 bold text-[#c8c8c8] text-[16px] font-medium mt-[70px] mb-[30px]">
+            <p className=" text-center  font-16 bold text-[#c8c8c8] text-[16px] font-medium mt-[70px] mb-[30px]">
               신청하신 빈자리 알림이 없습니다.
               <br />
               원하는 레스토랑에 빈자리 알림을 신청하고
