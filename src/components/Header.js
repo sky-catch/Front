@@ -12,11 +12,6 @@ const HeaderItem = [
     to: "/search",
   },
   {
-    id: 2,
-    name: "review",
-    to: "/review",
-  },
-  {
     id: 3,
     name: "mydining",
     to: "/mydining",
@@ -35,7 +30,7 @@ const Header = () => {
     switch (location) {
       case "/" :
         return (
-          <div className="flex justify-between w-full h-[47px] px-[20px] items-center">
+          <div className="header-wrapper flex justify-between w-full h-[47px] px-[20px] items-center">
             <div className="header-left items-center">
               <h1 className="w-[30px] h-[30px] bg-main bg-[30px] bg-no-repeat mr-[8px]"></h1>
             </div>
@@ -46,6 +41,14 @@ const Header = () => {
               <a className="w-[30px] h-[30px] bg-bookmark bg-[30px] bg-no-repeat ml-[8px]"></a>
               <button className="w-[30px] h-[30px] bg-alert bg-[30px] bg-no-repeat ml-[8px]"></button>
             </div>
+          </div>
+        );
+      case "/search" :
+        return (
+          <div className="">
+            <h1 className="text-xl h-[47px] leading-[47px] font-bold px-[20px]">
+              검색하기
+            </h1>
           </div>
         );
       case "/mydining":

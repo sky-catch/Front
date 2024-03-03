@@ -13,17 +13,20 @@ const slideItem = [
     },
 ]
 
-export default function Home() {
+export default function Carousel() {
     return (
-        <section className="slider">
-            <div className="slides">
-                {slideItem.map((item) => {
-                    return (
-                        <div className="slide">
-                            <a><img src={item.url}/></a>
-                        </div>
-                    )
-                })}
+        <section className="slider mb-[16px]">
+            <div className="slide-container">
+                <div className="slide-wrapper">
+                    {slideItem.map((item) => {
+                        return (
+                            <div className="slide">
+                                <a><img src={item.url}/></a>
+                            </div>
+                        )
+                    })}
+                </div>
+                <div className="slide-pagination"></div>
             </div>
         </section>
     );
