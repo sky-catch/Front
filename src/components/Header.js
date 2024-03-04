@@ -30,7 +30,7 @@ const Header = () => {
     switch (location) {
       case "/" :
         return (
-          <div className="header-wrapper flex justify-between w-full h-[47px] px-[20px] items-center">
+          <div className="header-wrapper flex justify-between w-full px-[20px] items-center">
             <div className="header-left items-center">
               <h1 className="w-[30px] h-[30px] bg-main bg-[30px] bg-no-repeat mr-[8px]"></h1>
             </div>
