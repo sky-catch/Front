@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Visitcomponent from "../../components/Visitcomponent";
+import RecommendPage from "./RecommendPage";
 const stateList = [
   {
     id: "0",
@@ -71,17 +72,16 @@ export default function MyDining() {
   };
 
   const moveLoginPage = () => {
-    if (localStorage.getItem("id") === "") {
-      navigate("/login");
+    if (localStorage.getItem("id") == null) {
+      navigate("/account");
     }
   };
   useEffect(() => {
-    if (localStorage.getItem("id") === "") {
+    if (localStorage.getItem("id") == null) {
       setLoginState(false);
     } else {
       setLoginState(true);
     }
-    console.log(location.state);
   }, [loginState]);
 
   const itemClick = (index) => {
@@ -214,9 +214,12 @@ export default function MyDining() {
           className={`w-[50%] leading-[48px] text-center ${
             isSelect ? "" : "active"
           }`}
-          onClick={(e) => menuClick(e, 1)}
+          onClick={(e) => {
+            menuClick(e, 1);
+            moveLoginPage();
+          }}
         >
-          {loginState ? "나의 알림" : "빈자리 알람"}
+          {loginState ? "나의 알림" : "빈자리 알림"}
         </li>
       </ul>
       <div className="tab-contens">
@@ -288,6 +291,7 @@ export default function MyDining() {
                     src={require("../../assets/icons/mydining-img1-v3.png")}
                   ></img>
                 </div>
+                <RecommendPage title={"미쉐린 가이드 2024"}></RecommendPage>
               </section>
             ) : (
               <section className={`recommend-wrap`}></section>
