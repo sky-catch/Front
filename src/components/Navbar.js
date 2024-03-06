@@ -20,8 +20,8 @@ const navItem = [
   },
   {
     id: 2,
-    name: "review",
-    to: "/review",
+    name: "dialog",
+    to: "/dialog",
     image: "dock-review",
     imageOn: "dock-review-on",
     selectItem: false,

@@ -18,6 +18,11 @@ const HeaderItem = [
   },
   {
     id: 4,
+    name: "mydining",
+    to: "/mydining",
+  },
+  {
+    id: 5,
     name: "login",
     to: "/login",
   },
@@ -28,14 +33,18 @@ const Header = () => {
 
   const headerContent = () => {
     switch (location) {
-      case "/" :
+      case "/":
         return (
           <div className="header-wrapper flex justify-between w-full px-[20px] items-center">
             <div className="header-left items-center">
               <h1 className="w-[30px] h-[30px] bg-main bg-[30px] bg-no-repeat mr-[8px]"></h1>
             </div>
             <form className="keyword-search keyword-search-main">
-              <input className="pl-[44px] pr-[15px] text-xs h-[30px]" type="text" placeholder="지역, 음식, 매장명 검색"></input>
+              <input
+                className="pl-[44px] pr-[15px] text-xs h-[30px]"
+                type="text"
+                placeholder="지역, 음식, 매장명 검색"
+              ></input>
             </form>
             <div className="header-right flex">
               <a className="w-[30px] h-[30px] bg-bookmark bg-[30px] bg-no-repeat ml-[8px]"></a>
@@ -43,11 +52,19 @@ const Header = () => {
             </div>
           </div>
         );
-      case "/search" :
+      case "/search":
         return (
           <div className="">
             <h1 className="text-xl h-[47px] leading-[47px] font-bold px-[20px]">
               검색하기
+            </h1>
+          </div>
+        );
+      case "/dialog":
+        return (
+          <div className="">
+            <h1 className="text-xl h-[47px] leading-[47px] font-bold px-[20px]">
+              채팅하기
             </h1>
           </div>
         );

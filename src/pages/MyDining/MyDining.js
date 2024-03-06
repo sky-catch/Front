@@ -53,11 +53,62 @@ const alarmList = [
     title: "예약 오픈 알림",
   },
 ];
+const pageList = [
+  {
+    id: 1,
+    storeName: "매장이름",
+    type: "한식",
+    score: "10",
+    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
+    location: "혜화",
+  },
+  {
+    id: 2,
+    storeName: "매장이름",
+    type: "한식",
+    score: "10",
+    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
+    location: "혜화",
+  },
+  {
+    id: 3,
+    storeName: "매장이름",
+    type: "한식",
+    score: "10",
+    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
+    location: "혜화",
+  },
+  {
+    id: 4,
+    storeName: "매장이름",
+    type: "한식",
+    score: "10",
+    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
+    location: "혜화",
+  },
+  {
+    id: 5,
+    storeName: "매장이름",
+    type: "한식",
+    score: "10",
+    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
+    location: "혜화",
+  },
+  {
+    id: 6,
+    storeName: "매장이름",
+    type: "한식",
+    score: "10",
+    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
+    location: "혜화",
+  },
+];
 export default function MyDining() {
   const navigate = useNavigate();
   const location = useLocation();
   const [loginState, setLoginState] = useState(false);
   const [isSelect, setIsSelect] = useState(true);
+  const [isRiseIcon, setIsRiseIcon] = useState(true);
   const [listSelect, setListSelect] = useState(0);
   const [alarmSelect, setAlarmSelect] = useState(0);
   const menuClick = (e, index) => {
@@ -77,6 +128,7 @@ export default function MyDining() {
     }
   };
   useEffect(() => {
+    console.log(pageList);
     if (localStorage.getItem("id") == null) {
       setLoginState(false);
     } else {
@@ -127,7 +179,14 @@ export default function MyDining() {
             <span className="text-[18px] font-extrabold">
               총 {visitList.length}권
             </span>
-            <div className="btn-sort text-[13px] font-medium cursor-pointer">
+            <div
+              className={`btn-sort text-[13px] font-medium cursor-pointer ${
+                isRiseIcon === false ? "active" : ""
+              }`}
+              onClick={() => {
+                setIsRiseIcon(!isRiseIcon);
+              }}
+            >
               방문일자
             </div>
           </div>
@@ -201,7 +260,7 @@ export default function MyDining() {
   };
   return (
     <MyDiningContents className="">
-      <ul className="tab-menu sticky top-[0px] left-0 bg-white">
+      <ul className="tab-menu sticky top-[47px]  bg-white">
         <li
           className={`w-[50%] leading-[48px] text-center ${
             isSelect ? " active" : ""
@@ -291,7 +350,14 @@ export default function MyDining() {
                     src={require("../../assets/icons/mydining-img1-v3.png")}
                   ></img>
                 </div>
-                <RecommendPage title={"미쉐린 가이드 2024"}></RecommendPage>
+                <RecommendPage
+                  title={"미쉐린 가이드 2024"}
+                  pageList={pageList}
+                ></RecommendPage>
+                <RecommendPage
+                  title={"캐치테이블 ON"}
+                  pageList={pageList}
+                ></RecommendPage>
               </section>
             ) : (
               <section className={`recommend-wrap`}></section>
@@ -304,8 +370,7 @@ export default function MyDining() {
 }
 
 const MyDiningContents = styled.div`
-  height: calc(100vh - 49px);
   padding-top: 47px;
+  padding-bottom: 48px;
   box-sizing: border-box;
-  overflow: auto;
 `;

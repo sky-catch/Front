@@ -1,6 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+input {
+  outline: none;
+  box-shadow: none;
+  caret-color: #ff3d00;
+}
+input:active {
+  border-color: transparent;
+}
+
 .icon {
   display: block;
   width: 25px;
@@ -19,9 +28,16 @@ em {
   width: auto;
   position: relative;
   height: 100vh;
+  overflow: auto;
   min-height: 100%;
   box-shadow: 0 0 20px #0000000d;
+  -ms-overflow-style: none;
 }
+#root > div::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+}
+
 header {
   max-width: 480px;
   margin: 0 auto;
@@ -52,7 +68,7 @@ header {
   box-sizing: border-box;
 }
 .container {
-  padding: 0 30px;
+  padding: 0 20px;
   box-sizing: border-box;
 }
 
@@ -77,6 +93,7 @@ header {
   width: fit-content;
   padding-right: 20px;
 }
+
 .btn-sort::after {
   position: absolute;
   display: block;
@@ -89,7 +106,9 @@ header {
   transform: translateY(-50%);
   right: 0;
 }
-
+.btn-sort.active::after {
+  transform: translateY(-50%) rotate(180deg);
+}
 /* header */
 .header-wrapper {
   background: #fff;
@@ -453,4 +472,33 @@ header {
 .recommend-box > div:last-child span {
   backdrop-filter: brightness(50%);
   position: unset;
+}
+.score {
+  position: relative;
+}
+.score::after {
+  position: absolute;
+  content: "";
+  background: url("/src/assets/icons/star.png") 50% 50% no-repeat;
+  background-size: cover;
+  display: block;
+  width: 15px;
+  height: 15px;
+  top: 50%;
+  left: -22px;
+  transform: translateY(-50%);
+}
+.read-icon {
+  position: relative;
+}
+.read-icon::after {
+  content: "";
+  width: 11px;
+  height: 11px;
+  background-color: #ff3d00;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: -9px;
+  transform: translateY(-50%);
 }
