@@ -202,45 +202,6 @@ header {
 }
 
 /* 캐러셀 */
-
-.slider {
-  position: relative;
-  overflow: hidden;
-  margin: 0 auto;
-}
-/* 
-.slide-wrapper .slide {
-  width : 429.041px;
-  margin-right : 8px;
-} */
-.slide-container {
-  /* position : relative; */
-  /* overflow : hidden; */
-  /* z-index : 1; */
-  /* box-sizing : border-box; */
-  width: 100%;
-  height: 281.44px;
-  overflow: hidden;
-}
-.slide-container > .slide-wrapper {
-  display: flex;
-  /* 
-  transition : transform 1s; */
-  /* width : 100%;
-  height : 100%;
-  overflow : hidden; */
-}
-.slide-wrapper .slide {
-  flex: 0 0 100%;
-  height: 100%;
-  /* margin-right : 8px; */
-}
-.slide-wrapper .slide a img {
-  display: block;
-  width: 500px;
-  height: auto;
-}
-
 .gap {
   display: flex;
   gap: 15px;

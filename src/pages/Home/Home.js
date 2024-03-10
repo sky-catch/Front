@@ -4,6 +4,7 @@ import BottomSheet from '../../components/BottomSheet.js';
 import ShortCut from './ShortCut.js';
 import QuickSearch from './QuickSearch.js';
 import Restaurants from '../../components/Restaurants.js';
+import BestFoodList from './BestFoodList.js';
 
 export default function Home() {
   const [visible, setVisible] = useState(false);
@@ -49,7 +50,7 @@ export default function Home() {
       </section>
       {/* 웨이팅 핫플레이스 BEST */}
       <section className='section pb-[45px]'>
-      <div className="px-[20px]">
+        <div className="px-[20px]">
           <div className="section-header section-header-v">
             <h3 className="font-bold">웨이팅 핫플레이스 BEST</h3>
             <p>핫 한 웨이팅 라인업, 이제 캐치테이블에서!</p>
@@ -64,29 +65,118 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section>
-        유저의 리얼리뷰 Pick
+      {/* 유저의 리얼리뷰 Pick */}
+      <section className='section pb-[45px]'>
+        <div className="px-[20px]">
+          <div className="section-header section-header-v">
+            <h3 className="font-bold">유저의 리얼리뷰 Pick</h3>
+            <p>방문자들이 남긴 솔직한 리뷰를 만나보세요</p>
+          </div>
+          <div className="section-body">
+            <div className="v-scroll">
+              <div className='v-scroll-inner'>
+                <Restaurants />
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
-      <section>
-        유저 이름님이 좋아할 매장
+      {/* 유저 이름님이 좋아할 매장 */}
+      <section className='section pb-[45px]'>
+        <div className="px-[20px]">
+          <div className="section-header section-header-v">
+            <h3 className="font-bold">님이 좋아할 매장</h3>
+            <p>마음에 들 만한 곳을 모아봤어요</p>
+            <a className="btn-more">전체보기</a>
+          </div>
+          <div className="section-body">
+            <div className="v-scroll">
+              <div className='v-scroll-inner'>
+                <Restaurants />
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
-      <section>
-        놓치면 안되는 혜택 가득!
+      {/* 놓치면 안되는 혜택 가득! */}
+      <section className='section pb-[45px]'>
+        <div className="px-[20px]">
+          <div className="section-header section-header-v">
+            <h3 className="font-bold">놓치면 안되는 혜택 가득!</h3>
+            <p>미식생활을 더욱 스마트하게 즐겨보세요</p>
+            <a className="btn-more">전체보기</a>
+          </div>
+          <div className="section-body">
+            <div className="v-scroll">
+              <div className='v-scroll-inner'>
+                <Restaurants />
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
-      <section>
-        캐치테이블 on!
+      {/* 캐치테이블 on! */}
+      <section className='section pb-[45px]'>
+        <div className="px-[20px]">
+          <div className="section-header section-header-v">
+            <h3 className="font-bold">캐치테이블 ON!</h3>
+            <p>편리한 캐치테이블 에약이 오픈되었어요</p>
+            <a className="btn-more">전체보기</a>
+          </div>
+          <div className="section-body">
+            <div className="v-scroll">
+              <div className='v-scroll-inner'>
+                <Restaurants />
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
-      <section>
-        미쉐린 가이드 2024
+      {/* 미쉐린 가이드 2024 */}
+      <section className='section pb-[45px]'>
+        <div className="px-[20px]">
+          <div className="section-header section-header-v">
+            <h3 className="font-bold">미쉐린 가이드 2024</h3>
+            <p>미쉐린 맛집도 이제 캐치테이블에서!</p>
+            <a className="btn-more">전체보기</a>
+          </div>
+          <div className="section-body">
+            <div className="v-scroll">
+              <div className='v-scroll-inner'>
+                <Restaurants />
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
       <section>
         광고 배너
       </section>
-      <section>
-        음식 종류별 BEST
+      {/* 음식 종류별 BEST */}
+      <section className='section pb-[45px]'>
+        <div className="px-[20px]">
+          <div className="section-header">
+            <h3 className="font-bold">음식종류별 BEST</h3>
+          </div>
+          <div className="section-body">
+            <div className="v-scroll">
+              <div className='v-scroll-inner'>
+                <BestFoodList/>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
-      <section>
-        가격대별 BEST
+      {/* 가격대별 BEST */}
+      <section className='section pb-[45px]'>
+        <div className="px-[20px]">
+          <div className="section-header">
+            <h3 className="font-bold">가격대별 BEST</h3>
+          </div>
+          <div className="section-body">
+            
+          </div>
+        </div>
       </section>
       <section>
         상황별, 주제별 BEST

@@ -11,6 +11,10 @@ import Account from "./pages/MyPage/Account.js";
 import KakoRedirectPage from "./pages/MyPage/KakoRedirectPage.js";
 import Login from "./pages/MyPage/Login.js";
 import MyPage from "./pages/MyPage/MyPage.js";
+import Restaurant from "./pages/Restaurant/Restaurant.js";
+import RestaurantWrapper from "./pages/Restaurant/RestaurantWrapper.js";
+
+
 function App() {
   // console.log("key", localStorage.getItem("id"));
   // console.log("key", JSON.parse(localStorage.getItem("data")));
@@ -20,7 +24,6 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* <Route path="/restaurant" element={<Restaurant />} /> */}
           <Route path="/mydining" element={<MyDining />} />
           <Route path="/dialog" element={<Dialog />} />
           <Route path="/login" element={<Login />} />
@@ -31,6 +34,10 @@ function App() {
             element={<KakoRedirectPage />}
           />
           <Route path="/emptySlotGuide" element={<EmptySlotGuide />}></Route>
+          {/* 네비바 변경 페이지 */}
+          {/* <Route path="/ct" element={<RestaurantWrapper />} > */}
+            <Route path="/ct/shop" element={<Restaurant />} />
+          {/* </Route> */}
         </Routes>
         <Navbar />
       </RecoilRoot>
