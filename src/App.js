@@ -15,6 +15,7 @@ import Restaurant from "./pages/Restaurant/Restaurant.js";
 import Dialog from "./pages/Dialog/Dialog.js";
 
 function App() {
+  // localStorage.clear();
   // console.log("key", localStorage.getItem("id"));
   // console.log("key", JSON.parse(localStorage.getItem("data")));
   return (

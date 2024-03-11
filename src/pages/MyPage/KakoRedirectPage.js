@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 export default function KakoRedirectPage() {
   const PARAMS = new URL(document.location).searchParams;
   const KAKAO_CODE = PARAMS.get("code");
@@ -9,8 +10,6 @@ export default function KakoRedirectPage() {
   const client_secret = "mwtfEbotahN7vZpDOg1K0QhSg1ol6SH0";
   const REDIRECT_URI = `${process.env.REACT_APP_REDIRECT_URI}`;
   const navigate = useNavigate();
-  console.log("client_id", client_id);
-  console.log("REDIRECT_URI", REDIRECT_URI);
 
   useEffect(() => {
     axios
@@ -39,7 +38,7 @@ export default function KakoRedirectPage() {
             }
           )
           .then((res) => {
-            console.log("2번쨰", res);
+            // console.log("2번쨰", access_token);
             navigate("/");
             localStorage.clear();
             localStorage.setItem("id", res.data.id);
@@ -52,9 +51,6 @@ export default function KakoRedirectPage() {
       .catch((error) => {
         console.log("error", error);
       });
-    // }
-
-    // }
   }, [KAKAO_CODE]);
 
   return <div> Loading...</div>;
