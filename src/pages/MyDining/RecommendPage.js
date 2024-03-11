@@ -1,6 +1,6 @@
 import React from "react";
 
-const RecommendPage = ({ title, pageList }) => {
+const RecommendPage = ({ title, pageList, toggleDrawerBox }) => {
   const listContainer = (pageItem) => {
     let array = [];
     for (let index = 0; index < 4; index++) {
@@ -34,7 +34,12 @@ const RecommendPage = ({ title, pageList }) => {
     return array;
   };
   return (
-    <div className="container mb-[40px] cursor-pointer">
+    <div
+      className="container mb-[40px] cursor-pointer"
+      onClick={() => {
+        toggleDrawerBox();
+      }}
+    >
       <h2 className=" text-[26px] font-bold">{title}</h2>
       <div className=" my-[20px] recommend-box">{listContainer(pageList)}</div>
       <button className="w-[100%] h-[60px] border-[2px] border-black rounded-[5px] more-btn">

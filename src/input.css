@@ -405,7 +405,7 @@ header {
 .recommend-box > div {
   height: 210px;
   position: relative;
-  /* backdrop-filter: brightness(0.5); */
+  overflow: hidden;
 }
 .recommend-box > div img {
   position: absolute;
@@ -462,4 +462,13 @@ header {
   top: 50%;
   left: -9px;
   transform: translateY(-50%);
+}
+.drawer-box {
+  border-radius: 20px 20px 0 0;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.drawer-box-body {
+  padding: 20px;
+  box-sizing: border-box;
 }

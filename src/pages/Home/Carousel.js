@@ -1,9 +1,9 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination } from 'swiper/modules';
+import { Autoplay, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const slideItem = [
   {
@@ -26,25 +26,26 @@ const slideItem = [
 
 export default function Carousel() {
   return (
-    <div className='slider mb-[16px]'>
-      <Swiper 
+    <div className="slider mb-[16px]">
+      <Swiper
         modules={[Pagination, Autoplay]}
         spaceBetween={8}
         pagination={true}
-        slidesPerView={'auto'}
+        slidesPerView={"auto"}
         autoplay={{
-          delay : 3500
+          delay: 3500,
         }}
       >
-        {slideItem.map((item, index)=> {
+        {slideItem.map((item, index) => {
           return (
-          <SwiperSlide><a>
-            <img src={item.url}></img>
-          </a></SwiperSlide>
-          )
+            <SwiperSlide key={item.id}>
+              <a>
+                <img src={item.url}></img>
+              </a>
+            </SwiperSlide>
+          );
         })}
       </Swiper>
     </div>
   );
 }
-

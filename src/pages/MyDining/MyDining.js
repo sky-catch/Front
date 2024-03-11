@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
+import "react-modern-drawer/dist/index.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Calendar from "../../components/Calendar";
+
 import Visitcomponent from "../../components/Visitcomponent";
 import RecommendPage from "./RecommendPage";
 const stateList = [
@@ -111,6 +114,7 @@ export default function MyDining() {
   const [isRiseIcon, setIsRiseIcon] = useState(true);
   const [listSelect, setListSelect] = useState(0);
   const [alarmSelect, setAlarmSelect] = useState(0);
+
   const menuClick = (e, index) => {
     if (index === 0) {
       setIsSelect(true);
@@ -122,13 +126,17 @@ export default function MyDining() {
     }
   };
 
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleDrawer = () => {
+    setIsOpen((prevState) => !prevState);
+  };
+
   const moveLoginPage = () => {
     if (localStorage.getItem("id") == null) {
       navigate("/account");
     }
   };
   useEffect(() => {
-    console.log(pageList);
     if (localStorage.getItem("id") == null) {
       setLoginState(false);
     } else {
@@ -353,11 +361,16 @@ export default function MyDining() {
                 <RecommendPage
                   title={"미쉐린 가이드 2024"}
                   pageList={pageList}
+                  toggleDrawerBox={toggleDrawer}
                 ></RecommendPage>
                 <RecommendPage
                   title={"캐치테이블 ON"}
                   pageList={pageList}
                 ></RecommendPage>
+                <Calendar
+                  isOpen={isOpen}
+                  toggleDrawer={toggleDrawer}
+                ></Calendar>
               </section>
             ) : (
               <section className={`recommend-wrap`}></section>

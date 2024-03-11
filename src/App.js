@@ -3,7 +3,6 @@ import { RecoilRoot } from "recoil";
 // import { userInfoState } from "../../recoil/atoms/userState";
 import Header from "./components/Header.js";
 import Navbar from "./components/Navbar.js";
-import Dialog from "./pages/Dialog/Dialog.js";
 import Home from "./pages/Home/Home.js";
 import EmptySlotGuide from "./pages/MyDining/EmptySlotGuide.js";
 import MyDining from "./pages/MyDining/MyDining.js";
@@ -12,8 +11,8 @@ import KakoRedirectPage from "./pages/MyPage/KakoRedirectPage.js";
 import Login from "./pages/MyPage/Login.js";
 import MyPage from "./pages/MyPage/MyPage.js";
 import Restaurant from "./pages/Restaurant/Restaurant.js";
-import RestaurantWrapper from "./pages/Restaurant/RestaurantWrapper.js";
-
+// import RestaurantWrapper from "./pages/Restaurant/RestaurantWrapper.js";
+import Dialog from "./pages/Dialog/Dialog.js";
 
 function App() {
   // console.log("key", localStorage.getItem("id"));
@@ -36,7 +35,7 @@ function App() {
           <Route path="/emptySlotGuide" element={<EmptySlotGuide />}></Route>
           {/* 네비바 변경 페이지 */}
           {/* <Route path="/ct" element={<RestaurantWrapper />} > */}
-            <Route path="/ct/shop" element={<Restaurant />} />
+          <Route path="/ct/shop" element={<Restaurant />} />
           {/* </Route> */}
         </Routes>
         <Navbar />
