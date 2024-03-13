@@ -15,7 +15,8 @@ import Restaurant from "./pages/Restaurant/Restaurant.js";
 import Dialog from "./pages/Dialog/Dialog.js";
 
 function App() {
-  console.log(process.env.REACT_APP_REDIRECT_URI);
+  console.log(process.env.REACT_APP_REDIRECT_URI, "수정01");
+  // localStorage.clear();
   return (
     <div>
       <RecoilRoot>
@@ -28,7 +29,8 @@ function App() {
           <Route path="/mypage" element={<MyPage />}></Route>
           <Route path="/account" element={<Account />}></Route>
           <Route
-            path="/oauth/redirected/kakao"
+            path="/oauth/kakao"
+            // path="/oauth/redirected/kakao"
             element={<KakoRedirectPage />}
           />
           <Route path="/emptySlotGuide" element={<EmptySlotGuide />}></Route>
