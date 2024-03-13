@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import Drawer from "react-modern-drawer";
 export function drawCal(year, month, calRow) {
-  console.log("안녕", year, month, calRow);
   var today = new Date();
 
   var firstday = new Date(year, month, 1);

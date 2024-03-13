@@ -15,8 +15,6 @@ import Restaurant from "./pages/Restaurant/Restaurant.js";
 import Dialog from "./pages/Dialog/Dialog.js";
 
 function App() {
-  console.log(process.env.REACT_APP_REDIRECT_URI, "수정01");
-  // localStorage.clear();
   return (
     <div>
       <RecoilRoot>
