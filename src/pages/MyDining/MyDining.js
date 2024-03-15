@@ -383,7 +383,6 @@ export default function MyDining() {
 }
 
 const MyDiningContents = styled.div`
-  padding-top: 47px;
   padding-bottom: 48px;
   box-sizing: border-box;
 `;

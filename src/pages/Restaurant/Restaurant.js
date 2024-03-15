@@ -1,10 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
-
+import { getRestaurant } from '../../respository/restaurant';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+
+
+/**
+ * 식당
+ * 
+ * @author jimin
+ */
 
 const shopImgItem = {
     id: 0,
@@ -26,9 +33,26 @@ const shopImgItem = {
   };
 
 export default function Restaurant() {
+  const [restaurant, setRestaturant] = useState();
   const [openBottom, setOpenBottom] = React.useState(false);
   const openDrawerBottom =() => setOpenBottom(true);
   const closeDrawerBottom =() => setOpenBottom(false);
+
+  const setRestaurantInfo = (id) => {
+    getRestaurant(id)
+        .then((res) => {
+            //set state
+            console.log(res.data);
+            setRestaturant(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+  }
+
+  useEffect(() => {
+    setRestaurantInfo(1);
+  }, [])
 
   return (
     <main className="pb-[74px]">

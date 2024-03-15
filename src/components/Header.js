@@ -90,7 +90,20 @@ const Header = () => {
             </h1>
           </div>
         );
-
+      case "/account":
+        return (
+          <div className="header-wrapper flex px-[20px]">
+            <div className="header-left flex items-center">
+              <h1 className="text-xl h-[47px] leading-[47px] font-bold">
+                마이페이지
+              </h1>
+            </div>
+            <div className="header-right flex items-center ml-auto">
+              <button type="button" className="btn-icon alarm"></button>
+              <button type="button" className="btn-icon setting"></button>
+            </div>
+          </div>
+        );
       default:
         break;
     }

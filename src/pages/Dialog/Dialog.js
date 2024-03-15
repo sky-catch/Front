@@ -127,7 +127,6 @@ export default function Dialog() {
 }
 const DialogContents = styled.div`
   padding-bottom: 48px;
-  padding-top: 47px;
   box-sizing: border-box;
   /* overflow: auto; */
 `;
