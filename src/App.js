@@ -21,14 +21,14 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/mydining" element={<MyDining />} />
+          <Route path={`/mydining/my`} element={<MyDining />} />
           <Route path="/dialog" element={<Dialog />} />
           <Route path="/login" element={<Login />} />
           <Route path="/mypage" element={<MyPage />}></Route>
           <Route path="/account" element={<Account />}></Route>
           <Route
-            path="/oauth/kakao"
-            // path="/oauth/redirected/kakao"
+            // path="/oauth/kakao"
+            path="/oauth/redirected/kakao"
             element={<KakoRedirectPage />}
           />
           <Route path="/emptySlotGuide" element={<EmptySlotGuide />}></Route>

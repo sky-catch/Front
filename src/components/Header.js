@@ -14,8 +14,8 @@ const HeaderItem = [
   },
   {
     id: 3,
-    name: "mydining",
-    to: "/mydining",
+    name: "mydining/my",
+    to: "/mydining/my",
   },
   {
     id: 4,
@@ -53,19 +53,19 @@ const Header = () => {
             </div>
           </div>
         );
-        case "/ct/shop":
-          return (
-            <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100">
-              <div>
-                <a className="back">뒤로</a>
-                <a className="tohome">홈</a>
-              </div>
-              <div>
-                <button className="bookmark">저장</button>
-                <a className="share">공유</a>
-              </div>
+      case "/ct/shop":
+        return (
+          <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100">
+            <div>
+              <a className="back">뒤로</a>
+              <a className="tohome">홈</a>
             </div>
-          );
+            <div>
+              <button className="bookmark">저장</button>
+              <a className="share">공유</a>
+            </div>
+          </div>
+        );
       case "/search":
         return (
           <div className="">
@@ -82,7 +82,7 @@ const Header = () => {
             </h1>
           </div>
         );
-      case "/mydining":
+      case "/mydining/my":
         return (
           <div className="">
             <h1 className="text-xl h-[47px] leading-[47px] font-bold px-[20px]">
