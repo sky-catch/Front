@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import "react-modern-drawer/dist/index.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Calendar from "../../components/Calendar";
-
+import CalendarComponent from "../../components/CalendarComponent";
 import Visitcomponent from "../../components/Visitcomponent";
 import RecommendPage from "./RecommendPage";
 const stateList = [
@@ -367,10 +366,10 @@ export default function MyDining() {
                   title={"캐치테이블 ON"}
                   pageList={pageList}
                 ></RecommendPage>
-                <Calendar
+                <CalendarComponent
                   isOpen={isOpen}
                   toggleDrawer={toggleDrawer}
-                ></Calendar>
+                ></CalendarComponent>
               </section>
             ) : (
               <section className={`recommend-wrap`}></section>
@@ -385,4 +384,6 @@ export default function MyDining() {
 const MyDiningContents = styled.div`
   padding-bottom: 48px;
   box-sizing: border-box;
+  min-height: calc(100vh - 47px);
+  margin-top: 47px;
 `;

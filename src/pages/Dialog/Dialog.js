@@ -128,5 +128,8 @@ export default function Dialog() {
 const DialogContents = styled.div`
   padding-bottom: 48px;
   box-sizing: border-box;
+  min-height: calc(100vh - 47px);
+  /* height: calc(100vh - 47px); */
+  margin-top: 47px;
   /* overflow: auto; */
 `;
