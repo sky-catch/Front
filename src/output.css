@@ -1560,11 +1560,9 @@ header {
 .slider {
   position: relative;
   display: block;
-  margin-top: 48px;
 }
 .swiper-wrapper {
   transition-timing-function: linear;
-  /* margin-right : 8px; */
 }
 
 .gap {
@@ -2045,6 +2043,23 @@ header {
   width: 100%;
   display: block;
 }
+.btn.full-width .label {
+  position: relative;
+  display: block;
+}
+.btn-rounded.btn-outline {
+  border-radius: 24px;
+}
+.btn-md {
+  border: 1px solid #666;
+  background: #fff;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.btn-md.btn-outline {
+  border-color: #d5d5d5;
+}
 .btn-cta > span {
   display: flex;
   align-itmes: center;
@@ -2092,6 +2107,12 @@ header {
   margin-top : 5px;
 }
 
+.mypage-profile .mypage-profile-meta .social {
+  margin-top: 14px;
+  display: flex;
+  gap: 20px;
+}
+
 .meta {
   align-items : baseline;
   line-height : 14px;
@@ -2099,4 +2120,45 @@ header {
 
 .gap-5 {
   gap : 5px;
+}
+
+.mypage-profile .name {
+  display: flex;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.mypage-profile .mypage-profile-meta .meta dl dt{
+  color: #666;
+  font-size: 12px;
+}
+
+.mypage-profile .mypage-profile-meta .meta dl dd{
+  font-weight: 700;
+  color: #000;
+  font-size: 14px;
+}
+
+.mypage-profile-btn {
+  display : flex;
+  gap : 10px;
+}
+
+.mypage-ad {
+  padding: 20px 30px;
+  gap: 12px;
+  background-color: #f4f4f4;
+  margin-top: 28px;
+}
+
+.mypage-ad .img {
+  background-image : url("/src/assets/icons/anniversary-cake.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  width : 30px;
+  height : 30px;
+}
+
+.tab-menu ul {
+  display : flex;
 }

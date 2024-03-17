@@ -7,8 +7,16 @@ import apiClient from '../apis/ApiClient';
  */
 
 /* 식당 생성 */
-export const createRestaurant = async () => {
-
+export const createRestaurant = async (data) => {
+    try {
+        console.log(data);
+        const result = await apiClient.post( "/restaurants", {
+            data
+        });
+        return result;
+    } catch (err) {
+        console.log("Error >>", err);
+    }
 }
 
 /* 식당 개별 조회 */

@@ -13,6 +13,7 @@ import MyPage from "./pages/MyPage/MyPage.js";
 import Restaurant from "./pages/Restaurant/Restaurant.js";
 // import RestaurantWrapper from "./pages/Restaurant/RestaurantWrapper.js";
 import Dialog from "./pages/Dialog/Dialog.js";
+import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
 
 function App() {
   // console.log("key", localStorage.getItem("id"));
@@ -36,6 +37,7 @@ function App() {
           {/* 네비바 변경 페이지 */}
           {/* <Route path="/ct" element={<RestaurantWrapper />} > */}
           <Route path="/ct/shop" element={<Restaurant />} />
+          <Route path="/ct/my" element={<RestaurantSetting/>}/>
           {/* </Route> */}
         </Routes>
         <Navbar />

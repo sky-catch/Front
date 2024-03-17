@@ -18,7 +18,7 @@ export default function Home() {
   }
 
   return (
-    <main className="pb-[74px]">
+    <main className="main">
       <div className="myArea">
         <button onClick={onBottomSheet}>
           <i>위치설정</i>
