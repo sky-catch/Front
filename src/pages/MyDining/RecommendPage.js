@@ -23,7 +23,7 @@ const RecommendPage = ({ title, pageList, toggleDrawerBox }) => {
         array.push(
           <div className="" key={index}>
             <img className="" src={pageItem[index].img} />
-            <span className="text-[32px] font-bold text-white text-center leading-[210px] block relative z-40">
+            <span className="text-[32px] font-bold text-white text-center text-num block relative z-40">
               +{pageItem.length - 3}
             </span>
           </div>

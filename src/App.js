@@ -16,8 +16,7 @@ import Dialog from "./pages/Dialog/Dialog.js";
 import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
 
 function App() {
-  // console.log("key", localStorage.getItem("id"));
-  // console.log("key", JSON.parse(localStorage.getItem("data")));
+  // localStorage.clear();
   return (
     <div>
       <RecoilRoot>

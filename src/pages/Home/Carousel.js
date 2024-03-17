@@ -26,7 +26,11 @@ const slideItem = [
 
 export default function Carousel() {
   return (
+<<<<<<< HEAD
     <div className="slider mb-[16spx]">
+=======
+    <div className="slider mb-[16px] mt-[48px]">
+>>>>>>> caf843820139670e50cb77fd880b0b8d3c7fa244
       <Swiper
         modules={[Pagination, Autoplay]}
         spaceBetween={8}
