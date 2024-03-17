@@ -27,7 +27,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer }) => {
         onClose={toggleDrawer}
         direction="bottom"
         className="drawer-box"
-        size="260px"
+        size="620px"
       >
         <StyledCalendarWrapper>
           <StyledDate onClick={handleTodayClick}>오늘</StyledDate>
