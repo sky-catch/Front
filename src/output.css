@@ -1354,7 +1354,7 @@ header {
   max-width: 480px;
   margin: 0 auto;
   width: auto;
-  position: sti;
+  position: sticky;
   left: 0;
   right: 0;
   z-index: 99;
