@@ -25,7 +25,7 @@ export default function KakoRedirectPage() {
       )
       .then((res) => {
         const { access_token } = res.data;
-
+        console.log( access_token );
         axios
           .post(
             `https://kapi.kakao.com/v2/user/me`,
@@ -39,11 +39,12 @@ export default function KakoRedirectPage() {
             }
           )
           .then((res) => {
-            console.log("2번쨰", res);
+            console.log("2번쨰", res, access_token );
             navigate("/");
             localStorage.clear();
             localStorage.setItem("id", res.data.id);
             localStorage.setItem("data", JSON.stringify(res.data));
+            localStorage.setItem("token", access_token );
           })
           .catch((error) => {
             console.log("2번쨰 error", error);

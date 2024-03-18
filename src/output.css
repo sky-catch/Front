@@ -1354,7 +1354,7 @@ header {
   max-width: 480px;
   margin: 0 auto;
   width: auto;
-  position: fixed;
+  position: sti;
   left: 0;
   right: 0;
   z-index: 99;
@@ -1524,7 +1524,6 @@ header {
 }
 
 /* 캐러셀 */
-<<<<<<< HEAD
 .slider {
   position: relative;
   display: block;
@@ -1532,8 +1531,6 @@ header {
 .swiper-wrapper {
   transition-timing-function: linear;
 }
-=======
->>>>>>> caf843820139670e50cb77fd880b0b8d3c7fa244
 
 .gap {
   display: flex;
@@ -1835,7 +1832,6 @@ header {
   transform: translateY(-50%);
 }
 
-<<<<<<< HEAD
 /* best-food-list */
 .best-food-list {
   display: flex;
@@ -2007,8 +2003,6 @@ header {
 .btn-cta.arrowdown:after {
 }
 
-=======
->>>>>>> caf843820139670e50cb77fd880b0b8d3c7fa244
 .drawer-box {
   border-radius: 20px 20px 0 0;
   max-width: 480px;
@@ -2043,7 +2037,6 @@ header {
   border-bottom: #e6e6e6 solid 1px;
 }
 
-<<<<<<< HEAD
 .mypage-profile .mypage-profile-meta .social {
   margin-top: 14px;
   display: flex;
@@ -2057,6 +2050,25 @@ header {
 
 .gap-5 {
   gap : 5px;
+}
+
+/* mypage */
+
+.mypage-profile .profile-pic {
+  margin-right: 12px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.mypage-profile .profile-pic .img {
+  background-image : url("/src/assets/icons/profile_default_v2.png")50% 50% no-repeat;
+  /* background : 50% 50% no-repeat; */
+  background-size: cover;
+    border-radius: 50%;
+  width : 80px;
+  height : 80px;
+  box-sizing : border-box;
 }
 
 .mypage-profile .name {
@@ -2099,7 +2111,7 @@ header {
 .tab-menu ul {
   display : flex;
 }
-=======
+
 .react-calendar__month-view__days {
   display: grid !important;
   grid-template-columns: repeat(7, 1fr);
@@ -2132,4 +2144,8 @@ header {
 .text-num {
   line-height: calc((100vw - 40px) / 2);
 }
->>>>>>> caf843820139670e50cb77fd880b0b8d3c7fa244
+
+/* main */
+.main {
+  padding-bottom : 74px;
+}
