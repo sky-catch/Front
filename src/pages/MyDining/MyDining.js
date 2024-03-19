@@ -366,6 +366,7 @@ export default function MyDining() {
                   title={"캐치테이블 ON"}
                   pageList={pageList}
                 ></RecommendPage>
+
                 <CalendarComponent
                   isOpen={isOpen}
                   toggleDrawer={toggleDrawer}

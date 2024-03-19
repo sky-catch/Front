@@ -5,12 +5,57 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import Drawer from "react-modern-drawer";
 import styled from "styled-components";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { checkReservationTimes } from "../respository/reservation";
 const CalendarComponent = ({ isOpen, toggleDrawer }) => {
   const [date, setDate] = useState(new Date());
+  const [isTimes, setIsTime] = useState([]);
+  const [isPeopleNum, setIsPeopleNum] = useState(1);
+  const [isVisitTime, setVisitTime] = useState("00:00");
   const [activeStartDate, setActiveStartDate] = useState(new Date());
   useEffect(() => {
-    setDate(new Date());
+    if (isOpen) {
+      setDate(new Date());
+      setIsPeopleNum(1);
+    }
   }, [isOpen]);
+  const setRestaurantTimeInfo = () => {};
+
+  useEffect(() => {
+    if (isOpen) {
+      const visitTimeHours = String(new Date().getHours()).padStart(2, "0");
+      const visitTimeMinutes = String(new Date().getMinutes()).padStart(2, "0");
+
+      const eservationTimes = {
+        restaurantId: 1,
+        numberOfPeople: isPeopleNum,
+        // searchDate: "2024-03-13",
+        searchDate:
+          date.getFullYear() +
+          "-" +
+          String(date.getMonth() + 1).padStart(2, "0") +
+          "-" +
+          String(date.getDate()).padStart(2, "0"),
+        // visitTime: "22:00:00",
+        visitTime: isVisitTime + ":00",
+        // visitTime: visitTimeHours + ":" + visitTimeMinutes + ":" + "00",
+      };
+
+      checkReservationTimes(eservationTimes)
+        .then((res) => {
+          setIsTime(res.data.timeSlots);
+          setVisitTime(isTimes[0].time);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    // console.log("isTimes", isTimes[0].time);
+  }, [date, isPeopleNum, isVisitTime]);
 
   const handleDateChange = (newDate) => {
     setDate(newDate);
@@ -20,6 +65,30 @@ const CalendarComponent = ({ isOpen, toggleDrawer }) => {
     setActiveStartDate(today);
     setDate(today);
   };
+  const peopleNum = () => {
+    let array = [];
+    for (let index = 1; index <= 10; index++) {
+      array.push(
+        <SwiperSlide key={index}>
+          <span
+            onClick={() => {
+              setIsPeopleNum(index);
+            }}
+            className={` block size-[48px] rounded-[50%] text-center leading-[48px] font-light text-[14px] ${
+              index === isPeopleNum
+                ? `bg-[#ff3d00] text-[#fff]`
+                : `text-[#aaa] border-[1px] border-[#aaa]`
+            }`}
+          >
+            {index + "명"}
+          </span>
+        </SwiperSlide>
+      );
+    }
+
+    return array;
+  };
+
   return (
     <div>
       <Drawer
@@ -55,6 +124,50 @@ const CalendarComponent = ({ isOpen, toggleDrawer }) => {
             minDate={new Date()}
           />
         </StyledCalendarWrapper>
+        {/* 인원 수 */}
+        <Swiper
+          className=" pl-[20px] py-[10px]"
+          spaceBetween={0}
+          slidesPerView={6}
+          onSlideChange={() => console.log("slide change")}
+          onSwiper={(swiper) => console.log(swiper)}
+        >
+          {peopleNum()}
+        </Swiper>
+
+        {/* 시간 */}
+        {isTimes.length > 0 ? (
+          <Swiper
+            className=" pl-[20px] py-[15px]"
+            spaceBetween={7}
+            slidesPerView={4}
+            onSlideChange={() => console.log("slide change")}
+            onSwiper={(swiper) => console.log(swiper)}
+          >
+            {isTimes.map((item, index) => {
+              return (
+                <SwiperSlide
+                  key={index}
+                  onClick={() => {
+                    console.log(item.time);
+                    setVisitTime(item.time);
+                  }}
+                  className=" min-w-[70px] h-[38px] rounded-[6px] bg-[#ff3d00] text-[#fff] w-fit text-[13px] text-center leading-[38px]"
+                >
+                  {item.time.slice(0, 2) < 13
+                    ? `오전 ${item.time.slice(0, 2)}`
+                    : `오후 ${String(
+                        Number(item.time.slice(0, 2)) - 12
+                      ).padStart(2, "0")}`}
+                  {":" + item.time.slice(3)}
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+        ) : (
+          <span>예약이 모두 마감되었습니다.</span>
+        )}
+
         <CloseBtn type="button" open={isOpen} onClick={toggleDrawer}>
           닫기
         </CloseBtn>

@@ -670,6 +670,10 @@ video {
   margin-bottom: 16px;
 }
 
+.mb-\[16spx\] {
+  margin-bottom: 16spx;
+}
+
 .mb-\[20px\] {
   margin-bottom: 20px;
 }
@@ -746,10 +750,6 @@ video {
   margin-top: 30px;
 }
 
-.mt-\[48px\] {
-  margin-top: 48px;
-}
-
 .mt-\[5px\] {
   margin-top: 5px;
 }
@@ -795,6 +795,11 @@ video {
   height: 32px;
 }
 
+.size-\[48px\] {
+  width: 48px;
+  height: 48px;
+}
+
 .size-\[64px\] {
   width: 64px;
   height: 64px;
@@ -835,6 +840,10 @@ video {
 
 .h-\[36px\] {
   height: 36px;
+}
+
+.h-\[38px\] {
+  height: 38px;
 }
 
 .h-\[47px\] {
@@ -881,8 +890,18 @@ video {
   width: 50%;
 }
 
+.w-fit {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
 .w-full {
   width: 100%;
+}
+
+.min-w-\[70px\] {
+  min-width: 70px;
 }
 
 .flex-grow {
@@ -969,6 +988,10 @@ video {
   border-radius: 12px;
 }
 
+.rounded-\[50\%\] {
+  border-radius: 50%;
+}
+
 .rounded-\[5px\] {
   border-radius: 5px;
 }
@@ -1016,6 +1039,11 @@ video {
 
 .border-transparent {
   border-color: transparent;
+}
+
+.border-\[\#aaa\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(170 170 170 / var(--tw-border-opacity));
 }
 
 .border-b-\[\#e8e8e8\] {
@@ -1125,6 +1153,21 @@ video {
   padding-bottom: 40px;
 }
 
+.py-\[5px\] {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.py-\[7px\] {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.py-\[15px\] {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
 .pb-\[20px\] {
   padding-bottom: 20px;
 }
@@ -1139,6 +1182,10 @@ video {
 
 .pb-\[74px\] {
   padding-bottom: 74px;
+}
+
+.pl-\[20px\] {
+  padding-left: 20px;
 }
 
 .pl-\[44px\] {
@@ -1227,6 +1274,10 @@ video {
   line-height: 32px;
 }
 
+.leading-\[38px\] {
+  line-height: 38px;
+}
+
 .leading-\[47px\] {
   line-height: 47px;
 }
@@ -1278,6 +1329,11 @@ video {
 .text-\[\#ff3d00\] {
   --tw-text-opacity: 1;
   color: rgb(255 61 0 / var(--tw-text-opacity));
+}
+
+.text-\[\#fff\] {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
 .text-loginText {
@@ -1354,7 +1410,7 @@ header {
   max-width: 480px;
   margin: 0 auto;
   width: auto;
-  position: sticky;
+  position: fixed;
   left: 0;
   right: 0;
   z-index: 99;
@@ -1524,13 +1580,6 @@ header {
 }
 
 /* 캐러셀 */
-.slider {
-  position: relative;
-  display: block;
-}
-.swiper-wrapper {
-  transition-timing-function: linear;
-}
 
 .gap {
   display: flex;
@@ -1832,177 +1881,6 @@ header {
   transform: translateY(-50%);
 }
 
-/* best-food-list */
-.best-food-list {
-  display: flex;
-  felx-wrap: nowrap;
-}
-.best-food-list > .best-food-list-item {
-  margin-right: 8px;
-}
-.best-food-list-item {
-  display: block;
-  width: 96px;
-  overflow: hidden;
-}
-.best-food-list > .best-food-list-item > .tb {
-  width: 84px;
-  height: 84px;
-  display: block;
-  border-radius: 50%;
-  overflow: hidden;
-  margin: 0 auto;
-}
-.best-food-list > .best-food-list-item > .name {
-  font-size: 14px;
-  line-height: 22px;
-  height: 36px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.container .gutter-sm {
-  padding: 0 20px;
-}
-.section .menu {
-  display: flex;
-  margin-top: 16px;
-}
-.section .menu a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  height: 18px;
-  color: #222222;
-  font-size: 13px;
-}
-.section .menu a:before {
-  content: "";
-  display: block;
-  width: 16px;
-  height: 16px;
-  position: relative;
-  margin-right: 4px;
-}
-.section .menu a:not(:last-child) {
-  border-right: 1px solid #d5d5d5;
-  line-height: 18px;
-}
-.section .menu .call:before {
-  background: url("/src/assets/icons/call.svg") 0% 50% no-repeat;
-}
-.section .menu .location:before {
-  background: url("/src/assets/icons/location.svg") 0% 50% no-repeat;
-}
-.section .menu .building:before {
-  background: url("/src/assets/icons/building.svg") 0% 50% no-repeat;
-}
-
-.separator {
-  height: 8px;
-  background: #ececec !important;
-}
-.restaurant-img-detail {
-  position: absolute;
-  bottom: 12px;
-  left: 20px;
-  right: 20px;
-  height: 24px;
-  z-index: 50;
-  display: flex;
-}
-.restaurant-img-detail span {
-  display: inline-flex;
-  padding: 0 12px;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  border-radius: 16px;
-  border: 0.5px solid var(--gray-0, #fff);
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 150%;
-}
-.restaurant-summary span {
-  color: #666666;
-}
-.restaurant-summary h2 {
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 150%;
-}
-.restaurant-detail {
-  margin-top: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.restaurant-detail-header {
-  position: relative;
-}
-.waiting {
-  padding: 20px 20px 24px;
-}
-.waiting .section-header {
-  display: flex;
-  position: relative;
-  align-items: center;
-}
-.waiting .section-header h3 {
-  font-weight: 700;
-  font-size: 20px;
-  align-items: center;
-  display: flex;
-  letter-spacing: 0;
-  min-width: 1px;
-  margin: 0;
-}
-.btn-lg {
-  padding: 0 20px;
-  border: 1px solid #666;
-}
-.btn-outline {
-  border-color: #d5d5d5;
-}
-.btn.full-width {
-  width: 100%;
-  display: block;
-}
-.btn.full-width .label {
-  position: relative;
-  display: block;
-}
-.btn-rounded.btn-outline {
-  border-radius: 24px;
-}
-.btn-md {
-  border: 1px solid #666;
-  background: #fff;
-  padding: 0 20px;
-  font-size: 14px;
-  font-weight: 500;
-}
-.btn-md.btn-outline {
-  border-color: #d5d5d5;
-}
-.btn-cta > span {
-  display: flex;
-  align-itmes: center;
-  height: 46px;
-}
-.btn-cta > span .label.calendar {
-  padding-left: 29px;
-}
-.btn-cta > span .label.calendar:before {
-}
-.btn-cta.arrowdown:after {
-}
-
 .drawer-box {
   border-radius: 20px 20px 0 0;
   max-width: 480px;
@@ -2019,7 +1897,7 @@ header {
   font-size: 16px !important;
   border-radius: 5px !important;
   padding: 0 !important;
-  height: 55px !important;
+  height: 50px !important;
 }
 
 .react-calendar__tile > * {
@@ -2035,81 +1913,6 @@ header {
 
 .react-calendar__month-view {
   border-bottom: #e6e6e6 solid 1px;
-}
-
-.mypage-profile .mypage-profile-meta .social {
-  margin-top: 14px;
-  display: flex;
-  gap: 20px;
-}
-
-.meta {
-  align-items : baseline;
-  line-height : 14px;
-}
-
-.gap-5 {
-  gap : 5px;
-}
-
-/* mypage */
-
-.mypage-profile .profile-pic {
-  margin-right: 12px;
-    border-radius: 50%;
-    box-sizing: border-box;
-    position: relative;
-}
-
-.mypage-profile .profile-pic .img {
-  background-image : url("/src/assets/icons/profile_default_v2.png")50% 50% no-repeat;
-  /* background : 50% 50% no-repeat; */
-  background-size: cover;
-    border-radius: 50%;
-  width : 80px;
-  height : 80px;
-  box-sizing : border-box;
-}
-
-.mypage-profile .name {
-  display: flex;
-    font-size: 16px;
-    font-weight: 700;
-}
-
-.mypage-profile .mypage-profile-meta .meta dl dt{
-  color: #666;
-  font-size: 12px;
-}
-
-.mypage-profile .mypage-profile-meta .meta dl dd{
-  font-weight: 700;
-  color: #000;
-  font-size: 14px;
-}
-
-.mypage-profile-btn {
-  display : flex;
-  gap : 10px;
-}
-
-.mypage-ad {
-  padding: 20px 30px;
-  gap: 12px;
-  background-color: #f4f4f4;
-  margin-top: 28px;
-}
-
-.mypage-ad .img {
-  background-image : url("/src/assets/icons/anniversary-cake.svg");
-  background-position: center;
-  background-repeat: no-repeat;
-  width : 30px;
-  height : 30px;
-}
-
-.tab-menu ul {
-  display : flex;
 }
 
 .react-calendar__month-view__days {
@@ -2143,9 +1946,4 @@ header {
 
 .text-num {
   line-height: calc((100vw - 40px) / 2);
-}
-
-/* main */
-.main {
-  padding-bottom : 74px;
 }
