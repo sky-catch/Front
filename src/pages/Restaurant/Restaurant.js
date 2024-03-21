@@ -43,8 +43,8 @@ export default function Restaurant() {
     setIsOpen((prevState) => !prevState);
   };
 
-  const setRestaurantInfo = (id) => {
-    getRestaurant(id)
+  const setRestaurantInfo = (name) => {
+    getRestaurant(name)
       .then((res) => {
         //set state
         console.log(res.data);
@@ -56,8 +56,8 @@ export default function Restaurant() {
   };
 
   useEffect(() => {
-    setRestaurantInfo(1);
-    // setRestaurantInfo(encodeURIComponent(shopImgItem.name));
+    // setRestaurantInfo(1);
+    setRestaurantInfo(encodeURIComponent("ㅁㅁ오마카세"));
   }, []);
 
   return (

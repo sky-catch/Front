@@ -25,9 +25,9 @@ export const createRestaurant = async (data) => {
 };
 
 /* 식당 개별 조회 */
-export const getRestaurant = async (id) => {
+export const getRestaurant = async (name) => {
   try {
-    const res = await apiClient.get(`/restaurants/${id}`, {
+    const res = await apiClient.get(`/restaurants/${name}`, {
       headers: {
         // Authorization : `Bearer ${}`
       },
