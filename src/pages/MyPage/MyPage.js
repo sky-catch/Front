@@ -1,23 +1,25 @@
-import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 function MyPage() {
   const navigate = useNavigate();
-  const [ userName, setUserName ] = useState();
-  const [ following, setFollowing ] = useState(0);
-  const [ follower, setFollower ] = useState(0);
+  const [userName, setUserName] = useState();
+  const [following, setFollowing] = useState(0);
+  const [follower, setFollower] = useState(0);
 
   const createRestaurant = () => {
     navigate("/ct/my");
-  }
+  };
 
   useEffect(() => {
     const userInfo = window.localStorage.getItem("data");
-    setUserName(JSON.parse(userInfo)['properties']['nickname']);
-  }, [])
+    if (userInfo !== null) {
+      setUserName(JSON.parse(userInfo)["properties"]["nickname"]);
+    }
+  }, []);
 
   return (
-    <main className="main">
+    <MainContents className="main">
       <section className="section pt-[24px]">
         <section className="container gutter-sm">
           <div className="mypage-profile flex items-start mb-[16px]">
@@ -37,15 +39,17 @@ function MyPage() {
                   <dd>{follower}</dd>
                 </dl>
               </div>
-              <div className="social">
-              </div>
+              <div className="social"></div>
             </div>
           </div>
           <div className="mypage-profile-btn">
             <button className="btn btn-md btn-outline btn-rounded full-width mt-18">
               <span className="label">프로필 수정</span>
             </button>
-            <button className="btn btn-md btn-outline btn-rounded full-width mt-18" onClick={createRestaurant}>
+            <button
+              className="btn btn-md btn-outline btn-rounded full-width mt-18"
+              onClick={createRestaurant}
+            >
               <span className="label">사장님 등록</span>
             </button>
           </div>
@@ -56,20 +60,40 @@ function MyPage() {
             <div className="img"></div>
             <div>
               <p>캐치테이블이 특별한 날을 축하해드릴게요</p>
-              <span>생일/기념일 등록하기<i></i></span>
+              <span>
+                생일/기념일 등록하기<i></i>
+              </span>
             </div>
           </div>
         </div>
         <div className="tab-menu mb-[10px] sticky">
           <ul className="">
-            <li className="active"><a><span>나의 저장<small className="count">0</small></span></a></li>
-            <li className="active"><a><span>리뷰<small className="count">0</small></span></a></li>
+            <li className="active">
+              <a>
+                <span>
+                  나의 저장<small className="count">0</small>
+                </span>
+              </a>
+            </li>
+            <li className="active">
+              <a>
+                <span>
+                  리뷰<small className="count">0</small>
+                </span>
+              </a>
+            </li>
           </ul>
         </div>
         <div></div>
       </section>
-    </main>
+    </MainContents>
   );
 }
 
 export default MyPage;
+const MainContents = styled.div`
+  padding-bottom: 48px;
+  box-sizing: border-box;
+  min-height: calc(100vh - 47px);
+  margin-top: 47px;
+`;

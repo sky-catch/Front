@@ -16,7 +16,6 @@ import Dialog from "./pages/Dialog/Dialog.js";
 import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
 
 function App() {
-  // localStorage.clear();
   return (
     <div>
       <RecoilRoot>
@@ -36,7 +35,7 @@ function App() {
           {/* 네비바 변경 페이지 */}
           {/* <Route path="/ct" element={<RestaurantWrapper />} > */}
           <Route path="/ct/shop" element={<Restaurant />} />
-          <Route path="/ct/my" element={<RestaurantSetting/>}/>
+          <Route path="/ct/my" element={<RestaurantSetting />} />
           {/* </Route> */}
         </Routes>
         <Navbar />

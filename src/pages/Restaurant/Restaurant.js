@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import "react-modern-drawer/dist/index.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
+import CalendarComponent from "../../components/CalendarComponent";
 import { getRestaurant } from "../../respository/restaurant";
 
 /**
@@ -35,6 +37,11 @@ export default function Restaurant() {
   const [openBottom, setOpenBottom] = React.useState(false);
   const openDrawerBottom = () => setOpenBottom(true);
   const closeDrawerBottom = () => setOpenBottom(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    setIsOpen((prevState) => !prevState);
+  };
 
   const setRestaurantInfo = (id) => {
     getRestaurant(id)
@@ -50,13 +57,19 @@ export default function Restaurant() {
 
   useEffect(() => {
     setRestaurantInfo(1);
+    // setRestaurantInfo(encodeURIComponent(shopImgItem.name));
   }, []);
 
   return (
     <main className="pb-[74px]">
       {/* 1. 식당 이미지 */}
       <section className="restaurant-detail-header">
-        <Swiper>
+        <Swiper
+          className=""
+          onClick={() => {
+            toggleDrawer();
+          }}
+        >
           {shopImgItem.shopImg.map((item, index) => {
             return (
               <SwiperSlide key={item.id}>
@@ -67,6 +80,7 @@ export default function Restaurant() {
             );
           })}
         </Swiper>
+
         <div className="restaurant-img-detail">
           <span>명이 보는중!</span>
           <div></div>
@@ -126,6 +140,12 @@ export default function Restaurant() {
       {/* 10. 매장 위치 */}
       {/* 11. 상세정보 */}
       {/* 12. 이 주변 예약이 많은 레스토랑 */}
+      {/* 예약 슬라이드 페이지 */}
+      <CalendarComponent
+        isOpen={isOpen}
+        restaurant={restaurant}
+        toggleDrawer={toggleDrawer}
+      ></CalendarComponent>
     </main>
   );
 }

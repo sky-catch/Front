@@ -10,8 +10,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { checkReservationTimes } from "../respository/reservation";
-const CalendarComponent = ({ isOpen, toggleDrawer }) => {
+// import { checkReservationTimes } from "../respository/reservation";
+const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
   const [date, setDate] = useState(new Date());
   const [isTimes, setIsTime] = useState([]);
   const [isPeopleNum, setIsPeopleNum] = useState(1);
@@ -23,7 +23,6 @@ const CalendarComponent = ({ isOpen, toggleDrawer }) => {
       setIsPeopleNum(1);
     }
   }, [isOpen]);
-  const setRestaurantTimeInfo = () => {};
 
   useEffect(() => {
     if (isOpen) {
@@ -44,15 +43,15 @@ const CalendarComponent = ({ isOpen, toggleDrawer }) => {
         visitTime: isVisitTime + ":00",
         // visitTime: visitTimeHours + ":" + visitTimeMinutes + ":" + "00",
       };
-
-      checkReservationTimes(eservationTimes)
-        .then((res) => {
-          setIsTime(res.data.timeSlots);
-          setVisitTime(isTimes[0].time);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      console.log("restaurant", restaurant);
+      // checkReservationTimes(eservationTimes)
+      //   .then((res) => {
+      //     setIsTime(res.data.timeSlots);
+      //     setVisitTime(isTimes[0].time);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
     }
     // console.log("isTimes", isTimes[0].time);
   }, [date, isPeopleNum, isVisitTime]);
@@ -93,7 +92,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer }) => {
     <div>
       <Drawer
         open={isOpen}
-        onClose={toggleDrawer}
+        // onClose={toggleDrawer}
         direction="bottom"
         className="drawer-box"
         size="620px"

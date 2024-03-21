@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import "react-modern-drawer/dist/index.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import CalendarComponent from "../../components/CalendarComponent";
 import Visitcomponent from "../../components/Visitcomponent";
 import RecommendPage from "./RecommendPage";
 const stateList = [
@@ -367,10 +366,10 @@ export default function MyDining() {
                   pageList={pageList}
                 ></RecommendPage>
 
-                <CalendarComponent
+                {/* <CalendarComponent
                   isOpen={isOpen}
                   toggleDrawer={toggleDrawer}
-                ></CalendarComponent>
+                ></CalendarComponent> */}
               </section>
             ) : (
               <section className={`recommend-wrap`}></section>

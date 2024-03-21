@@ -24,14 +24,14 @@ const HeaderItem = [
   },
   {
     id: 5,
-    name: "login",
-    to: "/login",
+    name: "account",
+    to: "/account",
   },
 ];
 const Header = () => {
   const location = useLocation().pathname;
   useEffect(() => {}, [location]);
-
+  console.log(useLocation().pathname === "/ct/shop");
   const headerContent = () => {
     switch (location) {
       case "/":
@@ -53,19 +53,19 @@ const Header = () => {
             </div>
           </div>
         );
-        case "/ct/shop":
-          return (
-            <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100">
-              <div>
-                <a className="back">뒤로</a>
-                <a className="tohome">홈</a>
-              </div>
-              <div>
-                <button className="bookmark">저장</button>
-                <a className="share">공유</a>
-              </div>
+      case "/ct/shop":
+        return (
+          <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100">
+            <div>
+              <a className="back">뒤로</a>
+              <a className="tohome">홈</a>
             </div>
-          );
+            <div>
+              <button className="bookmark">저장</button>
+              <a className="share">공유</a>
+            </div>
+          </div>
+        );
       case "/search":
         return (
           <div className="">
@@ -91,7 +91,7 @@ const Header = () => {
           </div>
         );
       case "/account":
-        return (
+        return localStorage.getItem("id") !== null ? (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left flex items-center">
               <h1 className="text-xl h-[47px] leading-[47px] font-bold">
@@ -103,12 +103,18 @@ const Header = () => {
               <button type="button" className="btn-icon setting"></button>
             </div>
           </div>
+        ) : (
+          ""
         );
       default:
         break;
     }
   };
-  return <header>{headerContent()}</header>;
+  return (
+    <header className={`${location === "/ct/shop" ? "bg-transparent" : ""} `}>
+      {headerContent()}
+    </header>
+  );
 };
 
 export default Header;
