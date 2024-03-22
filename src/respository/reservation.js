@@ -35,3 +35,18 @@ export const getLogin = async (code) => {
     console.log("Error >>", err);
   }
 };
+
+// 마이페이지 회원 정보 조회
+export const getMyMain = async () => {
+  try {
+    const result = await apiClient.get(`/member/myMain`, {
+      headers: {
+        // accept: "*/*",
+        // "Content-Type": "application/json",
+      },
+    });
+    return result;
+  } catch (err) {
+    console.log("Error >>", err);
+  }
+};
