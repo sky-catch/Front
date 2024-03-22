@@ -14,8 +14,8 @@ const HeaderItem = [
   },
   {
     id: 3,
-    name: "mydining",
-    to: "/mydining",
+    name: "mydining/my",
+    to: "/mydining/my",
   },
   {
     id: 4,
@@ -82,7 +82,7 @@ const Header = () => {
             </h1>
           </div>
         );
-      case "/mydining":
+      case "/mydining/my":
         return (
           <div className="">
             <h1 className="text-xl h-[47px] leading-[47px] font-bold px-[20px]">

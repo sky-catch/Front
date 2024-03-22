@@ -16,19 +16,22 @@ import Dialog from "./pages/Dialog/Dialog.js";
 import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
 
 function App() {
+
   // localStorage.clear();
+
   return (
     <div>
       <RecoilRoot>
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/mydining" element={<MyDining />} />
+          <Route path={`/mydining/my`} element={<MyDining />} />
           <Route path="/dialog" element={<Dialog />} />
           <Route path="/login" element={<Login />} />
           <Route path="/mypage" element={<MyPage />}></Route>
           <Route path="/account" element={<Account />}></Route>
           <Route
+            // path="/oauth/kakao"
             path="/oauth/redirected/kakao"
             element={<KakoRedirectPage />}
           />

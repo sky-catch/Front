@@ -29,7 +29,7 @@ const navItem = [
   {
     id: 3,
     name: "mydining",
-    to: "/mydining",
+    to: "/mydining/my",
     image: "dock-mydining",
     imageOn: "dock-mydining-on",
     selectItem: false,

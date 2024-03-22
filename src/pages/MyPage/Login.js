@@ -1,9 +1,5 @@
 import React from "react";
 export default function Login() {
-  const REST_API_KEY = "c15a9a9c13e97723e773ab9f84558e21";
-  const REDIRECT_URI = "http://15.164.89.177:8080/oauth/kakao";
-  //http://localhost:3000/oauth/redirected/kakao
-  // const KAKAO_AUTO_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
   const KAKAO_AUTO_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&scope=profile_nickname,profile_image,account_email,name`;
   const kakaoLogin = () => {
     window.location.href = KAKAO_AUTO_URL;
