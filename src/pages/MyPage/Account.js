@@ -5,7 +5,7 @@ function Account() {
   const [userInfo, setUserInfo] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("id") === null) {
+    if (localStorage.getItem("token") === null) {
       setUserInfo(false);
     } else {
       setUserInfo(true);

@@ -55,7 +55,7 @@ const Header = () => {
         );
       case "/ct/shop":
         return (
-          <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100">
+          <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px]">
             <div>
               <a className="back">뒤로</a>
               <a className="tohome">홈</a>
@@ -91,7 +91,7 @@ const Header = () => {
           </div>
         );
       case "/account":
-        return localStorage.getItem("id") !== null ? (
+        return localStorage.getItem("token") !== null ? (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left flex items-center">
               <h1 className="text-xl h-[47px] leading-[47px] font-bold">

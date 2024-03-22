@@ -20,3 +20,18 @@ export const checkReservationTimes = async (data) => {
     console.log("Error >>", err);
   }
 };
+
+// 로그인 사용자 로그인 처리
+export const getLogin = async (code) => {
+  try {
+    const result = await apiClient.get(`/oauth/login/KAKAO?code=${code}`, {
+      headers: {
+        // accept: "*/*",
+        // "Content-Type": "application/json",
+      },
+    });
+    return result;
+  } catch (err) {
+    console.log("Error >>", err);
+  }
+};

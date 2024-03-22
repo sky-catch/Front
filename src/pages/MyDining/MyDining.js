@@ -130,12 +130,12 @@ export default function MyDining() {
   };
 
   const moveLoginPage = () => {
-    if (localStorage.getItem("id") == null) {
+    if (localStorage.getItem("token") == null) {
       navigate("/account");
     }
   };
   useEffect(() => {
-    if (localStorage.getItem("id") == null) {
+    if (localStorage.getItem("token") == null) {
       setLoginState(false);
     } else {
       setLoginState(true);

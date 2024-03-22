@@ -16,6 +16,7 @@ import Dialog from "./pages/Dialog/Dialog.js";
 import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
 
 function App() {
+  // localStorage.clear();
   return (
     <div>
       <RecoilRoot>

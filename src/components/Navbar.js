@@ -51,7 +51,9 @@ const Navbar = () => {
   }, [location]);
 
   return (
-    <NavbarContents>
+    <NavbarContents
+      className={`${location === "/ct/shop" ? " hidden" : " block"}`}
+    >
       <NavbarWrap>
         {navItem.map((item) => {
           return (

@@ -46,7 +46,7 @@ export default function Restaurant() {
   const setRestaurantInfo = (name) => {
     getRestaurant(name)
       .then((res) => {
-        //set state
+        //TODO: 데이터 적용 완료
         console.log(res.data);
         setRestaturant(res.data);
       })
