@@ -41,16 +41,20 @@ const restaurants = [
 
 const Restaurants = () => {
   const navigate = useNavigate();
-  const onDetail = ({id}) => {
-    // console.log('id : ', id);
-    navigate("/ct/shop");
-  }
+  const onDetail = ({ name }) => {
+    // console.log("id : ", name);
+    navigate(`/ct/shop`);
+  };
 
   return (
     <div className="restaurant-list">
       {restaurants.map((item) => {
         return (
-          <div className="restaurant-list-item" key={item.id} onClick={()=> onDetail(item)}>
+          <div
+            className="restaurant-list-item"
+            key={item.id}
+            onClick={() => onDetail(item)}
+          >
             <a className="tb">
               <img src={item.img}></img>
             </a>
