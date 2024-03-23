@@ -9,7 +9,6 @@ export default function KakoRedirectPage() {
   const client_secret = "mwtfEbotahN7vZpDOg1K0QhSg1ol6SH0";
   const REDIRECT_URI = `${process.env.REACT_APP_REDIRECT_URI}`;
   const navigate = useNavigate();
-
   console.log("안녕", KAKAO_CODE);
   useEffect(() => {
     getLogin(KAKAO_CODE)
