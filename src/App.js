@@ -29,7 +29,7 @@ function App() {
           <Route path="/mypage" element={<MyPage />}></Route>
           <Route path="/account" element={<Account />}></Route>
           <Route
-            path="/oauth/login/KAKAO"
+            path="/oauth/kakao"
             // path="/oauth/redirected/kakao"
             element={<KakoRedirectPage />}
           />
