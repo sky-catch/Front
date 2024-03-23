@@ -26,7 +26,7 @@ export const getLogin = async (code) => {
   try {
     const result = await apiClient.get(`/oauth/login/KAKAO?code=${code}`, {
       headers: {
-        accept: "*/*",
+        // accept: "*/*",
         // "Content-Type": "application/json",
       },
     });
