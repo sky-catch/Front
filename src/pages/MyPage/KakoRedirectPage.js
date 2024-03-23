@@ -14,10 +14,9 @@ export default function KakoRedirectPage() {
     getLogin(KAKAO_CODE)
       .then((res) => {
         const { accessToken } = res.data;
-        // console.log(accessToken.value);
+        console.log("카톡 로그인 성공");
         navigate("/");
         localStorage.clear();
-        // localStorage.setItem("id", res.data.id);
         localStorage.setItem("data", JSON.stringify(res.data));
         localStorage.setItem("token", accessToken.value);
       })
