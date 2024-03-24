@@ -5,15 +5,15 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import Drawer from "react-modern-drawer";
 import styled from "styled-components";
-import { Swiper, SwiperSlide } from "swiper/react";
-
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-// import { checkReservationTimes } from "../respository/reservation";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { checkReservationTimes } from "../respository/reservation";
 const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
   const [date, setDate] = useState(new Date());
   const [isTimes, setIsTime] = useState([]);
+  const [isRestaurantInfor, setIsRestaurantInfor] = useState([]);
   const [isPeopleNum, setIsPeopleNum] = useState(1);
   const [isVisitTime, setVisitTime] = useState("00:00");
   const [activeStartDate, setActiveStartDate] = useState(new Date());
@@ -21,40 +21,46 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
     if (isOpen) {
       setDate(new Date());
       setIsPeopleNum(1);
+      setIsRestaurantInfor(restaurant);
+      console.log("restaurant1", restaurant);
     }
   }, [isOpen]);
 
   useEffect(() => {
     if (isOpen) {
+      console.log("restaurant", isRestaurantInfor);
       const visitTimeHours = String(new Date().getHours()).padStart(2, "0");
       const visitTimeMinutes = String(new Date().getMinutes()).padStart(2, "0");
 
       const eservationTimes = {
         restaurantId: 1,
+        // restaurantId: isRestaurantInfor.restaurantId,
         numberOfPeople: isPeopleNum,
         // searchDate: "2024-03-13",
+        // visitTime: "12:00:00",
         searchDate:
           date.getFullYear() +
           "-" +
           String(date.getMonth() + 1).padStart(2, "0") +
           "-" +
           String(date.getDate()).padStart(2, "0"),
-        // visitTime: "22:00:00",
-        visitTime: isVisitTime + ":00",
-        // visitTime: visitTimeHours + ":" + visitTimeMinutes + ":" + "00",
+        visitTime: "12:00:00",
+        // visitTime: isVisitTime + ":00",
+        // visitTime: visitTimeHours + ":" + "00:" + "00",
       };
-      console.log("restaurant", restaurant);
-      // checkReservationTimes(eservationTimes)
-      //   .then((res) => {
-      //     setIsTime(res.data.timeSlots);
-      //     setVisitTime(isTimes[0].time);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+      console.log("eservationTimes", eservationTimes);
+      checkReservationTimes(eservationTimes)
+        .then((res) => {
+          console.log("res", res.data);
+          // setIsTime(res.data.timeSlots);
+          // setVisitTime(isTimes[0].time);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
     }
     // console.log("isTimes", isTimes[0].time);
-  }, [date, isPeopleNum, isVisitTime]);
+  }, [date, isPeopleNum, isVisitTime, isRestaurantInfor]);
 
   const handleDateChange = (newDate) => {
     setDate(newDate);
@@ -164,7 +170,11 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
             })}
           </Swiper>
         ) : (
-          <span>예약이 모두 마감되었습니다.</span>
+          <div className="container mt-[10px]">
+            <span className=" block h-[38px] bg-[#f4f4f4] text-center text-[#aaa] leading-[38px] text-[13px]">
+              예약이 모두 마감되었습니다.
+            </span>
+          </div>
         )}
 
         <CloseBtn type="button" open={isOpen} onClick={toggleDrawer}>
@@ -233,6 +243,7 @@ export const StyledCalendarWrapper = styled.div`
   /* 네비게이션 비활성화 됐을때 스타일 */
   .react-calendar__navigation button:disabled {
     background-color: white;
+    opacity: 0.4;
     color: ${(props) => props.theme.darkBlack};
   }
 
@@ -306,7 +317,7 @@ export const StyledCalendarWrapper = styled.div`
 export const StyledDate = styled.div`
   position: absolute;
   left: 7%;
-  top: 6%;
+  top: 22px;
   background-color: ${(props) => props.theme.primary_3};
   /* color: ${(props) => props.theme.yellow_2}; */
   width: 18%;

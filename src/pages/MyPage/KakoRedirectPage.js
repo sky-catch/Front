@@ -9,21 +9,18 @@ export default function KakoRedirectPage() {
   const client_secret = "mwtfEbotahN7vZpDOg1K0QhSg1ol6SH0";
   const REDIRECT_URI = `${process.env.REACT_APP_REDIRECT_URI}`;
   const navigate = useNavigate();
-
   useEffect(() => {
-
     getLogin(KAKAO_CODE)
       .then((res) => {
         const { accessToken } = res.data;
         navigate("/");
         localStorage.clear();
-        // localStorage.setItem("id", res.data.id);
-        // localStorage.setItem("data", JSON.stringify(res.data));
-        localStorage.setItem("token", accessToken);
-      }).catch(err=>{
-        console.log('err>>',err)
+        localStorage.setItem("data", JSON.stringify(res.data));
+        localStorage.setItem("token", accessToken.value);
       })
-  
+      .catch((err) => {
+        console.log("err>>", err);
+      });
   }, [KAKAO_CODE]);
 
   return <div> Loading...</div>;

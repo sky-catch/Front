@@ -57,7 +57,8 @@ export default function Restaurant() {
 
   useEffect(() => {
     // setRestaurantInfo(1);
-    setRestaurantInfo("ㅁㅁ오마카세");
+    setRestaurantInfo("ㅇㅇ식당");
+    // setRestaurantInfo(encodeURIComponent("ㅇㅇ식당"));
   }, []);
 
   return (

@@ -10,15 +10,14 @@ import Account from "./pages/MyPage/Account.js";
 import KakoRedirectPage from "./pages/MyPage/KakoRedirectPage.js";
 import Login from "./pages/MyPage/Login.js";
 import MyPage from "./pages/MyPage/MyPage.js";
+
 import Restaurant from "./pages/Restaurant/Restaurant.js";
 // import RestaurantWrapper from "./pages/Restaurant/RestaurantWrapper.js";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Dialog from "./pages/Dialog/Dialog.js";
 import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
-
 function App() {
-
   // localStorage.clear();
-
   return (
     <div>
       <RecoilRoot>
@@ -31,17 +30,18 @@ function App() {
           <Route path="/mypage" element={<MyPage />}></Route>
           <Route path="/account" element={<Account />}></Route>
           <Route
-            // path="/oauth/kakao"
+            // path="/oauth/login/KAKAO"
             path="/oauth/redirected/kakao"
             element={<KakoRedirectPage />}
           />
           <Route path="/emptySlotGuide" element={<EmptySlotGuide />}></Route>
           {/* 네비바 변경 페이지 */}
           {/* <Route path="/ct" element={<RestaurantWrapper />} > */}
-          <Route path="/ct/shop" element={<Restaurant />} />
+          <Route path={`/ct/shop`} element={<Restaurant />} />
           <Route path="/ct/my" element={<RestaurantSetting />} />
           {/* </Route> */}
         </Routes>
+        <ReactQueryDevtools initialIsOpen={true} />
         <Navbar />
       </RecoilRoot>
     </div>

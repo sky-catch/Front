@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 function MyPage() {
   const navigate = useNavigate();
-  const [userName, setUserName] = useState();
+  const [isUsersDTO, setIsUsersDTO] = useState([]);
   const [following, setFollowing] = useState(0);
   const [follower, setFollower] = useState(0);
 
@@ -12,10 +12,8 @@ function MyPage() {
   };
 
   useEffect(() => {
-    const userInfo = window.localStorage.getItem("data");
-    if (userInfo !== null) {
-      setUserName(JSON.parse(userInfo)["properties"]["nickname"]);
-    }
+    const userInfo = JSON.parse(localStorage.getItem("data"));
+    setIsUsersDTO(userInfo.usersDTO);
   }, []);
 
   return (
@@ -27,7 +25,7 @@ function MyPage() {
               <div className="img"></div>
             </div>
             <div className="mypage-profile-meta">
-              <h4 className="name">{userName}</h4>
+              <h4 className="name">{isUsersDTO.nickname}</h4>
               <div className="meta">
                 <dl className="flex gap-5">
                   <dt>팔로잉</dt>
