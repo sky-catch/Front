@@ -57,7 +57,7 @@ export default function Restaurant() {
 
   useEffect(() => {
     // setRestaurantInfo(1);
-    setRestaurantInfo(encodeURIComponent("ㅁㅁ오마카세"));
+    setRestaurantInfo("ㅁㅁ오마카세");
   }, []);
 
   return (
@@ -91,7 +91,7 @@ export default function Restaurant() {
         <div className="container gutter-sm pt-[24px] pb-[24px]">
           <div className="restaurant-summary">
             <span>{shopImgItem.tags}</span>
-            <h2>{shopImgItem.name}</h2>
+            <h2>{restaurant.name}</h2>
             <div>{shopImgItem.star}</div>
           </div>
           <div className="restaurant-detail">
