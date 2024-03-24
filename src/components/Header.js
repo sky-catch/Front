@@ -32,6 +32,9 @@ const Header = () => {
   const location = useLocation().pathname;
   useEffect(() => {}, [location]);
   console.log(useLocation().pathname === "/ct/shop");
+  const onClickBack = () => {
+    window.history.back();
+  }
   const headerContent = () => {
     switch (location) {
       case "/":
@@ -56,13 +59,13 @@ const Header = () => {
       case "/ct/shop":
         return (
           <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px]">
-            <div>
-              <a className="back">뒤로</a>
-              <a className="tohome">홈</a>
+            <div className="header-left items-center flex gap-[12px]">
+              <a className="back header-icon" onClick={onClickBack}>뒤로</a>
+              <a className="tohome header-icon">홈</a>
             </div>
-            <div>
-              <button className="bookmark">저장</button>
-              <a className="share">공유</a>
+            <div className="header-right flex gap-[12px]">
+              <button className="bookmark header-icon">저장</button>
+              <a className="share header-icon">공유</a>
             </div>
           </div>
         );
