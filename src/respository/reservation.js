@@ -55,12 +55,17 @@ export const getMyMain = async () => {
 //채팅방 목록 보기
 export const GetChatRoomListRes = async () => {
   try {
-    const result = await apiClient.get(`/chat/roomList`, {
-      headers: {
-        // accept: "*/*",
-        // "Content-Type": "application/json",
-      },
-    });
+    const result = await apiClient.get(
+      `/chat/roomList`,
+      {},
+      {
+        headers: {
+          // accept: "*/*",
+          "Access-Control-Allow-Origin": true,
+          // "Content-Type": "application/json",
+        },
+      }
+    );
     return result;
   } catch (err) {
     console.log("Error >>", err);

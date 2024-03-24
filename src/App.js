@@ -10,11 +10,12 @@ import Account from "./pages/MyPage/Account.js";
 import KakoRedirectPage from "./pages/MyPage/KakoRedirectPage.js";
 import Login from "./pages/MyPage/Login.js";
 import MyPage from "./pages/MyPage/MyPage.js";
+
 import Restaurant from "./pages/Restaurant/Restaurant.js";
 // import RestaurantWrapper from "./pages/Restaurant/RestaurantWrapper.js";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Dialog from "./pages/Dialog/Dialog.js";
 import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
-
 function App() {
   // localStorage.clear();
   return (
@@ -40,6 +41,7 @@ function App() {
           <Route path="/ct/my" element={<RestaurantSetting />} />
           {/* </Route> */}
         </Routes>
+        <ReactQueryDevtools initialIsOpen={true} />
         <Navbar />
       </RecoilRoot>
     </div>

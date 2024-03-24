@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import DialogComponent from "../../components/DialogComponent";
-// import { GetChatRoomListRes } from "../../respository/reservation";
 const RoomItem = [
   {
     id: 1,
@@ -89,12 +88,13 @@ function Dialog() {
   const [isItems, SetIsItems] = useState([]);
   const [messageItem, SetMessageItems] = useState([]);
   useEffect(() => {
-    // console.log("안녕");
-    // GetChatRoomListRes.then((res) => {
-    //   console.log("res", res);
-    // }).catch((err) => {
-    //   console.log(err);
-    // });
+    // GetChatRoomListRes()
+    //   .then((res) => {
+    //     console.log("res", res);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
     // SetIsItems(RoomItem);
     // if (isItems.length > 0) {
     //   let test01 = Object.groupBy(isItems, ({ read }) =>
@@ -105,6 +105,7 @@ function Dialog() {
     //   SetMessageItems(test11.concat(test22));
     // }
   }, []);
+
   useEffect(() => {
     // console.log(messageItem);
   }, [messageItem]);

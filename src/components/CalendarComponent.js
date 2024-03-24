@@ -28,13 +28,13 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
 
   useEffect(() => {
     if (isOpen) {
-      console.log("restaurant", isRestaurantInfor.restaurantId);
+      console.log("restaurant", isRestaurantInfor);
       const visitTimeHours = String(new Date().getHours()).padStart(2, "0");
       const visitTimeMinutes = String(new Date().getMinutes()).padStart(2, "0");
 
       const eservationTimes = {
-        // restaurantId: 1,
-        restaurantId: isRestaurantInfor.restaurantId,
+        restaurantId: 1,
+        // restaurantId: isRestaurantInfor.restaurantId,
         numberOfPeople: isPeopleNum,
         // searchDate: "2024-03-13",
         // visitTime: "12:00:00",
