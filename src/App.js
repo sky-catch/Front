@@ -37,7 +37,7 @@ function App() {
           <Route path="/emptySlotGuide" element={<EmptySlotGuide />}></Route>
           {/* 네비바 변경 페이지 */}
           {/* <Route path="/ct" element={<RestaurantWrapper />} > */}
-          <Route path={`/ct/shop`} element={<Restaurant />} />
+          <Route path="/ct/shop" element={<Restaurant />} />
           <Route path="/ct/my" element={<RestaurantSetting />} />
           {/* </Route> */}
         </Routes>
