@@ -51,3 +51,18 @@ export const getMyMain = async () => {
     console.log("Error >>", err);
   }
 };
+
+//채팅방 목록 보기
+export const GetChatRoomListRes = async () => {
+  try {
+    const result = await apiClient.get(`/chat/roomList`, {
+      headers: {
+        // accept: "*/*",
+        // "Content-Type": "application/json",
+      },
+    });
+    return result;
+  } catch (err) {
+    console.log("Error >>", err);
+  }
+};

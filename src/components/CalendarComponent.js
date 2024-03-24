@@ -13,6 +13,7 @@ import { checkReservationTimes } from "../respository/reservation";
 const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
   const [date, setDate] = useState(new Date());
   const [isTimes, setIsTime] = useState([]);
+  const [isRestaurantInfor, setIsRestaurantInfor] = useState([]);
   const [isPeopleNum, setIsPeopleNum] = useState(1);
   const [isVisitTime, setVisitTime] = useState("00:00");
   const [activeStartDate, setActiveStartDate] = useState(new Date());
@@ -20,43 +21,46 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
     if (isOpen) {
       setDate(new Date());
       setIsPeopleNum(1);
+      setIsRestaurantInfor(restaurant);
+      console.log("restaurant1", restaurant);
     }
   }, [isOpen]);
 
   useEffect(() => {
-    // if (isOpen) {
-    const visitTimeHours = String(new Date().getHours()).padStart(2, "0");
-    const visitTimeMinutes = String(new Date().getMinutes()).padStart(2, "0");
+    if (isOpen) {
+      console.log("restaurant", isRestaurantInfor.restaurantId);
+      const visitTimeHours = String(new Date().getHours()).padStart(2, "0");
+      const visitTimeMinutes = String(new Date().getMinutes()).padStart(2, "0");
 
-    const eservationTimes = {
-      restaurantId: 1,
-      // restaurantId: restaurant.restaurantId,
-      numberOfPeople: 1,
-      // searchDate: "2024-03-13",
-      visitTime: "12:00:00",
-      searchDate:
-        date.getFullYear() +
-        "-" +
-        String(date.getMonth() + 1).padStart(2, "0") +
-        "-" +
-        String(date.getDate()).padStart(2, "0"),
-      // visitTime: "22:00:00",
-      // visitTime: isVisitTime + ":00",
-      // visitTime: visitTimeHours + ":" + visitTimeMinutes + ":" + "00",
-    };
-    console.log("eservationTimes", eservationTimes);
-    checkReservationTimes(eservationTimes)
-      .then((res) => {
-        console.log("res", res.data.timeSlots);
-        setIsTime(res.data.timeSlots);
-        setVisitTime(isTimes[0].time);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-    // }
+      const eservationTimes = {
+        // restaurantId: 1,
+        restaurantId: isRestaurantInfor.restaurantId,
+        numberOfPeople: isPeopleNum,
+        // searchDate: "2024-03-13",
+        // visitTime: "12:00:00",
+        searchDate:
+          date.getFullYear() +
+          "-" +
+          String(date.getMonth() + 1).padStart(2, "0") +
+          "-" +
+          String(date.getDate()).padStart(2, "0"),
+        visitTime: "12:00:00",
+        // visitTime: isVisitTime + ":00",
+        // visitTime: visitTimeHours + ":" + "00:" + "00",
+      };
+      console.log("eservationTimes", eservationTimes);
+      checkReservationTimes(eservationTimes)
+        .then((res) => {
+          console.log("res", res.data);
+          // setIsTime(res.data.timeSlots);
+          // setVisitTime(isTimes[0].time);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
     // console.log("isTimes", isTimes[0].time);
-  }, [date, isPeopleNum, isVisitTime]);
+  }, [date, isPeopleNum, isVisitTime, isRestaurantInfor]);
 
   const handleDateChange = (newDate) => {
     setDate(newDate);

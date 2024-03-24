@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import DialogComponent from "../../components/DialogComponent";
+// import { GetChatRoomListRes } from "../../respository/reservation";
 const RoomItem = [
   {
     id: 1,
@@ -83,22 +84,29 @@ function sortDate1(list) {
   });
   return sorted_list;
 }
-export default function Dialog() {
+// export default function Dialog() {
+function Dialog() {
   const [isItems, SetIsItems] = useState([]);
   const [messageItem, SetMessageItems] = useState([]);
   useEffect(() => {
-    SetIsItems(RoomItem);
-    if (isItems.length > 0) {
-      let test01 = Object.groupBy(isItems, ({ read }) =>
-        read === true ? "true" : "false"
-      );
-      let test11 = sortDate1(test01["false"]);
-      let test22 = sortDate1(test01["true"]);
-      SetMessageItems(test11.concat(test22));
-    }
-  }, [isItems]);
+    // console.log("안녕");
+    // GetChatRoomListRes.then((res) => {
+    //   console.log("res", res);
+    // }).catch((err) => {
+    //   console.log(err);
+    // });
+    // SetIsItems(RoomItem);
+    // if (isItems.length > 0) {
+    //   let test01 = Object.groupBy(isItems, ({ read }) =>
+    //     read === true ? "true" : "false"
+    //   );
+    //   let test11 = sortDate1(test01["false"]);
+    //   let test22 = sortDate1(test01["true"]);
+    //   SetMessageItems(test11.concat(test22));
+    // }
+  }, []);
   useEffect(() => {
-    console.log(messageItem);
+    // console.log(messageItem);
   }, [messageItem]);
 
   return (
@@ -125,6 +133,7 @@ export default function Dialog() {
     </DialogContents>
   );
 }
+export default Dialog;
 const DialogContents = styled.div`
   padding-bottom: 48px;
   box-sizing: border-box;
