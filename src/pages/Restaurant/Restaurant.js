@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import "react-modern-drawer/dist/index.css";
+import { useLocation } from "react-router-dom";
+import styled from "styled-components";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CalendarComponent from "../../components/CalendarComponent";
 import { getRestaurant } from "../../respository/restaurant";
-import styled from "styled-components";
 
 /**
  * 식당
@@ -35,14 +35,15 @@ export default function Restaurant() {
   const closeDrawerBottom = () => setOpenBottom(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isSelect, setIsSelect] = useState(true);
-  const [isReserve, setIsReserve] = useState(true); /* 탭 true : 예약, false : 웨이팅 */
+  const [isReserve, setIsReserve] =
+    useState(true); /* 탭 true : 예약, false : 웨이팅 */
   const { state } = useLocation();
 
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState);
   };
 
-  const onReserveCalendar =() => {
+  const onReserveCalendar = () => {
     setIsOpen((prevState) => !prevState);
   };
 
@@ -100,30 +101,32 @@ export default function Restaurant() {
         </div>
       </Section>
       {/* 2. 식당 이름 및 메인 정보 */}
-      { restaurant && (<Section>
-        <div className="container gutter-sm pt-[24px] pb-[24px]">
-          <div className="restaurant-summary">
-            <span>{restaurant.category}</span>
-            <h2>{restaurant.name}</h2>
-            <div>
-              <span></span>
-              <span>4.5</span>
-              <span></span>
+      {restaurant && (
+        <Section>
+          <div className="container gutter-sm pt-[24px] pb-[24px]">
+            <div className="restaurant-summary">
+              <span>{restaurant.category}</span>
+              <h2>{restaurant.name}</h2>
+              <div>
+                <span></span>
+                <span>4.5</span>
+                <span></span>
+              </div>
+            </div>
+            <div className="restaurant-detail">
+              <p>{restaurant.content}</p>
+              <div>
+                <span>점심 저녁 동일가 1-3만원</span>
+              </div>
+            </div>
+            <div className="menu">
+              <a className="call">전화</a>
+              <a className="location">위치</a>
+              <a className="building">매장정보</a>
             </div>
           </div>
-          <div className="restaurant-detail">
-            <p>{restaurant.content}</p>
-            <div>
-              <span>점심 저녁 동일가 1-3만원</span>
-            </div>
-          </div>
-          <div className="menu">
-            <a className="call">전화</a>
-            <a className="location">위치</a>
-            <a className="building">매장정보</a>
-          </div>
-        </div>
-      </Section>)}
+        </Section>
+      )}
       <Seperator></Seperator>
       {/* 3. 예약 일시 */}
       <div>
@@ -137,7 +140,9 @@ export default function Restaurant() {
               isSelect ? " active" : ""
             }`}
             onClick={(e) => menuClick(e, 0)}
-          > 예약
+          >
+            {" "}
+            예약
           </li>
           <li
             className={`w-[50%] leading-[48px] text-center ${
@@ -146,37 +151,44 @@ export default function Restaurant() {
             onClick={(e) => {
               menuClick(e, 1);
             }}
-          > 웨이팅
+          >
+            {" "}
+            웨이팅
           </li>
         </ul>
-        { isReserve ? ( <ReserveSection>
-          <div className="container gutter-sm">
-            <div className="section-header">
-              <h3>예약 일시</h3>
+        {isReserve ? (
+          <ReserveSection>
+            <div className="container gutter-sm">
+              <div className="section-header">
+                <h3>예약 일시</h3>
+              </div>
+              <div className="section-body">
+                <div className="mb-[8px]" onClick={openDrawerBottom}>
+                  <a
+                    href="#"
+                    className="btn btn-lg btn-outline btn-cta full-width arrowdown"
+                  >
+                    <span>
+                      <span className="label calendar">오늘 (월) / 2 명</span>
+                    </span>
+                  </a>
+                </div>
+                <div className="section-time-slot">
+                  <div className="time-slot-unavailable-box">
+                    <p className="time-slot-unavailable">예약 오픈전입니다.</p>
+                  </div>
+                </div>
+                <div className="btn-centered">
+                  <a className="btn btn-rounded btn-outline-red">
+                    <span className="label arrow">예약가능 날짜 찾기</span>
+                  </a>
+                </div>
+              </div>
             </div>
-            <div className="section-body">
-              <div className="mb-[8px]" onClick={openDrawerBottom}>
-                <a
-                  href="#"
-                  className="btn btn-lg btn-outline btn-cta full-width arrowdown"
-                >
-                  <span>
-                    <span className="label calendar">오늘 (월) / 2 명</span>
-                  </span>
-                </a>
-              </div>
-              <div className="section-time-slot">
-                <div className="time-slot-unavailable-box"><p className="time-slot-unavailable">예약 오픈전입니다.</p></div>
-              </div>
-              <div className="btn-centered">
-                <a className="btn btn-rounded btn-outline-red"><span className="label arrow">예약가능 날짜 찾기</span></a>
-              </div>
-            </div>
-          </div>
-        </ReserveSection> ) : 
-        ( <WaitingSection>
-
-        </WaitingSection> )}
+          </ReserveSection>
+        ) : (
+          <WaitingSection></WaitingSection>
+        )}
       </div>
       <Seperator></Seperator>
       {/* 4. 탭 */}
@@ -190,11 +202,13 @@ export default function Restaurant() {
       {/* 12. 이 주변 예약이 많은 레스토랑 */}
       {/* 예약 슬라이드 페이지 */}
       <BottomBtn>
-          <div className="savebtn">
-            <button>저장</button>
-            <span>666</span>
-          </div>
-          <button className="reservebtn" onClick={onReserveCalendar}><div>예약하기</div></button>
+        <div className="savebtn">
+          <button>저장</button>
+          <span>666</span>
+        </div>
+        <button className="reservebtn" onClick={onReserveCalendar}>
+          <div>예약하기</div>
+        </button>
       </BottomBtn>
       <CalendarComponent
         isOpen={isOpen}
@@ -205,8 +219,8 @@ export default function Restaurant() {
   );
 }
 const Section = styled.section`
-  position : relative;
-  display : block;
+  position: relative;
+  display: block;
   .restaurant-img-detail {
     position: absolute;
     bottom: 12px;
@@ -223,8 +237,8 @@ const Section = styled.section`
     align-items: center;
     flex-shrink: 0;
     border-radius: 16px;
-    border: 0.5px solid var(--gray-0, #FFF);
-    background: rgba(0, 0, 0, .8);
+    border: 0.5px solid var(--gray-0, #fff);
+    background: rgba(0, 0, 0, 0.8);
     color: #fff;
     font-size: 10px;
     font-weight: 700;
@@ -239,8 +253,8 @@ const Section = styled.section`
     align-items: center;
     gap: 2px;
     border-radius: 16px;
-    border: 0.5px solid var(--gray-0, #FFF);
-    background: rgba(0, 0, 0, .8);
+    border: 0.5px solid var(--gray-0, #fff);
+    background: rgba(0, 0, 0, 0.8);
     text-align: center;
     color: #fff;
     font-size: 10px;
@@ -248,15 +262,15 @@ const Section = styled.section`
     line-height: 150%;
   }
   .container .restaurant-summary > span {
-    color : #666666;
-    font-weight : 400;
-    font-size : 14px;
-    line-height : 150%;
+    color: #666666;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
   }
   .container .restaurant-summary > h2 {
-    font-weight : 700;
-    font-size : 20px;
-    line-height : 150%;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 150%;
   }
   .container .menu {
     display: flex;
@@ -275,21 +289,24 @@ const Section = styled.section`
     font-weight: 400;
   }
   .container .menu a:before {
-    content : "";
-    display : block;
-    width : 16px;
-    height : 16px;
-    position : relative;
-    margin-right : 4px;
+    content: "";
+    display: block;
+    width: 16px;
+    height: 16px;
+    position: relative;
+    margin-right: 4px;
   }
   .container .menu a:nth-child(1):before {
-    background : url("https://app.catchtable.co.kr/public/img/icon/Outlined/call.svg") 0% 50% no-repeat;
+    background: url("https://app.catchtable.co.kr/public/img/icon/Outlined/call.svg")
+      0% 50% no-repeat;
   }
   .container .menu a:nth-child(2):before {
-    background : url("https://app.catchtable.co.kr/public/img/icon/Outlined/location.svg") 0% 50% no-repeat;
+    background: url("https://app.catchtable.co.kr/public/img/icon/Outlined/location.svg")
+      0% 50% no-repeat;
   }
   .container .menu a:nth-child(3):before {
-    background : url("https://app.catchtable.co.kr/public/img/icon/Outlined/building.svg") 0% 50% no-repeat;
+    background: url("https://app.catchtable.co.kr/public/img/icon/Outlined/building.svg")
+      0% 50% no-repeat;
   }
   .container .menu a:not(:last-child) {
     border-right: 1px solid #d5d5d5;
@@ -297,19 +314,19 @@ const Section = styled.section`
   }
 `;
 const Seperator = styled.hr`
-  height : 9px;
-  background : #ececec !important;
+  height: 9px;
+  background: #ececec !important;
 `;
 const Tab = styled.div`
-  display : flex;
+  display: flex;
   button {
-    color : #666666;
+    color: #666666;
     border-bottom: 2px solid #f4f4f4;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 50px 
+    height: 50px;
   }
 `;
 const BottomBtn = styled.aside`
@@ -327,7 +344,7 @@ const BottomBtn = styled.aside`
   padding: 10px 16px;
   box-sizing: border-box;
   height: 72px;
-  background-color : #ffffff;
+  background-color: #ffffff;
   border-top: 1px solid #e5e5e5;
   .savebtn {
     display: flex;
@@ -341,7 +358,8 @@ const BottomBtn = styled.aside`
     width: 24px;
     height: 24px;
     text-indent: -999em;
-    background : url("https://app.catchtable.co.kr/public/img/icons/header-mark.svg")50% 50% no-repeat;
+    background: url("https://app.catchtable.co.kr/public/img/icons/header-mark.svg")
+      50% 50% no-repeat;
   }
   .savebtn > span {
     color: #666;
@@ -362,16 +380,16 @@ const BottomBtn = styled.aside`
     border-radius: 4px;
     box-sizing: border-box;
     background-color: #ff3d00;
-    color : #ffffff;
+    color: #ffffff;
   }
 `;
 const ReserveSection = styled.section`
-  padding : 24px 0 30px 0;
+  padding: 24px 0 30px 0;
   .section-header {
-    padding-bottom : 12px;
-    margin-bottom : 0px;
+    padding-bottom: 12px;
+    margin-bottom: 0px;
   }
-  .section-header h3{
+  .section-header h3 {
     font-weight: 700;
     font-size: 20px;
     align-items: center;
@@ -380,9 +398,6 @@ const ReserveSection = styled.section`
     min-width: 1px;
   }
   .section-body {
-
   }
 `;
-const WaitingSection = styled.section`
-`;
-
+const WaitingSection = styled.section``;

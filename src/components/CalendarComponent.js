@@ -4,63 +4,53 @@ import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import Drawer from "react-modern-drawer";
+// import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import styled from "styled-components";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { checkReservationTimes } from "../respository/reservation";
+import { ReservationTimes } from "../respository/reservation";
+// import { checkReservationTimes } from "../respository/reservation";
 const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
   const [date, setDate] = useState(new Date());
   const [isTimes, setIsTime] = useState([]);
+  const [restaurantId, setIsRestaurantId] = useState("");
+  const queryClient = useQueryClient();
+  const { mutate: checkReservationTimes } = ReservationTimes();
   const [isRestaurantInfor, setIsRestaurantInfor] = useState([]);
-  const [isPeopleNum, setIsPeopleNum] = useState(1);
+  const [numberOfPeople, setIsPeopleNum] = useState(1);
   const [isVisitTime, setVisitTime] = useState("00:00");
   const [activeStartDate, setActiveStartDate] = useState(new Date());
   useEffect(() => {
     if (isOpen) {
       setDate(new Date());
       setIsPeopleNum(1);
+      setIsRestaurantId(restaurant.restaurantId);
       setIsRestaurantInfor(restaurant);
-      console.log("restaurant1", restaurant);
     }
   }, [isOpen]);
 
   useEffect(() => {
     if (isOpen) {
-      console.log("restaurant", isRestaurantInfor);
       const visitTimeHours = String(new Date().getHours()).padStart(2, "0");
       const visitTimeMinutes = String(new Date().getMinutes()).padStart(2, "0");
+      const searchDate =
+        date.getFullYear() +
+        "-" +
+        String(date.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(date.getDate()).padStart(2, "0");
 
-      const eservationTimes = {
-        restaurantId: 1,
-        // restaurantId: isRestaurantInfor.restaurantId,
-        numberOfPeople: isPeopleNum,
-        // searchDate: "2024-03-13",
-        // visitTime: "12:00:00",
-        searchDate:
-          date.getFullYear() +
-          "-" +
-          String(date.getMonth() + 1).padStart(2, "0") +
-          "-" +
-          String(date.getDate()).padStart(2, "0"),
-        visitTime: "12:00:00",
-        // visitTime: isVisitTime + ":00",
-        // visitTime: visitTimeHours + ":" + "00:" + "00",
-      };
-      console.log("eservationTimes", eservationTimes);
-      checkReservationTimes(eservationTimes)
-        .then((res) => {
-          console.log("res", res.data);
-          // setIsTime(res.data.timeSlots);
-          // setVisitTime(isTimes[0].time);
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
+      const visitTime =
+        visitTimeHours + ":" + (visitTimeMinutes - 5) + ":" + "00";
+
+      const testObj = { restaurantId, numberOfPeople, searchDate, visitTime };
+
+      checkReservationTimes(testObj);
     }
-    // console.log("isTimes", isTimes[0].time);
-  }, [date, isPeopleNum, isVisitTime, isRestaurantInfor]);
+  }, [date, numberOfPeople, isVisitTime, isRestaurantInfor]);
 
   const handleDateChange = (newDate) => {
     setDate(newDate);
@@ -80,7 +70,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
               setIsPeopleNum(index);
             }}
             className={` block size-[48px] rounded-[50%] text-center leading-[48px] font-light text-[14px] ${
-              index === isPeopleNum
+              index === numberOfPeople
                 ? `bg-[#ff3d00] text-[#fff]`
                 : `text-[#aaa] border-[1px] border-[#aaa]`
             }`}
