@@ -35,9 +35,9 @@ export default function Restaurant() {
   const closeDrawerBottom = () => setOpenBottom(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isSelect, setIsSelect] = useState(true);
-  const [isReserve, setIsReserve] =
-    useState(true); /* 탭 true : 예약, false : 웨이팅 */
+  const [isReserve, setIsReserve] = useState(true); /* 탭 true : 예약, false : 웨이팅 */
   const { state } = useLocation();
+  const [isContent, setIsContent] = useState('home');
 
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState);
@@ -56,6 +56,18 @@ export default function Restaurant() {
       setIsReserve(false);
     }
   };
+
+  const contentClick = (e, index) => {
+    if(index === 0) {
+      setIsContent('home')
+    } else if (index === 1){
+      setIsContent('menu')
+    } else if (index === 2){
+      setIsContent('image')
+    } else if (index === 3){
+      setIsContent('review')
+    }
+  }
 
   const setRestaurantInfo = (name) => {
     getRestaurant(name)
@@ -130,10 +142,6 @@ export default function Restaurant() {
       <Seperator></Seperator>
       {/* 3. 예약 일시 */}
       <div>
-        {/* <Tab>
-          <button onClick={}>예약</button>
-          <button>웨이팅</button>
-        </Tab> */}
         <ul className="tab-menu sticky top-[47px]  bg-white">
           <li
             className={`w-[50%] leading-[48px] text-center ${
@@ -192,6 +200,30 @@ export default function Restaurant() {
       </div>
       <Seperator></Seperator>
       {/* 4. 탭 */}
+      <div>
+        <ul className="tab-menu sticky top-[47px]  bg-white">
+          <li className={`w-[50%] leading-[48px] text-center ${
+              isContent == "home" ? " active" : ""
+            }`}
+            onClick={(e) => contentClick(e, 0)}
+          > 홈 </li>
+          <li className={`w-[50%] leading-[48px] text-center ${
+              isContent == "menu" ? "active" : ""
+            }`}
+            onClick={(e) => contentClick(e, 1)}
+          > 메뉴 </li>
+          <li className={`w-[50%] leading-[48px] text-center ${
+              isContent == "image" ? "active" : ""
+            }`}
+            onClick={(e) => contentClick(e, 2)}
+          > 사진 </li>
+          <li className={`w-[50%] leading-[48px] text-center ${
+              isContent == "review" ? "active" : ""
+            }`}
+            onClick={(e) => contentClick(e, 3)}
+          > 리뷰 </li>
+        </ul>
+      </div>
       {/* 5. 편의시설 */}
       {/* 6. 메뉴 */}
       {/* 7. 사진 */}
