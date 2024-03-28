@@ -38,9 +38,9 @@ export const ReservationTimes = () => {
     onSuccess: (data) => {
       console.log("createPost success", data);
     },
-    onError: () => {
+    onError: (error) => {
       // mutate가 실패하면, 함수를 실행합니다.
-      console.log("createPost error");
+      console.log("createPost error", error);
     },
   });
 };

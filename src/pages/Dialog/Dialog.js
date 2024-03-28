@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import DialogComponent from "../../components/DialogComponent";
 import { GetChatRoomListRes } from "../../respository/reservation";
 const RoomItem = [
@@ -88,6 +89,8 @@ function sortDate1(list) {
 function Dialog() {
   const [isItems, SetIsItems] = useState([]);
   const [messageItem, SetMessageItems] = useState([]);
+
+  console.log(window.location.host);
   useEffect(() => {
     GetChatRoomListRes()
       .then((res) => {
