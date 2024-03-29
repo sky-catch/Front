@@ -90,3 +90,16 @@ export const GetChatRoomListRes = async () => {
     console.log("Error >>", err);
   }
 };
+
+//채팅방 보기
+export const GetChatRoom = async (chatRoom) => {
+  // console.log(chatRoom);
+  try {
+    const result = await apiClient.get(`/chat/${chatRoom.chatRoomId}`, {
+      headers: {},
+    });
+    return result;
+  } catch (err) {
+    console.log("Error >>", err);
+  }
+};

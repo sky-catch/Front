@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import DialogComponent from "../../components/DialogComponent";
-import { GetChatRoomListRes } from "../../respository/reservation";
 const RoomItem = [
   {
     id: 1,
@@ -85,20 +84,19 @@ function sortDate1(list) {
   });
   return sorted_list;
 }
-// export default function Dialog() {
+
 function Dialog() {
   const [isItems, SetIsItems] = useState([]);
   const [messageItem, SetMessageItems] = useState([]);
 
-  console.log(window.location.host);
   useEffect(() => {
-    GetChatRoomListRes()
-      .then((res) => {
-        console.log("res", res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // GetChatRoomListRes()
+    //   .then((res) => {
+    //     console.log("res", res);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
     // SetIsItems(RoomItem);
     // if (isItems.length > 0) {
     //   let test01 = Object.groupBy(isItems, ({ read }) =>
@@ -127,8 +125,8 @@ function Dialog() {
       </div>
       <div className="mt-[5px] container">
         <div className="">
-          {messageItem &&
-            messageItem.map((item, index) => {
+          {RoomItem &&
+            RoomItem.map((item, index) => {
               return (
                 <DialogComponent key={item.id} item={item}></DialogComponent>
               );

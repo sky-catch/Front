@@ -1,11 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 const DialogComponent = ({ item }) => {
+  const navigate = useNavigate();
   return (
     <div
       className={`px-[10px] py-[10px] flex gap-x-[12px] cursor-pointer relative ${
         item.read === false ? "read-icon" : ""
       }`}
+      onClick={() => {
+        navigate("/chatroom");
+      }}
     >
       <div className=" size-[70px] rounded-[12px] overflow-hidden">
         <img className="" src={item.restaurantImg} />
