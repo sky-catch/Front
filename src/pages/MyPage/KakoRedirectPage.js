@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getLogin } from "../../respository/reservation";
+import { getLogin } from "../../respository/userInfo.js";
 export default function KakoRedirectPage() {
   const PARAMS = new URL(document.location).searchParams;
   const KAKAO_CODE = PARAMS.get("code");
