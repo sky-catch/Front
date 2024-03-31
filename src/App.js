@@ -11,11 +11,12 @@ import Account from "./pages/MyPage/Account.js";
 import KakoRedirectPage from "./pages/MyPage/KakoRedirectPage.js";
 import Login from "./pages/MyPage/Login.js";
 import MyPage from "./pages/MyPage/MyPage.js";
+import MyProfileInfo from "./pages/MyPage/MyProfileInfo.js";
 import Restaurant from "./pages/Restaurant/Restaurant.js";
-// import socket from "./server.js";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Dialog from "./pages/Dialog/Dialog.js";
 import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
+import RestaurantInfo from "./pages/MyPage/RestaurantInfo.js";
 function App() {
   // 오류 발생
 
@@ -32,9 +33,12 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path={`/mydining/my`} element={<MyDining />} />
           <Route path="/dialog" element={<Dialog />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/mypage" element={<MyPage />}></Route>
           <Route path="/account" element={<Account />}></Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="my" element={<MyPage />} />
+          <Route path="my/myProfileInfo" element={<MyProfileInfo/>}/>
+          <Route path="my/myshop" element={<RestaurantSetting />} />
+          <Route path="my/myshop/edit" element={<RestaurantInfo />} />
           <Route
             // path="/oauth/login/KAKAO"
             path="/oauth/redirected/kakao"
@@ -44,9 +48,8 @@ function App() {
           {/* 네비바 변경 페이지 */}
           {/* <Route path="/ct" element={<RestaurantWrapper />} > */}
           <Route path="/ct/shop" element={<Restaurant />} />
-          <Route path="/ct/my" element={<RestaurantSetting />} />
+          {/* <Route path="/ct/my"  /> */}
           <Route path="/chatroom" element={<ChatRoom />} />
-          {/* </Route> */}
         </Routes>
         <ReactQueryDevtools initialIsOpen={true} />
         <Navbar />

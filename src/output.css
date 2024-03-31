@@ -662,6 +662,10 @@ video {
   margin-bottom: 8px;
 }
 
+.mb-\[6px\] {
+  margin-bottom: 6px;
+}
+
 .mb-\[10px\] {
   margin-bottom: 10px;
 }
@@ -672,6 +676,10 @@ video {
 
 .mb-\[20px\] {
   margin-bottom: 20px;
+}
+
+.mb-\[24px\] {
+  margin-bottom: 24px;
 }
 
 .mb-\[30px\] {
@@ -1214,6 +1222,15 @@ video {
   padding-top: 24px !important;
 }
 
+.pt-\[30px\] {
+  padding-top: 30px !important;
+}
+
+/* font */
+.color-gray {
+  color: #666 !important;
+}
+
 .text-center {
   text-align: center;
 }
@@ -1495,6 +1512,17 @@ header {
 }
 
 /* header */
+.header-back-black {
+  background: url("/src/assets/icons/back.svg") 50% 50% no-repeat;
+  width: 32px;
+  height: 32px;
+  display: block;
+  text-indent: -999em;
+  overflow: hidden;
+  margin-right: 6px;
+  flex: none;
+}
+
 .header-icon {
   pointer : cursor;
   width: 24px;
@@ -2147,4 +2175,37 @@ header {
   height: 38px;
   box-sizing: border-box;
   background-color: #f4f4f4;
+}
+
+/* form */
+.form-input {
+  background: #f9f9f9;
+  font-size: 14px;
+  border-radius: 8px;
+  display: block;
+  width: 100%;
+  padding: 16px;
+  line-height: 21px;
+}
+
+.sticky-bottom-btns {
+  position : fixed;
+  bottom : 0;
+  z-index : 99;
+  display : flex;
+  width : 100vw;
+  max-width : 480px;
+  padding : 20px;
+  background : rgba(255, 255, 255);
+}
+.sticky-bottom-btns .btn {
+  display : block;
+  width : 100%;
+  flex : 1;
+}
+
+.btn-lg.btn-red {
+  background: #ff3d00;
+  border-color: #ff3d00;
+  color: #fff;
 }

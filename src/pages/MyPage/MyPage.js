@@ -1,18 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useRecoilState } from "recoil";
+import { LoginState } from "../../States/LoginState";
+import { getRestaurant } from "../../respository/restaurant";
+
+/**
+ * 마이페이지
+ * @author jimin 
+ */
+
 function MyPage() {
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState([]);
+  const [user, setUser] = useRecoilState(LoginState);
   const [following, setFollowing] = useState(0);
   const [follower, setFollower] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
   const [isSave, setIsSave] = useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
 
-  const createRestaurant = () => {
-    navigate("/ct/my");
+  /* Function : 프로필 수정 */
+  const updateUserInfo = () => {
+    navigate("/my/myProfileInfo");
   };
 
+  /* Function : 식당 정보 관리 */
+  const createRestaurant = () => {
+    navigate("/my/myshop");
+  };
+
+  /* Tap 선택 */
   const menuClick = (e, index) => {
     if (index === 0) {
       setIsSelect(true);
@@ -23,12 +39,27 @@ function MyPage() {
     }
   };
 
-  useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("data"));
-    setUserInfo(userInfo.usersDTO);
+  /* Function : 식당 정보 */
+  const getUserShop = () => {
+    getRestaurant(user.id)
+      .then((res) => {
+        // console.log(res);
+      })
+  }
 
-    // 유저의 저장 레스토랑 정보 GET
+  useEffect(() => {
+    const loginUser = JSON.parse(localStorage.getItem("data"));
     
+    // 유저 정보 세팅
+    setUser((prevUser) => ({
+      ...prevUser,
+      ["id"] : loginUser.id, 
+      ["nickname"] : loginUser.properties.nickname, 
+    }));
+    console.log(user);
+    
+    // 유저의 저장 레스토랑 정보 GET
+    getUserShop();
   }, []);
 
   return (
@@ -41,7 +72,7 @@ function MyPage() {
               <div className="img"></div>
             </div>
             <div className="mypage-profile-meta">
-              <h4 className="name">jimin</h4>
+              <h4 className="name">{user.nickname}</h4>
               <div className="meta">
                 <dl className="flex gap-5">
                   <dt>팔로잉</dt>
@@ -57,12 +88,11 @@ function MyPage() {
             </div>
           </div>
           <div className="mypage-profile-btn flex ">
-            <button className="btn btn-md btn-outline btn-rounded mt-18">
+            <button className="btn btn-md btn-outline btn-rounded mt-18" onClick={updateUserInfo}>
               <span className="label">프로필 수정</span>
             </button>
             <button
-              className="btn btn-md btn-outline btn-rounded mt-18"
-              onClick={createRestaurant}
+              className="btn btn-md btn-outline btn-rounded mt-18" onClick={createRestaurant}
             >
               <span className="label">사장님 등록</span>
             </button>
