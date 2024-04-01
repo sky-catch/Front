@@ -49,14 +49,17 @@ function MyPage() {
 
   useEffect(() => {
     const loginUser = JSON.parse(localStorage.getItem("data"));
-    
-    // 유저 정보 세팅
-    setUser((prevUser) => ({
-      ...prevUser,
-      ["id"] : loginUser.id, 
-      ["nickname"] : loginUser.properties.nickname, 
-    }));
-    console.log(user);
+    console.log(loginUser.userDTO);
+    if (loginUser) {
+
+      // 유저 정보 세팅
+      // setUser((prevUser) => ({
+      //   ...prevUser,
+      //   ["id"] : loginUser.id, 
+      //   ["nickname"] : loginUser.properties.nickname, 
+      // }));
+      // console.log(user);
+    }
     
     // 유저의 저장 레스토랑 정보 GET
     getUserShop();

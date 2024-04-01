@@ -1,13 +1,17 @@
 import styled from "styled-components"
 import Select from "react-select";
 import { createRestaurant, getRestaurant } from "../../respository/restaurant";
+import { getMyRestaurant } from "../../respository/userInfo";
 import { useEffect, useState } from "react";
+import { LoginState } from "../../States/LoginState";
+import { useRecoilState } from "recoil";
 
 /**
  * 식당 정보 입력 화면
  * @author jimin 
  */
 export default function RestaurantInfo() {
+    const [user, setUser] = useRecoilState(LoginState);
     const [ selectedDays, setSelectedDays ] = useState([]);
     const [ selectedFacilities, setSelectedFacilities ] = useState([]);
     const daysOptions = [
@@ -103,6 +107,18 @@ export default function RestaurantInfo() {
     /* 식당이 있으면 조회 */
     useEffect(()=> {
         getRestaurant()
+
+        //내 식당 정보 조회 및 세팅
+        getMyRestaurant().then((res)=> {
+            setUser((prevUser) => ({
+                  ...prevUser,
+                  ["shop"] : {
+                    "name" : res.data.name,
+                    "category" : res.data.category,
+                    "content" : res.data.content,
+                  }
+                }));
+        });
     },[]);
 
     return(
@@ -111,15 +127,15 @@ export default function RestaurantInfo() {
                 <div className="container gutter-sm">
                     <div className="form-block mb-[20px]">
                         <div className="mb-[6px]"><label className="color-gray text-[12px]">식당 이름</label></div>
-                        <input type="text" className="form-input" id="name" placeholder="식당이름을 입력해주세요."/>
+                        <input type="text" className="form-input" id="name" placeholder="식당이름을 입력해주세요." value={user.shop.name}/>
                     </div>
                     <div className="form-block mb-[20px]">
                         <div className="mb-[6px]"><label className="color-gray text-[12px]">카테고리</label></div>
-                        <input type="text" className="form-input" id="category" placeholder="카테고리를 입력해주세요."/>
+                        <input type="text" className="form-input" id="category" placeholder="카테고리를 입력해주세요." value={user.shop.category}/>
                     </div>
                     <div className="form-block mb-[20px]">
                         <div className="mb-[6px]"><label className="color-gray text-[12px]">식당 설명</label></div>
-                        <textarea className="form-input" id="content" placeholder="식당 설명을 입력해주세요." rows='3' maxLength='35'/>
+                        <textarea className="form-input" id="content" placeholder="식당 설명을 입력해주세요." rows='3' maxLength='35' value={user.shop.content}/>
                     </div>
                     <div className="form-block mb-[20px]">
                         <div className="mb-[6px]"><label className="color-gray text-[12px]">식당 전화</label></div>
