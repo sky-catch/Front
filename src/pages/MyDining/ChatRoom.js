@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { GetChatRoomListRes } from "../../respository/reservation";
+import React, { useEffect } from "react";
 function showMessage(message) {
   // let messageElem = document.createElement("div");
   // messageElem.textContent = message;
@@ -7,20 +6,6 @@ function showMessage(message) {
   // document.getElementById("messages").prepend(messageElem);
 }
 const ChatRoom = () => {
-  const [ws, setWS] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const protocols = {
-    chatRoomId: 2,
-    Authorization:
-      "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxMTYzNDY4NiwiZXhwIjoxNzExNzIxMDg2fQ.fNg3gJxzEADL7aBZbuR8CIqnaUI0XZXp4ndwuzpcKoh0XUL4wuLTO7fkNXLozVA3qscGuRh0xA9eSiiPAVvayw",
-    memberChat: true,
-  };
-
-  const protocols2 = [
-    "6",
-    "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxMTYzNDY4NiwiZXhwIjoxNzExNzIxMDg2fQ.fNg3gJxzEADL7aBZbuR8CIqnaUI0XZXp4ndwuzpcKoh0XUL4wuLTO7fkNXLozVA3qscGuRh0xA9eSiiPAVvayw",
-    "true",
-  ];
   // 웹 소켓 연결 이벤트
 
   useEffect(() => {
@@ -50,13 +35,13 @@ const ChatRoom = () => {
 
     socket.onclose = (event) => console.log(`Closed ${event.code}`);
 
-    GetChatRoomListRes()
-      .then((res) => {
-        console.log("res", res);
-      })
-      .catch(() => {
-        console.log();
-      });
+    // GetChatRoomListRes()
+    //   .then((res) => {
+    //     console.log("res", res);
+    //   })
+    //   .catch(() => {
+    //     console.log();
+    //   });
   }, []);
 
   return (
