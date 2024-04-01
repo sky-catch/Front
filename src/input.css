@@ -401,9 +401,10 @@ header {
   display: grid;
   grid-template-columns: repeat(2, 2fr);
   gap: 2px;
+  max-height: 440px;
 }
 .recommend-box > div {
-  height: calc((100vw - 40px) / 2);
+  height: 220px;
   position: relative;
   overflow: hidden;
 }
@@ -432,7 +433,12 @@ header {
 }
 .recommend-box > div:last-child span {
   backdrop-filter: brightness(50%);
-  position: unset;
+  /* position: unset; */
+  bottom: unset;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .score {
   position: relative;
@@ -518,9 +524,16 @@ header {
 }
 
 .text-num {
-  line-height: calc((100vw - 40px) / 2);
+  line-height: 220px;
 }
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:enabled:focus {
   background-color: transparent !important;
+}
+.swiper-pagination-bullet {
+  background: #fff;
+  opacity: 0.5;
+}
+.swiper-pagination-bullet-active {
+  opacity: 1;
 }

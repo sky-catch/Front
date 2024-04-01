@@ -5,6 +5,7 @@ import Header from "./components/Header.js";
 import Navbar from "./components/Navbar.js";
 import ChatRoom from "./pages/Dialog/ChatRoom.js";
 import Home from "./pages/Home/Home.js";
+import ChatRoom from "./pages/MyDining/ChatRoom.js";
 import EmptySlotGuide from "./pages/MyDining/EmptySlotGuide.js";
 import MyDining from "./pages/MyDining/MyDining.js";
 import Account from "./pages/MyPage/Account.js";
@@ -18,13 +19,6 @@ import Dialog from "./pages/Dialog/Dialog.js";
 import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
 import RestaurantInfo from "./pages/MyPage/RestaurantInfo.js";
 function App() {
-  // 오류 발생
-
-  // function sendMessage() {
-  //   const message = document.getElementById("message").value;
-  //   webSocket.send(message);
-  // }
-
   return (
     <div>
       <RecoilRoot>
@@ -48,7 +42,8 @@ function App() {
           {/* 네비바 변경 페이지 */}
           {/* <Route path="/ct" element={<RestaurantWrapper />} > */}
           <Route path="/ct/shop" element={<Restaurant />} />
-          {/* <Route path="/ct/my"  /> */}
+          <Route path="/ct/my" element={<RestaurantSetting />} />
+          <Route path="/chatroom" element={<ChatRoom />} />
           <Route path="/chatroom" element={<ChatRoom />} />
         </Routes>
         <ReactQueryDevtools initialIsOpen={true} />
