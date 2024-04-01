@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const HeaderItem = [
   {
@@ -26,15 +26,22 @@ const HeaderItem = [
     id: 5,
     name: "account",
     to: "/account",
-  },
+  }
 ];
 const Header = () => {
   const location = useLocation().pathname;
+  const navigate = new useNavigate();
   useEffect(() => {}, [location]);
   console.log(useLocation().pathname === "/ct/shop");
   const onClickBack = () => {
     window.history.back();
   }
+
+  const onEditRestaurant =() => {
+    // navigate("/");
+    navigate("/my/myshop/edit");
+  }
+
   const headerContent = () => {
     switch (location) {
       case "/":
@@ -93,6 +100,50 @@ const Header = () => {
             </h1>
           </div>
         );
+      case "/my" :
+        return (
+          <div className="header-wrapper flex px-[20px]">
+            <div className="header-left flex items-center">
+              <h1 className="text-xl h-[47px] leading-[47px] font-bold">
+                마이페이지
+              </h1>
+            </div>
+            <div className="header-right flex items-center ml-auto">
+              <button type="button" className="btn-icon alarm"></button>
+              <button type="button" className="btn-icon setting"></button>
+            </div>
+          </div>
+        );
+      case "/my/myProfileInfo" :
+        return (
+          <div className="header-wrapper flex px-[20px]">
+            <div className="header-left items-center flex gap-[12px]">
+              <a className="header-back-black" onClick={onClickBack}>뒤로</a>
+              <a className="text-xl h-[47px] leading-[47px] font-bold">프로필 수정</a>
+          </div>
+          </div>
+          );
+      case "/my/myshop" :
+          return (
+            <div className="header-wrapper flex px-[20px]">
+              <div className="header-left items-center flex gap-[12px]">
+                <a className="header-back-black" onClick={onClickBack}>뒤로</a>
+                <a className="text-xl h-[47px] leading-[47px] font-bold">내식당 관리</a>
+            </div>
+              <div className="header-right flex items-center ml-auto">
+                <button type="button" className="btn-icon setting" onClick={onEditRestaurant}></button>
+              </div>
+            </div>
+          );
+      case "/my/myshop/edit" :
+        return (
+          <div className="header-wrapper flex px-[20px]">
+            <div className="header-left items-center flex gap-[12px]">
+              <a className="header-back-black" onClick={onClickBack}>뒤로</a>
+              <a className="text-xl h-[47px] leading-[47px] font-bold">식당 정보</a>
+          </div>
+          </div>
+          );
       case "/account":
         return localStorage.getItem("token") !== null ? (
           <div className="header-wrapper flex px-[20px]">
