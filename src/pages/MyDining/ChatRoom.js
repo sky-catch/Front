@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+
 import { io } from "socket.io-client";
 
 const ChatRoom = () => {
@@ -54,6 +55,16 @@ const ChatRoom = () => {
     //   })
     //   .catch((error) => {
     //     console.log("error", error);
+
+    // socket.onclose = (event) => console.log(`Closed ${event.code}`);
+
+    // GetChatRoomListRes()
+    //   .then((res) => {
+    //     console.log("res", res);
+    //   })
+    //   .catch(() => {
+    //     console.log();
+
     //   });
   }, []);
 

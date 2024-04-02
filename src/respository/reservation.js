@@ -38,41 +38,11 @@ export const ReservationTimes = () => {
     onSuccess: (data) => {
       console.log("createPost success", data);
     },
-    onError: () => {
+    onError: (error) => {
       // mutate가 실패하면, 함수를 실행합니다.
-      console.log("createPost error");
+      console.log("createPost error", error);
     },
   });
-};
-// 로그인 사용자 로그인 처리
-export const getLogin = async (code) => {
-  try {
-    const result = await apiClient.get(`/oauth/login/KAKAO?code=${code}`, {
-      headers: {
-        // "Access-Control-Allow-Origin": "*",
-        // accept: "*/*",
-        // "Content-Type": "application/json",
-      },
-    });
-    return result;
-  } catch (err) {
-    console.log("Error >>", err);
-  }
-};
-
-// 마이페이지 회원 정보 조회
-export const getMyMain = async () => {
-  try {
-    const result = await apiClient.get(`/member/myMain`, {
-      headers: {
-        // accept: "*/*",
-        // "Content-Type": "application/json",
-      },
-    });
-    return result;
-  } catch (err) {
-    console.log("Error >>", err);
-  }
 };
 
 //채팅방 목록 보기
@@ -90,10 +60,12 @@ export const GetChatRoomListRes = async () => {
     console.log("Error >>", err);
   }
 };
+
 //채팅 보기
 export const GetChatRoom = async () => {
   try {
     const result = await apiClient.get(`/chat/6`, {
+
       headers: {},
     });
     return result;
