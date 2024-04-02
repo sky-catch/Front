@@ -1,62 +1,60 @@
-import React, { useEffect, useState } from "react";
-import { GetChatRoomListRes } from "../../respository/reservation";
-function showMessage(message) {
-  // let messageElem = document.createElement("div");
-  // messageElem.textContent = message;
-  // console.log("   messageElem.textContent", message);
-  // document.getElementById("messages").prepend(messageElem);
-}
-const ChatRoom = () => {
-  const [ws, setWS] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const protocols = {
-    chatRoomId: 2,
-    Authorization:
-      "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxMTYzNDY4NiwiZXhwIjoxNzExNzIxMDg2fQ.fNg3gJxzEADL7aBZbuR8CIqnaUI0XZXp4ndwuzpcKoh0XUL4wuLTO7fkNXLozVA3qscGuRh0xA9eSiiPAVvayw",
-    memberChat: true,
-  };
+import React, { useEffect } from "react";
+import { io } from "socket.io-client";
 
-  const protocols2 = [
-    "6",
-    "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxMTYzNDY4NiwiZXhwIjoxNzExNzIxMDg2fQ.fNg3gJxzEADL7aBZbuR8CIqnaUI0XZXp4ndwuzpcKoh0XUL4wuLTO7fkNXLozVA3qscGuRh0xA9eSiiPAVvayw",
-    "true",
-  ];
+const ChatRoom = () => {
   // 웹 소켓 연결 이벤트
+  // : "ws://15.164.89.177:8080/chat";
 
   useEffect(() => {
-    console.log(window.location);
-    let url =
-      window.location.host == "skycatch.kro.kr"
-        ? "ws://15.164.89.177:8080/chat"
-        : window.location.host == "javascript.local"
-        ? `ws://javascript.local/article/websocket/chat/ws` // dev integration with local site
-        : `wss://javascript.info/article/websocket/chat/ws`; // prod integration with javascript.info
+    // 소켓 서버의 주소에 맞게 변경
 
-    let socket = new WebSocket(url);
+    const socket = io("ws://15.164.89.177:8080/chat", {
+      // path: "/chat",
+      transports: ["websocket"],
+      upgrade: false,
+      forceNew: true,
+      rejectUnauthorized: false,
+      autoConnect: false,
+      extraHeaders: {
+        authorization:
+          "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxMjA0NzA0NiwiZXhwIjoxNzEyMTMzNDQ2fQ.NRv7W4vKtnikTjLzFEhC7ybS86ORTis1TPgsm4R9P1KLl4gEzNCiXHOH_FNkHpGtuslTlazifTt7Zi4LrBqnXQ",
+        chatroomid: 6,
+        memberchat: true,
+      },
+    }).on("connect_error", (error) => {
+      console.error("Socket.io 연결 에러:", error);
+    });
+    // socket.connect();
+    // console.log("안녕", soc/ket);
+    // console.log(socket.connected);
+    socket.on("connect", () => {
+      console.log("서버와 연결되었습니다.");
 
-    // send message from the form
-    document.forms.publish.onsubmit = function () {
-      let outgoingMessage = this.message.value;
-      socket.send(outgoingMessage);
-      return false;
-    };
+      // 서버에 메시지 전송 예시
+      // socket.emit("message", "안녕하세요, 서버!");
+    });
+    socket.on("reconnect", (attempt) => {
+      console.log("서버와 연결되었습니다.");
+    });
+    // 서버와의 연결이 끊겼을 때 처리
+    socket.on("disconnect", () => {
+      console.log("서버와의 연결이 끊어졌습니다.");
+    });
+    // 클라이언트에서 서버로 메시지 발신
+    // socket.emit("chatList", "안녕하세요!");
 
-    // handle incoming messages
-    socket.onmessage = function (event) {
-      let incomingMessage = event.data;
-      console.log(event);
-      showMessage(incomingMessage);
-    };
+    // 클라이언트에서 서버로부터 메시지 수신
+    // socket.on("news", (data) => {
+    //   console.log("서버로부터 메시지 수신:", data);
+    // });
 
-    socket.onclose = (event) => console.log(`Closed ${event.code}`);
-
-    GetChatRoomListRes()
-      .then((res) => {
-        console.log("res", res);
-      })
-      .catch(() => {
-        console.log();
-      });
+    // GetChatRoom()
+    //   .then((res) => {
+    //     console.log("res", res);
+    //   })
+    //   .catch((error) => {
+    //     console.log("error", error);
+    //   });
   }, []);
 
   return (
@@ -64,7 +62,16 @@ const ChatRoom = () => {
       ChatRoom
       <form name="publish">
         <input type="text" name="message" maxLength="50" />
-        <input type="submit" value="Send" onClick={() => {}} />
+        <input
+          type="submit"
+          value="Send"
+          onClick={(e) => {
+            e.preventDefault();
+            // 클라이언트에서 서버로 메시지 발신
+            // socket.emit("message", "안녕하세요!");
+            // socket.emit("message", "안녕하세요!");
+          }}
+        />
       </form>
       <div id="messages"></div>
     </div>
