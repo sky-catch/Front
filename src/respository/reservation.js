@@ -46,9 +46,16 @@ export const ReservationTimes = () => {
 
 //채팅방 목록 보기
 export const GetChatRoomListRes = async () => {
+  const token =
+    "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxMTg3ODEwMywiZXhwIjoxNzExOTY0NTAzfQ.WLQ0IaS7QwEqQIdPXvnNBS9hVtinfWo5llTwOunaMWc6a__8ZFhvy0x09XZsZbqyGKZP71c5Gm-4Xmx7VV7JKA";
   try {
-    const result = await apiClient.get(`/chat/roomList`);
-    return result;
+    const result = await apiClient.get(`/chat/roomList`, {
+      headers: {
+        accept: " */*",
+        // Authorization: `${token}`,
+      },
+    });
+    return result.data;
   } catch (err) {
     console.log("Error >>", err.message);
   }
@@ -56,9 +63,13 @@ export const GetChatRoomListRes = async () => {
 
 //채팅 보기
 export const GetChatRoom = async (chatRoomId) => {
+  const token =
+    "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxMTg3ODEwMywiZXhwIjoxNzExOTY0NTAzfQ.WLQ0IaS7QwEqQIdPXvnNBS9hVtinfWo5llTwOunaMWc6a__8ZFhvy0x09XZsZbqyGKZP71c5Gm-4Xmx7VV7JKA";
   try {
     const result = await apiClient.get(`/chat/${chatRoomId}`, {
-      headers: {},
+      headers: {
+        // Authorization: `Bearer ${token}`,
+      },
     });
 
     return result.data;

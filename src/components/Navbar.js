@@ -56,7 +56,7 @@ const Navbar = () => {
         location === "/ct/shop" || location === "/chatroom"
           ? " hidden"
           : " block"
-      }`}
+      } z-50`}
     >
       <NavbarWrap>
         {navItem.map((item) => {

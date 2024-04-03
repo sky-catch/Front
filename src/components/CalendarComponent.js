@@ -12,6 +12,16 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { ReservationTimes } from "../respository/reservation";
+
+function SetDateYMD(isDate) {
+  return (
+    isDate.getFullYear() +
+    "-" +
+    String(isDate.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(isDate.getDate()).padStart(2, "0")
+  );
+}
 const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
   const [date, setDate] = useState(new Date());
   const [isTimes, setIsTime] = useState([]);
@@ -22,6 +32,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
   const [numberOfPeople, setIsPeopleNum] = useState(1);
   const [isVisitTime, setVisitTime] = useState("00:00");
   const [activeStartDate, setActiveStartDate] = useState(new Date());
+
   useEffect(() => {
     if (isOpen) {
       setDate(new Date());
@@ -35,12 +46,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
     if (isOpen) {
       const visitTimeHours = String(new Date().getHours()).padStart(2, "0");
       const visitTimeMinutes = String(new Date().getMinutes()).padStart(2, "0");
-      const searchDate =
-        date.getFullYear() +
-        "-" +
-        String(date.getMonth() + 1).padStart(2, "0") +
-        "-" +
-        String(date.getDate()).padStart(2, "0");
+      const searchDate = SetDateYMD(date);
       const visitTime = visitTimeHours + ":" + visitTimeMinutes + ":" + "00";
       const restaurantObj = {
         restaurantId,
@@ -49,6 +55,26 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
         visitTime,
       };
 
+      // if (SetDateYMD(new Date()) === SetDateYMD(date)) {
+      if (
+        new Date(SetDateYMD(date) + " " + restaurantObj.visitTime).getTime() >
+        new Date(
+          SetDateYMD(new Date()) + " " + restaurant.lastOrderTime
+        ).getTime()
+      ) {
+        restaurantObj.visitTime = restaurant.lastOrderTime;
+      }
+      // }
+      console.log(
+        new Date(SetDateYMD(date) + " " + restaurantObj.visitTime).getTime()
+      );
+      console.log(
+        new Date(
+          SetDateYMD(new Date()) + " " + restaurant.lastOrderTime
+        ).getTime()
+      );
+
+      console.log("안녕", restaurantObj);
       checkReservationTimes(restaurantObj);
     }
   }, [date, numberOfPeople, isVisitTime, isRestaurantInfor]);

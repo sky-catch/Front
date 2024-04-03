@@ -404,7 +404,7 @@ header {
   max-height: 440px;
 }
 .recommend-box > div {
-  height: 220px;
+  height: calc(50vw - 20px);
   position: relative;
   overflow: hidden;
 }
@@ -536,4 +536,7 @@ header {
 }
 .swiper-pagination-bullet-active {
   opacity: 1;
+}
+.phoneIcon {
+  background-image: url("/src/assets/icons/call01.svg");
 }

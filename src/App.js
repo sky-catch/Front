@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 // import { userInfoState } from "../../recoil/atoms/userState";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Header from "./components/Header.js";
 import Navbar from "./components/Navbar.js";
 import ChatRoom from "./pages/Dialog/ChatRoom.js";
@@ -18,6 +18,7 @@ import RestaurantInfo from "./pages/MyPage/RestaurantInfo.js";
 import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
 import Restaurant from "./pages/Restaurant/Restaurant.js";
 function App() {
+  // localStorage.clear();
   return (
     <div>
       <RecoilRoot>
@@ -45,7 +46,7 @@ function App() {
           <Route path="/chatroom" element={<ChatRoom />} />
           <Route path="/chatroom" element={<ChatRoom />} />
         </Routes>
-        <ReactQueryDevtools initialIsOpen={true} />
+        {/* <ReactQueryDevtools initialIsOpen={true} /> */}
         <Navbar />
       </RecoilRoot>
     </div>

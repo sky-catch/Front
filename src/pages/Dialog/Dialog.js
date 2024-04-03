@@ -1,5 +1,5 @@
 import { QueryClient, useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import{useQ}
 import styled from "styled-components";
 import DialogComponent from "../../components/DialogComponent";
@@ -90,11 +90,18 @@ function sortDate1(list) {
 function Dialog() {
   const [isItems, SetIsItems] = useState([]);
   const [messageItem, SetMessageItems] = useState([]);
+  const [isLogin, SetIsLogin] = useState(false);
 
   const queryClient = new QueryClient();
+  useEffect(() => {
+    console.log(localStorage.getItem("token"));
+    if (localStorage.getItem("token") !== null) {
+      SetIsLogin(true);
+    }
+  }, []);
 
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["roomKey"],
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["roomList"],
     queryFn: () => {
       return GetChatRoomListRes()
         .then((res) => {
@@ -112,7 +119,7 @@ function Dialog() {
   }
 
   if (error) {
-    return <div>error....</div>;
+    // return <div>error....</div>
   }
   console.log("data", data);
   // useEffect(() => {
@@ -129,25 +136,39 @@ function Dialog() {
 
   return (
     <DialogContents className="">
-      <div className="flex sticky top-[47px] h-[48px] items-center bg-white z-10 container">
-        <form className="keyword-search keyword-search-main h-[36px]">
-          <input
-            className="pl-[44px] pr-[15px] text-xs h-[30px]"
-            type="text"
-            placeholder="가게 이름 검색"
-          ></input>
-        </form>
-      </div>
-      <div className="mt-[5px] container">
-        <div className="">
-          {RoomItem &&
-            RoomItem.map((item, index) => {
-              return (
-                <DialogComponent key={item.id} item={item}></DialogComponent>
-              );
-            })}
+      {!isLogin ? (
+        <div className=" h-full">
+          <span className="text-[#515151] text-[16px] font-light block text-center pt-[45%]">
+            로그인 후 이용해 주세요.
+          </span>
+          <LoginBtn type="button">로그인 하러가기</LoginBtn>
         </div>
-      </div>
+      ) : (
+        <>
+          <div className="flex sticky top-[47px] h-[48px] items-center bg-white z-10 container">
+            <form className="keyword-search keyword-search-main h-[36px]">
+              <input
+                className="pl-[44px] pr-[15px] text-xs h-[30px]"
+                type="text"
+                placeholder="가게 이름 검색"
+              ></input>
+            </form>
+          </div>
+          <div className="mt-[5px] container">
+            <div className="">
+              {data &&
+                data.map((item, index) => {
+                  return (
+                    <DialogComponent
+                      key={item.id}
+                      item={item}
+                    ></DialogComponent>
+                  );
+                })}
+            </div>
+          </div>
+        </>
+      )}
     </DialogContents>
   );
 }
@@ -155,6 +176,26 @@ export default Dialog;
 const DialogContents = styled.div`
   padding-bottom: 48px;
   box-sizing: border-box;
-  min-height: calc(100vh - 47px);
+  height: calc(100vh - 47px);
+  /* min-height: calc(100vh - 47px); */
   margin-top: 47px;
+`;
+const LoginBtn = styled.button`
+  padding: 0 5%;
+  width: 90%;
+  margin: 0 auto;
+  height: 48px;
+  border-color: #ff3d00;
+  border-width: 1px;
+  line-height: 46px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: block;
+  text-align: center;
+  background-color: #ff3d00;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 87px;
+  color: #fff;
 `;
