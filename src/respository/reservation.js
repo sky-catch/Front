@@ -65,7 +65,6 @@ export const GetChatRoomListRes = async () => {
 export const GetChatRoom = async () => {
   try {
     const result = await apiClient.get(`/chat/6`, {
-
       headers: {},
     });
     return result;
