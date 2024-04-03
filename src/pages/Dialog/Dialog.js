@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { QueryClient, useQuery } from "@tanstack/react-query";
+import React, { useState } from "react";
+// import{useQ}
 import styled from "styled-components";
-
 import DialogComponent from "../../components/DialogComponent";
+import { GetChatRoomListRes } from "../../respository/reservation";
 const RoomItem = [
   {
     id: 1,
@@ -89,28 +91,41 @@ function Dialog() {
   const [isItems, SetIsItems] = useState([]);
   const [messageItem, SetMessageItems] = useState([]);
 
-  useEffect(() => {
-    // GetChatRoomListRes()
-    //   .then((res) => {
-    //     console.log("res", res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    // SetIsItems(RoomItem);
-    // if (isItems.length > 0) {
-    //   let test01 = Object.groupBy(isItems, ({ read }) =>
-    //     read === true ? "true" : "false"
-    //   );
-    //   let test11 = sortDate1(test01["false"]);
-    //   let test22 = sortDate1(test01["true"]);
-    //   SetMessageItems(test11.concat(test22));
-    // }
-  }, []);
+  const queryClient = new QueryClient();
 
-  useEffect(() => {
-    // console.log(messageItem);
-  }, [messageItem]);
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["roomKey"],
+    queryFn: () => {
+      return GetChatRoomListRes()
+        .then((res) => {
+          return res;
+        })
+        .catch((error) => {
+          console.log("error >>>", error);
+        });
+    },
+    // queryFn: GetChatRoomListRes,
+  });
+
+  if (isLoading) {
+    return <div>로딩....</div>;
+  }
+
+  if (error) {
+    return <div>error....</div>;
+  }
+  console.log("data", data);
+  // useEffect(() => {
+  // SetIsItems(RoomItem);
+  // if (isItems.length > 0) {
+  //   let test01 = Object.groupBy(isItems, ({ read }) =>
+  //     read === true ? "true" : "false"
+  //   );
+  //   let test11 = sortDate1(test01["false"]);
+  //   let test22 = sortDate1(test01["true"]);
+  //   SetMessageItems(test11.concat(test22));
+  // }
+  // }, []);
 
   return (
     <DialogContents className="">

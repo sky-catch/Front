@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import apiClient from "../apis/ApiClient";
 
@@ -31,7 +31,6 @@ const checkReservationTimes = (data) => {
 };
 
 export const ReservationTimes = () => {
-  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["checkReservationTimes"],
     mutationFn: checkReservationTimes,
@@ -48,26 +47,21 @@ export const ReservationTimes = () => {
 //채팅방 목록 보기
 export const GetChatRoomListRes = async () => {
   try {
-    const result = await apiClient.get(`/chat/roomList`, {
-      headers: {
-        // accept: "*/*",
-        "Access-Control-Allow-Origin": true,
-        // "Content-Type": "application/json",
-      },
-    });
+    const result = await apiClient.get(`/chat/roomList`);
     return result;
   } catch (err) {
-    console.log("Error >>", err);
+    console.log("Error >>", err.message);
   }
 };
 
 //채팅 보기
-export const GetChatRoom = async () => {
+export const GetChatRoom = async (chatRoomId) => {
   try {
-    const result = await apiClient.get(`/chat/6`, {
+    const result = await apiClient.get(`/chat/${chatRoomId}`, {
       headers: {},
     });
-    return result;
+
+    return result.data;
   } catch (err) {
     console.log("Error >>", err);
   }

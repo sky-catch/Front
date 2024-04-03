@@ -52,7 +52,11 @@ const Navbar = () => {
 
   return (
     <NavbarContents
-      className={`${location === "/ct/shop" ? " hidden" : " block"}`}
+      className={`${
+        location === "/ct/shop" || location === "/chatroom"
+          ? " hidden"
+          : " block"
+      }`}
     >
       <NavbarWrap>
         {navItem.map((item) => {

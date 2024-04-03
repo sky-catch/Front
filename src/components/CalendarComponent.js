@@ -12,7 +12,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { ReservationTimes } from "../respository/reservation";
-// import { checkReservationTimes } from "../respository/reservation";
 const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
   const [date, setDate] = useState(new Date());
   const [isTimes, setIsTime] = useState([]);
@@ -43,9 +42,14 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
         "-" +
         String(date.getDate()).padStart(2, "0");
       const visitTime = visitTimeHours + ":" + visitTimeMinutes + ":" + "00";
-      const testObj = { restaurantId, numberOfPeople, searchDate, visitTime };
+      const restaurantObj = {
+        restaurantId,
+        numberOfPeople,
+        searchDate,
+        visitTime,
+      };
 
-      checkReservationTimes(testObj);
+      checkReservationTimes(restaurantObj);
     }
   }, [date, numberOfPeople, isVisitTime, isRestaurantInfor]);
 

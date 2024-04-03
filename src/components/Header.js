@@ -26,7 +26,7 @@ const HeaderItem = [
     id: 5,
     name: "account",
     to: "/account",
-  }
+  },
 ];
 const Header = () => {
   const location = useLocation().pathname;
@@ -35,13 +35,13 @@ const Header = () => {
   console.log(useLocation().pathname === "/ct/shop");
   const onClickBack = () => {
     window.history.back();
-  }
+  };
 
-  const onEditRestaurant =() => {
+  const onEditRestaurant = () => {
     // navigate("/");
     navigate("/my/myshop/edit");
-  }
-
+  };
+  const onClickExit = () => {};
   const headerContent = () => {
     switch (location) {
       case "/":
@@ -67,7 +67,9 @@ const Header = () => {
         return (
           <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px]">
             <div className="header-left items-center flex gap-[12px]">
-              <a className="back header-icon" onClick={onClickBack}>뒤로</a>
+              <a className="back header-icon" onClick={onClickBack}>
+                뒤로
+              </a>
               <a className="tohome header-icon">홈</a>
             </div>
             <div className="header-right flex gap-[12px]">
@@ -100,7 +102,7 @@ const Header = () => {
             </h1>
           </div>
         );
-      case "/my" :
+      case "/my":
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left flex items-center">
@@ -114,36 +116,52 @@ const Header = () => {
             </div>
           </div>
         );
-      case "/my/myProfileInfo" :
+      case "/my/myProfileInfo":
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex gap-[12px]">
-              <a className="header-back-black" onClick={onClickBack}>뒤로</a>
-              <a className="text-xl h-[47px] leading-[47px] font-bold">프로필 수정</a>
-          </div>
-          </div>
-          );
-      case "/my/myshop" :
-          return (
-            <div className="header-wrapper flex px-[20px]">
-              <div className="header-left items-center flex gap-[12px]">
-                <a className="header-back-black" onClick={onClickBack}>뒤로</a>
-                <a className="text-xl h-[47px] leading-[47px] font-bold">내식당 관리</a>
+              <a className="header-back-black" onClick={onClickBack}>
+                뒤로
+              </a>
+              <a className="text-xl h-[47px] leading-[47px] font-bold">
+                프로필 수정
+              </a>
             </div>
-              <div className="header-right flex items-center ml-auto">
-                <button type="button" className="btn-icon setting" onClick={onEditRestaurant}></button>
-              </div>
-            </div>
-          );
-      case "/my/myshop/edit" :
+          </div>
+        );
+      case "/my/myshop":
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex gap-[12px]">
-              <a className="header-back-black" onClick={onClickBack}>뒤로</a>
-              <a className="text-xl h-[47px] leading-[47px] font-bold">식당 정보</a>
+              <a className="header-back-black" onClick={onClickBack}>
+                뒤로
+              </a>
+              <a className="text-xl h-[47px] leading-[47px] font-bold">
+                내식당 관리
+              </a>
+            </div>
+            <div className="header-right flex items-center ml-auto">
+              <button
+                type="button"
+                className="btn-icon setting"
+                onClick={onEditRestaurant}
+              ></button>
+            </div>
           </div>
+        );
+      case "/my/myshop/edit":
+        return (
+          <div className="header-wrapper flex px-[20px]">
+            <div className="header-left items-center flex gap-[12px]">
+              <a className="header-back-black" onClick={onClickBack}>
+                뒤로
+              </a>
+              <a className="text-xl h-[47px] leading-[47px] font-bold">
+                식당 정보
+              </a>
+            </div>
           </div>
-          );
+        );
       case "/account":
         return localStorage.getItem("token") !== null ? (
           <div className="header-wrapper flex px-[20px]">
@@ -159,6 +177,22 @@ const Header = () => {
           </div>
         ) : (
           ""
+        );
+      case "/chatroom":
+        return (
+          <div className="header-wrapper flex px-[20px]">
+            <div className="header-left items-center flex gap-[12px] w-[100%] justify-between">
+              <a className="header-back-black" onClick={onClickBack}>
+                뒤로
+              </a>
+              <a className="text-xl h-[47px] leading-[47px] font-bold">
+                실시간 채팅 상담
+              </a>
+              <a className="header-back-black" onClick={onClickExit}>
+                나가기
+              </a>
+            </div>
+          </div>
         );
       default:
         break;
