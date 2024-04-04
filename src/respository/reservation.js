@@ -51,10 +51,11 @@ export const GetChatRoomListRes = async () => {
   try {
     const result = await apiClient.get(`/chat/roomList`, {
       headers: {
-        accept: " */*",
-        // Authorization: `${token}`,
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
     });
+
     return result.data;
   } catch (err) {
     console.log("Error >>", err.message);

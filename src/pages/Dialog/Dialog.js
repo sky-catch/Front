@@ -98,6 +98,14 @@ function Dialog() {
     if (localStorage.getItem("token") !== null) {
       SetIsLogin(true);
     }
+
+    // GetChatRoomListRes()
+    //   .then((res) => {
+    //     console.log("res", res);
+    //   })
+    //   .catch((err) => {
+    //     console.log("err", err);
+    //   });
   }, []);
 
   const { data, isLoading, error } = useQuery({
@@ -111,17 +119,33 @@ function Dialog() {
           console.log("error >>>", error);
         });
     },
-    // queryFn: GetChatRoomListRes,
   });
+  // console.log("data", data);
+  // FIXME 절대 지우지말것.
+  // if (!isLogin) {
+  //   return (
+  //     <DialogContents className="">
+  //       <div className=" h-full">
+  //         <span className="text-[#515151] text-[16px] font-light block text-center pt-[45%]">
+  //           로그인 후 이용해 주세요.
+  //         </span>
+  //         <Link to={"/account"}>
+  //           <LoginBtn type="button">로그인 하러가기</LoginBtn>
+  //         </Link>
+  //       </div>
+  //     </DialogContents>
+  //   );
+  // }
 
   if (isLoading) {
     return <div>로딩....</div>;
   }
 
   if (error) {
-    // return <div>error....</div>
+    return <div>error....</div>;
   }
   console.log("data", data);
+
   // useEffect(() => {
   // SetIsItems(RoomItem);
   // if (isItems.length > 0) {
@@ -136,39 +160,25 @@ function Dialog() {
 
   return (
     <DialogContents className="">
-      {!isLogin ? (
-        <div className=" h-full">
-          <span className="text-[#515151] text-[16px] font-light block text-center pt-[45%]">
-            로그인 후 이용해 주세요.
-          </span>
-          <LoginBtn type="button">로그인 하러가기</LoginBtn>
+      <div className="flex sticky top-[47px] h-[48px] items-center bg-white z-10 container">
+        <form className="keyword-search keyword-search-main h-[36px]">
+          <input
+            className="pl-[44px] pr-[15px] text-xs h-[30px]"
+            type="text"
+            placeholder="가게 이름 검색"
+          ></input>
+        </form>
+      </div>
+      <div className="mt-[5px] container">
+        <div className="">
+          {data &&
+            data.map((item, index) => {
+              return (
+                <DialogComponent key={item.id} item={item}></DialogComponent>
+              );
+            })}
         </div>
-      ) : (
-        <>
-          <div className="flex sticky top-[47px] h-[48px] items-center bg-white z-10 container">
-            <form className="keyword-search keyword-search-main h-[36px]">
-              <input
-                className="pl-[44px] pr-[15px] text-xs h-[30px]"
-                type="text"
-                placeholder="가게 이름 검색"
-              ></input>
-            </form>
-          </div>
-          <div className="mt-[5px] container">
-            <div className="">
-              {data &&
-                data.map((item, index) => {
-                  return (
-                    <DialogComponent
-                      key={item.id}
-                      item={item}
-                    ></DialogComponent>
-                  );
-                })}
-            </div>
-          </div>
-        </>
-      )}
+      </div>
     </DialogContents>
   );
 }

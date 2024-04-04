@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 // import { userInfoState } from "../../recoil/atoms/userState";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { useLocation } from "react-router-dom";
 import Header from "./components/Header.js";
 import Navbar from "./components/Navbar.js";
 import ChatRoom from "./pages/Dialog/ChatRoom.js";
@@ -19,6 +20,14 @@ import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
 import Restaurant from "./pages/Restaurant/Restaurant.js";
 function App() {
   // localStorage.clear();
+  console.log(document.title);
+  console.log(useLocation().state);
+  const location = useLocation();
+  if (useLocation().pathname === "/ct/shop") {
+    document.title = `${location.state}`;
+  } else {
+    document.title = "즐거운 미식 생활의 시작, 캐치테이블";
+  }
   return (
     <div>
       <RecoilRoot>

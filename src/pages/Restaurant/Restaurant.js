@@ -80,8 +80,6 @@ export default function Restaurant() {
   const setRestaurantInfo = (name) => {
     getRestaurant(name)
       .then((res) => {
-        //TODO: 데이터 적용 완료
-        console.log(res.data);
         setRestaturant(res.data);
       })
       .catch((err) => {
@@ -135,7 +133,9 @@ export default function Restaurant() {
               </div>
             </div>
             <div className="menu">
-              <a className="call">전화</a>
+              <a className="call" href={`tel:${restaurant.phone}`}>
+                전화
+              </a>
               <a className="location">위치</a>
               <a
                 className="building"
@@ -181,7 +181,7 @@ export default function Restaurant() {
               <div className="section-body">
                 <div className="mb-[8px]" onClick={openDrawerBottom}>
                   <a
-                    href="#"
+                    href={`#`}
                     className="btn btn-lg btn-outline btn-cta full-width arrowdown"
                   >
                     <span>
@@ -331,7 +331,8 @@ const Section = styled.section`
   }
   .container .menu {
     display: flex;
-    margin-top: 16px;
+    margin-top: 20px;
+    margin-bottom: 10px;
     height: 30px;
   }
   .container .menu a {

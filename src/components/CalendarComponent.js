@@ -55,7 +55,6 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
         visitTime,
       };
 
-      // if (SetDateYMD(new Date()) === SetDateYMD(date)) {
       if (
         new Date(SetDateYMD(date) + " " + restaurantObj.visitTime).getTime() >
         new Date(
@@ -64,17 +63,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
       ) {
         restaurantObj.visitTime = restaurant.lastOrderTime;
       }
-      // }
-      console.log(
-        new Date(SetDateYMD(date) + " " + restaurantObj.visitTime).getTime()
-      );
-      console.log(
-        new Date(
-          SetDateYMD(new Date()) + " " + restaurant.lastOrderTime
-        ).getTime()
-      );
 
-      console.log("안녕", restaurantObj);
       checkReservationTimes(restaurantObj);
     }
   }, [date, numberOfPeople, isVisitTime, isRestaurantInfor]);

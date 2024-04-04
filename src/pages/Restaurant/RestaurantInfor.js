@@ -17,13 +17,13 @@ const RestaurantInfor = ({ isInforOpen, restaurant, toggleDrawerInfor }) => {
         <span className="h-[45px] leading-[45px] block font-bold text-center text-[20px]">
           {restaurant.name}
         </span>
-        <div className="">
+        <div className=" h-[calc(100%-88px-45px)] overflow-auto">
           <div className="py-[10px]">
             <span className="text-[16px] font-semibold mb-[5px] block">
               전화번호
             </span>
             <a
-              className=" flex gap-x-[5px] text-[14px]"
+              className=" flex gap-x-[5px] text-[14px] items-center"
               href={`tel:${restaurant.phone}`}
             >
               <i className="icon phoneIcon"></i>
@@ -55,17 +55,57 @@ const RestaurantInfor = ({ isInforOpen, restaurant, toggleDrawerInfor }) => {
               (Last Order : {restaurant.lastOrderTime.slice(0, 5)})
             </span>
           </div>
-          <div className="py-[10px]">
-            <span className="text-[16px] font-semibold mb-[5px] block">
-              편의시설
-            </span>
-            <span className="text-[14px] text-[#515151]"></span>
-          </div>
-        </div>
 
-        <CloseBtn type="button" open={isInforOpen} onClick={toggleDrawerInfor}>
-          닫기
-        </CloseBtn>
+          <>
+            {restaurant.facilities.length > 0 ? (
+              <div className="py-[10px]">
+                <span className="text-[16px] font-semibold mb-[5px] block">
+                  편의시설
+                </span>
+                <div className=" grid grid-cols-4 mt-[15px]">
+                  {restaurant.facilities.map((item, index) => {
+                    console.log(item);
+                    return (
+                      <div
+                        key={index}
+                        className=" flex flex-col items-center gap-y-[12px]"
+                      >
+                        <img
+                          alt={`${item.name}`}
+                          src={`${item.path}`}
+                          className=" size-[30px]"
+                        ></img>
+                        <span className="text-[12px] font-medium">
+                          {item.name}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+          </>
+        </div>
+        <div>
+          <CloseBtn
+            left
+            type="button"
+            open={isInforOpen}
+            onClick={toggleDrawerInfor}
+          >
+            사장님과 대화하기
+          </CloseBtn>
+          <CloseBtn
+            right
+            type="button"
+            open={isInforOpen}
+            onClick={toggleDrawerInfor}
+          >
+            확인
+          </CloseBtn>
+        </div>
       </Drawer>
     </div>
   );
@@ -74,18 +114,19 @@ const RestaurantInfor = ({ isInforOpen, restaurant, toggleDrawerInfor }) => {
 export default RestaurantInfor;
 const CloseBtn = styled.button`
   padding: 0 5%;
-  width: 90%;
+  width: 43%;
   margin: 0 auto;
   height: 48px;
-  border-color: #d5d5d5;
   border-width: 1px;
   line-height: 46px;
   border-radius: 6px;
+  font-size: 14px;
   box-sizing: border-box;
   display: block;
-  text-align: center;
   position: absolute;
-  left: 0;
-  right: 0;
   bottom: 20px;
+  ${(props) =>
+    props.right
+      ? "right: 20px; color: #fff;  border-color: #ff3d00;  background-color: #ff3d00;"
+      : "left: 20px; color: #000;"}
 `;
