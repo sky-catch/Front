@@ -106,18 +106,19 @@ export default function RestaurantInfo() {
 
     /* 식당이 있으면 조회 */
     useEffect(()=> {
-        getRestaurant()
+        // getRestaurant()
 
         //내 식당 정보 조회 및 세팅
         getMyRestaurant().then((res)=> {
-            setUser((prevUser) => ({
-                  ...prevUser,
-                  ["shop"] : {
-                    "name" : res.data.name,
-                    "category" : res.data.category,
-                    "content" : res.data.content,
-                  }
-                }));
+            if (res) console.log(res);
+            // setUser((prevUser) => ({
+            //       ...prevUser,
+            //       ["shop"] : {
+            //         "name" : res.data.name,
+            //         "category" : res.data.category,
+            //         "content" : res.data.content,
+            //       }
+            //     }));
         });
     },[]);
 

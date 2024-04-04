@@ -1,5 +1,6 @@
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import styled from "styled-components";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -26,7 +27,7 @@ const slideItem = [
 
 export default function Carousel() {
   return (
-    <div className="slider mb-[16px]">
+    <CarouselWrapper className="slider mb-[16px]">
       <Swiper
         modules={[Pagination, Autoplay]}
         spaceBetween={8}
@@ -38,7 +39,7 @@ export default function Carousel() {
       >
         {slideItem.map((item, index) => {
           return (
-            <SwiperSlide key={item.id}>
+            <SwiperSlide key={item.id} className="slide-item">
               <a>
                 <img src={item.url}></img>
               </a>
@@ -46,6 +47,15 @@ export default function Carousel() {
           );
         })}
       </Swiper>
-    </div>
+    </CarouselWrapper>
   );
 }
+
+const CarouselWrapper = styled.div`
+  position : relative;
+  display : block;
+
+  .slide-item {
+      width : 420px;
+  }
+`;
