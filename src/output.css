@@ -338,6 +338,13 @@ pre {
   margin: 0;
 }
 
+h3 {
+  padding : 0;
+  border : 0;
+  vertical-align : baseline;
+  font-size : 100%;
+}
+
 fieldset {
   margin: 0;
   padding: 0;
@@ -1446,7 +1453,7 @@ header {
   max-width: 480px;
   margin: 0 auto;
   width: auto;
-  position: fixed;
+  position: sticky;
   left: 0;
   right: 0;
   z-index: 99;
@@ -1703,7 +1710,7 @@ header {
 .section {
   box-sizing: border-box;
 }
-.section.section-overflow-hidden {
+.section .section-overflow-hidden {
   overflow: hidden;
 }
 
@@ -2233,3 +2240,98 @@ header {
   color: #fff;
 }
 
+.sticky-bottom-btns {
+  position : fixed;
+  z-index : 99;
+  max-width : 480px;
+  left : 50%;
+  transform : translate(-50%);
+  padding : 20px;
+}
+.sticky-bottom-btns {
+  bottom : 48px;
+}
+
+/* Search */
+main {
+  display : block;
+}
+.search-header .keyword input {
+  height : 56px;
+  display : block;
+  width : 100%;
+  padding : 0 20px 0 52px;
+  background: url("https://app.catchtable.co.kr/public/img/icons/search.svg") 20px 50% no-repeat;
+}
+.search-header .datetime-selector {
+  border-bottom : 1px solid #e5e5e5;
+  background : #fff;
+  z-index : 2;
+  position : relative;
+}
+.search-header .datetime-selector a{
+  position : relative;
+  display : block;
+  width : 100%;
+  height : 48px;
+  padding : 0 20px 0 48px;
+  line-height : 48px;
+  font-size : 14px;
+  background : url("https://app.catchtable.co.kr/public/img/icons/calendar.svg") 20px 50% no-repeat;
+}
+.search-header .datetime-selector a:after{
+  background : url("https://app.catchtable.co.kr/public/img/icons/arrow-down-red.svg") 50% 50% no-repeat;
+  width : 16px;
+  height : 16px;
+  content : "";
+  display : block;
+  position : absolute;
+  right : 20px;
+  top : 50%;
+  transform : translateY(-50%);
+}
+.swiper {
+  overflow : visible;
+}
+.swiper-container {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  list-style: none;
+  padding: 0;
+  z-index: 1;
+  overflow : hidden;
+}
+.design_system {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #D5D5D5;
+  border-radius: 8px;
+  position: relative;
+  background-color: #FFFFFF;
+  cursor: pointer;
+}
+.swiper-wrapper { 
+  position : relative;
+  width : 100%;
+  height : 100%;
+  display : flex;
+  z-index : 1;
+}
+.swiper .swiper-slide { 
+  width : auto !important;
+}
+.swiper-slide { 
+  flex-shrink : 0;
+  height : 100%;
+  position : relative;
+  transition-property : transform;
+}
+hr.separator {
+  height : 8px;
+  background : #ececec !important;
+}

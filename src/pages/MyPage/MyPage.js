@@ -48,9 +48,9 @@ function MyPage() {
   }
 
   useEffect(() => {
-    const loginUser = JSON.parse(localStorage.getItem("data"));
-    console.log(loginUser.userDTO);
-    if (loginUser) {
+    // const loginUser = JSON.parse(localStorage.getItem("token"));
+    // console.log(loginUser);
+    // if (loginUser) {
 
       // 유저 정보 세팅
       // setUser((prevUser) => ({
@@ -59,7 +59,7 @@ function MyPage() {
       //   ["nickname"] : loginUser.properties.nickname, 
       // }));
       // console.log(user);
-    }
+    // }
     
     // 유저의 저장 레스토랑 정보 GET
     getUserShop();
@@ -179,7 +179,7 @@ const MainContents = styled.div`
   padding-bottom: 48px;
   box-sizing: border-box;
   min-height: calc(100vh - 47px);
-  margin-top: 47px;
+  // margin-top: 47px;
 
   /* 개인프로필 */
   .mypage-profile .profile-pic .img {

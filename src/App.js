@@ -17,6 +17,8 @@ import MyProfileInfo from "./pages/MyPage/MyProfileInfo.js";
 import RestaurantInfo from "./pages/MyPage/RestaurantInfo.js";
 import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
 import Restaurant from "./pages/Restaurant/Restaurant.js";
+import Search from "./pages/Search/Search.js";
+
 function App() {
   return (
     <div>
@@ -24,6 +26,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/search" element={<Search/>}></Route>
           <Route path={`/mydining/my`} element={<MyDining />} />
           <Route path="/dialog" element={<Dialog />} />
           <Route path="/account" element={<Account />}></Route>
