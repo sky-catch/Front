@@ -20,8 +20,10 @@ import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
 import Restaurant from "./pages/Restaurant/Restaurant.js";
 function App() {
   // localStorage.clear();
-  console.log(document.title);
-  console.log(useLocation().state);
+  localStorage.setItem(
+    "token",
+    "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTIyNDgzMTMsImV4cCI6MTcxMjMzNDcxM30.hUjxpHcuE7S8YH2JAchwPt51EbD2qNPiPYr0mR8ny0GcCakpHbzRD2uVyj1W4o-oYHlS1eXx54qVsuKhFWCvVQ"
+  );
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;

@@ -4,92 +4,17 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import DialogComponent from "../../components/DialogComponent";
 import { GetChatRoomListRes } from "../../respository/reservation";
-const RoomItem = [
-  {
-    id: 1,
-    roomContents: "채팅 내용01",
-    restaurantTitle: "가게 이름01",
-    read: false,
-    roomDate: "2024/02/03",
-    restaurantImg:
-      "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-  },
-  {
-    id: 5,
-    roomContents:
-      "채팅 내용05 채팅 내용05 채팅 내용05 채팅 내용05 채팅 내용05 채팅 내용05 채팅 내용05 채팅 내용05",
-    restaurantTitle: "가게 이름05",
-    read: true,
-    roomDate: "2024/02/02",
-    restaurantImg:
-      "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-  },
-  {
-    id: 3,
-    roomContents: "채팅 내용03",
-    restaurantTitle: "가게 이름03",
-    read: false,
-    roomDate: "2024/02/01",
-    restaurantImg:
-      "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-  },
-  {
-    id: 4,
-    roomContents: "채팅 내용04",
-    restaurantTitle: "가게 이름04",
-    read: true,
-    roomDate: "2024/02/03",
-    restaurantImg:
-      "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-  },
-  {
-    id: 2,
-    roomContents: "채팅 내용02",
-    restaurantTitle: "가게 이름02",
-    read: false,
-    roomDate: "2024/02/02",
-    restaurantImg:
-      "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-  },
 
-  {
-    id: 6,
-    roomContents: "채팅 내용06",
-    restaurantTitle: "가게 이름06",
-    read: true,
-    roomDate: "2024/02/04",
-    restaurantImg:
-      "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-  },
-  {
-    id: 7,
-    roomContents: "채팅 내용07",
-    restaurantTitle: "가게 이름07",
-    read: true,
-    roomDate: "2024/02/05",
-    restaurantImg:
-      "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-  },
-  {
-    id: 8,
-    roomContents: "채팅 내용08",
-    restaurantTitle: "가게 이름08",
-    read: false,
-    roomDate: "2024/02/05",
-    restaurantImg:
-      "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-  },
-];
 function sortDate1(list) {
   const sorted_list = list.sort(function (a, b) {
-    return new Date(b.roomDate).getTime() - new Date(a.roomDate).getTime();
+    return (
+      new Date(b.lastChatDate).getTime() - new Date(a.lastChatDate).getTime()
+    );
   });
   return sorted_list;
 }
 
 function Dialog() {
-  const [isItems, SetIsItems] = useState([]);
-  const [messageItem, SetMessageItems] = useState([]);
   const [isLogin, SetIsLogin] = useState(false);
 
   const queryClient = new QueryClient();
@@ -98,18 +23,11 @@ function Dialog() {
     if (localStorage.getItem("token") !== null) {
       SetIsLogin(true);
     }
-
-    // GetChatRoomListRes()
-    //   .then((res) => {
-    //     console.log("res", res);
-    //   })
-    //   .catch((err) => {
-    //     console.log("err", err);
-    //   });
   }, []);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["roomList"],
+    // queryFn: GetChatRoomListRes,
     queryFn: () => {
       return GetChatRoomListRes()
         .then((res) => {
@@ -145,40 +63,51 @@ function Dialog() {
     return <div>error....</div>;
   }
   console.log("data", data);
+  //FIXME 채팅방이 없을때 작업하기 위해 일부로 없앴음
+  data.splice(0);
 
+  // data.length = 0;
   // useEffect(() => {
   // SetIsItems(RoomItem);
-  // if (isItems.length > 0) {
-  //   let test01 = Object.groupBy(isItems, ({ read }) =>
-  //     read === true ? "true" : "false"
-  //   );
-  //   let test11 = sortDate1(test01["false"]);
-  //   let test22 = sortDate1(test01["true"]);
-  //   SetMessageItems(test11.concat(test22));
-  // }
-  // }, []);
+  if (data.length > 0) {
+    let test01 = Object.groupBy(data, ({ hasNewChat }) =>
+      hasNewChat ? "true" : "false"
+    );
+    console.log(test01);
+    // let test11 = sortDate1(test01["false"]);
+    // let test22 = test01["true"];
+    // data = test11.concat(test22);
+    //   SetMessageItems(test11.concat(test22));
+  }
+  // }, [data]);
 
   return (
     <DialogContents className="">
-      <div className="flex sticky top-[47px] h-[48px] items-center bg-white z-10 container">
-        <form className="keyword-search keyword-search-main h-[36px]">
-          <input
-            className="pl-[44px] pr-[15px] text-xs h-[30px]"
-            type="text"
-            placeholder="가게 이름 검색"
-          ></input>
-        </form>
-      </div>
-      <div className="mt-[5px] container">
-        <div className="">
-          {data &&
-            data.map((item, index) => {
-              return (
-                <DialogComponent key={item.id} item={item}></DialogComponent>
-              );
-            })}
-        </div>
-      </div>
+      {data.length > 0 ? (
+        <>
+          <div className="flex sticky top-[47px] h-[48px] items-center bg-white z-10 container">
+            <form className="keyword-search keyword-search-main h-[36px]">
+              <input
+                className="pl-[44px] pr-[15px] text-xs h-[30px]"
+                type="text"
+                placeholder="가게 이름 검색"
+              ></input>
+            </form>
+          </div>
+          <div className="mt-[5px] container">
+            <div className="">
+              {data &&
+                data.map((item, index) => {
+                  return (
+                    <DialogComponent key={index} item={item}></DialogComponent>
+                  );
+                })}
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className=""></div>
+      )}
     </DialogContents>
   );
 }
