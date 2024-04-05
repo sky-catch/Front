@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import ChatPopup from "../pages/Dialog/ChatPopup";
-const PopupComponent = () => {
+
+const PopupComponent = ({ setIsExit }) => {
   return (
     <Popup className="">
-      <ChatPopup></ChatPopup>
+      <ChatPopup setIsExit={setIsExit}></ChatPopup>
     </Popup>
   );
 };

@@ -116,7 +116,7 @@ export default function Restaurant() {
       {/* 2. 식당 이름 및 메인 정보 */}
       {restaurant && (
         <Section>
-          <div className="container gutter-sm pt-[24px] pb-[24px]">
+          <div className="container gutter-sm pt-[7px] pb-[7px]">
             <div className="restaurant-summary">
               <span>{restaurant.category}</span>
               <h2>{restaurant.name}</h2>
@@ -332,7 +332,7 @@ const Section = styled.section`
   .container .menu {
     display: flex;
     margin-top: 20px;
-    margin-bottom: 10px;
+    /* margin-bottom: 5px; */
     height: 30px;
   }
   .container .menu a {

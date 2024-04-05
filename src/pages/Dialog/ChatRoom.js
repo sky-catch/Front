@@ -16,7 +16,6 @@ const ChatRoom = () => {
   useEffect(() => {
     setRoomInfor(location.state);
     let name = location.search.split("=")[1];
-    console.log("name", decodeURIComponent(name));
   }, []);
 
   // const chatRoomId = location.state.chatRoomId;

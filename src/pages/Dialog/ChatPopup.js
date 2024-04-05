@@ -1,9 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-const ChatPopup = () => {
-  const onExit = () => {};
+const ChatPopup = ({ setIsExit }) => {
+  const onExit = () => {
+    setIsExit();
+  };
 
-  const onCancel = () => {};
+  const onCancel = () => {
+    setIsExit();
+  };
   return (
     <div className="absolute w-[230px] h-[170px] bg-white rounded-md top-0 left-0 bottom-0 right-0 m-auto overflow-hidden">
       <div className="h-[120px] text-center text-[#6d6d6d] text-[14px] font-light flex items-center justify-center">

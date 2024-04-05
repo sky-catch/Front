@@ -1,9 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import styled from "styled-components";
+import { PostChatRoomItem } from "../../respository/reservation";
+// import { PostChatRoomRes } from "../../respository/reservation";
 const RestaurantInfor = ({ isInforOpen, restaurant, toggleDrawerInfor }) => {
-  console.log(restaurant);
+  // console.log(restaurant);
+  const [moveChat, setMoveChat] = useState(false);
+  const [restaurantId, setRestaurantId] = useState("");
+  const { mutate: postChatRoom, loading, error, data } = PostChatRoomItem();
+  const openChatRoom = (id) => {
+    // console.log("id", id);
+    // postChatRoomRes
+
+    setMoveChat(true);
+    setRestaurantId(id);
+  };
+  useEffect(() => {
+    console.log("moveChatRoom", moveChat);
+    if (moveChat) {
+      postChatRoom(restaurantId);
+      // console.log(restaurantId);
+      console.log("안녕", postChatRoom(restaurantId));
+    }
+  }, [moveChat]);
+
   if (!restaurant) return;
   return (
     <div>
@@ -64,7 +85,6 @@ const RestaurantInfor = ({ isInforOpen, restaurant, toggleDrawerInfor }) => {
                 </span>
                 <div className=" grid grid-cols-4 mt-[15px]">
                   {restaurant.facilities.map((item, index) => {
-                    console.log(item);
                     return (
                       <div
                         key={index}
@@ -90,15 +110,19 @@ const RestaurantInfor = ({ isInforOpen, restaurant, toggleDrawerInfor }) => {
         </div>
         <div>
           <CloseBtn
-            left
+            left={"left"}
             type="button"
             open={isInforOpen}
-            onClick={toggleDrawerInfor}
+            onClick={() => {
+              toggleDrawerInfor();
+              openChatRoom(restaurant.restaurantId);
+              console.log("restaurant", restaurant.restaurantId);
+            }}
           >
             사장님과 대화하기
           </CloseBtn>
           <CloseBtn
-            right
+            right={"right"}
             type="button"
             open={isInforOpen}
             onClick={toggleDrawerInfor}
@@ -125,8 +149,15 @@ const CloseBtn = styled.button`
   display: block;
   position: absolute;
   bottom: 20px;
+  ${
+    (props) =>
+      props.right === "right" &&
+      "right: 20px; color: #fff;  border-color: #ff3d00;  background-color: #ff3d00;"
+    // props.left ==='left' && ("left: 20px; color: #000;")
+  }
   ${(props) =>
-    props.right
-      ? "right: 20px; color: #fff;  border-color: #ff3d00;  background-color: #ff3d00;"
-      : "left: 20px; color: #000;"}
+    // props.right ==='right' && ("right: 20px; color: #fff;  border-color: #ff3d00;  background-color: #ff3d00;")
+    props.left === "left" &&
+    "left: 20px; color: #000;"} // ? "right: 20px; color: #fff;  border-color: #ff3d00;  background-color: #ff3d00;"
+      // : "left: 20px; color: #000;"}
 `;

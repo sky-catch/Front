@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PopupComponent from "./PopupComponent";
+
 const HeaderItem = [
   {
     id: 0,
@@ -44,7 +45,7 @@ const Header = () => {
   };
   const onClickExit = (e) => {
     console.log(e);
-    setIsExit(true);
+    setIsExit(!isExit);
   };
   const headerContent = () => {
     switch (location) {
