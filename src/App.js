@@ -22,8 +22,9 @@ function App() {
   // localStorage.clear();
   localStorage.setItem(
     "token",
-    "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTIyNDgzMTMsImV4cCI6MTcxMjMzNDcxM30.hUjxpHcuE7S8YH2JAchwPt51EbD2qNPiPYr0mR8ny0GcCakpHbzRD2uVyj1W4o-oYHlS1eXx54qVsuKhFWCvVQ"
+    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTIzMDU0NjQsImV4cCI6MTcxMjM5MTg2NH0.xp63LaF793DgczTBdMarXrnTxdj6QRhSt1HTZ3yRcwY3al-xLmWO98Af4WwjpJV2lySDc0GUBZ--3YeXVKk6Fw`
   );
+  localStorage.setItem("data", "");
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;
@@ -54,8 +55,7 @@ function App() {
           {/* <Route path="/ct" element={<RestaurantWrapper />} > */}
           <Route path="/ct/shop" element={<Restaurant />} />
           <Route path="/ct/my" element={<RestaurantSetting />} />
-          <Route path="/chatroom" element={<ChatRoom />} />
-          <Route path="/chatroom" element={<ChatRoom />} />
+          <Route path={`/chat`} element={<ChatRoom />} />
         </Routes>
         {/* <ReactQueryDevtools initialIsOpen={true} /> */}
         <Navbar />

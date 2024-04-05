@@ -4,7 +4,7 @@
 input {
   outline: none;
   box-shadow: none;
-  caret-color: #ff3d00;
+  caret-color: #fff;
 }
 input:active {
   border-color: transparent;
@@ -68,7 +68,9 @@ header {
   box-sizing: border-box;
 }
 .container {
-  padding: 0 20px;
+  /* padding: 0 20px; */
+  padding-right: 20px;
+  padding-left: 20px;
   box-sizing: border-box;
 }
 
@@ -88,6 +90,12 @@ header {
   transform: translateY(-50%);
   right: 20px;
 }
+.exit-icon {
+  background-size: 30px;
+  width: 32px;
+  height: 32px;
+  background-image: url("/src/assets/icons/icon-arrow.png");
+}
 .btn-sort {
   position: relative;
   width: fit-content;
@@ -98,6 +106,7 @@ header {
   position: absolute;
   display: block;
   width: 16px;
+
   height: 16px;
   background: url("/src/assets/icons/sort.svg") 50% 50% no-repeat;
   content: "";

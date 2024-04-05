@@ -47,7 +47,7 @@ export const ReservationTimes = () => {
 //채팅방 목록 보기
 export const GetChatRoomListRes = async () => {
   const token = localStorage.getItem("token");
-  // "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTIyNDgzMTMsImV4cCI6MTcxMjMzNDcxM30.hUjxpHcuE7S8YH2JAchwPt51EbD2qNPiPYr0mR8ny0GcCakpHbzRD2uVyj1W4o-oYHlS1eXx54qVsuKhFWCvVQ";
+
   try {
     const result = await apiClient.get(`/chat/roomList`, {
       headers: {
@@ -63,9 +63,7 @@ export const GetChatRoomListRes = async () => {
 };
 
 //채팅 보기
-export const GetChatRoom = async (chatRoomId) => {
-  const token =
-    "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTIyNDgzMTMsImV4cCI6MTcxMjMzNDcxM30.hUjxpHcuE7S8YH2JAchwPt51EbD2qNPiPYr0mR8ny0GcCakpHbzRD2uVyj1W4o-oYHlS1eXx54qVsuKhFWCvVQ";
+export const getChatRoom = async (chatRoomId) => {
   try {
     const result = await apiClient.get(`/chat/${chatRoomId}`, {
       headers: {

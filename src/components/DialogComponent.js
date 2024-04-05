@@ -45,8 +45,11 @@ const DialogComponent = ({ item }) => {
       className={`px-[10px] py-[10px] flex gap-x-[12px] cursor-pointer relative ${
         item.hasNewChat ? "read-icon" : ""
       }`}
-      onClick={() => {
-        navigate("/chatroom");
+      onClick={(e) => {
+        // console.log(decodeURIComponent(item.restaurantName));
+        navigate(`/chat?name=${encodeURIComponent(item.restaurantName)}`, {
+          state: item,
+        });
       }}
     >
       <div className=" size-[60px] rounded-[12px] overflow-hidden">

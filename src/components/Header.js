@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import PopupComponent from "./PopupComponent";
 const HeaderItem = [
   {
     id: 0,
@@ -31,8 +31,9 @@ const HeaderItem = [
 const Header = () => {
   const location = useLocation().pathname;
   const navigate = new useNavigate();
+  const [isExit, setIsExit] = useState(false);
   useEffect(() => {}, [location]);
-  console.log(useLocation().pathname === "/ct/shop");
+  // console.log(useLocation().pathname === "/ct/shop");
   const onClickBack = () => {
     window.history.back();
   };
@@ -41,7 +42,10 @@ const Header = () => {
     // navigate("/");
     navigate("/my/myshop/edit");
   };
-  const onClickExit = () => {};
+  const onClickExit = (e) => {
+    console.log(e);
+    setIsExit(true);
+  };
   const headerContent = () => {
     switch (location) {
       case "/":
@@ -178,7 +182,7 @@ const Header = () => {
         ) : (
           ""
         );
-      case "/chatroom":
+      case "/chat":
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex gap-[12px] w-[100%] justify-between">
@@ -188,10 +192,14 @@ const Header = () => {
               <a className="text-xl h-[47px] leading-[47px] font-bold">
                 실시간 채팅 상담
               </a>
-              <a className="header-back-black" onClick={onClickExit}>
-                나가기
-              </a>
+              <a
+                className="icon exit-icon"
+                onClick={(e) => {
+                  onClickExit(e);
+                }}
+              ></a>
             </div>
+            {isExit && <PopupComponent setIsExit={setIsExit}></PopupComponent>}
           </div>
         );
       default:

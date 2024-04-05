@@ -1,6 +1,7 @@
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 // import{useQ}
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import DialogComponent from "../../components/DialogComponent";
 import { GetChatRoomListRes } from "../../respository/reservation";
@@ -25,9 +26,14 @@ function Dialog() {
     }
   }, []);
 
-  const { data, isLoading, error } = useQuery({
+  // if (isLogin) {
+  const {
+    data: roomList,
+    // data: roomList,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["roomList"],
-    // queryFn: GetChatRoomListRes,
     queryFn: () => {
       return GetChatRoomListRes()
         .then((res) => {
@@ -37,23 +43,26 @@ function Dialog() {
           console.log("error >>>", error);
         });
     },
+    enabled: isLogin,
   });
+  // }
+
   // console.log("data", data);
   // FIXME 절대 지우지말것.
-  // if (!isLogin) {
-  //   return (
-  //     <DialogContents className="">
-  //       <div className=" h-full">
-  //         <span className="text-[#515151] text-[16px] font-light block text-center pt-[45%]">
-  //           로그인 후 이용해 주세요.
-  //         </span>
-  //         <Link to={"/account"}>
-  //           <LoginBtn type="button">로그인 하러가기</LoginBtn>
-  //         </Link>
-  //       </div>
-  //     </DialogContents>
-  //   );
-  // }
+  if (!isLogin) {
+    return (
+      <DialogContents className="">
+        <div className=" h-full">
+          <span className="text-[#515151] text-[16px] font-light block text-center pt-[45%]">
+            로그인 후 이용해 주세요.
+          </span>
+          <Link to={"/account"}>
+            <LoginBtn type="button">로그인 하러가기</LoginBtn>
+          </Link>
+        </div>
+      </DialogContents>
+    );
+  }
 
   if (isLoading) {
     return <div>로딩....</div>;
@@ -62,15 +71,15 @@ function Dialog() {
   if (error) {
     return <div>error....</div>;
   }
-  console.log("data", data);
+  console.log("roomList", roomList);
   //FIXME 채팅방이 없을때 작업하기 위해 일부로 없앴음
-  data.splice(0);
+  // roomList.splice(0);
 
   // data.length = 0;
   // useEffect(() => {
   // SetIsItems(RoomItem);
-  if (data.length > 0) {
-    let test01 = Object.groupBy(data, ({ hasNewChat }) =>
+  if (roomList.length > 0) {
+    let test01 = Object.groupBy(roomList, ({ hasNewChat }) =>
       hasNewChat ? "true" : "false"
     );
     console.log(test01);
@@ -83,7 +92,7 @@ function Dialog() {
 
   return (
     <DialogContents className="">
-      {data.length > 0 ? (
+      {roomList.length > 0 ? (
         <>
           <div className="flex sticky top-[47px] h-[48px] items-center bg-white z-10 container">
             <form className="keyword-search keyword-search-main h-[36px]">
@@ -96,8 +105,8 @@ function Dialog() {
           </div>
           <div className="mt-[5px] container">
             <div className="">
-              {data &&
-                data.map((item, index) => {
+              {roomList &&
+                roomList.map((item, index) => {
                   return (
                     <DialogComponent key={index} item={item}></DialogComponent>
                   );
