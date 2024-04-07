@@ -17,6 +17,10 @@ import MyProfileInfo from "./pages/MyPage/MyProfileInfo.js";
 import RestaurantInfo from "./pages/MyPage/RestaurantInfo.js";
 import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
 import Restaurant from "./pages/Restaurant/Restaurant.js";
+import Search from "./pages/Search/Search.js";
+import ReviewList from "./pages/Restaurant/ReviewList.js";
+import ReserveForm from "./pages/Restaurant/ReserveForm.js"
+
 function App() {
   return (
     <div>
@@ -24,6 +28,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/search" element={<Search/>}></Route>
           <Route path={`/mydining/my`} element={<MyDining />} />
           <Route path="/dialog" element={<Dialog />} />
           <Route path="/account" element={<Account />}></Route>
@@ -40,7 +45,9 @@ function App() {
           <Route path="/emptySlotGuide" element={<EmptySlotGuide />}></Route>
           {/* 네비바 변경 페이지 */}
           {/* <Route path="/ct" element={<RestaurantWrapper />} > */}
-          <Route path="/ct/shop" element={<Restaurant />} />
+          <Route path="/ct/shop/:restaurantName" element={<Restaurant />} />
+          <Route path="/ct/shop/:restaurantName/reviewList" element={<ReviewList/>} />
+          <Route path="/ct/shop/reservation/form" element={<ReserveForm/>}/>
           <Route path="/ct/my" element={<RestaurantSetting />} />
           <Route path="/chatroom" element={<ChatRoom />} />
           <Route path="/chatroom" element={<ChatRoom />} />

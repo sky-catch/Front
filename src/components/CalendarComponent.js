@@ -23,6 +23,13 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
   const [numberOfPeople, setIsPeopleNum] = useState(1);
   const [isVisitTime, setVisitTime] = useState("00:00");
   const [activeStartDate, setActiveStartDate] = useState(new Date());
+
+  /* 방문확인 모달추가 */
+  const handleReserve =(e)=> {
+    toggleDrawer(e);
+    // showReserve();
+  }
+
   useEffect(() => {
     if (isOpen) {
       setDate(new Date());
@@ -164,7 +171,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
           </div>
         )}
 
-        <CloseBtn type="button" open={isOpen} onClick={toggleDrawer}>
+        <CloseBtn type="button" open={isOpen} onClick={(e)=> (handleReserve(e))}>
           닫기
         </CloseBtn>
       </Drawer>
