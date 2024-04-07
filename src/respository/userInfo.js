@@ -53,7 +53,7 @@ export const getSavedRestaurants = async(name) => {
 /* 사장 : 내 식당 보기 */
 export const getMyRestaurant = async() => {
   try{
-    const token = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxMTk4MzI3NiwiZXhwIjoxNzEyMDY5Njc2fQ.bnx3m5LJfqZFMRj81F_SK8qw67c6tVmjTpWGHQnaL8H7-mCV50q3GzmB_TO0OPvuTRG0nKUAlegZsod1UHuluA";
+    const token = localStorage.getItem("token");
     console.log(token);
     const result = await apiClient.get("/owner/restaurant", {
       headers: {

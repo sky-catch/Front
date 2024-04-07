@@ -61,11 +61,11 @@ export const GetChatRoomListRes = async () => {
   }
 };
 
-//채팅방 보기
-export const GetChatRoom = async (chatRoom) => {
-  // console.log(chatRoom);
+//채팅 보기
+export const GetChatRoom = async () => {
   try {
-    const result = await apiClient.get(`/chat/${chatRoom.chatRoomId}`, {
+    const result = await apiClient.get(`/chat/6`, {
+
       headers: {},
     });
     return result;
