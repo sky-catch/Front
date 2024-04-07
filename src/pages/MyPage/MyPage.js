@@ -179,7 +179,7 @@ const MainContents = styled.div`
   padding-bottom: 48px;
   box-sizing: border-box;
   min-height: calc(100vh - 47px);
-  // margin-top: 47px;
+  margin-top: 47px;
 
   /* 개인프로필 */
   .mypage-profile .profile-pic .img {

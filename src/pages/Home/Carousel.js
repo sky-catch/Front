@@ -29,6 +29,7 @@ export default function Carousel() {
   return (
     <CarouselWrapper className="slider mb-[16px]">
       <Swiper
+        className="swiper-wrapper"
         modules={[Pagination, Autoplay]}
         spaceBetween={8}
         pagination={true}
@@ -39,7 +40,7 @@ export default function Carousel() {
       >
         {slideItem.map((item, index) => {
           return (
-            <SwiperSlide key={item.id} className="slide-item">
+            <SwiperSlide data-swiper-slide-index={index} className="slide-item">
               <a>
                 <img src={item.url}></img>
               </a>
@@ -56,6 +57,15 @@ const CarouselWrapper = styled.div`
   display : block;
 
   .slide-item {
-      width : 420px;
+    width : 420px;
+    margin-right : 8px;
+  }
+  .slide-item a {
+    display : block;
+  }
+  .slide-item a img {
+    display : block;
+    width : 100%;
+    height : auto;
   }
 `;

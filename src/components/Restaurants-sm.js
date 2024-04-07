@@ -27,7 +27,7 @@ const Restaurants_sm = () => {
 
   return (
     <RestaurantsWrapper>
-    <Swiper className="slide-wrapper">
+    <Swiper className="slide-wrapper-sm">
       {restaurants.map((item) => {
         return (
           <SwiperSlide
@@ -35,9 +35,9 @@ const Restaurants_sm = () => {
             key={item.id}
             onClick={() => onDetail(item)}
           >
-            <a className="tb">
-              <img src={item.img}></img>
-            </a>
+              <a className="tb">
+                <img src={item.img}></img>
+              </a>
             <div className="detail">
             </div>
           </SwiperSlide>
@@ -51,17 +51,18 @@ const Restaurants_sm = () => {
 export default Restaurants_sm;
 
 const RestaurantsWrapper = styled.div`
-    .slide-wrapper {
+    .slide-wrapper-sm {
         display : flex;
         flex-wrap : nowrap;
     }
-    .slide-item {
+    .slide-wrapper-sm .slide-item {
         margin-right : 12px;
+        width : auto !important;
     }
-    .slide-item .tb {
+    .slide-wrapper-sm .slide-item .tb {
         cursor : pointer;
     }
-    .slide-item .tb img {
+    .slide-wrapper-sm .slide-item .tb img {
         width : 152px;
         height : 152px;
         border-radius : 10px;

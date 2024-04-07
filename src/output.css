@@ -969,6 +969,10 @@ video {
   justify-content: space-between;
 }
 
+.align-center {
+  align-items: center;
+}
+
 .gap-5 {
   gap: 1.25rem;
 }
@@ -1110,7 +1114,7 @@ video {
 }
 
 .bg-transparent {
-  background-color: transparent;
+  background-color: transparent !important;
 }
 
 .bg-white {
@@ -1453,7 +1457,7 @@ header {
   max-width: 480px;
   margin: 0 auto;
   width: auto;
-  position: sticky;
+  position: fixed;
   left: 0;
   right: 0;
   z-index: 99;
@@ -1552,6 +1556,11 @@ header {
 .header-tp-wrapper .header-left .back {
   background-image : url("https://app.catchtable.co.kr/public/img/icons/new-nav-icons/back-w.svg");
 }
+.header-tp-wrapper .header-left .back-b {
+  background : url("https://app.catchtable.co.kr/public/img/icons/back.svg") 50% 50% no-repeat;
+  width: 32px;
+  height: 32px;
+}
 .header-tp-wrapper .header-left .tohome {
   background-image : url("https://app.catchtable.co.kr/public/img/icons/new-nav-icons/home-w.svg");
 }
@@ -1560,6 +1569,11 @@ header {
 }
 .header-tp-wrapper .header-right .share {
   background-image : url("https://app.catchtable.co.kr/public/img/icons/new-nav-icons/share-w.svg");
+}
+.header-tp-wrapper .header-right .share-b {
+  background : url("https://app.catchtable.co.kr/public/img/icons/new-nav-icons/share.svg");
+  width: 24px;
+  height: 24px;
 }
 .header-wrapper {
   background: #fff;
@@ -1735,8 +1749,6 @@ header {
 }
 
 .section-body .v-scroll {
-  /* margin : 0 -20px; */
-  /* padding : 0 20px; */
   overflow-x: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -1976,6 +1988,20 @@ header {
 .drawer-box-body {
   padding: 20px;
   box-sizing: border-box;
+}
+
+.drawer-box-footer {
+  padding : 20px;
+}
+
+.drawer-box .drawer-box-footer .btn-group {
+  display: flex;
+  margin: 0 -5px;
+}
+
+.drawer-box .drawer-box-footer .btn-group .btn {
+  flex : 1;
+  margin : 0 5px;
 }
 
 .react-calendar__tile {
@@ -2256,6 +2282,9 @@ header {
 main {
   display : block;
 }
+.main {
+  margin-top: 47px;
+}
 .search-header .keyword input {
   height : 56px;
   display : block;
@@ -2322,7 +2351,7 @@ main {
   display : flex;
   z-index : 1;
 }
-.swiper .swiper-slide { 
+.swiper-slide-chip {
   width : auto !important;
 }
 .swiper-slide { 

@@ -29,7 +29,6 @@ export const createRestaurant = async (data) => {
 export const getRestaurant = async (name) => {
   const token = localStorage.getItem("token");
   try {
-    console.log('restaurant axios : ', name);
     const res = await apiClient.get(`/restaurants/${name}`, {
       headers: {
         // Authorization: `Bearer ${token}`,
@@ -41,3 +40,18 @@ export const getRestaurant = async (name) => {
     console.log("Error >>", err);
   }
 };
+
+/* 식당 저장 */
+export const saveRestaurant = async(restaurantId) => {
+  const token = localStorage.getItem("token");
+  console.log('restaurantId :', restaurantId, 'token : ', token);
+  try{
+    const res = await apiClient.get(`/saveRestaurant/${restaurantId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (err) {
+    console.log("Error >>", err);
+  }
+}
