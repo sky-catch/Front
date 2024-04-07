@@ -44,13 +44,22 @@ export const ReservationTimes = () => {
     },
   });
 };
+
 // 채팅 추가
 const postChatRoom = (id) => {
-  return axios.post(`http://15.164.89.177:8080/chat/${id}`);
+  const token = localStorage.getItem("token");
+  return axios.post(
+    `http://15.164.89.177:8080/chat/${id}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };
 
 export const PostChatRoomItem = () => {
-  const token = localStorage.getItem("token");
   return useMutation({
     mutationKey: ["postChatRoom"],
     mutationFn: postChatRoom,
@@ -60,12 +69,6 @@ export const PostChatRoomItem = () => {
     onError: (error) => {
       // mutate가 실패하면, 함수를 실행합니다.
       console.log("createPost error", error);
-    },
-    context: {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        accept: "*/*",
-      },
     },
   });
 

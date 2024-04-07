@@ -1,6 +1,8 @@
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+// import io from "socket.io";
+import io from "socket.io-client";
 import styled from "styled-components";
 import { getRestaurant } from "../../respository/restaurant";
 // import quer
@@ -11,47 +13,47 @@ const ChatRoom = () => {
 
   // 웹 소켓 연결 이벤트
   // : "ws://15.164.89.177:8080/chat";
-  console.log("안녕", location);
+  console.log("안녕", location.state);
   // let name = location.search.split("=");
   useEffect(() => {
     setRoomInfor(location.state);
     let name = location.search.split("=")[1];
   }, []);
 
-  // const chatRoomId = location.state.chatRoomId;
-  // const memberChat = true;
-  // const token = localStorage.getItem("token");
+  const chatRoomId = location.state.chatRoomId;
+  const memberChat = true;
+  const token = localStorage.getItem("token");
 
-  // const socket = io("http://15.164.89.177:8080", {
-  //   path: "/chat",
-  //   transports: ["websocket"],
-  //   upgrade: false,
-  //   timeout: 30000,
-  //   reconnectionAttempts: 2,
-  //   reconnection: true,
-  //   forceNew: true,
-  //   rejectUnauthorized: false,
-  //   autoConnect: true,
-  //   extraHeaders: {
-  //     Authorization: `Bearer ${token}`,
-  //     chatroomid: chatRoomId,
-  //     memberchat: memberChat,
-  //   },
-  // });
+  const socket = io("http://15.164.89.177:8080", {
+    path: "/chat",
+    transports: ["websocket"],
+    upgrade: false,
+    timeout: 30000,
+    reconnectionAttempts: 2,
+    reconnection: true,
+    forceNew: true,
+    rejectUnauthorized: false,
+    autoConnect: true,
+    extraHeaders: {
+      Authorization: `Bearer ${token}`,
+      chatroomid: chatRoomId,
+      memberchat: memberChat,
+    },
+  });
 
-  // socket.on("connect_error", (error) => {
-  //   console.error("Socket.io 연결 에러:", error);
-  // });
+  socket.on("connect_error", (error) => {
+    console.error("Socket.io 연결 에러:", error);
+  });
 
-  // socket.on("connect", () => {
-  //   console.log("서버와 연결되었습니다.");
-  // });
-  // socket.on("disconnect", () => {
-  //   console.log("서버와의 연결이 끊어졌습니다.");
-  // });
-  // socket.on("message", (data) => {
-  //   console.log("서버로부터 메시지 수신:", data);
-  // });
+  socket.on("connect", () => {
+    console.log("서버와 연결되었습니다.");
+  });
+  socket.on("disconnect", () => {
+    console.log("서버와의 연결이 끊어졌습니다.");
+  });
+  socket.on("message", (data) => {
+    console.log("서버로부터 메시지 수신:", data);
+  });
 
   // 서버로 메시지 전송
   // socket.emit("message", "안녕하세요, 서버!");

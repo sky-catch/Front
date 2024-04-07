@@ -23,8 +23,9 @@ function Dialog() {
     console.log(localStorage.getItem("token"));
     if (localStorage.getItem("token") !== null) {
       SetIsLogin(true);
+      console.log("isLogin", isLogin);
     }
-  }, []);
+  }, [isLogin]);
 
   // if (isLogin) {
   const {

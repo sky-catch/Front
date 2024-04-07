@@ -12,7 +12,6 @@ const RestaurantInfor = ({ isInforOpen, restaurant, toggleDrawerInfor }) => {
   const openChatRoom = (id) => {
     // console.log("id", id);
     // postChatRoomRes
-
     setMoveChat(true);
     setRestaurantId(id);
   };
@@ -20,8 +19,6 @@ const RestaurantInfor = ({ isInforOpen, restaurant, toggleDrawerInfor }) => {
     console.log("moveChatRoom", moveChat);
     if (moveChat) {
       postChatRoom(restaurantId);
-      // console.log(restaurantId);
-      console.log("안녕", postChatRoom(restaurantId));
     }
   }, [moveChat]);
 
@@ -116,7 +113,6 @@ const RestaurantInfor = ({ isInforOpen, restaurant, toggleDrawerInfor }) => {
             onClick={() => {
               toggleDrawerInfor();
               openChatRoom(restaurant.restaurantId);
-              console.log("restaurant", restaurant.restaurantId);
             }}
           >
             사장님과 대화하기

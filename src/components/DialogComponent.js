@@ -39,10 +39,11 @@ function dataReset(date) {
   }
 }
 const DialogComponent = ({ item }) => {
+  console.log("item", item);
   const navigate = useNavigate();
   return (
     <div
-      className={`px-[10px] py-[10px] flex gap-x-[12px] cursor-pointer relative ${
+      className={`py-[10px] flex gap-x-[12px] cursor-pointer relative ${
         item.hasNewChat ? "read-icon" : ""
       }`}
       onClick={(e) => {

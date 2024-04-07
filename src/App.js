@@ -20,11 +20,24 @@ import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
 import Restaurant from "./pages/Restaurant/Restaurant.js";
 function App() {
   // localStorage.clear();
-  localStorage.setItem(
-    "token",
-    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTIzMDU0NjQsImV4cCI6MTcxMjM5MTg2NH0.xp63LaF793DgczTBdMarXrnTxdj6QRhSt1HTZ3yRcwY3al-xLmWO98Af4WwjpJV2lySDc0GUBZ--3YeXVKk6Fw`
-  );
-  localStorage.setItem("data", "");
+  // localStorage.setItem(
+  //   "token",
+  //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTI0NjgyMzgsImV4cCI6MTcxMjU1NDYzOH0.QxerxG1PrI4oPAAWZk5i8LjyaXUSr43dsLExc9b2TRRWquLmHqAj-FyMst3pq0YtDyJcMYLVbyVBt0Hl1gyFDA`
+  // );
+  // localStorage.setItem(
+  //   "data",
+  //   JSON.stringify({
+  //     usersDTO: {
+  //       id: 0,
+  //       nickname: "string",
+  //       profileImageUrl: "string",
+  //       email: "string",
+  //       name: "string",
+  //       status: "ACTIVE",
+  //       owner: true,
+  //     },
+  //   })
+  // );
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;
