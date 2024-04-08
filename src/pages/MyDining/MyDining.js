@@ -1,20 +1,23 @@
+// import useQuery from "@tanstack/react-query";
+import { QueryClient, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import "react-modern-drawer/dist/index.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Visitcomponent from "../../components/Visitcomponent";
+import { GetReservationRes } from "../../respository/restaurant";
 import RecommendPage from "./RecommendPage";
 const stateList = [
   {
-    id: "0",
+    id: "PLANNED",
     title: "방문예정",
   },
   {
-    id: "1",
+    id: "DONE",
     title: "방문완료",
   },
   {
-    id: "2",
+    id: "CANCEL",
     title: "취소/노쇼",
   },
 ];
@@ -110,15 +113,16 @@ export default function MyDining() {
   const [loginState, setLoginState] = useState(false);
   const [isSelect, setIsSelect] = useState(true);
   const [isRiseIcon, setIsRiseIcon] = useState(true);
-  const [listSelect, setListSelect] = useState(0);
+  const [listSelect, setListSelect] = useState("PLANNED");
   const [alarmSelect, setAlarmSelect] = useState(0);
+  const queryClient = new QueryClient();
 
   const menuClick = (e, index) => {
     if (index === 0) {
       setIsSelect(true);
       setAlarmSelect(0);
     } else {
-      setListSelect(0);
+      setListSelect("PLANNED");
       setIsSelect(false);
       moveLoginPage();
     }
@@ -143,13 +147,24 @@ export default function MyDining() {
   }, [loginState]);
 
   const itemClick = (index) => {
-    setListSelect(index);
+    switch (index) {
+      case 0:
+        setListSelect("PLANNED");
+        break;
+      case 1:
+        setListSelect("DONE");
+        break;
+      default:
+        setListSelect("CANCEL");
+        break;
+    }
   };
   const alarmClick = (index) => {
     setAlarmSelect(index);
   };
+
   const itemContainer = () => {
-    if (listSelect === 0) {
+    if (listSelect === "PLANNED") {
       return (
         <div className="mt-[70px]">
           <span className="block text-center mb-[20px] text-[#c8c8c8] text-[16px] text-bold">
@@ -178,32 +193,58 @@ export default function MyDining() {
           </Link>
         </div>
       );
-    } else if (listSelect === 1) {
+    } else if (listSelect === "DONE") {
       return (
-        <div className="">
-          <div className="mt-[30px] flex items-center justify-between">
-            <span className="text-[18px] font-extrabold">
-              총 {visitList.length}권
-            </span>
-            <div
-              className={`btn-sort text-[13px] font-medium cursor-pointer ${
-                isRiseIcon === false ? "active" : ""
-              }`}
-              onClick={() => {
-                setIsRiseIcon(!isRiseIcon);
-              }}
+        <div className="mt-[70px]">
+          <span className="block text-center mb-[20px] text-[#c8c8c8] text-[16px] text-bold">
+            예약 히스토리가 없습니다.
+            <br /> {"즐거운 미식 생활을 함께해요 :" + ")"}
+          </span>
+          <Link
+            className="flex-row flex items-center justify-center gap-[4px] text-[#0091ff] text-medium cursor-pointer"
+            to={"/"}
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              방문일자
-            </div>
-          </div>
-          <div className="mt-[20px] flex flex-col gap-y-[20px]">
-            {visitList.map((item, index) => {
-              return (
-                <Visitcomponent key={index} itemList={item}></Visitcomponent>
-              );
-            })}
-          </div>
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M8.56604 2.0625C5.28489 2.0625 2.625 4.72239 2.625 8.00354C2.625 11.2847 5.28489 13.9446 8.56604 13.9446C10.0188 13.9446 11.3498 13.4231 12.382 12.5572L14.4359 14.4396C14.7413 14.7195 15.2157 14.6988 15.4956 14.3935C15.7755 14.0881 15.7548 13.6137 15.4494 13.3338L13.4012 11.4565C14.0974 10.4834 14.5071 9.29132 14.5071 8.00354C14.5071 4.72239 11.8472 2.0625 8.56604 2.0625ZM4.125 8.00354C4.125 5.55082 6.11332 3.5625 8.56604 3.5625C11.0188 3.5625 13.0071 5.55082 13.0071 8.00354C13.0071 10.4563 11.0188 12.4446 8.56604 12.4446C6.11332 12.4446 4.125 10.4563 4.125 8.00354Z"
+                fill="#0091FF"
+              ></path>
+            </svg>
+            레스토랑 둘러보기
+          </Link>
         </div>
+        // <div className="">
+        //   <div className="mt-[30px] flex items-center justify-between">
+        //     <span className="text-[18px] font-extrabold">
+        //       총 {visitList.length}권
+        //     </span>
+        //     <div
+        //       className={`btn-sort text-[13px] font-medium cursor-pointer ${
+        //         isRiseIcon === false ? "active" : ""
+        //       }`}
+        //       onClick={() => {
+        //         setIsRiseIcon(!isRiseIcon);
+        //       }}
+        //     >
+        //       방문일자
+        //     </div>
+        //   </div>
+        //   <div className="mt-[20px] flex flex-col gap-y-[20px]">
+        //     {visitList.map((item, index) => {
+        //       return (
+        //         <Visitcomponent key={index} itemList={item}></Visitcomponent>
+        //       );
+        //     })}
+        //   </div>
+        // </div>
       );
     } else {
       return (
@@ -264,6 +305,26 @@ export default function MyDining() {
       );
     }
   };
+
+  const {
+    data: reservationRes,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["reservationRes"],
+    queryFn: () => {
+      return GetReservationRes(listSelect)
+        .then((res) => {
+          return res.data;
+          console.log("res", res);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    },
+  });
+
+  console.log("reservationRes", reservationRes);
   return (
     <MyDiningContents className="">
       <ul className="tab-menu sticky top-[47px]  bg-white">
@@ -303,7 +364,7 @@ export default function MyDining() {
                           key={item.id}
                           onClick={() => itemClick(index)}
                           className={` ${
-                            listSelect === index
+                            listSelect === item.id
                               ? " rounded-full border-black "
                               : " text-[#666] border-transparent"
                           } px-[15px] box-border font-medium text-[14px] leading-[32px] h-8 cursor-pointer  border-[1px]`}
@@ -313,7 +374,16 @@ export default function MyDining() {
                       );
                     })}
                   </div>
-                  {itemContainer()}
+                  {reservationRes && reservationRes.length > 0
+                    ? reservationRes.map((item, index) => {
+                        return (
+                          <Visitcomponent
+                            key={index}
+                            itemList={item}
+                          ></Visitcomponent>
+                        );
+                      })
+                    : itemContainer()}
                 </div>
               </section>
             ) : (

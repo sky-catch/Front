@@ -27,12 +27,26 @@ export const createRestaurant = async (data) => {
 
 /* 식당 개별 조회 */
 export const getRestaurant = async (id) => {
+  console.log("restaurant axios : ", id);
   try {
-    console.log("restaurant axios : ", id);
     const res = await apiClient.get(`/restaurants/${id}`, {
       headers: {},
     });
     console.log(res);
+    return res;
+  } catch (err) {
+    console.log("Error >>", err);
+  }
+};
+
+//나의 예약 조회
+export const GetReservationRes = async (visitStatus) => {
+  try {
+    const res = await apiClient.get(`/mydining/my/${visitStatus}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
     return res;
   } catch (err) {
     console.log("Error >>", err);

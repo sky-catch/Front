@@ -3,15 +3,11 @@ import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import styled from "styled-components";
 import { PostChatRoomItem } from "../../respository/reservation";
-// import { PostChatRoomRes } from "../../respository/reservation";
 const RestaurantInfor = ({ isInforOpen, restaurant, toggleDrawerInfor }) => {
-  // console.log(restaurant);
   const [moveChat, setMoveChat] = useState(false);
   const [restaurantId, setRestaurantId] = useState("");
   const { mutate: postChatRoom, loading, error, data } = PostChatRoomItem();
   const openChatRoom = (id) => {
-    // console.log("id", id);
-    // postChatRoomRes
     setMoveChat(true);
     setRestaurantId(id);
   };

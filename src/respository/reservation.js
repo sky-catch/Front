@@ -22,11 +22,11 @@ import apiClient from "../apis/ApiClient";
 //     console.log("Error >>", err.message);
 //   }
 // };
-const checkReservationTimes = (data) => {
-  // console.log("data", data);
+const checkReservationTimes = (isdata) => {
+  if (isdata.numberOfPeople === 0) return;
   return axios.post(
     "http://15.164.89.177:8080/reservations/availTimeSlots",
-    data
+    isdata
   );
 };
 
@@ -34,14 +34,19 @@ const checkReservationTimes = (data) => {
 export const ReservationTimes = () => {
   return useMutation({
     mutationKey: ["checkReservationTimes"],
-    mutationFn: checkReservationTimes,
-    onSuccess: (data) => {
-      console.log("createPost success", data);
+    mutationFn: (data) => {
+      return checkReservationTimes(data);
+    },
+    // mutationFn: checkReservationTimes,
+    onSuccess: (isdata) => {
+      return isdata;
+      // console.log("createPost success", data);
     },
     onError: (error) => {
       // mutate가 실패하면, 함수를 실행합니다.
       console.log("createPost error", error);
     },
+    // retry: 2,
   });
 };
 
