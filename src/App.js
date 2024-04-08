@@ -24,24 +24,24 @@ import Search from "./pages/Search/Search.js";
 
 function App() {
   // localStorage.clear();
-  localStorage.setItem(
-    "token",
-    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTI1NTU1MTksImV4cCI6MTcxMjY0MTkxOX0.v1U-kDsxNfnNLGmtZH2qJvtLDFZAe7UAC9B73J0suY41x4pfVjVOVSTcOQvjKNjzSM_ke0RC6NYHA8fTT0ff2g`
-  );
-  localStorage.setItem(
-    "data",
-    JSON.stringify({
-      usersDTO: {
-        id: 0,
-        nickname: "string",
-        profileImageUrl: "string",
-        email: "string",
-        name: "string",
-        status: "ACTIVE",
-        owner: true,
-      },
-    })
-  );
+  // localStorage.setItem(
+  //   "token",
+  //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTI1NTU1MTksImV4cCI6MTcxMjY0MTkxOX0.v1U-kDsxNfnNLGmtZH2qJvtLDFZAe7UAC9B73J0suY41x4pfVjVOVSTcOQvjKNjzSM_ke0RC6NYHA8fTT0ff2g`
+  // );
+  // localStorage.setItem(
+  //   "data",
+  //   JSON.stringify({
+  //     usersDTO: {
+  //       id: 0,
+  //       nickname: "string",
+  //       profileImageUrl: "string",
+  //       email: "string",
+  //       name: "string",
+  //       status: "ACTIVE",
+  //       owner: true,
+  //     },
+  //   })
+  // );
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;
