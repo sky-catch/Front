@@ -7,7 +7,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CalendarComponent from "../../components/CalendarComponent";
-import ConfirmReserve from "../../components/ConfirmReserve.js";
 import RestaurantTap from "../../components/RestaurantTap.js";
 import SaveConfirmComponent from "../../components/SaveConfirmComponent.js";
 import StarsComponent from "../../components/StarsComponent.js";
@@ -319,10 +318,10 @@ export default function Restaurant() {
         isSave={isSave}
         toggleDrawer={toggleDrawer}
       ></SaveConfirmComponent>
-      <ConfirmReserve
+      {/* <ConfirmReserve
         isConfirmOpen={isConfirmOpen}
         toggleDrawer={toggleDrawer}
-      ></ConfirmReserve>
+      ></ConfirmReserve> */}
     </main>
   );
 }
