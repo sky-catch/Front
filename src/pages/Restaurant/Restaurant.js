@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "react-modern-drawer/dist/index.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CalendarComponent from "../../components/CalendarComponent";
-import { getRestaurant } from "../../respository/restaurant";
 import RestaurantInfor from "./RestaurantInfor";
+import { getRestaurant, saveRestaurant } from "../../respository/restaurant";
+import SaveConfirmComponent from "../../components/SaveConfirmComponent.js";
+import StarsComponent from "../../components/StarsComponent.js";
+import RestaurantTap from "../../components/RestaurantTap.js";
+import ConfirmReserve from "../../components/ConfirmReserve.js"
+
 
 /**
  * 식당
@@ -34,16 +39,27 @@ export default function Restaurant() {
   const [openBottom, setOpenBottom] = React.useState(false);
   const openDrawerBottom = () => setOpenBottom(true);
   const closeDrawerBottom = () => setOpenBottom(false);
-  const [isOpen, setIsOpen] = useState(false);
   const [isInforOpen, setIsInforOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); /* 예약하기 모달창 오픈 */
+  const [isSave, setIsSave] = useState(false); /* 저장하기 모달창 오픈 */
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false); /* 예약 컨펌 모달창 오픈 */
+
   const [isSelect, setIsSelect] = useState(true);
   const [isReserve, setIsReserve] =
     useState(true); /* 탭 true : 예약, false : 웨이팅 */
   const { state } = useLocation();
+
   const [isContent, setIsContent] = useState("home");
 
-  const toggleDrawer = () => {
-    setIsOpen((prevState) => !prevState);
+  // const [isContent, setIsContent] = useState('home');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const toggleDrawer = (e) => {
+    if (e.target.className.indexOf('closeSaveModal') == -1) {
+      setIsOpen((prevState) => !prevState);
+    } else {
+      setIsSave((prevState) => !prevState);
+    }
   };
   const toggleDrawerInfor = () => {
     setIsInforOpen((prevState) => !prevState);
@@ -65,6 +81,7 @@ export default function Restaurant() {
     }
   };
 
+
   const contentClick = (e, index) => {
     if (index === 0) {
       setIsContent("home");
@@ -77,10 +94,30 @@ export default function Restaurant() {
     }
   };
 
+ 
+  /* Function : 식당 정보 조회 */
   const setRestaurantInfo = (name) => {
     getRestaurant(name)
       .then((res) => {
+        //TODO: 데이터 적용 완료
+
         setRestaturant(res.data);
+        console.log(res.data, ',', restaurant);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  /* Function : 식당 저장 */
+  const saveMyRestaurant = (e) => {
+    setIsSave((prevState) => !prevState);
+    console.log(restaurant.restaurantId);
+    const restaurantId= restaurant.restaurantId;
+    saveRestaurant(restaurantId)
+      .then((res)=> {
+        console.log(res);
+        /* 저장 완료 모달창 노출 */
       })
       .catch((err) => {
         console.log(err);
@@ -89,8 +126,10 @@ export default function Restaurant() {
 
   useEffect(() => {
     console.log(state);
-    setRestaurantInfo(state);
-  }, []);
+    if( !restaurant ) {
+      setRestaurantInfo(state);
+    } 
+  }, [restaurant]);
 
   return (
     <main className="pb-[74px]">
@@ -120,10 +159,8 @@ export default function Restaurant() {
             <div className="restaurant-summary">
               <span>{restaurant.category}</span>
               <h2>{restaurant.name}</h2>
-              <div>
-                <span></span>
-                <span>4.5</span>
-                <span></span>
+              <div className="flex align-center">
+                <StarsComponent startAvg={restaurant.reviewAvg}></StarsComponent>
               </div>
             </div>
             <div className="restaurant-detail">
@@ -208,6 +245,7 @@ export default function Restaurant() {
       </div>
       <Seperator></Seperator>
       {/* 4. 탭 */}
+
       <div>
         <ul className="tab-menu sticky top-[47px]  bg-white">
           <li
@@ -244,6 +282,9 @@ export default function Restaurant() {
           </li>
         </ul>
       </div>
+
+      <RestaurantTap restaurantInfo={restaurant}></RestaurantTap>
+
       {/* 5. 편의시설 */}
       {/* 6. 메뉴 */}
       {/* 7. 사진 */}
@@ -255,8 +296,8 @@ export default function Restaurant() {
       {/* 예약 슬라이드 페이지 */}
       <BottomBtn>
         <div className="savebtn">
-          <button>저장</button>
-          <span>666</span>
+          <button onClick={saveMyRestaurant}>저장</button>
+          <span>{restaurant ? restaurant.savedCount : 0}</span>
         </div>
         <button className="reservebtn" onClick={onReserveCalendar}>
           <div>예약하기</div>
@@ -267,11 +308,23 @@ export default function Restaurant() {
         restaurant={restaurant}
         toggleDrawer={toggleDrawer}
       ></CalendarComponent>
+
       <RestaurantInfor
         isInforOpen={isInforOpen}
         restaurant={restaurant}
         toggleDrawerInfor={toggleDrawerInfor}
       ></RestaurantInfor>
+
+      <SaveConfirmComponent
+        isSave={isSave}
+        toggleDrawer={toggleDrawer}
+      >
+      </SaveConfirmComponent>
+      <ConfirmReserve
+        isConfirmOpen={isConfirmOpen}
+        toggleDrawer={toggleDrawer}
+      ></ConfirmReserve>
+
     </main>
   );
 }

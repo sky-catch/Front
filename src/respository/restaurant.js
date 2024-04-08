@@ -26,13 +26,14 @@ export const createRestaurant = async (data) => {
 };
 
 /* 식당 개별 조회 */
+
 export const getRestaurant = async (id) => {
   console.log("restaurant axios : ", id);
   try {
     const res = await apiClient.get(`/restaurants/${id}`, {
       headers: {},
     });
-    console.log(res);
+  
     return res;
   } catch (err) {
     console.log("Error >>", err);
@@ -52,3 +53,18 @@ export const GetReservationRes = async (visitStatus) => {
     console.log("Error >>", err);
   }
 };
+
+/* 식당 저장 */
+export const saveRestaurant = async(restaurantId) => {
+  const token = localStorage.getItem("token");
+  console.log('restaurantId :', restaurantId, 'token : ', token);
+  try{
+    const res = await apiClient.get(`/saveRestaurant/${restaurantId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (err) {
+    console.log("Error >>", err);
+  }
+}

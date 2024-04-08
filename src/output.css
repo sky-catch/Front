@@ -336,6 +336,13 @@ pre {
   margin: 0;
 }
 
+h3 {
+  padding : 0;
+  border : 0;
+  vertical-align : baseline;
+  font-size : 100%;
+}
+
 fieldset {
   margin: 0;
   padding: 0;
@@ -1063,6 +1070,10 @@ video {
   justify-content: space-between;
 }
 
+.align-center {
+  align-items: center;
+}
+
 .gap-5 {
   gap: 1.25rem;
 }
@@ -1257,7 +1268,7 @@ video {
 }
 
 .bg-transparent {
-  background-color: transparent;
+  background-color: transparent !important;
 }
 
 .bg-white {
@@ -1735,6 +1746,40 @@ header {
 
 /* header */
 
+
+.header-icon {
+  pointer : cursor;
+  width: 24px;
+  height: 24px;
+  display: block;
+  text-indent: -999em;
+  overflow: hidden;
+  background: 50% 50% no-repeat;
+  background-size: 24px 24px;
+}
+.header-tp-wrapper .header-left .back {
+  background-image : url("https://app.catchtable.co.kr/public/img/icons/new-nav-icons/back-w.svg");
+}
+.header-tp-wrapper .header-left .back-b {
+  background : url("https://app.catchtable.co.kr/public/img/icons/back.svg") 50% 50% no-repeat;
+  width: 32px;
+  height: 32px;
+}
+.header-tp-wrapper .header-left .tohome {
+  background-image : url("https://app.catchtable.co.kr/public/img/icons/new-nav-icons/home-w.svg");
+}
+.header-tp-wrapper .header-right .bookmark {
+  background-image : url("https://app.catchtable.co.kr/public/img/icons/new-nav-icons/bookmark-w.svg");
+}
+.header-tp-wrapper .header-right .share {
+  background-image : url("https://app.catchtable.co.kr/public/img/icons/new-nav-icons/share-w.svg");
+}
+.header-tp-wrapper .header-right .share-b {
+  background : url("https://app.catchtable.co.kr/public/img/icons/new-nav-icons/share.svg");
+  width: 24px;
+  height: 24px;
+}
+
 .header-wrapper {
   background: #fff;
   border-bottom: 1px solid #fff;
@@ -1882,6 +1927,14 @@ header {
 
 /* section */
 
+.section {
+  box-sizing: border-box;
+}
+.section .section-overflow-hidden {
+  overflow: hidden;
+}
+
+
 .section-header {
   display: flex;
   position: relative;
@@ -1903,8 +1956,6 @@ header {
 }
 
 .section-body .v-scroll {
-  /* margin : 0 -20px; */
-  /* padding : 0 20px; */
   overflow-x: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -2147,6 +2198,20 @@ header {
   box-sizing: border-box;
 }
 
+.drawer-box-footer {
+  padding : 20px;
+}
+
+.drawer-box .drawer-box-footer .btn-group {
+  display: flex;
+  margin: 0 -5px;
+}
+
+.drawer-box .drawer-box-footer .btn-group .btn {
+  flex : 1;
+  margin : 0 5px;
+}
+
 .react-calendar__tile {
   color: #333 !important;
   font-size: 16px !important;
@@ -2220,3 +2285,288 @@ header {
 .phoneIcon {
   background-image: url("/src/assets/icons/call01.svg");
 }
+
+.__d-flex.__v-center {
+  align-items: center;
+}
+.font-12 {
+  font-size : 12px !important;
+}
+.btn {
+  appearance: none;
+  text-decoration: none;
+  box-sizing: border-box;
+  color: #000;
+}
+.btn-lg {
+  line-height : 46px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0 20px;
+  position: relative;
+  border: 1px solid #666;
+  border-radius: 6px;
+  background: #fff;
+}
+.btn-md {
+  line-height : 38px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0 20px;
+  position: relative;
+  border: 1px solid #666;
+  border-radius: 6px;
+  background: #fff;
+}
+.btn-md.btn-outline, .btn-lg.btn-outline {
+  border-color : #d5d5d5;
+}
+.full-width {
+  width : 100%;
+}
+.btn.full-width {
+  width: 100%;
+  display: block;
+}
+.btn-rounded {
+  border-radius : 24px;
+}
+.btn-rounded .label {
+  position: relative;
+  /* display: block; */
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+}
+.btn-md .add, .btn-lg .add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn-md .add:before, .btn-lg .add:before {
+  background: url("https://app.catchtable.co.kr/public/img/icons/add.svg") 50% 50% no-repeat;
+  width: 28px;
+  height: 28px;
+  content: "";
+  display: block;
+}
+.btn-cta {
+  text-align : left;
+}
+.btn-lg.btn-cta>span {
+  display : flex;
+  align-items : center;
+}
+.label.calendar {
+  padding-left : 29px;
+}
+.label.calendar:before {
+  background: url("/src/assets/icons/calendar.svg") 50% 50% no-repeat;
+  width: 24px;
+  height: 24px;
+  display: block;
+  position: absolute;
+  content: "";
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.btn-lg.btn-cta.arrowdown:after {
+  background: url("/src/assets/icons/arrow-down-red.svg") 50% 50% no-repeat;
+  width: 16px;
+  height: 16px;
+  content: "";
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.btn-centered {
+  text-align : center;
+}
+.btn-rounded {
+  border-radius: 24px;
+}
+.btn-rounded.btn-outline-red {
+  background-color: #fff;
+  border: 1px solid #ff3d00;
+  padding : 12px 18px;
+}
+.btn-rounded.btn-outline-red .label {
+  color: #ff3d00;
+}
+.btn-icon.alarm {
+  width: 32px;
+  height: 32px;
+  margin-left: 4px;
+  background: url("/src/assets/icons/icon_notice_line_reguler_nor (1).webp") 50% 50% no-repeat;
+  position: relative;
+  background-size: contain;
+}
+.btn-icon.setting {
+  width: 32px;
+  height: 32px;
+  margin-left: 4px;
+  background: url("/src/assets/icons/setting.webp") 50% 50% no-repeat;
+  position: relative;
+  background-size: contain;
+}
+/*예약관련*/
+.section-time-slot {
+  height: 59px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px !important;
+}
+.time-slot-unavailable-box {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+  height: 59px;
+  flex: 1;
+}
+.time-slot-unavailable {
+  padding: 14px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 38px;
+  box-sizing: border-box;
+  background-color: #f4f4f4;
+}
+
+/* form */
+.form-input {
+  background: #f9f9f9;
+  font-size: 14px;
+  border-radius: 8px;
+  display: block;
+  width: 100%;
+  padding: 16px;
+  line-height: 21px;
+}
+
+.sticky-bottom-btns {
+  position : fixed;
+  bottom : 0;
+  z-index : 99;
+  display : flex;
+  width : 100vw;
+  max-width : 480px;
+  padding : 20px;
+  background : rgba(255, 255, 255);
+}
+.sticky-bottom-btns .btn {
+  display : block;
+  width : 100%;
+  flex : 1;
+}
+
+.btn-lg.btn-red {
+  background: #ff3d00;
+  border-color: #ff3d00;
+  color: #fff;
+}
+
+.sticky-bottom-btns {
+  position : fixed;
+  z-index : 99;
+  max-width : 480px;
+  left : 50%;
+  transform : translate(-50%);
+  padding : 20px;
+}
+.sticky-bottom-btns {
+  bottom : 48px;
+}
+
+/* Search */
+main {
+  display : block;
+}
+.main {
+  margin-top: 47px;
+}
+.search-header .keyword input {
+  height : 56px;
+  display : block;
+  width : 100%;
+  padding : 0 20px 0 52px;
+  background: url("https://app.catchtable.co.kr/public/img/icons/search.svg") 20px 50% no-repeat;
+}
+.search-header .datetime-selector {
+  border-bottom : 1px solid #e5e5e5;
+  background : #fff;
+  z-index : 2;
+  position : relative;
+}
+.search-header .datetime-selector a{
+  position : relative;
+  display : block;
+  width : 100%;
+  height : 48px;
+  padding : 0 20px 0 48px;
+  line-height : 48px;
+  font-size : 14px;
+  background : url("https://app.catchtable.co.kr/public/img/icons/calendar.svg") 20px 50% no-repeat;
+}
+.search-header .datetime-selector a:after{
+  background : url("https://app.catchtable.co.kr/public/img/icons/arrow-down-red.svg") 50% 50% no-repeat;
+  width : 16px;
+  height : 16px;
+  content : "";
+  display : block;
+  position : absolute;
+  right : 20px;
+  top : 50%;
+  transform : translateY(-50%);
+}
+.swiper {
+  overflow : visible;
+}
+.swiper-container {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  list-style: none;
+  padding: 0;
+  z-index: 1;
+  overflow : hidden;
+}
+.design_system {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #D5D5D5;
+  border-radius: 8px;
+  position: relative;
+  background-color: #FFFFFF;
+  cursor: pointer;
+}
+.swiper-wrapper { 
+  position : relative;
+  width : 100%;
+  height : 100%;
+  display : flex;
+  z-index : 1;
+}
+.swiper-slide-chip {
+  width : auto !important;
+}
+.swiper-slide { 
+  flex-shrink : 0;
+  height : 100%;
+  position : relative;
+  transition-property : transform;
+}
+hr.separator {
+  height : 8px;
+  background : #ececec !important;
+}
+

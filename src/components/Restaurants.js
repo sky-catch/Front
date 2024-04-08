@@ -13,7 +13,7 @@ const restaurants = [
   {
     id: 1,
     img: "https://image.toast.com/aaaaaqx/catchtable/shopinfo/s4bykFRYK9M267n2BIZXZjg/4bykfryk9m267n2bizxzjg_236815131963864.jpg?small400",
-    name: "ㅁㅁ오마카세",
+    name: "ㅇㅇ식당",
     meta: {
       star: 4.2,
       tags: "스시, 초밥 * 제주 서귀포",
@@ -44,6 +44,7 @@ const Restaurants = () => {
   const onDetail = ({ name, id }) => {
     console.log("name : ", name);
     navigate(`/ct/shop?id=${id}`, { state: name });
+
   };
 
   return (

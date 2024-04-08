@@ -46,9 +46,22 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
   const visitTimeHours = String(new Date().getHours()).padStart(2, "0");
   const visitTimeMinutes = String(new Date().getMinutes()).padStart(2, "0");
 
+
+  /* 방문확인 모달추가 */
+  const handleReserve =(e)=> {
+    toggleDrawer(e);
+    // showReserve();
+  }
+
+  useEffect(() => {
+    if (isOpen) {
+     
+    }
+  }, [isOpen]);
+
+
   let [isData, setIsData] = useState({
     restaurantId: Number(new URLSearchParams(location.search).get("id")),
-    // restaurantId: Number(location.search.split("=")[1]),
     numberOfPeople: 0,
     searchDate: SetDateYMD(date),
     visitTime: visitTimeHours + ":" + visitTimeMinutes + ":" + "00",
@@ -225,7 +238,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
           </div>
         )}
 
-        <CloseBtn type="button" open={isOpen} onClick={toggleDrawer}>
+        <CloseBtn type="button" open={isOpen} onClick={(e)=> (handleReserve(e))}>
           닫기
         </CloseBtn>
       </Drawer>
