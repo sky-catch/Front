@@ -2,9 +2,9 @@ import { useNavigate } from "react-router-dom";
 
 const restaurants = [
   {
-    id: 0,
+    id: 8,
     img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    name: "ㅁㅁ오마카세",
+    name: "스시미루",
     meta: {
       star: 4.2,
       tags: "돼지고기구이 * 석촌",
@@ -41,9 +41,10 @@ const restaurants = [
 
 const Restaurants = () => {
   const navigate = useNavigate();
-  const onDetail = ({ name }) => {
+  const onDetail = ({ name, id }) => {
     console.log("name : ", name);
-    navigate(`/ct/shop/${name}`, { state : name });
+    navigate(`/ct/shop?id=${id}`, { state: name });
+
   };
 
   return (

@@ -7,11 +7,13 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CalendarComponent from "../../components/CalendarComponent";
+import RestaurantInfor from "./RestaurantInfor";
 import { getRestaurant, saveRestaurant } from "../../respository/restaurant";
 import SaveConfirmComponent from "../../components/SaveConfirmComponent.js";
 import StarsComponent from "../../components/StarsComponent.js";
 import RestaurantTap from "../../components/RestaurantTap.js";
 import ConfirmReserve from "../../components/ConfirmReserve.js"
+
 
 /**
  * 식당
@@ -37,18 +39,21 @@ export default function Restaurant() {
   const [openBottom, setOpenBottom] = React.useState(false);
   const openDrawerBottom = () => setOpenBottom(true);
   const closeDrawerBottom = () => setOpenBottom(false);
-
+  const [isInforOpen, setIsInforOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false); /* 예약하기 모달창 오픈 */
   const [isSave, setIsSave] = useState(false); /* 저장하기 모달창 오픈 */
   const [isConfirmOpen, setIsConfirmOpen] = useState(false); /* 예약 컨펌 모달창 오픈 */
 
   const [isSelect, setIsSelect] = useState(true);
-  const [isReserve, setIsReserve] = useState(true); /* 탭 true : 예약, false : 웨이팅 */
+  const [isReserve, setIsReserve] =
+    useState(true); /* 탭 true : 예약, false : 웨이팅 */
   const { state } = useLocation();
+
+  const [isContent, setIsContent] = useState("home");
+
   // const [isContent, setIsContent] = useState('home');
   const navigate = useNavigate();
   const location = useLocation();
-
   const toggleDrawer = (e) => {
     if (e.target.className.indexOf('closeSaveModal') == -1) {
       setIsOpen((prevState) => !prevState);
@@ -56,11 +61,16 @@ export default function Restaurant() {
       setIsSave((prevState) => !prevState);
     }
   };
-
+  const toggleDrawerInfor = () => {
+    setIsInforOpen((prevState) => !prevState);
+  };
   const onReserveCalendar = () => {
     setIsOpen((prevState) => !prevState);
   };
 
+  const onReserveInfor = () => {
+    setIsInforOpen((prevState) => !prevState);
+  };
   const menuClick = (e, index) => {
     if (index === 0) {
       setIsSelect(true);
@@ -71,11 +81,26 @@ export default function Restaurant() {
     }
   };
 
+
+  const contentClick = (e, index) => {
+    if (index === 0) {
+      setIsContent("home");
+    } else if (index === 1) {
+      setIsContent("menu");
+    } else if (index === 2) {
+      setIsContent("image");
+    } else if (index === 3) {
+      setIsContent("review");
+    }
+  };
+
+ 
   /* Function : 식당 정보 조회 */
   const setRestaurantInfo = (name) => {
     getRestaurant(name)
       .then((res) => {
         //TODO: 데이터 적용 완료
+
         setRestaturant(res.data);
         console.log(res.data, ',', restaurant);
       })
@@ -110,12 +135,7 @@ export default function Restaurant() {
     <main className="pb-[74px]">
       {/* 1. 식당 이미지 */}
       <Section>
-        <Swiper
-          className=""
-          onClick={() => {
-            toggleDrawer();
-          }}
-        >
+        <Swiper>
           {shopImgItem.shopImg.map((item, index) => {
             return (
               <SwiperSlide key={item.id}>
@@ -135,7 +155,7 @@ export default function Restaurant() {
       {/* 2. 식당 이름 및 메인 정보 */}
       {restaurant && (
         <Section>
-          <div className="container gutter-sm pt-[24px] pb-[24px]">
+          <div className="container gutter-sm pt-[7px] pb-[7px]">
             <div className="restaurant-summary">
               <span>{restaurant.category}</span>
               <h2>{restaurant.name}</h2>
@@ -150,9 +170,18 @@ export default function Restaurant() {
               </div>
             </div>
             <div className="menu">
-              <a className="call">전화</a>
+              <a className="call" href={`tel:${restaurant.phone}`}>
+                전화
+              </a>
               <a className="location">위치</a>
-              <a className="building">매장정보</a>
+              <a
+                className="building"
+                onClick={() => {
+                  onReserveInfor();
+                }}
+              >
+                매장정보
+              </a>
             </div>
           </div>
         </Section>
@@ -167,7 +196,6 @@ export default function Restaurant() {
             }`}
             onClick={(e) => menuClick(e, 0)}
           >
-            {" "}
             예약
           </li>
           <li
@@ -178,7 +206,6 @@ export default function Restaurant() {
               menuClick(e, 1);
             }}
           >
-            {" "}
             웨이팅
           </li>
         </ul>
@@ -191,7 +218,7 @@ export default function Restaurant() {
               <div className="section-body">
                 <div className="mb-[8px]" onClick={openDrawerBottom}>
                   <a
-                    href="#"
+                    href={`#`}
                     className="btn btn-lg btn-outline btn-cta full-width arrowdown"
                   >
                     <span>
@@ -218,7 +245,46 @@ export default function Restaurant() {
       </div>
       <Seperator></Seperator>
       {/* 4. 탭 */}
+
+      <div>
+        <ul className="tab-menu sticky top-[47px]  bg-white">
+          <li
+            className={`w-[50%] leading-[48px] text-center ${
+              isContent == "home" ? " active" : ""
+            }`}
+            onClick={(e) => contentClick(e, 0)}
+          >
+            홈
+          </li>
+          <li
+            className={`w-[50%] leading-[48px] text-center ${
+              isContent == "menu" ? "active" : ""
+            }`}
+            onClick={(e) => contentClick(e, 1)}
+          >
+            메뉴
+          </li>
+          <li
+            className={`w-[50%] leading-[48px] text-center ${
+              isContent == "image" ? "active" : ""
+            }`}
+            onClick={(e) => contentClick(e, 2)}
+          >
+            사진{" "}
+          </li>
+          <li
+            className={`w-[50%] leading-[48px] text-center ${
+              isContent == "review" ? "active" : ""
+            }`}
+            onClick={(e) => contentClick(e, 3)}
+          >
+            리뷰{" "}
+          </li>
+        </ul>
+      </div>
+
       <RestaurantTap restaurantInfo={restaurant}></RestaurantTap>
+
       {/* 5. 편의시설 */}
       {/* 6. 메뉴 */}
       {/* 7. 사진 */}
@@ -242,6 +308,13 @@ export default function Restaurant() {
         restaurant={restaurant}
         toggleDrawer={toggleDrawer}
       ></CalendarComponent>
+
+      <RestaurantInfor
+        isInforOpen={isInforOpen}
+        restaurant={restaurant}
+        toggleDrawerInfor={toggleDrawerInfor}
+      ></RestaurantInfor>
+
       <SaveConfirmComponent
         isSave={isSave}
         toggleDrawer={toggleDrawer}
@@ -251,6 +324,7 @@ export default function Restaurant() {
         isConfirmOpen={isConfirmOpen}
         toggleDrawer={toggleDrawer}
       ></ConfirmReserve>
+
     </main>
   );
 }
@@ -310,7 +384,9 @@ const Section = styled.section`
   }
   .container .menu {
     display: flex;
-    margin-top: 16px;
+    margin-top: 20px;
+    /* margin-bottom: 5px; */
+    height: 30px;
   }
   .container .menu a {
     display: flex;

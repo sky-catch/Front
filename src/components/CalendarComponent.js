@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import Drawer from "react-modern-drawer";
+import { useLocation } from "react-router-dom";
 // import { useQueryClient } from "react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import styled from "styled-components";
@@ -12,17 +13,39 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { ReservationTimes } from "../respository/reservation";
-// import { checkReservationTimes } from "../respository/reservation";
+
+function SetDateYMD(isDate) {
+  return (
+    isDate.getFullYear() +
+    "-" +
+    String(isDate.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(isDate.getDate()).padStart(2, "0")
+  );
+}
 const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
+  const location = useLocation();
   const [date, setDate] = useState(new Date());
   const [isTimes, setIsTime] = useState([]);
-  const [restaurantId, setIsRestaurantId] = useState("");
+  const [restaurantId, setIsRestaurantId] = useState(
+    location.search.split("=")[1]
+  );
   const queryClient = useQueryClient();
-  const { mutate: checkReservationTimes } = ReservationTimes();
+  const {
+    mutate,
+    // mutate: checkReservationTimes,
+    data: istest,
+    isLoading,
+  } = ReservationTimes();
+
+  const people = ["1", "2", "3", "4", "5", "6", "7", "8"];
   const [isRestaurantInfor, setIsRestaurantInfor] = useState([]);
   const [numberOfPeople, setIsPeopleNum] = useState(1);
   const [isVisitTime, setVisitTime] = useState("00:00");
   const [activeStartDate, setActiveStartDate] = useState(new Date());
+  const visitTimeHours = String(new Date().getHours()).padStart(2, "0");
+  const visitTimeMinutes = String(new Date().getMinutes()).padStart(2, "0");
+
 
   /* 방문확인 모달추가 */
   const handleReserve =(e)=> {
@@ -32,49 +55,52 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
 
   useEffect(() => {
     if (isOpen) {
-      setDate(new Date());
-      setIsPeopleNum(1);
-      setIsRestaurantId(restaurant.restaurantId);
-      setIsRestaurantInfor(restaurant);
+     
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    if (isOpen) {
-      const visitTimeHours = String(new Date().getHours()).padStart(2, "0");
-      const visitTimeMinutes = String(new Date().getMinutes()).padStart(2, "0");
-      const searchDate =
-        date.getFullYear() +
-        "-" +
-        String(date.getMonth() + 1).padStart(2, "0") +
-        "-" +
-        String(date.getDate()).padStart(2, "0");
-      const visitTime = visitTimeHours + ":" + visitTimeMinutes + ":" + "00";
-      const testObj = { restaurantId, numberOfPeople, searchDate, visitTime };
 
-      checkReservationTimes(testObj);
+  let [isData, setIsData] = useState({
+    restaurantId: Number(new URLSearchParams(location.search).get("id")),
+    numberOfPeople: 0,
+    searchDate: SetDateYMD(date),
+    visitTime: visitTimeHours + ":" + visitTimeMinutes + ":" + "00",
+  });
+
+  useEffect(() => {
+    if (isOpen && !isLoading) {
     }
-  }, [date, numberOfPeople, isVisitTime, isRestaurantInfor]);
+  }, [isOpen]);
 
   const handleDateChange = (newDate) => {
     setDate(newDate);
+    setIsData({
+      ...isData,
+      searchDate: SetDateYMD(newDate),
+      numberOfPeople: 0,
+    });
   };
   const handleTodayClick = () => {
     const today = new Date();
     setActiveStartDate(today);
     setDate(today);
+    setIsData({ ...isData, searchDate: SetDateYMD(today) });
   };
+
   const peopleNum = () => {
     let array = [];
     for (let index = 1; index <= 10; index++) {
       array.push(
         <SwiperSlide key={index}>
           <span
-            onClick={() => {
-              setIsPeopleNum(index);
+            onClick={(e) => {
+              // setIsPeopleNum(index);
+              e.preventDefault();
+
+              setIsData({ ...isData, numberOfPeople: index });
             }}
             className={` block size-[48px] rounded-[50%] text-center leading-[48px] font-light text-[14px] ${
-              index === numberOfPeople
+              index === isData.numberOfPeople
                 ? `bg-[#ff3d00] text-[#fff]`
                 : `text-[#aaa] border-[1px] border-[#aaa]`
             }`}
@@ -87,7 +113,16 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
 
     return array;
   };
+  useEffect(() => {
+    if (isOpen && !isLoading) {
+      mutate(isData);
+    }
+  }, [isData]);
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  console.log("istest", istest);
   return (
     <div>
       <Drawer
@@ -131,11 +166,34 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
           onSlideChange={() => console.log("slide change")}
           onSwiper={(swiper) => console.log(swiper)}
         >
-          {peopleNum()}
+          {
+            people.map((item, index) => {
+              return (
+                <SwiperSlide key={index}>
+                  <span
+                    onClick={(e) => {
+                      // setIsPeopleNum(index);
+                      e.preventDefault();
+                      console.log(item);
+                      setIsData({ ...isData, numberOfPeople: item });
+                    }}
+                    className={` block size-[48px] rounded-[50%] text-center leading-[48px] font-light text-[14px] ${
+                      item === isData.numberOfPeople
+                        ? `bg-[#ff3d00] text-[#fff]`
+                        : `text-[#aaa] border-[1px] border-[#aaa]`
+                    }`}
+                  >
+                    {item + "명"}
+                  </span>
+                </SwiperSlide>
+              );
+            })
+            // </>
+          }
         </Swiper>
 
         {/* 시간 */}
-        {isTimes.length > 0 ? (
+        {istest && istest.data.timeSlots.length > 0 ? (
           <Swiper
             className=" pl-[20px] py-[15px]"
             spaceBetween={7}
@@ -143,30 +201,39 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
             onSlideChange={() => console.log("slide change")}
             onSwiper={(swiper) => console.log(swiper)}
           >
-            {isTimes.map((item, index) => {
-              return (
-                <SwiperSlide
-                  key={index}
-                  onClick={() => {
-                    console.log(item.time);
-                    setVisitTime(item.time);
-                  }}
-                  className=" min-w-[70px] h-[38px] rounded-[6px] bg-[#ff3d00] text-[#fff] w-fit text-[13px] text-center leading-[38px]"
-                >
-                  {item.time.slice(0, 2) < 13
-                    ? `오전 ${item.time.slice(0, 2)}`
-                    : `오후 ${String(
-                        Number(item.time.slice(0, 2)) - 12
-                      ).padStart(2, "0")}`}
-                  {":" + item.time.slice(3)}
-                </SwiperSlide>
-              );
-            })}
+            {istest &&
+              istest.data.timeSlots.map((item, index) => {
+                return (
+                  <SwiperSlide
+                    key={index}
+                    onClick={() => {
+                      console.log(item.time);
+                      setVisitTime(item.time);
+                    }}
+                    className=" min-w-[70px] h-[38px] rounded-[6px] bg-[#ff3d00] text-[#fff] w-fit text-[13px] text-center leading-[38px]"
+                  >
+                    {item.time.slice(0, 2) < 13
+                      ? `오전 ${item.time.slice(0, 2)}`
+                      : `오후 ${String(
+                          Number(item.time.slice(0, 2)) - 12
+                        ).padStart(2, "0")}`}
+                    {":" + item.time.slice(3)}
+                  </SwiperSlide>
+                );
+              })}
           </Swiper>
         ) : (
           <div className="container mt-[10px]">
             <span className=" block h-[38px] bg-[#f4f4f4] text-center text-[#aaa] leading-[38px] text-[13px]">
-              예약이 모두 마감되었습니다.
+              {
+                isData.numberOfPeople == 0
+                  ? "인원수를 선택해 주세요."
+                  : istest &&
+                    istest.data.timeSlots.length === 0 &&
+                    "예약이 모두 마감되었습니다."
+                // istest.data.timeSlots.length == 0 &&
+                // "예약이 모두 마감되었습니다."
+              }
             </span>
           </div>
         )}

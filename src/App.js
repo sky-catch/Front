@@ -1,12 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 // import { userInfoState } from "../../recoil/atoms/userState";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { useLocation } from "react-router-dom";
 import Header from "./components/Header.js";
 import Navbar from "./components/Navbar.js";
+import ChatRoom from "./pages/Dialog/ChatRoom.js";
 import Dialog from "./pages/Dialog/Dialog.js";
 import Home from "./pages/Home/Home.js";
-import ChatRoom from "./pages/MyDining/ChatRoom.js";
 import EmptySlotGuide from "./pages/MyDining/EmptySlotGuide.js";
 import MyDining from "./pages/MyDining/MyDining.js";
 import Account from "./pages/MyPage/Account.js";
@@ -22,6 +23,31 @@ import ReviewList from "./pages/Restaurant/ReviewList.js";
 import ReserveForm from "./pages/Restaurant/ReserveForm.js"
 
 function App() {
+  // localStorage.clear();
+  localStorage.setItem(
+    "token",
+    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTI1NTU1MTksImV4cCI6MTcxMjY0MTkxOX0.v1U-kDsxNfnNLGmtZH2qJvtLDFZAe7UAC9B73J0suY41x4pfVjVOVSTcOQvjKNjzSM_ke0RC6NYHA8fTT0ff2g`
+  );
+  localStorage.setItem(
+    "data",
+    JSON.stringify({
+      usersDTO: {
+        id: 0,
+        nickname: "string",
+        profileImageUrl: "string",
+        email: "string",
+        name: "string",
+        status: "ACTIVE",
+        owner: true,
+      },
+    })
+  );
+  const location = useLocation();
+  if (useLocation().pathname === "/ct/shop") {
+    document.title = `${location.state}`;
+  } else {
+    document.title = "즐거운 미식 생활의 시작, 캐치테이블";
+  }
   return (
     <div>
       <RecoilRoot>
@@ -45,14 +71,14 @@ function App() {
           <Route path="/emptySlotGuide" element={<EmptySlotGuide />}></Route>
           {/* 네비바 변경 페이지 */}
           {/* <Route path="/ct" element={<RestaurantWrapper />} > */}
+{/*  <Route path={`/ct/shop/`} element={<Restaurant />} /> */}
           <Route path="/ct/shop/:restaurantName" element={<Restaurant />} />
           <Route path="/ct/shop/:restaurantName/reviewList" element={<ReviewList/>} />
           <Route path="/ct/shop/reservation/form" element={<ReserveForm/>}/>
           <Route path="/ct/my" element={<RestaurantSetting />} />
-          <Route path="/chatroom" element={<ChatRoom />} />
-          <Route path="/chatroom" element={<ChatRoom />} />
+          <Route path={`/chat`} element={<ChatRoom />} />
         </Routes>
-        <ReactQueryDevtools initialIsOpen={true} />
+        {/* <ReactQueryDevtools initialIsOpen={true} /> */}
         <Navbar />
       </RecoilRoot>
     </div>

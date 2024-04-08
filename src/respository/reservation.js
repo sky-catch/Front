@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import apiClient from "../apis/ApiClient";
 
@@ -22,19 +22,52 @@ import apiClient from "../apis/ApiClient";
 //     console.log("Error >>", err.message);
 //   }
 // };
-const checkReservationTimes = (data) => {
-  // console.log("data", data);
+const checkReservationTimes = (isdata) => {
+  if (isdata.numberOfPeople === 0) return;
   return axios.post(
     "http://15.164.89.177:8080/reservations/availTimeSlots",
-    data
+    isdata
   );
 };
 
+//PostChatRoomRes
 export const ReservationTimes = () => {
-  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["checkReservationTimes"],
-    mutationFn: checkReservationTimes,
+    mutationFn: (data) => {
+      return checkReservationTimes(data);
+    },
+    // mutationFn: checkReservationTimes,
+    onSuccess: (isdata) => {
+      return isdata;
+      // console.log("createPost success", data);
+    },
+    onError: (error) => {
+      // mutate가 실패하면, 함수를 실행합니다.
+      console.log("createPost error", error);
+    },
+    // retry: 2,
+  });
+};
+
+// 채팅 추가
+const postChatRoom = (id) => {
+  const token = localStorage.getItem("token");
+  return axios.post(
+    `http://15.164.89.177:8080/chat/${id}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+export const PostChatRoomItem = () => {
+  return useMutation({
+    mutationKey: ["postChatRoom"],
+    mutationFn: postChatRoom,
     onSuccess: (data) => {
       console.log("createPost success", data);
     },
@@ -43,32 +76,53 @@ export const ReservationTimes = () => {
       console.log("createPost error", error);
     },
   });
+
+  // return useMutation({
+  //   mutationKey: ["postChatRoom"],
+  //   mutationFn: postChatRoom,
+  //   onSuccess: (data) => {
+  //     console.log("createPost success", data);
+  //   },
+  //   onError: (error) => {
+  //     // mutate가 실패하면, 함수를 실행합니다.
+  //     console.log("createPost error", error);
+  //   },
+  //   context: {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   },
+  // });
 };
 
 //채팅방 목록 보기
 export const GetChatRoomListRes = async () => {
+  const token = localStorage.getItem("token");
+
   try {
     const result = await apiClient.get(`/chat/roomList`, {
       headers: {
-        // accept: "*/*",
-        "Access-Control-Allow-Origin": true,
-        // "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
-    return result;
+
+    return result.data;
   } catch (err) {
-    console.log("Error >>", err);
+    console.log("Error >>", err.message);
+    throw err;
   }
 };
 
 //채팅 보기
-export const GetChatRoom = async () => {
+export const getChatRoom = async (chatRoomId) => {
   try {
-    const result = await apiClient.get(`/chat/6`, {
-
-      headers: {},
+    const result = await apiClient.get(`/chat/${chatRoomId}`, {
+      headers: {
+        // Authorization: `Bearer ${token}`,
+      },
     });
-    return result;
+
+    return result.data;
   } catch (err) {
     console.log("Error >>", err);
   }
