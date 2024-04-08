@@ -1876,16 +1876,12 @@ header {
 .recommend-box > div:last-child span {
   -webkit-backdrop-filter: brightness(50%);
           backdrop-filter: brightness(50%);
-<<<<<<< Updated upstream
   /* position: unset; */
   bottom: unset;
   width: 100%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-=======
-  position: unset;
->>>>>>> Stashed changes
 }
 
 .score {
