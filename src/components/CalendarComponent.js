@@ -46,19 +46,11 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
   const visitTimeHours = String(new Date().getHours()).padStart(2, "0");
   const visitTimeMinutes = String(new Date().getMinutes()).padStart(2, "0");
 
-
   /* 방문확인 모달추가 */
-  const handleReserve =(e)=> {
+  const handleReserve = (e) => {
     toggleDrawer(e);
     // showReserve();
-  }
-
-  useEffect(() => {
-    if (isOpen) {
-     
-    }
-  }, [isOpen]);
-
+  };
 
   let [isData, setIsData] = useState({
     restaurantId: Number(new URLSearchParams(location.search).get("id")),
@@ -66,11 +58,6 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
     searchDate: SetDateYMD(date),
     visitTime: visitTimeHours + ":" + visitTimeMinutes + ":" + "00",
   });
-
-  useEffect(() => {
-    if (isOpen && !isLoading) {
-    }
-  }, [isOpen]);
 
   const handleDateChange = (newDate) => {
     setDate(newDate);
@@ -87,34 +74,12 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
     setIsData({ ...isData, searchDate: SetDateYMD(today) });
   };
 
-  const peopleNum = () => {
-    let array = [];
-    for (let index = 1; index <= 10; index++) {
-      array.push(
-        <SwiperSlide key={index}>
-          <span
-            onClick={(e) => {
-              // setIsPeopleNum(index);
-              e.preventDefault();
-
-              setIsData({ ...isData, numberOfPeople: index });
-            }}
-            className={` block size-[48px] rounded-[50%] text-center leading-[48px] font-light text-[14px] ${
-              index === isData.numberOfPeople
-                ? `bg-[#ff3d00] text-[#fff]`
-                : `text-[#aaa] border-[1px] border-[#aaa]`
-            }`}
-          >
-            {index + "명"}
-          </span>
-        </SwiperSlide>
-      );
-    }
-
-    return array;
-  };
   useEffect(() => {
     if (isOpen && !isLoading) {
+      if (isData.visitTime > restaurant.lastOrderTime) {
+        setIsData({ ...isData, visitTime: restaurant.lastOrderTime });
+      }
+
       mutate(isData);
     }
   }, [isData]);
@@ -238,7 +203,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
           </div>
         )}
 
-        <CloseBtn type="button" open={isOpen} onClick={(e)=> (handleReserve(e))}>
+        <CloseBtn type="button" open={isOpen} onClick={(e) => handleReserve(e)}>
           닫기
         </CloseBtn>
       </Drawer>
