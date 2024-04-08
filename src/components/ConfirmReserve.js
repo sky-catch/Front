@@ -14,7 +14,7 @@ const ConfirmReserve = ({isConfirmOpen, toggleDrawer, info}) => {
     return(
         <div>
             <Drawer
-                open={true}
+                open={isConfirmOpen}
                 direction="bottom"
                 className="drawer-box"
                 size="480px"

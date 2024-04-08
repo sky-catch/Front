@@ -4,7 +4,7 @@ const restaurants = [
   {
     id: 8,
     img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    name: "스시미루",
+    name: "ㅁㅁ오마카세",
     meta: {
       star: 4.2,
       tags: "돼지고기구이 * 석촌",
@@ -43,7 +43,7 @@ const Restaurants = () => {
   const navigate = useNavigate();
   const onDetail = ({ name, id }) => {
     console.log("name : ", name);
-    navigate(`/ct/shop?id=${id}`, { state: name });
+    navigate(`/ct/shop/${name}`, { state: name });
 
   };
 

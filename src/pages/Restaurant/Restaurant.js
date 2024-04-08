@@ -35,7 +35,7 @@ const shopImgItem = {
 };
 
 export default function Restaurant() {
-  const [restaurant, setRestaturant] = useState();
+  const [restaurant, setRestaurant] = useState();
   const [openBottom, setOpenBottom] = React.useState(false);
   const openDrawerBottom = () => setOpenBottom(true);
   const closeDrawerBottom = () => setOpenBottom(false);
@@ -45,13 +45,11 @@ export default function Restaurant() {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false); /* 예약 컨펌 모달창 오픈 */
 
   const [isSelect, setIsSelect] = useState(true);
-  const [isReserve, setIsReserve] =
-    useState(true); /* 탭 true : 예약, false : 웨이팅 */
+  const [isReserve, setIsReserve] = useState(true); /* 탭 true : 예약, false : 웨이팅 */
   const { state } = useLocation();
 
   const [isContent, setIsContent] = useState("home");
 
-  // const [isContent, setIsContent] = useState('home');
   const navigate = useNavigate();
   const location = useLocation();
   const toggleDrawer = (e) => {
@@ -101,7 +99,7 @@ export default function Restaurant() {
       .then((res) => {
         //TODO: 데이터 적용 완료
 
-        setRestaturant(res.data);
+        setRestaurant(res.data);
         console.log(res.data, ',', restaurant);
       })
       .catch((err) => {
@@ -125,7 +123,7 @@ export default function Restaurant() {
   };
 
   useEffect(() => {
-    console.log(state);
+    console.log(state, restaurant);
     if( !restaurant ) {
       setRestaurantInfo(state);
     } 
@@ -245,44 +243,6 @@ export default function Restaurant() {
       </div>
       <Seperator></Seperator>
       {/* 4. 탭 */}
-
-      <div>
-        <ul className="tab-menu sticky top-[47px]  bg-white">
-          <li
-            className={`w-[50%] leading-[48px] text-center ${
-              isContent == "home" ? " active" : ""
-            }`}
-            onClick={(e) => contentClick(e, 0)}
-          >
-            홈
-          </li>
-          <li
-            className={`w-[50%] leading-[48px] text-center ${
-              isContent == "menu" ? "active" : ""
-            }`}
-            onClick={(e) => contentClick(e, 1)}
-          >
-            메뉴
-          </li>
-          <li
-            className={`w-[50%] leading-[48px] text-center ${
-              isContent == "image" ? "active" : ""
-            }`}
-            onClick={(e) => contentClick(e, 2)}
-          >
-            사진{" "}
-          </li>
-          <li
-            className={`w-[50%] leading-[48px] text-center ${
-              isContent == "review" ? "active" : ""
-            }`}
-            onClick={(e) => contentClick(e, 3)}
-          >
-            리뷰{" "}
-          </li>
-        </ul>
-      </div>
-
       <RestaurantTap restaurantInfo={restaurant}></RestaurantTap>
 
       {/* 5. 편의시설 */}
