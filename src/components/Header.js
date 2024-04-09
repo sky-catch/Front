@@ -210,7 +210,7 @@ const Header = () => {
         if ( location.indexOf("/ct/shop") != -1 ) {
           if ( location.indexOf("/reviewList") != -1 ) {
             return(
-              <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px]">
+              <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] bg-white">
               <div className="header-left items-center flex gap-[12px]">
                 <button className="back-b header-icon" onClick={onClickBack}>뒤로</button>
                 <h1>{shopName}</h1>

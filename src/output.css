@@ -749,6 +749,14 @@ video {
   margin-left: 8px;
 }
 
+.ml-\[-20px\] {
+  margin-left : -20px !important;
+}
+
+.mr-\[-20px\] {
+  margin-right : -20px !important;
+}
+
 .ml-auto {
   margin-left: auto;
 }
@@ -1757,9 +1765,6 @@ header {
   background: 50% 50% no-repeat;
   background-size: 24px 24px;
 }
-.header-tp-wrapper {
-  background: #fff;
-}
 .header-tp-wrapper .header-left .back {
   background-image : url("https://app.catchtable.co.kr/public/img/icons/new-nav-icons/back-w.svg");
 }
@@ -2617,4 +2622,7 @@ hr.separator {
   display : flex;
   align-items : center;
   word-break : keep-all;
+}
+.ebold {
+  font-weight : 700 !important;
 }

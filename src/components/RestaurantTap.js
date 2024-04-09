@@ -42,7 +42,7 @@ export default function RestaurantTap({restaurantInfo}) {
         if (location.pathname.indexOf("/reviewList") != -1) {
             setIsContent('review');
         }
-        restaurantInfo ? setReviewCount(restaurantInfo.reviewCount) : setReviewCount(0);
+        restaurantInfo ? setReviewCount(restaurantInfo.reviewComments.length) : setReviewCount(0);
     },[restaurantInfo])
 
     return(

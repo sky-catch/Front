@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styled from "styled-components";
+import comment_new from "../../assets/icons/comment-new.webp";
 
 /**
  * review 아이템
@@ -8,9 +9,12 @@ import styled from "styled-components";
  */
 export default function ReviewItem({info}) {
     const [reviewEach, setReviewEach] = useState();
+    const [commentDate, setCommentDate] = useState();
 
     useEffect(()=>{
-        console.log(info);
+        const reviewDate = new Date(info.reviewCreatedDate);
+        const cdate = reviewDate.getFullYear()+"-"+ ( "0"+(reviewDate.getMonth()+1) ).slice(-2) + "-" + ( "0"+reviewDate.getDate()).slice(-2);
+        setCommentDate(cdate);
         setReviewEach(info);
     },[])
 
@@ -25,21 +29,21 @@ export default function ReviewItem({info}) {
                         </a>
                     </div>
                     <div className="__review-meta flex">
-                        <a className="__rating flex"><div>{reviewEach?reviewEach.rate:0}</div></a>
-                        <span className="__date">{reviewEach?reviewEach.reviewCreatedDate:""}</span>
+                        <a className="__rating flex ebold"><div>{reviewEach?reviewEach.rate.toFixed(1):0}</div></a>
+                        <span className="__date">{commentDate? commentDate:""}</span>
                     </div>
                 </div>
                 <div className="__body">
                     <div>
                         <div className="v-scroll">
                             <div className="v-scroll-inner">
-                                <Swiper className="__photos">
-                                    {reviewEach.images.map((item, index)=> (
-                                        <SwiperSlide className="mr-[10px] swiper-slide">
+                                <div className="__photos">
+                                    { reviewEach ? reviewEach.images.map((item, index)=> (
+                                        <div className="mr-[10px] swiper-slide" key={index}>
                                             <img src={item.path}></img>
-                                        </SwiperSlide>
-                                    ))}
-                                </Swiper>
+                                        </div>
+                                    )) : (<></>)}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -59,6 +63,8 @@ export default function ReviewItem({info}) {
 const Contents = styled.article`
     border : none;
     border-top : 1px solid #e8e8e8;
+    margin-left : -20px !important;
+    margin-right : -20px !important;
 
     .__header {
         position : relative;
@@ -77,9 +83,10 @@ const Contents = styled.article`
         border-radius : 50%;
         box-sizing : border-box;
     }
-    .username {
+    .profile .name {
+        line-height : normal;
+        font-weight : 700;
         font-size : 14px;
-        font-weight :700;
     }
     .__header .__review-meta {
         position : relative;
@@ -87,6 +94,7 @@ const Contents = styled.article`
         flex-direction: column;
         align-items: flex-start;
         gap: 4px;
+        font-size : 14px;
     }
     .__header .__review-meta .__rating:before {
         background : url("https://app.catchtable.co.kr/public/img/icons/star-yellow.svg") 0% 50% no-repeat;
@@ -107,6 +115,9 @@ const Contents = styled.article`
     .__body {
         position : relative;
         padding : 0px 16px;
+    }
+    .__body .v-scroll {
+        padding-bottom : 14px;
     }
     .__body .swiper-slide {
         width : 160px !important;
@@ -130,11 +141,23 @@ const Contents = styled.article`
         content : "";
     }
     .__post-meta .__comment:before {
-        background : url("./src/assets/icons/comment-new.webp") 50% 50% no-repeat;
+        background : url(${comment_new}) 50% 50% no-repeat;
+        background-size : 24px;
         display : block;
         width : 32px;
         height : 32px;
         content : "";
+    }
+    .__review-post p {
+        line-height : 22px;
+    }
+    .__photos {
+        display : flex;
+        flex-wrap : nowrap;
+    }
+    .__photos .swiper-slide {
+        display : block;
+        overflow : hidden;
     }
 `;
 const MoreIcon = styled.div`
