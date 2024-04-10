@@ -127,3 +127,30 @@ export const getChatRoom = async (chatRoomId) => {
     console.log("Error >>", err);
   }
 };
+// 예약 생성
+const createReservation = async (restaurantId, restaurantValue) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.error("Token is not available");
+    return; // 예외 처리: 토큰이 없을 경우 바로 반환
+  }
+
+  return axios.post(
+    `http://15.164.89.177:8080/reservations/${restaurantId}`,
+    restaurantValue,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+};
+
+export const CreateNewReservation = () => {
+  return useMutation({
+    mutationKey: ["createReservation"],
+    mutationFn: createReservation,
+    onSuccess: (data) => {
+      console.log("createPost success", data);
+    },
+    onError: (error) => {
+      console.log("createPost error", error);
+    },
+  });
+};

@@ -1211,6 +1211,11 @@ video {
   border-color: transparent;
 }
 
+.border-\[\#333\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(51 51 51 / var(--tw-border-opacity));
+}
+
 .border-b-\[\#d4d4d4\] {
   --tw-border-opacity: 1;
   border-bottom-color: rgb(212 212 212 / var(--tw-border-opacity));
@@ -1579,6 +1584,11 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.text-\[\#333\] {
+  --tw-text-opacity: 1;
+  color: rgb(51 51 51 / var(--tw-text-opacity));
 }
 
 .underline {

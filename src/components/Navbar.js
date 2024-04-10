@@ -53,7 +53,11 @@ const Navbar = () => {
   return (
     <NavbarContents
       className={`${
-        location === "/ct/shop" || location === "/chat" ? " hidden" : " block"
+        location === "/ct/shop" ||
+        location === "/chat" ||
+        location === "/paymentpage"
+          ? " hidden"
+          : " block"
       } z-50`}
     >
       <NavbarWrap>

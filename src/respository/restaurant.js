@@ -33,7 +33,7 @@ export const getRestaurant = async (id) => {
     const res = await apiClient.get(`/restaurants/${id}`, {
       headers: {},
     });
-  
+
     return res;
   } catch (err) {
     console.log("Error >>", err);
@@ -55,10 +55,10 @@ export const GetReservationRes = async (visitStatus) => {
 };
 
 /* 식당 저장 */
-export const saveRestaurant = async(restaurantId) => {
+export const saveRestaurant = async (restaurantId) => {
   const token = localStorage.getItem("token");
-  console.log('restaurantId :', restaurantId, 'token : ', token);
-  try{
+  console.log("restaurantId :", restaurantId, "token : ", token);
+  try {
     const res = await apiClient.get(`/saveRestaurant/${restaurantId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -67,4 +67,4 @@ export const saveRestaurant = async(restaurantId) => {
   } catch (err) {
     console.log("Error >>", err);
   }
-}
+};

@@ -5,6 +5,7 @@ import { RecoilRoot } from "recoil";
 import { useLocation } from "react-router-dom";
 import Header from "./components/Header.js";
 import Navbar from "./components/Navbar.js";
+import PaymentPage from "./components/PaymentPage.js";
 import ChatRoom from "./pages/Dialog/ChatRoom.js";
 import Dialog from "./pages/Dialog/Dialog.js";
 import Home from "./pages/Home/Home.js";
@@ -26,7 +27,7 @@ function App() {
   // localStorage.clear();
   localStorage.setItem(
     "token",
-    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTI1NTU1MTksImV4cCI6MTcxMjY0MTkxOX0.v1U-kDsxNfnNLGmtZH2qJvtLDFZAe7UAC9B73J0suY41x4pfVjVOVSTcOQvjKNjzSM_ke0RC6NYHA8fTT0ff2g`
+    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTI3MjY5NjksImV4cCI6MTcxMjgxMzM2OX0.AZ4T4lxt1Gw_l2TiAyIK5u8__t1yFAZwyskKOchBsosYYhXAwQMowjTVxomR8Thmq6A3s-tTrZizCY5TM9FeMA`
   );
   localStorage.setItem(
     "data",
@@ -80,6 +81,7 @@ function App() {
           <Route path="/ct/shop/reservation/form" element={<ReserveForm />} />
           <Route path="/ct/my" element={<RestaurantSetting />} />
           <Route path={`/chat`} element={<ChatRoom />} />
+          <Route path="/paymentpage" element={<PaymentPage />} />
         </Routes>
         {/* <ReactQueryDevtools initialIsOpen={true} /> */}
         <Navbar />
