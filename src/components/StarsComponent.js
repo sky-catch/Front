@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import styled from "styled-components";
 
@@ -14,6 +14,10 @@ const StarsComponent = ({startAvg}) => {
     const Stars = ({selected=false, onSelect=(f)=>f}) => (
         <FaStar color={selected ? "FFC94A" : "gray"}  />
     )
+
+    useEffect(()=>{
+        console.log(startAvg);
+    },[])
 
     return(
         <StarRate className="flex align-center">

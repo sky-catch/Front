@@ -12,7 +12,9 @@ import { getRestaurant, saveRestaurant } from "../../respository/restaurant";
 import SaveConfirmComponent from "../../components/SaveConfirmComponent.js";
 import StarsComponent from "../../components/StarsComponent.js";
 import RestaurantTap from "../../components/RestaurantTap.js";
-import ConfirmReserve from "../../components/ConfirmReserve.js"
+import ConfirmReserve from "../../components/ConfirmReserve.js";
+import lunch_dark from "../../assets/icons/time-lunch-dark.svg";
+import dinner_dark from "../../assets/icons/time-dinner-dark.svg";
 
 
 /**
@@ -127,6 +129,7 @@ export default function Restaurant() {
     if( !restaurant ) {
       setRestaurantInfo(state);
     } 
+    // console.log(restaurant.reviewAvg);
   }, [restaurant]);
 
   return (
@@ -163,8 +166,9 @@ export default function Restaurant() {
             </div>
             <div className="restaurant-detail">
               <p>{restaurant.content}</p>
-              <div>
-                <span>점심 저녁 동일가 1-3만원</span>
+              <div className="lunchDinner">
+                <span className="detail lunch">저녁 동일가 1-3만원</span>
+                <span className="detail dinner">저녁 동일가 1-3만원</span>
               </div>
             </div>
             <div className="menu">
@@ -383,6 +387,33 @@ const Section = styled.section`
   .container .menu a:not(:last-child) {
     border-right: 1px solid #d5d5d5;
     line-height: 18px;
+  }
+  .restaurant-detail .lunchDinner {
+    display : flex;
+    font-size : 14px;
+    align-items : center;
+    color : #333;
+  }
+  .restaurant-detail .lunchDinner .detail {
+    margin-right : 20px;
+    padding-left : 21px;
+    position : relative;
+    word-break : break-word;
+  }
+  .restaurant-detail .lunchDinner .detail:before {
+    content : "";
+    width : 18px;
+    height : 18px;
+    position : absolute;
+    left : 0;
+    top : 50%;
+    transform : translateY(-50%);
+  }
+  .restaurant-detail .lunchDinner .detail.lunch:before {
+    background : url(${lunch_dark}) 0% 50% no-repeat;
+  }
+  .restaurant-detail .lunchDinner .detail.dinner:before {
+    background : url(${dinner_dark}) 0% 50% no-repeat;
   }
 `;
 const Seperator = styled.hr`

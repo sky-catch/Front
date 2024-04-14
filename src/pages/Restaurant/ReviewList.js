@@ -36,7 +36,7 @@ export default function ReviewList() {
         } else {
             setCommentCount(restaurant.reviewComments.length);
         }
-        console.log(restaurant.reviewAvg.toFixed(1));
+        // console.log(restaurant.reviewAvg.toFixed(1));
     },[restaurant])
 
     return(

@@ -1753,7 +1753,16 @@ header {
 }
 
 /* header */
+.header-close {
+  
+}
 
+.header-back-black {
+  background : url("/src/assets/icons/back.svg") 50% 50% no-repeat;
+  width : 32px;
+  height : 32px;
+  text-indent : -999em;
+}
 
 .header-icon {
   pointer : cursor;
@@ -2302,6 +2311,12 @@ header {
 }
 .font-12 {
   font-size : 12px !important;
+}
+.font-16 {
+  font-size : 16px !important;
+}
+.color-gray {
+  color: #666 !important;
 }
 .btn {
   appearance: none;

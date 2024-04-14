@@ -48,8 +48,8 @@ function MyPage() {
   }
 
   useEffect(() => {
-    // const loginUser = JSON.parse(localStorage.getItem("token"));
-    // console.log(loginUser);
+    const loginUser = localStorage.getItem("id");
+    console.log(loginUser);
     // if (loginUser) {
 
       // 유저 정보 세팅
