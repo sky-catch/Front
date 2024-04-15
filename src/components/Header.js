@@ -205,12 +205,28 @@ const Header = () => {
             {isExit && <PopupComponent setIsExit={setIsExit}></PopupComponent>}
           </div>
         );
+      case "/ct/shop/reservation/form" :
+        return (
+          <div className="header-wrapper flex px-[20px]">
+            <div className="header-left items-center flex gap-[12px]">
+              <button className="header-close" onClick={onClickBack}>
+                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg" >
+                  <path d="M20 4L4 20" stroke="#222222" stroke-width="1.5"></path>
+                  <path d="M4 4L20 20" stroke="#222222" stroke-width="1.5"></path>
+                </svg>
+              </button>
+              <a className="text-xl h-[47px] leading-[47px] font-bold">
+                식당 이름
+              </a>
+            </div>
+          </div>
+        );
       default:
         /* 레스토랑 상세 정보 */
         if ( location.indexOf("/ct/shop") != -1 ) {
           if ( location.indexOf("/reviewList") != -1 ) {
             return(
-              <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px]">
+              <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] bg-white">
               <div className="header-left items-center flex gap-[12px]">
                 <button className="back-b header-icon" onClick={onClickBack}>뒤로</button>
                 <h1>{shopName}</h1>

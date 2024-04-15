@@ -10,6 +10,10 @@ import CalendarComponent from "../../components/CalendarComponent";
 import RestaurantTap from "../../components/RestaurantTap.js";
 import SaveConfirmComponent from "../../components/SaveConfirmComponent.js";
 import StarsComponent from "../../components/StarsComponent.js";
+import RestaurantTap from "../../components/RestaurantTap.js";
+import ConfirmReserve from "../../components/ConfirmReserve.js";
+import lunch_dark from "../../assets/icons/time-lunch-dark.svg";
+import dinner_dark from "../../assets/icons/time-dinner-dark.svg";
 import { getRestaurant, saveRestaurant } from "../../respository/restaurant";
 import RestaurantInfor from "./RestaurantInfor";
 
@@ -33,7 +37,7 @@ const shopImgItem = {
 };
 
 export default function Restaurant() {
-  const [restaurant, setRestaturant] = useState();
+  const [restaurant, setRestaurant] = useState();
   const [openBottom, setOpenBottom] = React.useState(false);
   const openDrawerBottom = () => setOpenBottom(true);
   const closeDrawerBottom = () => setOpenBottom(false);
@@ -44,20 +48,27 @@ export default function Restaurant() {
     useState(false); /* 예약 컨펌 모달창 오픈 */
 
   const [isSelect, setIsSelect] = useState(true);
-  const [isReserve, setIsReserve] =
-    useState(true); /* 탭 true : 예약, false : 웨이팅 */
+  const [isReserve, setIsReserve] = useState(true); /* 탭 true : 예약, false : 웨이팅 */
   const { state } = useLocation();
 
   const [isContent, setIsContent] = useState("home");
 
-  // const [isContent, setIsContent] = useState('home');
   const navigate = useNavigate();
   const location = useLocation();
   const toggleDrawer = (e) => {
+    console.log(e.target.className,);
+    
+    if (e.target.className.indexOf('closeSaveModal') != -1) {
+      setIsSave((prevState) => !prevState);
+    } else if (e.target.className.indexOf('confirm-close') != -1) {
+      setIsConfirmOpen((prevState) => !prevState);
+    } else if( e.target.className.indexOf('close-modal-btn') != -1 ) {
+      setIsConfirmOpen((prevState) => !prevState);
+
     if (e.target.className.indexOf("closeSaveModal") == -1) {
       setIsOpen((prevState) => !prevState);
     } else {
-      setIsSave((prevState) => !prevState);
+      setIsOpen((prevState) => !prevState);
     }
   };
   const toggleDrawerInfor = () => {
@@ -97,7 +108,8 @@ export default function Restaurant() {
     getRestaurant(name)
       .then((res) => {
         //TODO: 데이터 적용 완료
-
+        setRestaurant(res.data);
+        console.log(res.data, ',', restaurant);
         setRestaturant(res.data);
         console.log(res.data, ",", restaurant);
       })
@@ -122,10 +134,17 @@ export default function Restaurant() {
   };
 
   useEffect(() => {
+    console.log(state, restaurant);
+    if( !restaurant ) {
+      setRestaurantInfo(state);
+    } 
+    // console.log(restaurant.reviewAvg);
+
     console.log(state);
     if (!restaurant) {
       setRestaurantInfo(state);
     }
+
   }, [restaurant]);
 
   return (
@@ -164,8 +183,9 @@ export default function Restaurant() {
             </div>
             <div className="restaurant-detail">
               <p>{restaurant.content}</p>
-              <div>
-                <span>점심 저녁 동일가 1-3만원</span>
+              <div className="lunchDinner">
+                <span className="detail lunch">저녁 동일가 1-3만원</span>
+                <span className="detail dinner">저녁 동일가 1-3만원</span>
               </div>
             </div>
             <div className="menu">
@@ -244,44 +264,6 @@ export default function Restaurant() {
       </div>
       <Seperator></Seperator>
       {/* 4. 탭 */}
-
-      <div>
-        <ul className="tab-menu sticky top-[47px]  bg-white">
-          <li
-            className={`w-[50%] leading-[48px] text-center ${
-              isContent == "home" ? " active" : ""
-            }`}
-            onClick={(e) => contentClick(e, 0)}
-          >
-            홈
-          </li>
-          <li
-            className={`w-[50%] leading-[48px] text-center ${
-              isContent == "menu" ? "active" : ""
-            }`}
-            onClick={(e) => contentClick(e, 1)}
-          >
-            메뉴
-          </li>
-          <li
-            className={`w-[50%] leading-[48px] text-center ${
-              isContent == "image" ? "active" : ""
-            }`}
-            onClick={(e) => contentClick(e, 2)}
-          >
-            사진{" "}
-          </li>
-          <li
-            className={`w-[50%] leading-[48px] text-center ${
-              isContent == "review" ? "active" : ""
-            }`}
-            onClick={(e) => contentClick(e, 3)}
-          >
-            리뷰{" "}
-          </li>
-        </ul>
-      </div>
-
       <RestaurantTap restaurantInfo={restaurant}></RestaurantTap>
 
       {/* 5. 편의시설 */}
@@ -317,9 +299,14 @@ export default function Restaurant() {
       <SaveConfirmComponent
         isSave={isSave}
         toggleDrawer={toggleDrawer}
+      >
+      </SaveConfirmComponent>
+
+      <ConfirmReserve
       ></SaveConfirmComponent>
       {/* <ConfirmReserve
         isConfirmOpen={isConfirmOpen}
+        restaurant={restaurant}
         toggleDrawer={toggleDrawer}
       ></ConfirmReserve> */}
     </main>
@@ -420,6 +407,33 @@ const Section = styled.section`
   .container .menu a:not(:last-child) {
     border-right: 1px solid #d5d5d5;
     line-height: 18px;
+  }
+  .restaurant-detail .lunchDinner {
+    display : flex;
+    font-size : 14px;
+    align-items : center;
+    color : #333;
+  }
+  .restaurant-detail .lunchDinner .detail {
+    margin-right : 20px;
+    padding-left : 21px;
+    position : relative;
+    word-break : break-word;
+  }
+  .restaurant-detail .lunchDinner .detail:before {
+    content : "";
+    width : 18px;
+    height : 18px;
+    position : absolute;
+    left : 0;
+    top : 50%;
+    transform : translateY(-50%);
+  }
+  .restaurant-detail .lunchDinner .detail.lunch:before {
+    background : url(${lunch_dark}) 0% 50% no-repeat;
+  }
+  .restaurant-detail .lunchDinner .detail.dinner:before {
+    background : url(${dinner_dark}) 0% 50% no-repeat;
   }
 `;
 const Seperator = styled.hr`
