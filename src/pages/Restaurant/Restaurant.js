@@ -7,15 +7,15 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CalendarComponent from "../../components/CalendarComponent";
-import RestaurantInfor from "./RestaurantInfor";
-import { getRestaurant, saveRestaurant } from "../../respository/restaurant";
+import RestaurantTap from "../../components/RestaurantTap.js";
 import SaveConfirmComponent from "../../components/SaveConfirmComponent.js";
 import StarsComponent from "../../components/StarsComponent.js";
 import RestaurantTap from "../../components/RestaurantTap.js";
 import ConfirmReserve from "../../components/ConfirmReserve.js";
 import lunch_dark from "../../assets/icons/time-lunch-dark.svg";
 import dinner_dark from "../../assets/icons/time-dinner-dark.svg";
-
+import { getRestaurant, saveRestaurant } from "../../respository/restaurant";
+import RestaurantInfor from "./RestaurantInfor";
 
 /**
  * 식당
@@ -44,7 +44,8 @@ export default function Restaurant() {
   const [isInforOpen, setIsInforOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false); /* 예약하기 모달창 오픈 */
   const [isSave, setIsSave] = useState(false); /* 저장하기 모달창 오픈 */
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false); /* 예약 컨펌 모달창 오픈 */
+  const [isConfirmOpen, setIsConfirmOpen] =
+    useState(false); /* 예약 컨펌 모달창 오픈 */
 
   const [isSelect, setIsSelect] = useState(true);
   const [isReserve, setIsReserve] = useState(true); /* 탭 true : 예약, false : 웨이팅 */
@@ -63,6 +64,8 @@ export default function Restaurant() {
       setIsConfirmOpen((prevState) => !prevState);
     } else if( e.target.className.indexOf('close-modal-btn') != -1 ) {
       setIsConfirmOpen((prevState) => !prevState);
+
+    if (e.target.className.indexOf("closeSaveModal") == -1) {
       setIsOpen((prevState) => !prevState);
     } else {
       setIsOpen((prevState) => !prevState);
@@ -88,7 +91,6 @@ export default function Restaurant() {
     }
   };
 
-
   const contentClick = (e, index) => {
     if (index === 0) {
       setIsContent("home");
@@ -101,15 +103,15 @@ export default function Restaurant() {
     }
   };
 
- 
   /* Function : 식당 정보 조회 */
   const setRestaurantInfo = (name) => {
     getRestaurant(name)
       .then((res) => {
         //TODO: 데이터 적용 완료
-
         setRestaurant(res.data);
         console.log(res.data, ',', restaurant);
+        setRestaturant(res.data);
+        console.log(res.data, ",", restaurant);
       })
       .catch((err) => {
         console.log(err);
@@ -120,9 +122,9 @@ export default function Restaurant() {
   const saveMyRestaurant = (e) => {
     setIsSave((prevState) => !prevState);
     console.log(restaurant.restaurantId);
-    const restaurantId= restaurant.restaurantId;
+    const restaurantId = restaurant.restaurantId;
     saveRestaurant(restaurantId)
-      .then((res)=> {
+      .then((res) => {
         console.log(res);
         /* 저장 완료 모달창 노출 */
       })
@@ -137,6 +139,12 @@ export default function Restaurant() {
       setRestaurantInfo(state);
     } 
     // console.log(restaurant.reviewAvg);
+
+    console.log(state);
+    if (!restaurant) {
+      setRestaurantInfo(state);
+    }
+
   }, [restaurant]);
 
   return (
@@ -168,7 +176,9 @@ export default function Restaurant() {
               <span>{restaurant.category}</span>
               <h2>{restaurant.name}</h2>
               <div className="flex align-center">
-                <StarsComponent startAvg={restaurant.reviewAvg}></StarsComponent>
+                <StarsComponent
+                  startAvg={restaurant.reviewAvg}
+                ></StarsComponent>
               </div>
             </div>
             <div className="restaurant-detail">
@@ -293,11 +303,12 @@ export default function Restaurant() {
       </SaveConfirmComponent>
 
       <ConfirmReserve
+      ></SaveConfirmComponent>
+      {/* <ConfirmReserve
         isConfirmOpen={isConfirmOpen}
         restaurant={restaurant}
         toggleDrawer={toggleDrawer}
-      ></ConfirmReserve>
-
+      ></ConfirmReserve> */}
     </main>
   );
 }

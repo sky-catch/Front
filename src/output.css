@@ -336,13 +336,6 @@ pre {
   margin: 0;
 }
 
-h3 {
-  padding : 0;
-  border : 0;
-  vertical-align : baseline;
-  font-size : 100%;
-}
-
 fieldset {
   margin: 0;
   padding: 0;
@@ -805,10 +798,6 @@ video {
   margin-top: 30px;
 }
 
-.mt-\[48px\] {
-  margin-top: 48px;
-}
-
 .mt-\[5px\] {
   margin-top: 5px;
 }
@@ -1058,6 +1047,10 @@ video {
   flex-direction: column;
 }
 
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
 .items-start {
   align-items: flex-start;
 }
@@ -1076,10 +1069,6 @@ video {
 
 .justify-between {
   justify-content: space-between;
-}
-
-.align-center {
-  align-items: center;
 }
 
 .gap-5 {
@@ -1276,7 +1265,7 @@ video {
 }
 
 .bg-transparent {
-  background-color: transparent !important;
+  background-color: transparent;
 }
 
 .bg-white {
@@ -1944,14 +1933,6 @@ header {
 
 /* section */
 
-.section {
-  box-sizing: border-box;
-}
-.section .section-overflow-hidden {
-  overflow: hidden;
-}
-
-
 .section-header {
   display: flex;
   position: relative;
@@ -1973,6 +1954,8 @@ header {
 }
 
 .section-body .v-scroll {
+  /* margin : 0 -20px; */
+  /* padding : 0 20px; */
   overflow-x: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -2213,20 +2196,6 @@ header {
 .drawer-box-body {
   padding: 20px;
   box-sizing: border-box;
-}
-
-.drawer-box-footer {
-  padding : 20px;
-}
-
-.drawer-box .drawer-box-footer .btn-group {
-  display: flex;
-  margin: 0 -5px;
-}
-
-.drawer-box .drawer-box-footer .btn-group .btn {
-  flex : 1;
-  margin : 0 5px;
 }
 
 .react-calendar__tile {
