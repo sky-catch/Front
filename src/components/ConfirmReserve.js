@@ -11,10 +11,14 @@ const ConfirmReserve = ({isConfirmOpen, toggleDrawer, info}) => {
         navigate(`/ct/shop/reservation/form`, {state : info});
     }
 
+    const onClose = (e) => {
+        toggleDrawer(e);
+    }
+
     return(
         <div>
             <Drawer
-                open={true}
+                open={isConfirmOpen}
                 direction="bottom"
                 className="drawer-box"
                 size="480px"
@@ -31,7 +35,7 @@ const ConfirmReserve = ({isConfirmOpen, toggleDrawer, info}) => {
                     </div>
                     <div className="drawer-box-footer">
                         <div className="btn-group">
-                            <button className="btn btn-lg btn-outline">취소</button>
+                            <button className="confirm-close btn btn-lg btn-outline" open={isConfirmOpen} onClick={onClose}>취소</button>
                             <button className="btn btn-lg btn-red" onClick={onReserve}>확인</button>
                         </div>
                     </div>

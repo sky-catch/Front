@@ -55,10 +55,17 @@ export default function Restaurant() {
   const navigate = useNavigate();
   const location = useLocation();
   const toggleDrawer = (e) => {
-    if (e.target.className.indexOf('closeSaveModal') == -1) {
+    console.log(e.target.className,);
+    
+    if (e.target.className.indexOf('closeSaveModal') != -1) {
+      setIsSave((prevState) => !prevState);
+    } else if (e.target.className.indexOf('confirm-close') != -1) {
+      setIsConfirmOpen((prevState) => !prevState);
+    } else if( e.target.className.indexOf('close-modal-btn') != -1 ) {
+      setIsConfirmOpen((prevState) => !prevState);
       setIsOpen((prevState) => !prevState);
     } else {
-      setIsSave((prevState) => !prevState);
+      setIsOpen((prevState) => !prevState);
     }
   };
   const toggleDrawerInfor = () => {
@@ -284,8 +291,10 @@ export default function Restaurant() {
         toggleDrawer={toggleDrawer}
       >
       </SaveConfirmComponent>
+
       <ConfirmReserve
         isConfirmOpen={isConfirmOpen}
+        restaurant={restaurant}
         toggleDrawer={toggleDrawer}
       ></ConfirmReserve>
 

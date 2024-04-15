@@ -1,16 +1,71 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { requestPayment } from "../../respository/payment";
 
 /**
  * 예약화면
  * @author jimin
  */
 export default function ReserveForm() {
+    const [min, setMin] = useState(7);
+    const [sec, setSec] = useState(0);
+
+    /* Funciton : 결제 */
+    const requestPay = () => {
+        const { IMP } = window;
+        IMP.init('가맹점식별코드');
+        IMP.request_pay({
+            imp_uid : "imp_00000000",
+            reservation_id : 1   
+        })
+
+        console.log(IMP);
+        requestPayment()
+            .then((res)=> {
+                console.log(res);
+            })
+    };
+
+    useEffect(() => {
+        const jquery = document.createElement("script");
+        jquery.src = "http://code.jquery.com/jquery-1.12.4.min.js";
+        const iamport = document.createElement("script");
+        iamport.src = "http://cdn.iamport.kr/js/iamport.payment-1.1.7.js";
+        document.head.appendChild(jquery);
+        document.head.appendChild(iamport);
+        return () => {
+          document.head.removeChild(jquery);
+          document.head.removeChild(iamport);
+        };
+      }, []);
+
+    useEffect(()=>{
+        /* 카운트다운 */
+        const countdown = setInterval(()=>{
+            if (parseInt(sec) > 0) {
+                setSec(parseInt(sec) - 1);
+            }
+            if (parseInt(sec) === 0) {
+                if(parseInt(min) === 0) {
+                    clearInterval(countdown);
+                } else {
+                    setMin(parseInt(min)-1);
+                    setSec(59);
+                }
+            }
+        },1000);
+        return () => clearInterval(countdown);
+    },[min,sec]);
+
     return(
         <>
-            <main>
-                <div className="__reservation-timer"></div>
+            <Maincontent>
+                <div className="__reservation-timer">
+                    <span className="__timer">{min}:{sec}</span>
+                    <p className="font-12">7분간 예약 찜! 시간 내 예약을 완료해주세요.</p>
+                </div>
                 <div className="space-35"></div>
-            </main>
+            </Maincontent>
             <ReserveButton className="reserve-button">
                 <div className="wrapper">
                     <div className="detail flex justify-center align-center">
@@ -21,7 +76,9 @@ export default function ReserveForm() {
                             </div>
                         </div>
                         <div className="btn-section">
-                            <button type="button" className="color-btn flex justify-center align-center"><span>예약하기</span></button>
+                            <button type="button" className="color-btn flex justify-center align-center" onClick={requestPay}>
+                                <span>결제하기</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -30,6 +87,30 @@ export default function ReserveForm() {
     )
 }
 
+const Maincontent = styled.main`
+    margin-top: 47px;
+
+    .__reservation-timer {
+        position : sticky;
+        top : 48px;
+        z-index : 99;
+        padding : 12px 20px;
+        background: #f9f9f9;
+        display : flex;
+        align-items : center;
+    }
+    .__reservation-timer .__timer {
+        display : flex;
+        align-items : center;
+        justify-content : center;
+        width  :70px;
+        height : 32px;
+        color : #0091ff;
+        background : #e8f2f9;
+        border-radius : 8px;
+        margin-right : 12px;
+    }
+`;
 const ReserveButton = styled.aside`
     position : fixed;
     display : flex;
