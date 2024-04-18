@@ -84,19 +84,26 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
   }, [isData]);
 
   const createTest = (item) => {
-    // const restaurantValue = {
-    //   visitDateTime: isData.searchDate + ` ${item.time}:00`,
-    //   numberOfPeople: Number(isData.numberOfPeople),
-    //   memo: "창가 자리 부탁드려요.",
-    //   amountToPay: 10000,
-    // };
+    const restaurantValue = {
+      visitDateTime: isData.searchDate + ` ${item.time}:00`,
+      numberOfPeople: Number(isData.numberOfPeople),
+      memo: "창가 자리 부탁드려요.",
+      amountToPay: 10000,
+    };
 
     // createReservat(isData.restaurantId, restaurantValue);
 
     navigate(
       `/paymentpage?id=${Number(
         new URLSearchParams(location.search).get("id")
-      )}`
+      )}`,
+      {
+        state: {
+          subKey1: restaurant,
+          subKey2: restaurantValue,
+          name: restaurant.name,
+        },
+      }
     );
   };
 

@@ -1,114 +1,43 @@
-/**
-Before running:
-> npm install ws
-Then:
-> node server.js
-> open http://localhost:8080 in the browser
-*/
-// const http = require("http");
-// const fs = require("fs");
-// const ws = new require("ws");
-// const wss = new ws.Server({ noServer: true });
+// 서버 파일 (예: socket.js)
+const { create } = require("domain");
+const express = require("express");
+const http = require("http");
+const socketIo = require("socket.io");
+const app = express();
+const server = http.createServer(app);
 
-// const clients = new Set();
+const io = socketIo(server);
+console.log(http);
+// 클라이언트가 연결되었을 때의 이벤트 리스너
+io.on("connection", (socket) => {
+  console.log("클라이언트가 연결되었습니다.");
 
-// function accept(req, res) {
-//   if (
-//     req.url == "/ws" &&
-//     req.headers.upgrade &&
-//     req.headers.upgrade.toLowerCase() == "websocket" &&
-//     // can be Connection: keep-alive, Upgrade
-//     req.headers.connection.match(/\bupgrade\b/i)
-//   ) {
-//     wss.handleUpgrade(req, req.socket, Buffer.alloc(0), onSocketConnect);
-//   } else if (req.url == "/") {
-//     // index.html
-//     fs.createReadStream("./index.html").pipe(res);
-//   } else {
-//     // page not found
-//     res.writeHead(404);
-//     res.end();
-//   }
-// }
+  // 클라이언트로부터 메시지를 받았을 때의 이벤트 리스너
+  socket.on("message", (data) => {
+    console.log("클라이언트로부터 메시지:", data);
 
-// function onSocketConnect(ws) {
-//   clients.add(ws);
-//   log(`new connection`);
+    // 클라이언트에게 메시지를 전송
+    io.emit("message", "서버에서 클라이언트로 메시지를 전송합니다.");
+  });
 
-//   ws.on("message", function (message) {
-//     log(`message received: ${message}`);
-//     message = message.slice(0, 50); // max message length will be 50
-//     for (let client of clients) {
-//       // client.send(message);
-//     }
-//   });
+  // 연결 종료 시의 이벤트 리스너
+  socket.on("disconnect", () => {
+    console.log("클라이언트 연결이 종료되었습니다.");
+  });
+});
 
-//   ws.on("close", function () {
-//     log(`connection closed`);
-//     clients.delete(ws);
-//   });
-// }
-
-// let log;
-// if (!module.parent) {
-//   log = console.log;
-//   http.createServer(accept).listen(8080);
-// } else {
-//   // to embed into javascript.info
-//   log = function () {};
-//   // log = console.log;
-//   exports.accept = accept;
-// }
-
-// import { io } from "socket.io-client";
-
-// export default {
-//   data() {
-//     return {
-//       socket: null,
-//       message: "",
-//       receivedMessage: [],
-//     };
-//   },
-//   async created() {
-//     // 소켓 서버와 연결한다.
-//     // 여기서 서버에서 지정해놓은 io.on('connection') 이벤트가 실행된다.
-//     // 그리고 생성된 소켓을 반환한다.
-//     this.socket = io("http://localhost:8000");
-
-//     this.socket.on("connect", () => {
-//       // 여기서 소켓이 생성되고 반환될 때에 코드를 적는다.
-//     });
-
-//     this.socket.on("messages", (messages) => {
-//       // 커스텀 이벤트
-//       this.receivedMessage = messages;
-//     });
-//   },
-//   methods: {
-//     sendMessage() {
-//       // 소켓을 통해 서버로 메세지를 보낸다.
-//       this.socket.emit("send", this.message);
-//       this.message = "";
-//     },
-//   },
-// };
-// const app = require("express")();
-// const server = require("http").createServer(app);
-// const cors = require("cors");
-// const io = require("socket.io")(server, {
-//   cors: {
-//     origin: "*",
-//     credentials: true,
-//   },
+// 클라이언트에 대한 경로 핸들러 설정
+// app.use("/chat", (req, res) => {
+//   // 클라이언트로부터의 요청을 처리할 코드 작성
+//   // 예를 들어, 클라이언트에게 HTML 파일을 제공하거나 기타 작업을 수행할 수 있습니다.
 // });
 
-// io.on("connection", (socket) => {
-//   socket.on("message", ({ name, message }) => {
-//     io.emit("message", { name, message });
-//   });
-// });
-
-// server.listen(4000, function () {
-//   console.log("listening on port 4000");
-// });
+app.get("/chat", (req, res) => {
+  // 클라이언트로부터의 요청을 처리할 코드 작성
+  // 예를 들어, 클라이언트에게 HTML 파일을 제공하거나 기타 작업을 수행할 수 있습니다.
+});
+// 서버를 시작
+const PORT = 3000;
+server.listen(PORT, () => {
+  console.log(`서버가 ${PORT}번 포트에서 시작되었습니다.`);
+});

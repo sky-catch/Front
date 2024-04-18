@@ -7,38 +7,28 @@ import styled from "styled-components";
 import { getRestaurant } from "../../respository/restaurant";
 // import quer
 import { getChatRoom } from "../../respository/reservation";
+
 const ChatRoom = () => {
   const [roomInfor, setRoomInfor] = useState();
   const location = useLocation();
 
   // 웹 소켓 연결 이벤트
   // : "ws://15.164.89.177:8080/chat";
-  console.log("안녕", location.state);
+
   // let name = location.search.split("=");
   useEffect(() => {
     setRoomInfor(location.state);
-    let name = location.search.split("=")[1];
+    let name = new URLSearchParams(location.search).get("name");
   }, []);
 
   const chatRoomId = location.state.chatRoomId;
   const memberChat = true;
   const token = localStorage.getItem("token");
-
-  const socket = io("http://15.164.89.177:8080", {
-    path: "/chat",
+  console.log(process.env.REACT_APP_DB);
+  const socket = io("http://localhost:3000/chat", {
     transports: ["websocket"],
-    upgrade: false,
     timeout: 30000,
     reconnectionAttempts: 2,
-    reconnection: true,
-    forceNew: true,
-    rejectUnauthorized: false,
-    autoConnect: true,
-    extraHeaders: {
-      Authorization: `Bearer ${token}`,
-      chatroomid: chatRoomId,
-      memberchat: memberChat,
-    },
   });
 
   socket.on("connect_error", (error) => {
@@ -98,7 +88,9 @@ const ChatRoom = () => {
   } = useQuery({
     queryKey: ["chatRoomList", 2],
     queryFn: () => {
-      return getRestaurant(decodeURIComponent(location.search.split("=")[1]))
+      return getRestaurant(
+        decodeURIComponent(new URLSearchParams(location.search).get("name"))
+      )
         .then((res) => {
           return res;
         })
@@ -109,7 +101,6 @@ const ChatRoom = () => {
     // enabled: roomInfor.restaurantName,
   });
 
-  console.log("restaurant", restaurant);
   if (!chatRoomList || !restaurant) return;
   return (
     <ChatBox>

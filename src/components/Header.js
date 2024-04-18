@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import PopupComponent from "./PopupComponent";
 
 const HeaderItem = [
   {
@@ -33,7 +32,7 @@ const Header = () => {
   const location = useLocation().pathname;
   const shopName = useLocation().state;
   const navigate = new useNavigate();
-  const [isExit, setIsExit] = useState(false);
+  // const [isExit, setIsExit] = useState(false);
   useEffect(() => {}, [location]);
 
   const onClickBack = () => {
@@ -44,10 +43,7 @@ const Header = () => {
     // navigate("/");
     navigate("/my/myshop/edit");
   };
-  const onClickExit = (e) => {
-    console.log(e);
-    setIsExit(!isExit);
-  };
+
   const headerContent = () => {
     switch (location) {
       case "/":
@@ -195,25 +191,21 @@ const Header = () => {
               <a className="text-xl h-[47px] leading-[47px] font-bold">
                 실시간 채팅 상담
               </a>
-              <a
-                className="icon exit-icon"
-                onClick={(e) => {
-                  onClickExit(e);
-                }}
-              ></a>
+              <a className="icon"></a>
             </div>
-            {isExit && <PopupComponent setIsExit={setIsExit}></PopupComponent>}
           </div>
         );
       case "/paymentpage":
         return (
           <div className="header-wrapper flex px-[20px]">
-            <div className="header-left items-center flex gap-[12px] w-[100%] justify-between">
-              <a className="header-back-black" onClick={onClickBack}>
+            <div className="header-left items-center flex w-[100%] justify-between">
+              <a className="header-back-black w-[48px]" onClick={onClickBack}>
                 뒤로
               </a>
+              <span className=" absolute left-0 right-0 text-[20px] text-center font-semibold">
+                {shopName.name}
+              </span>
             </div>
-            {isExit && <PopupComponent setIsExit={setIsExit}></PopupComponent>}
           </div>
         );
       default:
