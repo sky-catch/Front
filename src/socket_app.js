@@ -1,17 +1,15 @@
 const express = require("express");
 const app = express();
-require("dotenv").config();
-const mongoose = require("mongoose");
-const cors = require("cors");
-app.use(cors());
+const path = require("path");
+const http = require("http");
+const server = http.createServer(app);
+const socketIO = require("socket.io");
+const io = socketIO(server);
 
-mongoose
-  .connect(process.env.DB, {
-    useNewUrlParser: true,
-    useUnifiedTopolgy: true,
-  })
-  .then(() => {
-    console.log("데이터베이스 연결 성공");
-  });
-
-module.exports = app;
+app.use(express.static(path.join(__dirname, "public")));
+io.on("connection", () => {});
+const PORT = process.env.PORT || 5000;
+console.log(`포스트`);
+server.listen(PORT, () => {
+  console.log(`서버 진행 ${PORT}`);
+});
