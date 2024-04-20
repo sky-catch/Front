@@ -162,7 +162,7 @@ export default function MyDining() {
   const alarmClick = (index) => {
     setAlarmSelect(index);
   };
-
+  console.log("안녕", listSelect);
   const itemContainer = () => {
     if (listSelect === "PLANNED") {
       return (
@@ -259,6 +259,25 @@ export default function MyDining() {
     }
   };
 
+  const {
+    data: reservationRes,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["reservationRes"],
+    queryFn: () => {
+      return GetReservationRes(listSelect)
+        .then((res) => {
+          return res.data;
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    },
+  });
+
+  // console.log("reservationRes", reservationRes);
+
   const alarmContainer = () => {
     if (alarmSelect === 0) {
       return (
@@ -306,25 +325,6 @@ export default function MyDining() {
     }
   };
 
-  const {
-    data: reservationRes,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["reservationRes"],
-    queryFn: () => {
-      return GetReservationRes(listSelect)
-        .then((res) => {
-          return res.data;
-          console.log("res", res);
-        })
-        .catch((err) => {
-          console.log("err", err);
-        });
-    },
-  });
-
-  console.log("reservationRes", reservationRes);
   return (
     <MyDiningContents className="">
       <ul className="tab-menu sticky top-[47px]  bg-white">
@@ -357,7 +357,7 @@ export default function MyDining() {
                   <img src={require("../../assets/icons/banner.webp")}></img>
                 </div>
                 <div className=" my-[30px] container">
-                  <div className="flex gap-x-[10px]">
+                  <div className="flex gap-x-[10px] mb-[10px]">
                     {stateList.map((item, index) => {
                       return (
                         <span

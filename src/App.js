@@ -1,8 +1,5 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { RecoilRoot } from "recoil";
-// import { userInfoState } from "../../recoil/atoms/userState";
-// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { useLocation } from "react-router-dom";
 import Header from "./components/Header.js";
 import Navbar from "./components/Navbar.js";
 import PaymentPage from "./components/PaymentPage.js";
