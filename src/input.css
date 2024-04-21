@@ -549,3 +549,6 @@ header {
 .phoneIcon {
   background-image: url("/src/assets/icons/call01.svg");
 }
+.swiper-slide-chip {
+  width: auto !important;
+}
