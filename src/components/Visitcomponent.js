@@ -18,7 +18,6 @@ const Visitcomponent = ({ itemList }) => {
 
   const timeGap = (time) => {
     const remainTime = Math.ceil(time / (1000 * 60 * 60 * 24));
-    console.log(remainTime);
     if (remainTime < 0) {
       return `D+${remainTime * -1}`;
     } else if (remainTime > 0) {

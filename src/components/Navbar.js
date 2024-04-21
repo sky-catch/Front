@@ -55,6 +55,7 @@ const Navbar = () => {
       className={`${
         location === "/ct/shop" ||
         location === "/chat" ||
+        location === "/my/myshop" ||
         location === "/paymentpage"
           ? " hidden"
           : " block"

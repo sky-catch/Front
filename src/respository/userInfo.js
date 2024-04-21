@@ -1,7 +1,7 @@
 import apiClient from "../apis/ApiClient";
 
 /**
- * API 사용자 관련정보 
+ * API 사용자 관련정보
  *
  * @author jimin
  */
@@ -37,23 +37,24 @@ export const getMyMain = async () => {
 };
 
 /* 저장된 레스토랑 정보 불러오기 */
-export const getSavedRestaurants = async(name) => {
-    try{
-        // const result = await apiClient.post("", data, {
-        //     headers: {
-        //       Authorization: `Bearer ${token}`,
-        //     },
-        //   });
-
-    }catch (err) {
-        console.log("Error >>", err);
-    }
-}
+export const getSavedRestaurants = async (name) => {
+  try {
+    // const result = await apiClient.post("", data, {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   });
+  } catch (err) {
+    console.log("Error >>", err);
+  }
+};
 
 /* 사장 : 내 식당 보기 */
-export const getMyRestaurant = async() => {
-  try{
-    const token = localStorage.getItem("token");
+export const getMyRestaurant = async () => {
+  try {
+    const token =
+      "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxMzY3OTYyOSwiZXhwIjoxNzEzNzY2MDI5fQ.qALwIB3VFm1PlOXx6hicOTKmR1Lx4Z4a0h-ZVMTcmybBvYB4WG5WIT-y7gl24Y_5YCLXB2tAGFl44GzROiC9Fg";
+    // const token = localStorage.getItem("token");
     console.log(token);
     const result = await apiClient.get("/owner/restaurant", {
       headers: {
@@ -61,7 +62,7 @@ export const getMyRestaurant = async() => {
       },
     });
     return result;
-  } catch(err) {
+  } catch (err) {
     console.log("Error >>", err);
   }
-}
+};

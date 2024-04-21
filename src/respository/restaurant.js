@@ -12,7 +12,7 @@ export const createRestaurant = async (data) => {
     console.log("data : ", data);
     /* 테스트를 위한 7번 사장님 사용자의 jwt token 하드코딩 */
     const token =
-      "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTIyNDgzMTMsImV4cCI6MTcxMjMzNDcxM30.hUjxpHcuE7S8YH2JAchwPt51EbD2qNPiPYr0mR8ny0GcCakpHbzRD2uVyj1W4o-oYHlS1eXx54qVsuKhFWCvVQ";
+      "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImhvbmdAZXhhbXBsZS5jb20iLCJpc093bmVyIjp0cnVlLCJpYXQiOjE3MTM2NzY1MjIsImV4cCI6MTcxMzc2MjkyMn0.tY4IR7kQxPpTE8_-gnZQY1YhUpQIhfTCSDQKnGgjAR995o_96fV5K4as2GZFHw_mkd8Ks_UcFskbD83jRqef6A";
     const result = await apiClient.post("/restaurants", data, {
       headers: {
         Authorization: `Bearer ${token}`,
