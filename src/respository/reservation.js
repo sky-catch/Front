@@ -154,3 +154,27 @@ export const CreateNewReservation = () => {
     },
   });
 };
+
+//예약 삭제
+const cancelReservationItem = async (reservationId) => {
+  console.log("reservationId", reservationId);
+  const token = localStorage.getItem("token");
+  return axios.patch(
+    `http://15.164.89.177:8080/reservations/${reservationId}`,
+    {},
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+};
+
+export const CancelReservation = () => {
+  return useMutation({
+    mutationKey: ["cancelReservationItem"],
+    mutationFn: cancelReservationItem,
+    onSuccess: (data) => {
+      console.log("createPost success", data);
+    },
+    onError: (error) => {
+      console.log("createPost error", error);
+    },
+  });
+};

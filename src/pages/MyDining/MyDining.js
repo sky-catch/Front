@@ -264,19 +264,21 @@ export default function MyDining() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["reservationRes"],
+    queryKey: ["reservationRes", listSelect],
     queryFn: () => {
       return GetReservationRes(listSelect)
         .then((res) => {
+          console.log("res1", res);
           return res.data;
         })
         .catch((err) => {
           console.log("err", err);
         });
     },
+    refetchOnMount: true,
   });
 
-  // console.log("reservationRes", reservationRes);
+  console.log("reservationRes", reservationRes);
 
   const alarmContainer = () => {
     if (alarmSelect === 0) {

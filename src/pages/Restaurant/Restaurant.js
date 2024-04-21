@@ -110,7 +110,6 @@ export default function Restaurant() {
   /* Function : 식당 저장 */
   const saveMyRestaurant = (e) => {
     setIsSave((prevState) => !prevState);
-    console.log(restaurant.restaurantId);
     const restaurantId = restaurant.restaurantId;
     saveRestaurant(restaurantId)
       .then((res) => {
