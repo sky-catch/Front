@@ -24,17 +24,17 @@ function App() {
   // localStorage.clear();
   localStorage.setItem(
     "token",
-    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTM2Njc1NjksImV4cCI6MTcxMzc1Mzk2OX0.mya9Tl7TcYJojh4S5r-q-kQCgnnJD9FcZR8ER0pJv8LOhLp2xGLZLiG7QNv-DJg-dbsE0N5_-D7LKsIn4C0upw`
+    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxMzcwNDAwMSwiZXhwIjoxNzEzNzkwNDAxfQ.-5348-sNpkp4_K_UBUnoUm8LmUk6ysH6lH-HBZEjHtd4gzpRC5vWfp1AfYtJOMxs6d9Uk2OBlhaPZODodLqXZg`
   );
   localStorage.setItem(
     "data",
     JSON.stringify({
       usersDTO: {
-        id: 0,
-        nickname: "string",
-        profileImageUrl: "string",
-        email: "string",
-        name: "string",
+        id: 3,
+        nickname: "조소연",
+        profileImageUrl: "test",
+        email: "sykor@kakao.com",
+        name: "조소연",
         status: "ACTIVE",
         owner: true,
       },

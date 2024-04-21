@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import { useRecoilState } from "recoil";
+import styled from "styled-components";
 import { LoginState } from "../../States/LoginState";
 import { getRestaurant } from "../../respository/restaurant";
 
 /**
  * 마이페이지
- * @author jimin 
+ * @author jimin
  */
 
 function MyPage() {
@@ -16,7 +16,8 @@ function MyPage() {
   const [following, setFollowing] = useState(0);
   const [follower, setFollower] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
-  const [isSave, setIsSave] = useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
+  const [isSave, setIsSave] =
+    useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
 
   /* Function : 프로필 수정 */
   const updateUserInfo = () => {
@@ -25,7 +26,8 @@ function MyPage() {
 
   /* Function : 식당 정보 관리 */
   const createRestaurant = () => {
-    navigate("/my/myshop");
+    console.log(user);
+    // navigate(`/my/myshop?restaurantInfor=${}`);
   };
 
   /* Tap 선택 */
@@ -41,28 +43,27 @@ function MyPage() {
 
   /* Function : 식당 정보 */
   const getUserShop = () => {
-    getRestaurant(user.id)
-      .then((res) => {
-        // console.log(res);
-      })
-  }
+    console.log("id", user.id);
+    getRestaurant(user.id).then((res) => {
+      console.log(res);
+    });
+  };
 
   useEffect(() => {
-    // const loginUser = JSON.parse(localStorage.getItem("token"));
-    // console.log(loginUser);
-    // if (loginUser) {
-
+    const loginUser = localStorage.getItem("token");
+    const userInfor = JSON.parse(localStorage.getItem("data")).usersDTO;
+    console.log(JSON.parse(localStorage.getItem("data")).usersDTO.id);
+    if (loginUser) {
       // 유저 정보 세팅
-      // setUser((prevUser) => ({
-      //   ...prevUser,
-      //   ["id"] : loginUser.id, 
-      //   ["nickname"] : loginUser.properties.nickname, 
-      // }));
-      // console.log(user);
-    // }
-    
+      setUser((prevUser) => ({
+        ...prevUser,
+        id: userInfor.id,
+        nickname: userInfor.nickname,
+      }));
+    }
+
     // 유저의 저장 레스토랑 정보 GET
-    getUserShop();
+    getUserShop(user.id);
   }, []);
 
   return (
@@ -91,11 +92,15 @@ function MyPage() {
             </div>
           </div>
           <div className="mypage-profile-btn flex ">
-            <button className="btn btn-md btn-outline btn-rounded mt-18" onClick={updateUserInfo}>
+            <button
+              className="btn btn-md btn-outline btn-rounded mt-18"
+              onClick={updateUserInfo}
+            >
               <span className="label">프로필 수정</span>
             </button>
             <button
-              className="btn btn-md btn-outline btn-rounded mt-18" onClick={createRestaurant}
+              className="btn btn-md btn-outline btn-rounded mt-18"
+              onClick={createRestaurant}
             >
               <span className="label">사장님 등록</span>
             </button>
@@ -124,7 +129,6 @@ function MyPage() {
               }`}
               onClick={(e) => menuClick(e, 0)}
             >
-              {" "}
               나의 저장
             </li>
             <li
@@ -135,32 +139,38 @@ function MyPage() {
                 menuClick(e, 1);
               }}
             >
-              {" "}
               리뷰
             </li>
           </ul>
-          { isSave ? (
+          {isSave ? (
             <div className="collection">
               <section className="section pt-[20px]">
                 <div className="container gutter-sm">
                   <div className="section-header justify-between">
-                    <h3 className="section-title">컬렉션<span className="count">0</span></h3>
+                    <h3 className="section-title">
+                      컬렉션<span className="count">0</span>
+                    </h3>
                   </div>
-                  <button className="btn btn-lg btn-outline full-width margin-custom"><span className="add">새 컬렉션 만들기</span></button>
+                  <button className="btn btn-lg btn-outline full-width margin-custom">
+                    <span className="add">새 컬렉션 만들기</span>
+                  </button>
                 </div>
               </section>
               <section className="section pt-[20px]">
                 <div className="container gutter-sm">
                   <div className="__d-flex">
                     <div className="section-header justify-between full-width">
-                      <h3 className="section-title flex">저장한 레스토랑<span className="count">0</span></h3>
-                      <div className="__d-flex __v-center font-12">전체보기<img src="https://app.catchtable.co.kr/public/img/icons/arrow-right-20.svg"/></div>
+                      <h3 className="section-title flex">
+                        저장한 레스토랑<span className="count">0</span>
+                      </h3>
+                      <div className="__d-flex __v-center font-12">
+                        전체보기
+                        <img src="https://app.catchtable.co.kr/public/img/icons/arrow-right-20.svg" />
+                      </div>
                     </div>
                   </div>
                   <div className="section-body pb-32">
-                    <div className="saved-restaurant-list">
-
-                    </div>
+                    <div className="saved-restaurant-list"></div>
                   </div>
                 </div>
               </section>

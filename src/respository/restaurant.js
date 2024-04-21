@@ -31,7 +31,9 @@ export const getRestaurant = async (id) => {
   console.log("restaurant axios : ", id);
   try {
     const res = await apiClient.get(`/restaurants/${id}`, {
-      headers: {},
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
     });
 
     return res;

@@ -134,7 +134,7 @@ const Header = () => {
         );
       case "/my/myshop":
         return (
-          <div className="header-wrapper flex px-[20px]">
+          <div className="header-wrapper flex px-[20px] items-center">
             <div className="header-left items-center flex gap-[12px]">
               <a className="header-back-black" onClick={onClickBack}>
                 뒤로
@@ -146,7 +146,7 @@ const Header = () => {
             <div className="header-right flex items-center ml-auto">
               <button
                 type="button"
-                className="btn-icon setting"
+                className="btn-icon setting icon"
                 onClick={onEditRestaurant}
               ></button>
             </div>

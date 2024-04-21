@@ -36,7 +36,6 @@ export default function Restaurantsetting() {
       });
   };
   useEffect(() => {
-    console.log("안녕");
     getMyRestaurant()
       .then((res) => {
         console.log(res);

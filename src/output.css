@@ -1119,10 +1119,6 @@ video {
   overflow: scroll;
 }
 
-.text-wrap {
-  text-wrap: wrap;
-}
-
 .text-nowrap {
   text-wrap: nowrap;
 }
@@ -2258,4 +2254,11 @@ header {
 
 .swiper-slide-chip {
   width: auto !important;
+}
+
+.btn-icon.setting.icon {
+  width: 35px;
+  height: 35px;
+  background-size: cover;
+  background-image: url("/src/assets/icons/setting.webp");
 }

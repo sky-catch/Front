@@ -47,7 +47,6 @@ const DialogComponent = ({ item }) => {
         item.hasNewChat ? "read-icon" : ""
       }`}
       onClick={(e) => {
-        // console.log(decodeURIComponent(item.restaurantName));
         navigate(`/chat?name=${encodeURIComponent(item.restaurantName)}`, {
           state: item,
         });
