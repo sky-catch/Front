@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import Drawer from "react-modern-drawer";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+
 // import { useQueryClient } from "react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import styled from "styled-components";
@@ -12,8 +13,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { ReservationTimes } from "../respository/reservation";
-
+import {
+  CreateNewReservation,
+  ReservationTimes,
+} from "../respository/reservation";
 function SetDateYMD(isDate) {
   return (
     isDate.getFullYear() +
@@ -26,18 +29,16 @@ function SetDateYMD(isDate) {
 const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
   const location = useLocation();
   const [date, setDate] = useState(new Date());
-  const [isTimes, setIsTime] = useState([]);
-  const [restaurantId, setIsRestaurantId] = useState(
-    location.search.split("=")[1]
-  );
+
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const {
-    mutate,
-    // mutate: checkReservationTimes,
-    data: istest,
+    // mutate,
+    mutate: checkReservationTimes,
+    data: isTimes,
     isLoading,
   } = ReservationTimes();
-
+  const { mutate: createReservat } = CreateNewReservation();
   const people = ["1", "2", "3", "4", "5", "6", "7", "8"];
   const [isRestaurantInfor, setIsRestaurantInfor] = useState([]);
   const [numberOfPeople, setIsPeopleNum] = useState(1);
@@ -49,7 +50,6 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
   /* 방문확인 모달추가 */
   const handleReserve = (e) => {
     toggleDrawer(e);
-    // showReserve();
   };
 
   let [isData, setIsData] = useState({
@@ -79,15 +79,38 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
       if (isData.visitTime > restaurant.lastOrderTime) {
         setIsData({ ...isData, visitTime: restaurant.lastOrderTime });
       }
-
-      mutate(isData);
+      checkReservationTimes(isData);
     }
   }, [isData]);
+
+  const createTest = (item) => {
+    const restaurantValue = {
+      visitDateTime: isData.searchDate + ` ${item.time}:00`,
+      numberOfPeople: Number(isData.numberOfPeople),
+      memo: "창가 자리 부탁드려요.",
+      amountToPay: 10000,
+    };
+
+    // createReservat(isData.restaurantId, restaurantValue);
+
+    navigate(
+      `/paymentpage?id=${Number(
+        new URLSearchParams(location.search).get("id")
+      )}`,
+      {
+        state: {
+          subKey1: restaurant,
+          subKey2: restaurantValue,
+          name: restaurant.name,
+        },
+      }
+    );
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  console.log("istest", istest);
+
   return (
     <div>
       <Drawer
@@ -139,7 +162,6 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
                     onClick={(e) => {
                       // setIsPeopleNum(index);
                       e.preventDefault();
-                      console.log(item);
                       setIsData({ ...isData, numberOfPeople: item });
                     }}
                     className={` block size-[48px] rounded-[50%] text-center leading-[48px] font-light text-[14px] ${
@@ -158,7 +180,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
         </Swiper>
 
         {/* 시간 */}
-        {istest && istest.data.timeSlots.length > 0 ? (
+        {isTimes && isTimes.data.timeSlots.length > 0 ? (
           <Swiper
             className=" pl-[20px] py-[15px]"
             spaceBetween={7}
@@ -166,16 +188,16 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
             onSlideChange={() => console.log("slide change")}
             onSwiper={(swiper) => console.log(swiper)}
           >
-            {istest &&
-              istest.data.timeSlots.map((item, index) => {
+            {isTimes &&
+              isTimes.data.timeSlots.map((item, index) => {
                 return (
                   <SwiperSlide
                     key={index}
-                    onClick={() => {
-                      console.log(item.time);
-                      setVisitTime(item.time);
+                    onClick={(e) => {
+                      e.preventDefault();
+                      createTest(item);
                     }}
-                    className=" min-w-[70px] h-[38px] rounded-[6px] bg-[#ff3d00] text-[#fff] w-fit text-[13px] text-center leading-[38px]"
+                    className=" min-w-[70px] h-[38px] rounded-[6px]  text-[#333] border-[rgb(170 170 170)] border-[1px] w-fit text-[13px] text-center leading-[38px]"
                   >
                     {item.time.slice(0, 2) < 13
                       ? `오전 ${item.time.slice(0, 2)}`
@@ -193,10 +215,10 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
               {
                 isData.numberOfPeople == 0
                   ? "인원수를 선택해 주세요."
-                  : istest &&
-                    istest.data.timeSlots.length === 0 &&
+                  : isTimes &&
+                    isTimes.data.timeSlots.length === 0 &&
                     "예약이 모두 마감되었습니다."
-                // istest.data.timeSlots.length == 0 &&
+                // isTimes.data.timeSlots.length == 0 &&
                 // "예약이 모두 마감되었습니다."
               }
             </span>

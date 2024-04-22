@@ -20,10 +20,8 @@ function Dialog() {
 
   const queryClient = new QueryClient();
   useEffect(() => {
-    console.log(localStorage.getItem("token"));
     if (localStorage.getItem("token") !== null) {
       SetIsLogin(true);
-      console.log("isLogin", isLogin);
     }
   }, [isLogin]);
 
@@ -72,7 +70,7 @@ function Dialog() {
   if (error) {
     return <div>error....</div>;
   }
-  console.log("roomList", roomList);
+
   //FIXME 채팅방이 없을때 작업하기 위해 일부로 없앴음
   // roomList.splice(0);
 
@@ -83,7 +81,7 @@ function Dialog() {
     let test01 = Object.groupBy(roomList, ({ hasNewChat }) =>
       hasNewChat ? "true" : "false"
     );
-    console.log(test01);
+
     // let test11 = sortDate1(test01["false"]);
     // let test22 = test01["true"];
     // data = test11.concat(test22);

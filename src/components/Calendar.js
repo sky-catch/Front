@@ -14,36 +14,6 @@ export function drawCal(year, month, calRow) {
     "friday",
     "saturday",
   ];
-  // const calRow = document.querySelector(".cal-row");
-
-  // $(".cal-row").empty();
-  // console.log(document.querySelector(".cal-row"));
-  //   calRow.innerText = " ";
-  //   for (let i = 0; i < 7 * 6; i++) {
-  //     var rowNo = Math.floor(i / 7);
-  //     var cellNo = i % 7;
-  //     var day = loop.getDate();
-
-  //     // var num = loop.getMonth() + 1;
-  //     var currentMonth =
-  //       loop.getFullYear() != year || loop.getMonth() != month
-  //         ? "not-current"
-  //         : "";
-  //     var cell =
-  //       "<span class='day " +
-  //       dayNames[cellNo] +
-  //       " " +
-  //       currentMonth +
-  //       "'>" +
-  //       day +
-  //       "</span>";
-  //     calRow.innerHTML(cell);
-  //     loop = new Date(loop.setDate(loop.getDate() + 1));
-
-  //     if (day === today.getDate() && cellNo === today.getDay()) {
-  //       //   $(".cal-row:eq(" + rowNo + ") .day:eq(" + cellNo + ")").addClass("today");
-  //     }
-  //   }
 }
 
 const Calendar = ({ isOpen, toggleDrawer }) => {
@@ -55,17 +25,7 @@ const Calendar = ({ isOpen, toggleDrawer }) => {
   );
 
   const monthRef = useRef();
-  console.log(monthRef);
-  // const calRowRef = useRef();
-  // monthRef.current.innerText =
-  //   String(thisMonth.getFullYear()) +
-  //   " " +
-  //   String(thisMonth.getMonth()).padStart(2, "0");
 
-  // var this_year = today.getFullYear();
-  // var this_month = today.getMonth();
-
-  // DrawCalendar.drawCal("2024", "03", calRowRef);
   return (
     <div>
       <Drawer

@@ -7,38 +7,28 @@ import styled from "styled-components";
 import { getRestaurant } from "../../respository/restaurant";
 // import quer
 import { getChatRoom } from "../../respository/reservation";
+
 const ChatRoom = () => {
   const [roomInfor, setRoomInfor] = useState();
   const location = useLocation();
 
   // 웹 소켓 연결 이벤트
   // : "ws://15.164.89.177:8080/chat";
-  console.log("안녕", location.state);
+
+  let name = new URLSearchParams(location.search).get("name");
   // let name = location.search.split("=");
   useEffect(() => {
     setRoomInfor(location.state);
-    let name = location.search.split("=")[1];
   }, []);
 
   const chatRoomId = location.state.chatRoomId;
   const memberChat = true;
   const token = localStorage.getItem("token");
-
-  const socket = io("http://15.164.89.177:8080", {
-    path: "/chat",
+  console.log(chatRoomId);
+  const socket = io("http://localhost:3000/chat", {
     transports: ["websocket"],
-    upgrade: false,
     timeout: 30000,
     reconnectionAttempts: 2,
-    reconnection: true,
-    forceNew: true,
-    rejectUnauthorized: false,
-    autoConnect: true,
-    extraHeaders: {
-      Authorization: `Bearer ${token}`,
-      chatroomid: chatRoomId,
-      memberchat: memberChat,
-    },
   });
 
   socket.on("connect_error", (error) => {
@@ -73,6 +63,7 @@ const ChatRoom = () => {
   //   });
   // }, []);
 
+  // console.log(String(item.updatedDate).split("T")[1].slice(0, 2));
   const queryClient = new QueryClient();
   const {
     data: chatRoomList,
@@ -81,7 +72,7 @@ const ChatRoom = () => {
   } = useQuery({
     queryKey: ["chatRoomList", 1],
     queryFn: () => {
-      return getChatRoom(location.state.chatRoomId)
+      return getChatRoom(chatRoomId)
         .then((res) => {
           return res;
         })
@@ -98,7 +89,9 @@ const ChatRoom = () => {
   } = useQuery({
     queryKey: ["chatRoomList", 2],
     queryFn: () => {
-      return getRestaurant(decodeURIComponent(location.search.split("=")[1]))
+      return getRestaurant(
+        decodeURIComponent(new URLSearchParams(location.search).get("name"))
+      )
         .then((res) => {
           return res;
         })
@@ -109,8 +102,8 @@ const ChatRoom = () => {
     // enabled: roomInfor.restaurantName,
   });
 
-  console.log("restaurant", restaurant);
   if (!chatRoomList || !restaurant) return;
+  console.log(chatRoomList);
   return (
     <ChatBox>
       <div className=" min-h-[40px] container border-solid  leading-[40px] border-b-[#d4d4d4] border-b-[1px]">
@@ -134,32 +127,36 @@ const ChatRoom = () => {
         >
           {chatRoomList.chatList.map((item, index) => {
             return (
-              <div
-                key={index}
-                className={`w-full  h-auto flex  items-end gap-x-[5px] ${
-                  item.memberChat ? "flex-row-reverse" : ""
-                }`}
-              >
-                <div
-                  className={`${
-                    item.memberChat
-                      ? " rounded-l-lg rounded-br-lg float-right"
-                      : "rounded-bl-lg rounded-r-lg float-left"
-                  } p-[7px] bg-[#fff] w-fit max-w-[70%] shadow-md`}
-                >
-                  {item.content}
-                </div>
-                <span className=" text-[12px]">
-                  {(String(item.updatedDate).split("T")[1].slice(0, 2) > 12
-                    ? "오후 "
-                    : "오전 ") +
-                    String(item.updatedDate).split("T")[1].slice(0, 5)}
-                </span>
-                <span
-                  className={`${
-                    item.readChat ? " hidden" : " block"
-                  } size-[6px] rounded-full bg-[#ff3d00] mb-[5px]`}
-                ></span>
+              <div key={index}>
+                {item.content != null && (
+                  <div
+                    className={`w-full  h-auto flex  items-end gap-x-[5px] ${
+                      item.memberChat ? "flex-row-reverse" : ""
+                    }`}
+                  >
+                    <div
+                      className={`${
+                        item.memberChat
+                          ? " rounded-l-lg rounded-br-lg float-right"
+                          : "rounded-bl-lg rounded-r-lg float-left"
+                      } p-[7px] bg-[#fff] w-fit max-w-[70%] shadow-md`}
+                    >
+                      {item.content}
+                    </div>
+                    {console.log("item", item)}
+                    <span className=" text-[12px]">
+                      {(String(item.updatedDate).split("T")[1].slice(0, 2) > 12
+                        ? "오후 "
+                        : "오전 ") +
+                        String(item.updatedDate).split("T")[1].slice(0, 5)}
+                    </span>
+                    <span
+                      className={`${
+                        item.readChat ? " hidden" : " block"
+                      } size-[6px] rounded-full bg-[#ff3d00] mb-[5px]`}
+                    ></span>
+                  </div>
+                )}
               </div>
             );
           })}
