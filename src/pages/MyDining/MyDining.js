@@ -268,7 +268,7 @@ export default function MyDining() {
     queryFn: () => {
       return GetReservationRes(listSelect)
         .then((res) => {
-          console.log("res1", res);
+          // console.log("res1", res);
           return res.data;
         })
         .catch((err) => {
@@ -278,7 +278,7 @@ export default function MyDining() {
     refetchOnMount: true,
   });
 
-  console.log("reservationRes", reservationRes);
+  // console.log("reservationRes", reservationRes);
 
   const alarmContainer = () => {
     if (alarmSelect === 0) {

@@ -114,7 +114,9 @@ const Visitcomponent = ({ itemList }) => {
           </span>
         )}
         <div className="flex mt-3">
-          <div className=" size-[64px] rounded-md bg-slate-500 mr-[10px]"></div>
+          <div className=" size-[64px] rounded-md overflow-hidden mr-[10px]">
+            <img className="size-[64px]" src={itemList.restaurantImage} />
+          </div>
           <div className="flex flex-col">
             <span className="text-[16px] font-bold">
               {itemList.restaurantName}
