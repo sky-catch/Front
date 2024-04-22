@@ -162,7 +162,7 @@ export default function MyDining() {
   const alarmClick = (index) => {
     setAlarmSelect(index);
   };
-  console.log("안녕", listSelect);
+
   const itemContainer = () => {
     if (listSelect === "PLANNED") {
       return (
@@ -437,11 +437,6 @@ export default function MyDining() {
                   title={"캐치테이블 ON"}
                   pageList={pageList}
                 ></RecommendPage>
-
-                {/* <CalendarComponent
-                  isOpen={isOpen}
-                  toggleDrawer={toggleDrawer}
-                ></CalendarComponent> */}
               </section>
             ) : (
               <section className={`recommend-wrap`}></section>

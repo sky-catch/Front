@@ -1,10 +1,58 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Drawer from "react-modern-drawer";
 import styled from "styled-components";
 import { CancelReservation } from "../respository/reservation";
 const Visitcomponent = ({ itemList }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const photoInput = useRef();
+  const textInput = useRef();
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
   const { mutate: cancelList, data } = CancelReservation();
+  const [isScore, setIsScore] = useState(0);
+  const [photoToAddList, setPhotoToAddList] = useState([]);
+  const handleClick = () => {
+    photoInput.current.click();
+  };
+
+  const photoToAddPreview = () => {
+    return photoToAddList.map((photo) => {
+      return (
+        <div className="photoBox" key={photo.url}>
+          <div
+            className="photoBoxDelete icon delect-icon"
+            onClick={() => onRemoveToAdd(photo.url)}
+          />
+          <img className="photoPreview" src={photo.url} />
+        </div>
+      );
+    });
+  };
+
+  const onRemoveToAdd = (deleteUrl) => {
+    setPhotoToAddList(photoToAddList.filter((photo) => photo.url != deleteUrl));
+  };
+
+  const handlePhoto = (e) => {
+    const temp = [];
+    const photoToAdd = e.target.files;
+
+    for (let i = 0; i < photoToAdd.length; i++) {
+      temp.push({
+        id: photoToAdd[i].name,
+        file: photoToAdd[i],
+        url: URL.createObjectURL(photoToAdd[i]),
+      });
+    }
+    setPhotoToAddList(temp.concat(photoToAddList));
+  };
+
+  const drawStar = (e) => {
+    document.querySelector(`.star span`).style.width = `${
+      e.target.value * 10 * 2
+    }%`;
+    setIsScore(e.target.value);
+  };
+  const onchange = () => {};
   const setTime = (time) => {
     var week = new Array("일", "월", "화", "수", "목", "금", "토");
     const dayTime = time.split("T");
@@ -29,6 +77,16 @@ const Visitcomponent = ({ itemList }) => {
 
   const toggleDrawer = (e) => {
     setIsOpen((prevState) => !prevState);
+  };
+  const toggleDrawerReview = (e) => {
+    setIsReviewOpen((prevState) => !prevState);
+
+    if (isReviewOpen) {
+      setIsScore(0);
+      document.querySelector(`.star span`).style.width = `0%`;
+      textInput.current.value = "";
+      setPhotoToAddList([]);
+    }
   };
 
   const cancelItem = (id) => {
@@ -69,9 +127,24 @@ const Visitcomponent = ({ itemList }) => {
             )}•${itemList.numberOfPeople}명`}</span>
           </div>
         </div>
-        <span className=" text-center text-[#727272] text-[12px] block mt-[15px]">
-          {itemList.memo}
-        </span>
+        {itemList.status === "DONE" ? (
+          itemList.review === true ? (
+            <ReviewBtn even={true}>리뷰 완료</ReviewBtn>
+          ) : (
+            <ReviewBtn
+              even={false}
+              onClick={() => {
+                toggleDrawerReview();
+              }}
+            >
+              리뷰 쓰기
+            </ReviewBtn>
+          )
+        ) : (
+          <span className=" text-center text-[#727272] text-[12px] block mt-[15px]">
+            {itemList.memo}
+          </span>
+        )}
       </div>
       <Drawer
         open={isOpen}
@@ -100,24 +173,22 @@ const Visitcomponent = ({ itemList }) => {
 
           <div>
             <CloseBtn
-              left={"left"}
+              even={true}
               type="button"
               open={isOpen}
               onClick={() => {
                 toggleDrawer();
-                // toggleDrawerInfor();
               }}
             >
               취소하지 않음
             </CloseBtn>
             <CloseBtn
-              right={"right"}
+              even={false}
               type="button"
               open={isOpen}
               onClick={() => {
                 toggleDrawer();
                 cancelItem(itemList.reservationId);
-                // toggleDrawerInfor();
               }}
             >
               예약 취소
@@ -125,12 +196,117 @@ const Visitcomponent = ({ itemList }) => {
           </div>
         </div>
       </Drawer>
+
+      {/* 리뷰 슬라이드 */}
+      <Drawer
+        open={isReviewOpen}
+        onClose={toggleDrawerReview}
+        direction="right"
+        className="drawer-box right"
+        size="100%"
+      >
+        <div className="container">
+          <div className="header-left items-center flex gap-[12px]">
+            <a
+              className="header-back-black h-[47px] leading-[47px] z-50"
+              onClick={toggleDrawerReview}
+            >
+              뒤로
+            </a>
+            <a className="text-xl h-[47px] leading-[47px] font-bold block absolute left-0 right-0 text-center">
+              리뷰 쓰기
+            </a>
+          </div>
+          <div className="h-[calc(100vh-47px-47px)] overflow-y-auto pb-[15px]">
+            <div className="">
+              <div className="star-wrap text-center py-[5px] border-y border-[#d5d5d5]">
+                <span className="star">
+                  ★★★★★
+                  <span>★★★★★</span>
+                  <input
+                    type="range"
+                    onInput={drawStar}
+                    value={isScore}
+                    step="1"
+                    min="0"
+                    max="5"
+                  />
+                </span>
+              </div>
+            </div>
+            <div className=" my-[15px]">
+              <textarea
+                name="review"
+                ref={textInput}
+                className="form-input block w-[100%] p-[8px] border border-[#d5d5d5] rounded-md"
+                rows={7}
+                minLength={10}
+                placeholder={"리뷰 최소 10자 이상 작성해주세요."}
+                onChange={onchange}
+              ></textarea>
+            </div>
+
+            <div className="">
+              <span className="text-center text-[12px] block mb-[15px]">
+                사진은 최대 5장까지 가능합니다.
+              </span>
+              <div className="photoUploaderContent">
+                <div className="photoBox addPhoto">
+                  <button
+                    className="icon add-icon"
+                    onClick={handleClick}
+                  ></button>
+                  {/* <PlusOutlined /> */}
+                  <PictureFilled onClick={handleClick} />
+                  <input
+                    type="file"
+                    accept="image/jpg, image/jpeg, image/png"
+                    multiple
+                    ref={photoInput}
+                    onChange={(e) => handlePhoto(e)}
+                    style={{ display: "none" }}
+                  />
+                </div>
+                {photoToAddPreview()}
+              </div>
+            </div>
+          </div>
+          <ReviewSendBtn>리뷰 입력 완료</ReviewSendBtn>
+          {/* </div> */}
+        </div>
+      </Drawer>
     </>
   );
 };
 
 export default Visitcomponent;
-
+const ReviewSendBtn = styled.button`
+  border-radius: 6px;
+  line-height: 47px;
+  text-align: center;
+  font-size: 14px;
+  width: 100%;
+  background-color: #ff3d00;
+  color: #fff;
+  /* margin-top: 0.75rem; */
+`;
+const PictureFilled = styled.div`
+  width: 100px;
+  height: 100px;
+  background-color: #eee;
+`;
+const ReviewBtn = styled.button`
+  border-radius: 6px;
+  line-height: 36px;
+  text-align: center;
+  font-size: 14px;
+  width: 100%;
+  margin-top: 0.75rem;
+  ${(props) =>
+    props.even == true
+      ? ` color: #000; background-color: #d6d6d6;`
+      : `background-color: #ff3d00;  color: #fff;`}
+`;
 const CloseBtn = styled.button`
   padding: 0 5%;
   width: 43%;
@@ -144,15 +320,8 @@ const CloseBtn = styled.button`
   display: block;
   position: absolute;
   bottom: 20px;
-  ${
-    (props) =>
-      props.right === "right" &&
-      "right: 20px; color: #fff;  border-color: #ff3d00;  background-color: #ff3d00;"
-    // props.left ==='left' && ("left: 20px; color: #000;")
-  }
   ${(props) =>
-    // props.right ==='right' && ("right: 20px; color: #fff;  border-color: #ff3d00;  background-color: #ff3d00;")
-    props.left === "left" &&
-    "left: 20px; color: #000;"} // ? "right: 20px; color: #fff;  border-color: #ff3d00;  background-color: #ff3d00;"
-      // : "left: 20px; color: #000;"}
+    props.even === true
+      ? `right: 20px; color: #fff;  border-color: #ff3d00;  background-color: #ff3d00;`
+      : `left: 20px; color: #000;`}
 `;

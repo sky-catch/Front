@@ -10,6 +10,9 @@ input:active {
   border-color: transparent;
 }
 
+textarea:focus {
+  outline: none;
+}
 .icon {
   display: block;
   width: 25px;
@@ -483,6 +486,9 @@ header {
   max-width: 480px;
   margin: 0 auto;
 }
+.drawer-box.right {
+  border-radius: 0 !important;
+}
 .drawer-box-body {
   padding: 20px;
   box-sizing: border-box;
@@ -557,4 +563,66 @@ header {
   height: 35px;
   background-size: cover;
   background-image: url("/src/assets/icons/setting.webp");
+}
+
+.star-wrap .star {
+  position: relative;
+  font-size: 2rem;
+  color: #ddd;
+}
+
+.star-wrap .star input {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.star-wrap .star span {
+  width: 0;
+  position: absolute;
+  left: 0;
+  color: red;
+  overflow: hidden;
+  pointer-events: none;
+}
+.photoBox {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  object-position: center;
+  position: relative;
+  border-radius: 5px;
+  border: 1px solid #bfbfbf;
+}
+.photoBox.addPhoto {
+  position: relative;
+}
+.photoUploaderContent {
+  display: grid;
+  row-gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+}
+.icon.add-icon {
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-size: cover;
+  background-image: url("./assets/icons/icon-addition.png");
+}
+
+.icon.delect-icon {
+  /* width: 35px; */
+
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  transform: rotate(45deg);
+  background-size: cover;
+  background-image: url("./assets/icons/icon-addition.png");
 }
