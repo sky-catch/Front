@@ -158,38 +158,38 @@ export default function Search() {
 }
 
 const SearchSection = styled.div`
-    .keyword input {
-        cursor : pointer;
-        font-size : 13px;
-    }
-    .search-header .datetime-selector a{
-        cursor : pointer;
-    }
-    .chip-filter {
-        display : flex;
-        align-items : center;
-        padding : 12px 0;
-    }
-    .filter-icon {
-        display : flex;
-        padding-left : 20px;
-        margin-right : 16px;
-        gap 8px;
-    }
-    .filter-menu {
-        flex: 1;
-        overflow: hidden;
-        padding-right: 20px;
-        padding-left: 16px;
-    }
-    .slide-button {
-        border : 1px solid #d5d5d5;
-        box-sizing : border-box;
-        border-radius : 18px;
-        display : flex;
-        height : 36px;
-        align-items : center;
-        padding : 0 14px;
-        font-size : 14px;
-    }
+  .keyword input {
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .search-header .datetime-selector a {
+    cursor: pointer;
+  }
+  .chip-filter {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+  }
+  .filter-icon {
+    display: flex;
+    padding-left: 20px;
+    margin-right: 16px;
+    gap: 8px;
+  }
+  .filter-menu {
+    flex: 1;
+    overflow: hidden;
+    padding-right: 20px;
+    padding-left: 16px;
+  }
+  .slide-button {
+    border: 1px solid #d5d5d5;
+    box-sizing: border-box;
+    border-radius: 18px;
+    display: flex;
+    height: 36px;
+    align-items: center;
+    padding: 0 14px;
+    font-size: 14px;
+  }
 `;

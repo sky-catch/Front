@@ -225,7 +225,12 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
           </div>
         )}
 
-        <CloseBtn type="button" className="close-modal-btn" open={isOpen} onClick={(e)=> (handleReserve(e))}>
+        <CloseBtn
+          type="button"
+          className="close-modal-btn"
+          open={isOpen}
+          onClick={(e) => handleReserve(e)}
+        ></CloseBtn>
         <CloseBtn type="button" open={isOpen} onClick={(e) => handleReserve(e)}>
           닫기
         </CloseBtn>

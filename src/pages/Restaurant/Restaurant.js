@@ -110,7 +110,7 @@ export default function Restaurant() {
         //TODO: 데이터 적용 완료
         setRestaurant(res.data);
         console.log(res.data, ",", restaurant);
-        setRestaturant(res.data);
+        // setRestaturant(res.data);
         console.log(res.data, ",", restaurant);
       })
       .catch((err) => {
@@ -301,8 +301,7 @@ export default function Restaurant() {
       ></SaveConfirmComponent>
 
       <ConfirmReserve></ConfirmReserve>
-      {/* // FIXME: 이전에는 아래 처럼 되어있어서 변경 했어요 확인 해주세요~ */}
-      {/*     <ConfirmReserve></SaveConfirmComponent> */}
+
       {/* <ConfirmReserve
         isConfirmOpen={isConfirmOpen}
         restaurant={restaurant}

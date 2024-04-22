@@ -190,11 +190,11 @@ const MainContents = styled.div`
 
   /* 개인프로필 */
   .mypage-profile .profile-pic .img {
-    background-image : url("https://app.catchtable.co.kr/public/img/noimg/profile_default_v2.png");
-    background-size : 100%;
-    width : 80px;
-    height : 80px;
-    box-sizing : border-box;
+    background-image: url("https://app.catchtable.co.kr/public/img/noimg/profile_default_v2.png");
+    background-size: 100%;
+    width: 80px;
+    height: 80px;
+    box-sizing: border-box;
   }
   /* 개인정보 */
   .mypage-profile .mypage-profile-meta {
@@ -204,22 +204,22 @@ const MainContents = styled.div`
     padding-top: 15px;
   }
   .mypage-profile-meta .name {
-    display : flex;
-    font-size : 16px;
+    display: flex;
+    font-size: 16px;
     font-weight: 700;
   }
   .mypage-profile-meta .meta {
-    display : flex;
-    gap : 10px;
-    margin-top : 5px;
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
   }
   .meta {
-    align-items : baseline;
-    line-height : 14px;
+    align-items: baseline;
+    line-height: 14px;
   }
   .mypage-profile-meta .meta dl {
-    display : flex;
-    gap : 5px;
+    display: flex;
+    gap: 5px;
   }
   .mypage-profile-meta .meta dl dt {
     color: #666;
@@ -232,46 +232,47 @@ const MainContents = styled.div`
   }
   /* 버튼관련 */
   .mypage-profile-btn {
-    justify-content : space-between;
-    gap : 5px;
+    justify-content: space-between;
+    gap: 5px;
   }
   .mypage-profile-btn .btn {
-    flex : 1;
+    flex: 1;
     // margin-top : 18px !important;
   }
   /* 배너 */
   .mypage-ad {
-    padding : 20px 30px;
-    gap : 12px;
-    background-color : #f4f4f4;
-    margin-top : 28px;
+    padding: 20px 30px;
+    gap: 12px;
+    background-color: #f4f4f4;
+    margin-top: 28px;
   }
   .mypage-ad p {
-    color : #222222;
-    font-size : 16px;
-    font-weight : 700;
-    line-height : 150%;
+    color: #222222;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 150%;
   }
   .mypage-ad span {
-    color : #222222;
-    font-size : 14px;
-    font-weight : 400;
-    line-height : 150%;
-    display : flex;
-    align-items : center;
+    color: #222222;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 150%;
+    display: flex;
+    align-items: center;
   }
   .mypage-ad span i {
-    width : 16px;
-    height : 16px;
-    display : block;
-    background : url("https://app.catchtable.co.kr/public/img/icons/arrow-right.svg") 50% 50% no-repeat;
+    width: 16px;
+    height: 16px;
+    display: block;
+    background: url("https://app.catchtable.co.kr/public/img/icons/arrow-right.svg")
+      50% 50% no-repeat;
   }
   /* 나의 저장 */
   .section .section-header .section-title {
-    font-weight : 700;
-    letter-spacing ; 0;
-    font-size : 16px !important;
-    display : flex;
+    font-weight: 700;
+    letter-spacing: 0;
+    font-size: 16px !important;
+    display: flex;
   }
   .section .section-header .section-title span {
     font-size: 14px;
@@ -280,17 +281,17 @@ const MainContents = styled.div`
     font-weight: 400;
   }
   .section .margin-custom {
-    margin : 28px 0 24px 0;
+    margin: 28px 0 24px 0;
   }
-  .section .section-header .section-title .count{
-    font-size : 14px;
-    color : #999;
-    margin-left : 8px;
-    font-weight : 400;
+  .section .section-header .section-title .count {
+    font-size: 14px;
+    color: #999;
+    margin-left: 8px;
+    font-weight: 400;
   }
   .font-size img {
-    margin-left : 4px;
-    width : 16px;
-    height : 16px;
+    margin-left: 4px;
+    width: 16px;
+    height: 16px;
   }
 `;
