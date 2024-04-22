@@ -96,7 +96,7 @@ export default function Search() {
             <span className="seperator"></span>
             <div className="filter-menu">
               <div className="swiper swiper-container swiper-container-initialized swiper-container-horizontal">
-                <Swiper slidesPerView={4} className="swiper-wrapper">
+                <Swiper slidesPerView={"auto"} className="swiper-wrapper">
                   {menuItems.map((item, index) => {
                     return (
                       <SwiperSlide className="swiper-slide-chip mr-[8px]">
@@ -132,7 +132,7 @@ export default function Search() {
               </div>
               <div>
                 <div className="swiper swiper-container swiper-container-initialized swiper-container-horizontal">
-                  <Swiper slidesPerView={4} className="swiper-wrapper">
+                  <Swiper slidesPerView={"auto"} className="swiper-wrapper">
                     {hashtagItems.map((item, index) => {
                       return (
                         <SwiperSlide className="swiper-slide-chip mr-[8px]">
