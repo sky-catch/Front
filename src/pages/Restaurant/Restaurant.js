@@ -6,14 +6,13 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
+import dinner_dark from "../../assets/icons/time-dinner-dark.svg";
+import lunch_dark from "../../assets/icons/time-lunch-dark.svg";
 import CalendarComponent from "../../components/CalendarComponent";
+import ConfirmReserve from "../../components/ConfirmReserve.js";
 import RestaurantTap from "../../components/RestaurantTap.js";
 import SaveConfirmComponent from "../../components/SaveConfirmComponent.js";
 import StarsComponent from "../../components/StarsComponent.js";
-import RestaurantTap from "../../components/RestaurantTap.js";
-import ConfirmReserve from "../../components/ConfirmReserve.js";
-import lunch_dark from "../../assets/icons/time-lunch-dark.svg";
-import dinner_dark from "../../assets/icons/time-dinner-dark.svg";
 import { getRestaurant, saveRestaurant } from "../../respository/restaurant";
 import RestaurantInfor from "./RestaurantInfor";
 
@@ -48,7 +47,8 @@ export default function Restaurant() {
     useState(false); /* 예약 컨펌 모달창 오픈 */
 
   const [isSelect, setIsSelect] = useState(true);
-  const [isReserve, setIsReserve] = useState(true); /* 탭 true : 예약, false : 웨이팅 */
+  const [isReserve, setIsReserve] =
+    useState(true); /* 탭 true : 예약, false : 웨이팅 */
   const { state } = useLocation();
 
   const [isContent, setIsContent] = useState("home");
@@ -56,15 +56,15 @@ export default function Restaurant() {
   const navigate = useNavigate();
   const location = useLocation();
   const toggleDrawer = (e) => {
-    console.log(e.target.className,);
-    
-    if (e.target.className.indexOf('closeSaveModal') != -1) {
-      setIsSave((prevState) => !prevState);
-    } else if (e.target.className.indexOf('confirm-close') != -1) {
-      setIsConfirmOpen((prevState) => !prevState);
-    } else if( e.target.className.indexOf('close-modal-btn') != -1 ) {
-      setIsConfirmOpen((prevState) => !prevState);
+    console.log(e.target.className);
 
+    if (e.target.className.indexOf("closeSaveModal") != -1) {
+      setIsSave((prevState) => !prevState);
+    } else if (e.target.className.indexOf("confirm-close") != -1) {
+      setIsConfirmOpen((prevState) => !prevState);
+    } else if (e.target.className.indexOf("close-modal-btn") != -1) {
+      setIsConfirmOpen((prevState) => !prevState);
+    }
     if (e.target.className.indexOf("closeSaveModal") == -1) {
       setIsOpen((prevState) => !prevState);
     } else {
@@ -109,7 +109,7 @@ export default function Restaurant() {
       .then((res) => {
         //TODO: 데이터 적용 완료
         setRestaurant(res.data);
-        console.log(res.data, ',', restaurant);
+        console.log(res.data, ",", restaurant);
         setRestaturant(res.data);
         console.log(res.data, ",", restaurant);
       })
@@ -134,16 +134,15 @@ export default function Restaurant() {
 
   useEffect(() => {
     console.log(state, restaurant);
-    if( !restaurant ) {
+    if (!restaurant) {
       setRestaurantInfo(state);
-    } 
+    }
     // console.log(restaurant.reviewAvg);
 
     console.log(state);
     if (!restaurant) {
       setRestaurantInfo(state);
     }
-
   }, [restaurant]);
 
   return (
@@ -258,7 +257,8 @@ export default function Restaurant() {
             </div>
           </ReserveSection>
         ) : (
-          <WaitingSection></WaitingSection>
+          ""
+          // <WaitingSection></WaitingSection>
         )}
       </div>
       <Seperator></Seperator>
@@ -298,11 +298,11 @@ export default function Restaurant() {
       <SaveConfirmComponent
         isSave={isSave}
         toggleDrawer={toggleDrawer}
-      >
-      </SaveConfirmComponent>
-
-      <ConfirmReserve
       ></SaveConfirmComponent>
+
+      <ConfirmReserve></ConfirmReserve>
+      {/* // FIXME: 이전에는 아래 처럼 되어있어서 변경 했어요 확인 해주세요~ */}
+      {/*     <ConfirmReserve></SaveConfirmComponent> */}
       {/* <ConfirmReserve
         isConfirmOpen={isConfirmOpen}
         restaurant={restaurant}
@@ -311,6 +311,7 @@ export default function Restaurant() {
     </main>
   );
 }
+
 const Section = styled.section`
   position: relative;
   display: block;
@@ -408,31 +409,31 @@ const Section = styled.section`
     line-height: 18px;
   }
   .restaurant-detail .lunchDinner {
-    display : flex;
-    font-size : 14px;
-    align-items : center;
-    color : #333;
+    display: flex;
+    font-size: 14px;
+    align-items: center;
+    color: #333;
   }
   .restaurant-detail .lunchDinner .detail {
-    margin-right : 20px;
-    padding-left : 21px;
-    position : relative;
-    word-break : break-word;
+    margin-right: 20px;
+    padding-left: 21px;
+    position: relative;
+    word-break: break-word;
   }
   .restaurant-detail .lunchDinner .detail:before {
-    content : "";
-    width : 18px;
-    height : 18px;
-    position : absolute;
-    left : 0;
-    top : 50%;
-    transform : translateY(-50%);
+    content: "";
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
   }
   .restaurant-detail .lunchDinner .detail.lunch:before {
-    background : url(${lunch_dark}) 0% 50% no-repeat;
+    background: url(${lunch_dark}) 0% 50% no-repeat;
   }
   .restaurant-detail .lunchDinner .detail.dinner:before {
-    background : url(${dinner_dark}) 0% 50% no-repeat;
+    background: url(${dinner_dark}) 0% 50% no-repeat;
   }
 `;
 const Seperator = styled.hr`
@@ -522,4 +523,4 @@ const ReserveSection = styled.section`
   .section-body {
   }
 `;
-const WaitingSection = styled.section``;
+// const WaitingSection = styled.section``;
