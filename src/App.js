@@ -21,25 +21,8 @@ import ReviewList from "./pages/Restaurant/ReviewList.js";
 import Search from "./pages/Search/Search.js";
 
 function App() {
-  // localStorage.clear();
-  // localStorage.setItem(
-  //   "token",
-  //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTM3NzM1NTksImV4cCI6MTcxMzg1OTk1OX0.PfSHmsPVy-Ri4u3HEm7pIxhdiA3n8zrOaY-W3-Y8NBuzLmySeYQCFnKgfWVqjmvLkUPJJifl_GTTDruKIR2E9A`
-  // );
-  // localStorage.setItem(
-  //   "data",
-  //   JSON.stringify({
-  //     usersDTO: {
-  //       id: 3,
-  //       nickname: "조소연",
-  //       profileImageUrl: "test",
-  //       email: "sykor@kakao.com",
-  //       name: "조소연",
-  //       status: "ACTIVE",
-  //       owner: true,
-  //     },
-  //   })
-  // );
+
+
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;

@@ -50,16 +50,17 @@ function MyPage() {
   };
 
   useEffect(() => {
-    const loginUser = localStorage.getItem("token");
-    const userInfor = JSON.parse(localStorage.getItem("data")).usersDTO;
-    console.log(JSON.parse(localStorage.getItem("data")).usersDTO.id);
-    if (loginUser) {
+
+   
+    // if (loginUser) {
+
+
       // 유저 정보 세팅
-      setUser((prevUser) => ({
-        ...prevUser,
-        id: userInfor.id,
-        nickname: userInfor.nickname,
-      }));
+//       setUser((prevUser) => ({
+//         ...prevUser,
+//         id: userInfor.id,
+//         nickname: userInfor.nickname,
+//       }));
     }
 
     // 유저의 저장 레스토랑 정보 GET

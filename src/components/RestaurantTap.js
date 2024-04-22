@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from "react-router-dom";
  * @author jimin
  */
 export default function RestaurantTap({restaurantInfo}) {
-    // const restaurant = restaurantInfo.data;
     const [isContent, setIsContent] = useState('home');
     const navigate = useNavigate();
     const location = useLocation();
@@ -33,6 +32,7 @@ export default function RestaurantTap({restaurantInfo}) {
     /* 리뷰 페이지로 이동 */
     const goToReview = (e) => {
         contentClick(e, 3);
+        console.log('restaurantInfo : ', restaurantInfo);
         const restaurantName= restaurantInfo ? restaurantInfo.name : "";
         navigate(`/ct/shop/${restaurantName}/reviewList`, {state : restaurantName});
     }
@@ -42,35 +42,33 @@ export default function RestaurantTap({restaurantInfo}) {
         if (location.pathname.indexOf("/reviewList") != -1) {
             setIsContent('review');
         }
-        restaurantInfo ? setReviewCount(restaurantInfo.reviewCount) : setReviewCount(0);
-    },[])
+        restaurantInfo ? setReviewCount(restaurantInfo.reviewComments.length) : setReviewCount(0);
+    },[restaurantInfo])
 
     return(
         <>
-            <div>
-                <ul className="tab-menu sticky top-[47px]  bg-white">
-                <li className={`w-[50%] leading-[48px] text-center ${
-                    isContent == "home" ? " active" : ""
-                    }`}
-                    onClick={()=>goToHome()}
-                > 홈 </li>
-                <li className={`w-[50%] leading-[48px] text-center ${
-                    isContent == "menu" ? "active" : ""
-                    }`}
-                    onClick={(e) => contentClick(e, 1)}
-                > 메뉴 </li>
-                <li className={`w-[50%] leading-[48px] text-center ${
-                    isContent == "image" ? "active" : ""
-                    }`}
-                    onClick={(e) => contentClick(e, 2)}
-                > 사진 </li>
-                <li className={`w-[50%] leading-[48px] text-center ${
-                    isContent == "review" ? "active" : ""
-                    }`}
-                    onClick={()=>goToReview()}
-                > 리뷰 <span>{reviewCount}</span></li>
-                </ul>
-            </div>
+            <ul className="tab-menu sticky top-[47px]  bg-white">
+            <li className={`w-[50%] leading-[48px] text-center ${
+                isContent == "home" ? " active" : ""
+                }`}
+                onClick={()=>goToHome()}
+            > 홈 </li>
+            <li className={`w-[50%] leading-[48px] text-center ${
+                isContent == "menu" ? "active" : ""
+                }`}
+                onClick={(e) => contentClick(e, 1)}
+            > 메뉴 </li>
+            <li className={`w-[50%] leading-[48px] text-center ${
+                isContent == "image" ? "active" : ""
+                }`}
+                onClick={(e) => contentClick(e, 2)}
+            > 사진 </li>
+            <li className={`w-[50%] leading-[48px] text-center ${
+                isContent == "review" ? "active" : ""
+                }`}
+                onClick={()=>goToReview()}
+            > 리뷰 <span>{reviewCount}</span></li>
+            </ul>
         </>
     )
 }
