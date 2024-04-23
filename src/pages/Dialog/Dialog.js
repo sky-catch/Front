@@ -20,6 +20,7 @@ function Dialog() {
 
   const queryClient = new QueryClient();
   useEffect(() => {
+    console.log(localStorage.getItem("token"));
     if (localStorage.getItem("token") !== null) {
       SetIsLogin(true);
     }
@@ -124,7 +125,6 @@ const DialogContents = styled.div`
   padding-bottom: 48px;
   box-sizing: border-box;
   height: calc(100vh - 47px);
-  /* min-height: calc(100vh - 47px); */
   margin-top: 47px;
 `;
 const LoginBtn = styled.button`

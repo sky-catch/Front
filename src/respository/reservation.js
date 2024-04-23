@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import apiClient from "../apis/ApiClient";
+const FormData = require("form-data");
 
 // import { useQueryClient } from "@tanstack/react-query";
 
@@ -170,6 +171,38 @@ export const CancelReservation = () => {
   return useMutation({
     mutationKey: ["cancelReservationItem"],
     mutationFn: cancelReservationItem,
+    onSuccess: (data) => {
+      console.log("createPost success", data);
+    },
+    onError: (error) => {
+      console.log("createPost error", error);
+    },
+  });
+};
+
+// 리뷰 생성
+const createReviewItem = async ({ createReviewReq, files }) => {
+  const formData = new FormData();
+  formData.append("createReviewReq", JSON.stringify(createReviewReq));
+  if (files.length > 0) {
+    files.forEach((item, index) => {
+      console.log("item", item.file);
+      formData.append(`files`, item.file, item.file.name);
+    });
+  }
+  const token = localStorage.getItem("token");
+  return axios.post(`http://15.164.89.177:8080/review`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+      accept: "*/*",
+    },
+  });
+};
+export const CreateReview = () => {
+  return useMutation({
+    mutationKey: ["createReviewItem"],
+    mutationFn: createReviewItem,
     onSuccess: (data) => {
       console.log("createPost success", data);
     },

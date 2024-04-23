@@ -1,8 +1,11 @@
 import React, { useRef, useState } from "react";
 import Drawer from "react-modern-drawer";
 import styled from "styled-components";
-import { CancelReservation } from "../respository/reservation";
+import { CancelReservation, CreateReview } from "../respository/reservation";
 const Visitcomponent = ({ itemList }) => {
+  // const FormData = require('form-');
+  // const FormData = require("form-data");
+  const formData = new FormData();
   const [isOpen, setIsOpen] = useState(false);
   const photoInput = useRef();
   const textInput = useRef();
@@ -10,26 +13,42 @@ const Visitcomponent = ({ itemList }) => {
   const { mutate: cancelList, data } = CancelReservation();
   const [isScore, setIsScore] = useState(0);
   const [photoToAddList, setPhotoToAddList] = useState([]);
+  const { mutate: review } = CreateReview();
+
   const handleClick = () => {
+    if (photoToAddList.length >= 5) {
+      alert("최대 5장만 가능합니다.");
+      return;
+    }
     photoInput.current.click();
   };
 
   const photoToAddPreview = () => {
+    if (photoToAddList.length > 5) {
+      alert("최대 5장만 가능합니다.");
+      photoToAddList.length = 5;
+    }
+
     return photoToAddList.map((photo) => {
+      let photoUrl = URL.createObjectURL(photo.file);
+      // console.log("photo", URL.createObjectURL(photo.file));
+      // console.log("photo", photo);
       return (
-        <div className="photoBox" key={photo.url}>
+        <div className="photoBox" key={photoUrl}>
           <div
             className="photoBoxDelete icon delect-icon"
-            onClick={() => onRemoveToAdd(photo.url)}
+            onClick={() => onRemoveToAdd(photo.file.name)}
           />
-          <img className="photoPreview" src={photo.url} />
+          <img className="photoPreview" src={photoUrl} />
         </div>
       );
     });
   };
 
-  const onRemoveToAdd = (deleteUrl) => {
-    setPhotoToAddList(photoToAddList.filter((photo) => photo.url != deleteUrl));
+  const onRemoveToAdd = (deleteName) => {
+    setPhotoToAddList(
+      photoToAddList.filter((photo) => photo.file.name != deleteName)
+    );
   };
 
   const handlePhoto = (e) => {
@@ -38,14 +57,14 @@ const Visitcomponent = ({ itemList }) => {
 
     for (let i = 0; i < photoToAdd.length; i++) {
       temp.push({
-        id: photoToAdd[i].name,
+        // id: photoToAdd[i].name,
         file: photoToAdd[i],
-        url: URL.createObjectURL(photoToAdd[i]),
+        // url: URL.createObjectURL(photoToAdd[i]),
       });
     }
     setPhotoToAddList(temp.concat(photoToAddList));
   };
-
+  // 평가
   const drawStar = (e) => {
     document.querySelector(`.star span`).style.width = `${
       e.target.value * 10 * 2
@@ -53,6 +72,7 @@ const Visitcomponent = ({ itemList }) => {
     setIsScore(e.target.value);
   };
   const onchange = () => {};
+
   const setTime = (time) => {
     var week = new Array("일", "월", "화", "수", "목", "금", "토");
     const dayTime = time.split("T");
@@ -92,6 +112,47 @@ const Visitcomponent = ({ itemList }) => {
   const cancelItem = (id) => {
     cancelList(id);
     window.location.replace("/mydining/my");
+  };
+
+  // 리뷰 입력 완료 버튼 클릭시 실행
+  const reviewSend = () => {
+    if (isScore == 0) {
+      alert("점수는 1점 이상만 가능합니다.");
+      return;
+    }
+    if (textInput.current.value.length < 10) {
+      alert("리뷰 최소 10자 이상 작성해주세요.");
+      return;
+    }
+
+    // const formData = new FormData();
+    //사진이랑 데이터 보내야됨
+    const test = {
+      createReviewReq: {
+        restaurantId: itemList.restaurantId,
+        reservationId: itemList.reservationId,
+        rate: parseInt(isScore),
+        comment: textInput.current.value,
+      },
+      files: photoToAddList,
+    };
+    review(test);
+    console.log(photoToAddList);
+    // const createReviewReq = {
+    //   restaurantId: itemList.restaurantId,
+    //   reservationId: itemList.reservationId,
+    //   rate: parseInt(isScore),
+    //   comment: textInput.current.value,
+    // };
+    // const files = [];
+
+    // photoToAddList.map((item, index) => {
+    //   files.push(`files=${item.id}; type=${item.file.type}`);
+    // });
+    // console.log("files", files);
+    // const files = photoToAddList;
+    // const fileInput = document.querySelector('input[type="file"]');
+    // console.log(photoToAddList);
   };
   return (
     <>
@@ -273,7 +334,7 @@ const Visitcomponent = ({ itemList }) => {
               </div>
             </div>
           </div>
-          <ReviewSendBtn>리뷰 입력 완료</ReviewSendBtn>
+          <ReviewSendBtn onClick={reviewSend}>리뷰 입력 완료</ReviewSendBtn>
           {/* </div> */}
         </div>
       </Drawer>
