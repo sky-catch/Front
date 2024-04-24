@@ -38,10 +38,8 @@ export const ReservationTimes = () => {
     mutationFn: (data) => {
       return checkReservationTimes(data);
     },
-    // mutationFn: checkReservationTimes,
     onSuccess: (isdata) => {
       return isdata;
-      // console.log("createPost success", data);
     },
     onError: (error) => {
       // mutate가 실패하면, 함수를 실행합니다.
@@ -184,12 +182,11 @@ export const CancelReservation = () => {
 const createReviewItem = async ({ createReviewReq, files }) => {
   const formData = new FormData();
   formData.append("createReviewReq", JSON.stringify(createReviewReq));
-  if (files.length > 0) {
-    files.forEach((item, index) => {
-      console.log("item", item.file);
-      formData.append(`files`, item.file, item.file.name);
-    });
+
+  for (let index = 0; index < files.length; index++) {
+    formData.append("files", files[index].file, files[index].file.name);
   }
+
   const token = localStorage.getItem("token");
   return axios.post(`http://15.164.89.177:8080/review`, formData, {
     headers: {

@@ -127,6 +127,7 @@ const Visitcomponent = ({ itemList }) => {
 
     // const formData = new FormData();
     //사진이랑 데이터 보내야됨
+
     const test = {
       createReviewReq: {
         restaurantId: itemList.restaurantId,
@@ -134,7 +135,7 @@ const Visitcomponent = ({ itemList }) => {
         rate: parseInt(isScore),
         comment: textInput.current.value,
       },
-      files: photoToAddList,
+      files: photoToAddList, // 파일 객체
     };
     review(test);
     console.log(photoToAddList);

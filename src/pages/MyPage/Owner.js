@@ -1,12 +1,15 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import { CreateOwnerReq } from "../../respository/userInfo";
 const Owner = () => {
   const owner = useRef();
+  const { mutate: presidentCreate, data } = CreateOwnerReq();
   const [isNumber, setIsNumber] = useState("");
   const companyNumber = (e) => {
     e.preventDefault();
-    let last = owner.current.value.slice(-1);
-    let valueLength = owner.current.value.length;
+    const ownerValue = owner.current.value;
+    let last = Number(ownerValue.slice(-1));
+    let valueLength = ownerValue.length;
 
     if (valueLength < 12) {
       alert("사업장등록번호 다시 한번 확인해주세요.");
@@ -17,6 +20,10 @@ const Owner = () => {
     }
 
     // 사업자 번호 전송
+    const registrationNumber = {
+      businessRegistrationNumber: "101-01-00015",
+    };
+    presidentCreate(registrationNumber);
   };
 
   const inputNumber = (e) => {
