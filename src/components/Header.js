@@ -89,6 +89,20 @@ const Header = () => {
             </h1>
           </div>
         );
+      case "/search/total":
+        return (
+          <header>
+            <div className="container">
+              <div>
+                <a></a>
+              </div>
+              <form>
+                <input></input>
+                <button></button>
+              </form>
+            </div>
+          </header>
+        );
       case "/dialog":
         return (
           <div className="">

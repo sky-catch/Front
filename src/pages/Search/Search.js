@@ -1,13 +1,18 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Restaurants_sm from "../../components/Restaurants-sm.js";
+import search_g from "../../assets/icons/search-gray.svg";
+import calendar from "../../assets/icons/calendar.svg";
+import arrow_d from "../../assets/icons/arrow-down-red.svg";
 
 /**
  * 검색하기 화면
  * @author jimin
  */
 export default function Search() {
+  const navigate = useNavigate();
   const week = ["일", "월", "화", "수", "목", "금", "토"];
   const [date, setDate] = useState(
     String(new Date().getMonth() + 1).padStart(2, "0") +
@@ -56,6 +61,10 @@ export default function Search() {
     { title: "#예약 오픈 달력" },
   ];
 
+  const moveToPage = () => {
+    navigate("/search/total");
+  }
+
   return (
     <SearchSection>
       <main id="main">
@@ -65,6 +74,7 @@ export default function Search() {
               type="text"
               name="keyword"
               placeholder="지역, 음식, 매장명 검색"
+              onClick={moveToPage}
             ></input>
           </div>
           <div className="datetime-selector">
@@ -99,7 +109,7 @@ export default function Search() {
                 <Swiper slidesPerView={"auto"} className="swiper-wrapper">
                   {menuItems.map((item, index) => {
                     return (
-                      <SwiperSlide className="swiper-slide-chip mr-[8px]">
+                      <SwiperSlide className="swiper-slide-chip mr-[8px]" id={index}>
                         <button type="button" className="slide-button">
                           <span>{item.title}</span>
                         </button>
@@ -158,12 +168,39 @@ export default function Search() {
 }
 
 const SearchSection = styled.div`
-  .keyword input {
+  .search-header .keyword input {
     cursor: pointer;
     font-size: 13px;
+    height : 56px;
+    padding : 0 20px 0 52px;
+    width : 100%;
+    background : url("${search_g}") 20px 50% no-repeat;
+  }
+  .search-header .datetime-selector  {
+    border-bottom : 1px solid #e5e5e5;
+    position : relative;
   }
   .search-header .datetime-selector a {
     cursor: pointer;
+    position : relative;
+    display : block;
+    width : 100%;
+    height : 48px;
+    padding : 0 20px 0 48px;
+    font-size : 14px;
+    line-height : 48px;
+    background : url("${calendar}") 20px 50% no-repeat;
+  }
+  .search-header .datetime-selector a::after {
+    background : url("${arrow_d}") 50% 50% no-repeat;
+    width: 16px;
+    height: 16px;
+    content: "";
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
   }
   .chip-filter {
     display: flex;
@@ -175,6 +212,21 @@ const SearchSection = styled.div`
     padding-left: 20px;
     margin-right: 16px;
     gap: 8px;
+  }
+  .design_system {
+    border : 1px solid #D5D5D5;
+    width : 40px;
+    height : 40px;
+    border-radius : 8px;
+    display : flex;
+    align-items : center;
+    justify-content : center;
+  }
+  .seperator {
+    display: block;
+    width: 1px;
+    height: 40px;
+    background-color : #d5d5d5;
   }
   .filter-menu {
     flex: 1;

@@ -625,3 +625,40 @@ header {
   background-size: cover;
   background-image: url("./assets/icons/icon-addition.png");
 }
+
+.main, #main {
+  padding-top : 47px;
+}
+.sticky-bottom-btns {
+  display : flex;
+  position : fixed;
+  padding : 20px;
+  width : 100vw;
+  max-width : 480px;
+  left : 50%;
+  transform : translate(-50%);
+  z-index : 99;
+}
+.sticky-bottom-btns .btn {
+  display : block;
+  width : 100%;
+  flex : 1;
+  font-weight : 700;
+}
+.sticky-bottom-btns.upper {
+  bottom : 48px;
+}
+/* button */
+.btn-lg {
+  line-height : 46px;
+  text-align : center;
+  padding: 0 20px;
+  position: relative;
+  border: 1px solid #666;
+  border-radius: 6px;
+}
+.btn-lg.btn-red {
+  background: #ff3d00;
+  border-color: #ff3d00;
+  color: #fff;
+}
