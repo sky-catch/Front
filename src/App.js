@@ -27,7 +27,7 @@ function App() {
   // localStorage.clear();
   localStorage.setItem(
     "token",
-    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTM5NjMzMTQsImV4cCI6MTcxNDA0OTcxNH0.UvMe44LUQMDAi1Moz4rb1UDA_2sDppiwb6aWF-u-GtZodImr7gV3DufFGSjlL5HycOlZhxjMUyG6tju66ZIVLQ`
+    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQyNzE2OTIsImV4cCI6MTcxNDM1ODA5Mn0.r8J9A9hjRDQdLxkZDugWERrfArwJOBrEstWDIvacq-hsDeK4BLVPP1ddfvmMPcFVlSwen5v4G345o4VtwypNtQ`
   );
   localStorage.setItem(
     "data",
@@ -65,7 +65,6 @@ function App() {
           <Route path="my/myshop" element={<RestaurantSetting />} />
           <Route path="my/myshop/edit" element={<RestaurantInfo />} />
           <Route
-            // path="/oauth/login/KAKAO"
             path="/oauth/redirected/kakao"
             element={<KakoRedirectPage />}
           />
@@ -83,7 +82,6 @@ function App() {
           <Route path={`/chat`} element={<ChatRoom />} />
           <Route path="/owner" element={<Owner />}></Route>
         </Routes>
-        {/* <ReactQueryDevtools initialIsOpen={true} /> */}
         <Navbar />
       </RecoilRoot>
     </div>

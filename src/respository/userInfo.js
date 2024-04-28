@@ -69,10 +69,11 @@ export const getMyRestaurant = async () => {
 };
 
 // 사장 생성
+
 const createOwner = (registrationNumber) => {
-  console.log("registrationNumber", registrationNumber);
-  const token =
-    "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTM5NjUzODcsImV4cCI6MTcxNDA1MTc4N30._Xipwzi_Z18dUD5xHQe-R5BvBgyMo6dGwbTzHgtYzKXJmKnGcNbFD4N7NXyHEbmd8z55dKV0HmiRTq85wwdf_A";
+  const token = localStorage.getItem("token");
+  // const token =
+  //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTM5NjUzODcsImV4cCI6MTcxNDA1MTc4N30._Xipwzi_Z18dUD5xHQe-R5BvBgyMo6dGwbTzHgtYzKXJmKnGcNbFD4N7NXyHEbmd8z55dKV0HmiRTq85wwdf_A";
   console.log("token", token);
   return axios.post(`http://15.164.89.177:8080/owner`, registrationNumber, {
     headers: {
@@ -83,15 +84,15 @@ const createOwner = (registrationNumber) => {
 
 export const CreateOwnerReq = () => {
   return useMutation({
-    mutationFn: (data) => {
-      return createOwner(data);
-    },
+    mutationFn: createOwner,
+    // (data) => {
+    //   return createOwner(data);
+    // },
     mutationKey: ["createOwner"],
     onSuccess: (isdata) => {
       console.log("createPost success", isdata);
     },
     onError: (error) => {
-      // console.log("createPost error", error.data.message);
       console.log("createPost error", error.response.data);
     },
   });

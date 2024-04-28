@@ -97,17 +97,20 @@ export const PostChatRoomItem = () => {
 //채팅방 목록 보기
 export const GetChatRoomListRes = async () => {
   const token = localStorage.getItem("token");
+  // const token = `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQwMzA2ODksImV4cCI6MTcxNDExNzA4OX0.cnzXk6pEiaCqvbww_tjq-JjUGE_MW84lqij7y44lZyyjkUhyUFf61ZwIxSzYYjgpaj_NmtwA6kvYPUuKsauc-A`;
 
   try {
     const result = await apiClient.get(`/chat/roomList`, {
       headers: {
         Authorization: `Bearer ${token}`,
+        // "Access-Control-Allow-Origin": "*",
       },
     });
-
+    console.log("result", result);
     return result.data;
   } catch (err) {
     console.log("Error >>", err.message);
+    console.log("Error >>", err);
     throw err;
   }
 };

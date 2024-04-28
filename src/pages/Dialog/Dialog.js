@@ -1,10 +1,11 @@
-import { QueryClient, useQuery } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 // import{useQ}
+import axios from "axios";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import DialogComponent from "../../components/DialogComponent";
-import { GetChatRoomListRes } from "../../respository/reservation";
+// import { GetChatRoomListRes } from "../../respository/reservation";
 
 function sortDate1(list) {
   const sorted_list = list.sort(function (a, b) {
@@ -18,34 +19,50 @@ function sortDate1(list) {
 function Dialog() {
   const [isLogin, SetIsLogin] = useState(false);
 
+  const [roomList, setRoomList] = useState([]);
   const queryClient = new QueryClient();
   useEffect(() => {
-    console.log(localStorage.getItem("token"));
     if (localStorage.getItem("token") !== null) {
-      SetIsLogin(true);
+      getRoomList();
     }
   }, [isLogin]);
 
-  // if (isLogin) {
-  const {
-    data: roomList,
-    // data: roomList,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["roomList"],
-    queryFn: () => {
-      return GetChatRoomListRes()
-        .then((res) => {
-          return res;
-        })
-        .catch((error) => {
-          console.log("error >>>", error);
-        });
-    },
-    enabled: isLogin,
-  });
-  // }
+  const getRoomList = () => {
+    const token = localStorage.getItem("token");
+    axios
+      .get("http://15.164.89.177:8080/chat/roomList", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Access-Control-Allow-Origin": "http://15.164.89.177:8080",
+          accept: "*/*",
+        },
+      })
+      .then((res) => {
+        console.log("createPost success", res);
+        SetIsLogin(true);
+      })
+      .catch((error) => {
+        console.log("createPost error", error);
+      });
+  };
+  // const {
+  //   data: roomList,
+  //   isLoading,
+  //   error,
+  // } = useQuery({
+  //   queryKey: ["roomList"],
+  //   queryFn: async () => {
+  //     try {
+  //       const result = await GetChatRoomListRes();
+  //       console.log("result", result);
+  //       return result;
+  //     } catch (err) {
+  //       console.log("Error >>", err.message);
+  //       throw err;
+  //     }
+  //   },
+  //   enabled: isLogin,
+  // });
 
   // console.log("data", data);
   // FIXME 절대 지우지말것.
@@ -64,31 +81,22 @@ function Dialog() {
     );
   }
 
-  if (isLoading) {
-    return <div>로딩....</div>;
-  }
+  // if (isLoading) {
+  //   return <div>로딩....</div>;
+  // }
 
-  if (error) {
-    return <div>error....</div>;
-  }
+  // if (error) {
+  //   return <div>error....</div>;
+  // }
 
   //FIXME 채팅방이 없을때 작업하기 위해 일부로 없앴음
   // roomList.splice(0);
 
-  // data.length = 0;
-  // useEffect(() => {
-  // SetIsItems(RoomItem);
-  if (roomList.length > 0) {
-    let test01 = Object.groupBy(roomList, ({ hasNewChat }) =>
-      hasNewChat ? "true" : "false"
-    );
-
-    // let test11 = sortDate1(test01["false"]);
-    // let test22 = test01["true"];
-    // data = test11.concat(test22);
-    //   SetMessageItems(test11.concat(test22));
-  }
-  // }, [data]);
+  // if (roomList.length > 0) {
+  //   let test01 = Object.groupBy(roomList, ({ hasNewChat }) =>
+  //     hasNewChat ? "true" : "false"
+  //   );
+  // }
 
   return (
     <DialogContents className="">
