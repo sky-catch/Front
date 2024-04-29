@@ -1060,10 +1060,6 @@ video {
   align-items: center;
 }
 
-.justify-start {
-  justify-content: flex-start;
-}
-
 .justify-center {
   justify-content: center;
 }
@@ -1678,8 +1674,7 @@ video {
 input {
   outline: none;
   box-shadow: none;
-  width: 100%;
-  caret-color: rgb(255, 61, 0);
+  caret-color: #fff;
 }
 
 input:active {
