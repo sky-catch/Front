@@ -27,7 +27,7 @@ function App() {
   // localStorage.clear();
   localStorage.setItem(
     "token",
-    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQyNzE2OTIsImV4cCI6MTcxNDM1ODA5Mn0.r8J9A9hjRDQdLxkZDugWERrfArwJOBrEstWDIvacq-hsDeK4BLVPP1ddfvmMPcFVlSwen5v4G345o4VtwypNtQ`
+    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNDM2NTU5NSwiZXhwIjoxNzE0NDUxOTk1fQ.tKmLnxrHkzOSkc8KxoxacCiIXNvw-FzdgF1MZhVoedeKMXTtAdK1och9z22MOPv-Qw3IHrOBB-mP_4ZvIKmDzg`
   );
   localStorage.setItem(
     "data",

@@ -33,8 +33,6 @@ function Dialog() {
       .get("http://15.164.89.177:8080/chat/roomList", {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Access-Control-Allow-Origin": "http://15.164.89.177:8080",
-          accept: "*/*",
         },
       })
       .then((res) => {
