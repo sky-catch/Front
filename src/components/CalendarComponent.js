@@ -33,6 +33,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const {
+    // mutate,
     mutate: checkReservationTimes,
     data: isTimes,
     isLoading,
@@ -159,6 +160,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
                 <SwiperSlide key={index}>
                   <span
                     onClick={(e) => {
+                      // setIsPeopleNum(index);
                       e.preventDefault();
                       setIsData({ ...isData, numberOfPeople: item });
                     }}

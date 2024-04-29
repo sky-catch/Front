@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import apiClient from "../apis/ApiClient";
-const FormData = require("form-data");
 
 // import { useQueryClient } from "@tanstack/react-query";
 
@@ -38,8 +37,10 @@ export const ReservationTimes = () => {
     mutationFn: (data) => {
       return checkReservationTimes(data);
     },
+    // mutationFn: checkReservationTimes,
     onSuccess: (isdata) => {
       return isdata;
+      // console.log("createPost success", data);
     },
     onError: (error) => {
       // mutate가 실패하면, 함수를 실행합니다.
@@ -97,20 +98,17 @@ export const PostChatRoomItem = () => {
 //채팅방 목록 보기
 export const GetChatRoomListRes = async () => {
   const token = localStorage.getItem("token");
-  // const token = `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQwMzA2ODksImV4cCI6MTcxNDExNzA4OX0.cnzXk6pEiaCqvbww_tjq-JjUGE_MW84lqij7y44lZyyjkUhyUFf61ZwIxSzYYjgpaj_NmtwA6kvYPUuKsauc-A`;
 
   try {
     const result = await apiClient.get(`/chat/roomList`, {
       headers: {
         Authorization: `Bearer ${token}`,
-        // "Access-Control-Allow-Origin": "*",
       },
     });
-    console.log("result", result);
+
     return result.data;
   } catch (err) {
     console.log("Error >>", err.message);
-    console.log("Error >>", err);
     throw err;
   }
 };
@@ -172,37 +170,6 @@ export const CancelReservation = () => {
   return useMutation({
     mutationKey: ["cancelReservationItem"],
     mutationFn: cancelReservationItem,
-    onSuccess: (data) => {
-      console.log("createPost success", data);
-    },
-    onError: (error) => {
-      console.log("createPost error", error);
-    },
-  });
-};
-
-// 리뷰 생성
-const createReviewItem = async ({ createReviewReq, files }) => {
-  const formData = new FormData();
-  formData.append("createReviewReq", JSON.stringify(createReviewReq));
-
-  for (let index = 0; index < files.length; index++) {
-    formData.append("files", files[index].file, files[index].file.name);
-  }
-
-  const token = localStorage.getItem("token");
-  return axios.post(`http://15.164.89.177:8080/review`, formData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "multipart/form-data",
-      accept: "*/*",
-    },
-  });
-};
-export const CreateReview = () => {
-  return useMutation({
-    mutationKey: ["createReviewItem"],
-    mutationFn: createReviewItem,
     onSuccess: (data) => {
       console.log("createPost success", data);
     },

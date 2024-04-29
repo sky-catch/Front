@@ -12,7 +12,7 @@ export const createRestaurant = async (data) => {
     console.log("data : ", data);
     /* 테스트를 위한 7번 사장님 사용자의 jwt token 하드코딩 */
     const token =
-      "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpc093bmVyIjpmYWxzZSwiaWF0IjoxNzEzOTYzNjc1LCJleHAiOjE3MTQwNTAwNzV9.H3M9QRqhv2Mix5xQR2tbsRW_YPwxjKPY_2PQ9OVClnkI1_mx9D1YGEVw2riCkQRtqQjUUvso26Az1W8qeqyQRg";
+      "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImhvbmdAZXhhbXBsZS5jb20iLCJpc093bmVyIjp0cnVlLCJpYXQiOjE3MTM2NzY1MjIsImV4cCI6MTcxMzc2MjkyMn0.tY4IR7kQxPpTE8_-gnZQY1YhUpQIhfTCSDQKnGgjAR995o_96fV5K4as2GZFHw_mkd8Ks_UcFskbD83jRqef6A";
     const result = await apiClient.post("/restaurants", data, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -30,8 +30,10 @@ export const createRestaurant = async (data) => {
 export const getRestaurant = async (name) => {
   console.log("restaurant axios : ", name);
   try {
+
     const res = await apiClient.get(`/restaurants/${name}`, {
       headers: {},
+
     });
 
     return res;
