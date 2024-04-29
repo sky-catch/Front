@@ -22,7 +22,7 @@
 
 ::before,
 ::after {
-  --tw-content: "";
+  --tw-content: '';
 }
 
 /*
@@ -44,8 +44,7 @@ html,
   /* 3 */
   tab-size: 4;
   /* 3 */
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   /* 4 */
   font-feature-settings: normal;
   /* 5 */
@@ -88,7 +87,7 @@ Add the correct text decoration in Chrome, Edge, and Safari.
 
 abbr:where([title]) {
   -webkit-text-decoration: underline dotted;
-  text-decoration: underline dotted;
+          text-decoration: underline dotted;
 }
 
 /*
@@ -134,8 +133,7 @@ code,
 kbd,
 samp,
 pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   /* 1 */
   font-feature-settings: normal;
   /* 2 */
@@ -234,9 +232,9 @@ select {
 */
 
 button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
+[type='button'],
+[type='reset'],
+[type='submit'] {
   -webkit-appearance: button;
   /* 1 */
   background-color: transparent;
@@ -283,7 +281,7 @@ Correct the cursor style of increment and decrement buttons in Safari.
 2. Correct the outline style in Safari.
 */
 
-[type="search"] {
+[type='search'] {
   -webkit-appearance: textfield;
   /* 1 */
   outline-offset: -2px;
@@ -437,9 +435,7 @@ video {
   display: none;
 }
 
-*,
-::before,
-::after {
+*, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
   --tw-translate-x: 0;
@@ -449,19 +445,19 @@ video {
   --tw-skew-y: 0;
   --tw-scale-x: 1;
   --tw-scale-y: 1;
-  --tw-pan-x: ;
-  --tw-pan-y: ;
-  --tw-pinch-zoom: ;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
   --tw-scroll-snap-strictness: proximity;
-  --tw-gradient-from-position: ;
-  --tw-gradient-via-position: ;
-  --tw-gradient-to-position: ;
-  --tw-ordinal: ;
-  --tw-slashed-zero: ;
-  --tw-numeric-figure: ;
-  --tw-numeric-spacing: ;
-  --tw-numeric-fraction: ;
-  --tw-ring-inset: ;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
   --tw-ring-offset-width: 0px;
   --tw-ring-offset-color: #fff;
   --tw-ring-color: rgb(59 130 246 / 0.5);
@@ -469,24 +465,24 @@ video {
   --tw-ring-shadow: 0 0 #0000;
   --tw-shadow: 0 0 #0000;
   --tw-shadow-colored: 0 0 #0000;
-  --tw-blur: ;
-  --tw-brightness: ;
-  --tw-contrast: ;
-  --tw-grayscale: ;
-  --tw-hue-rotate: ;
-  --tw-invert: ;
-  --tw-saturate: ;
-  --tw-sepia: ;
-  --tw-drop-shadow: ;
-  --tw-backdrop-blur: ;
-  --tw-backdrop-brightness: ;
-  --tw-backdrop-contrast: ;
-  --tw-backdrop-grayscale: ;
-  --tw-backdrop-hue-rotate: ;
-  --tw-backdrop-invert: ;
-  --tw-backdrop-opacity: ;
-  --tw-backdrop-saturate: ;
-  --tw-backdrop-sepia: ;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
 }
 
 ::backdrop {
@@ -499,19 +495,19 @@ video {
   --tw-skew-y: 0;
   --tw-scale-x: 1;
   --tw-scale-y: 1;
-  --tw-pan-x: ;
-  --tw-pan-y: ;
-  --tw-pinch-zoom: ;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
   --tw-scroll-snap-strictness: proximity;
-  --tw-gradient-from-position: ;
-  --tw-gradient-via-position: ;
-  --tw-gradient-to-position: ;
-  --tw-ordinal: ;
-  --tw-slashed-zero: ;
-  --tw-numeric-figure: ;
-  --tw-numeric-spacing: ;
-  --tw-numeric-fraction: ;
-  --tw-ring-inset: ;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
   --tw-ring-offset-width: 0px;
   --tw-ring-offset-color: #fff;
   --tw-ring-color: rgb(59 130 246 / 0.5);
@@ -519,24 +515,24 @@ video {
   --tw-ring-shadow: 0 0 #0000;
   --tw-shadow: 0 0 #0000;
   --tw-shadow-colored: 0 0 #0000;
-  --tw-blur: ;
-  --tw-brightness: ;
-  --tw-contrast: ;
-  --tw-grayscale: ;
-  --tw-hue-rotate: ;
-  --tw-invert: ;
-  --tw-saturate: ;
-  --tw-sepia: ;
-  --tw-drop-shadow: ;
-  --tw-backdrop-blur: ;
-  --tw-backdrop-brightness: ;
-  --tw-backdrop-contrast: ;
-  --tw-backdrop-grayscale: ;
-  --tw-backdrop-hue-rotate: ;
-  --tw-backdrop-invert: ;
-  --tw-backdrop-opacity: ;
-  --tw-backdrop-saturate: ;
-  --tw-backdrop-sepia: ;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
 }
 
 .container {
@@ -791,10 +787,6 @@ video {
   margin-top: 15px;
 }
 
-.mt-\[18\] {
-  margin-top: 18;
-}
-
 .mt-\[20px\] {
   margin-top: 20px;
 }
@@ -821,10 +813,6 @@ video {
 
 .box-border {
   box-sizing: border-box;
-}
-
-.box-content {
-  box-sizing: content-box;
 }
 
 .block {
@@ -1029,9 +1017,7 @@ video {
 }
 
 .transform {
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
-    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
-    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .cursor-pointer {
@@ -1044,10 +1030,6 @@ video {
 
 .grid-cols-4 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.grid-cols-5 {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .flex-row {
@@ -1076,10 +1058,6 @@ video {
 
 .items-center {
   align-items: center;
-}
-
-.justify-start {
-  justify-content: flex-start;
 }
 
 .justify-center {
@@ -1276,6 +1254,11 @@ video {
   border-bottom-color: rgb(232 232 232 / var(--tw-border-opacity));
 }
 
+.border-b-black {
+  --tw-border-opacity: 1;
+  border-bottom-color: rgb(0 0 0 / var(--tw-border-opacity));
+}
+
 .bg-\[\#F6F6F6\] {
   --tw-bg-opacity: 1;
   background-color: rgb(246 246 246 / var(--tw-bg-opacity));
@@ -1316,19 +1299,19 @@ video {
 }
 
 .bg-\[url\(\'\.\/assets\/icons\/alarm-normal\.svg\'\)\] {
-  background-image: url("./assets/icons/alarm-normal.svg");
+  background-image: url('./assets/icons/alarm-normal.svg');
 }
 
 .bg-\[url\(\'\.\/assets\/icons\/kakao_button\.svg\'\)\] {
-  background-image: url("./assets/icons/kakao_button.svg");
+  background-image: url('./assets/icons/kakao_button.svg');
 }
 
 .bg-closeIcon {
-  background-image: url("./assets/icons/close.svg");
+  background-image: url('./assets/icons/close.svg');
 }
 
 .bg-main {
-  background-image: url("./assets/icons/logo.png");
+  background-image: url('./assets/icons/logo.png');
 }
 
 .bg-\[30px\] {
@@ -1455,10 +1438,6 @@ video {
 
 .pr-\[15px\] {
   padding-right: 15px;
-}
-
-.pr-\[20px\] {
-  padding-right: 20px;
 }
 
 .pt-\[15vh\] {
@@ -1682,32 +1661,24 @@ video {
 }
 
 .shadow-lg {
-  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
-    0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color),
-    0 4px 6px -4px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow-md {
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color),
-    0 2px 4px -2px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .filter {
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast)
-    var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate)
-    var(--tw-sepia) var(--tw-drop-shadow);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 input {
   outline: none;
   box-shadow: none;
-  width: 100%;
   caret-color: #fff;
 }
 
@@ -1759,7 +1730,6 @@ header {
   right: 0;
   z-index: 99;
   top: 0;
-  height : 48px;
   background-color: #fff;
 }
 
@@ -2199,7 +2169,7 @@ header {
 
 .recommend-box > div:last-child span {
   -webkit-backdrop-filter: brightness(50%);
-  backdrop-filter: brightness(50%);
+          backdrop-filter: brightness(50%);
   /* position: unset; */
   bottom: unset;
   width: 100%;
@@ -2405,259 +2375,3 @@ header {
   background-size: cover;
   background-image: url("./assets/icons/icon-addition.png");
 }
-
-.main, #main {
-  padding-top : 47px;
-}
-
-.sticky-bottom-btns {
-  display : flex;
-  position : fixed;
-  padding : 20px;
-  width : 100vw;
-  max-width : 480px;
-  left : 50%;
-  transform : translate(-50%);
-  z-index : 99;
-}
-
-.sticky-bottom-btns .btn {
-  display : block;
-  width : 100%;
-  flex : 1;
-  font-weight : 700;
-}
-
-.sticky-bottom-btns.upper {
-  bottom : 48px;
-}
-
-/* button */
-
-.btn-lg {
-  line-height : 46px;
-  text-align : center;
-  padding: 0 20px;
-  position: relative;
-  border: 1px solid #666;
-  border-radius: 6px;
-}
-
-.btn-lg.btn-red {
-  background: #ff3d00;
-  border-color: #ff3d00;
-  color: #fff;
-}
-
-.header-back-black {
-  background: url("./assets/icons/back.svg") 50% 50% no-repeat;
-  width: 32px;
-  height: 32px;
-  display: block;
-  text-indent: -999em;
-  overflow: hidden;
-  margin-right: 6px;
-  flex: none;
-}
-
-hr.seperator {
-  height : 8px;
-  background : #ececec !important;
-}
-
-.container.gutter-sm {
-  padding: 0 20px;
-}
-
-.mt-\[18\] {
-  margin-top : 18px !important;
-}
-
-/* filter drawer */
-
-.filter-drawer {
-  display : flex;
-  position : relative;
-  flex-direction : column;
-  margin-top : 28px;
-}
-
-.filter-drawer .filter-wrapper {
-  display : flex;
-  flex-direction : column;
-  position: relative;
-  margin-top: 28px;
-  overflow-y : scroll;
-  scrollbar-width : none;
-  scrollbar-color : transparent transparent;
-}
-
-.filter-drawer header {
-  position : -webkit-sticky;
-  position : sticky;
-  top : 0;
-  border-radius : 12px 12px 0 0;
-  padding: 12px 20px 0;
-  margin-bottom: 12px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #d5d5d5;
-  height : 100%;
-  width : 100%;
-}
-
-.swiper-container {
-  margin-left : auto;
-  margin-right : auto;
-  position : relative;
-  overflow : hidden;
-  list-style : none;
-  padding : 0;
-  z-index : 1;
-}
-
-.swiper-wrapper {
-  box-sizing: content-box;
-}
-
-.swiper-wrapper li {
-  padding: 8px 12px;
-  cursor : pointer;
-}
-
-.w-fit {
-  width: -webkit-fit-content !important;
-  width: -moz-fit-content !important;
-  width: fit-content !important;
-}
-
-.selected-tap {
-  color : #222222;
-  border-bottom : 2px solid #222222;
-  font-weight : 700;
-}
-
-.justify-start {
-  justify-content : flex-start;
-}
-
-.box-border {
-  box-sizing: border-box;
-}
-
-.box-content {
-  box-sizing: content-box;
-}
-
-.grid {
-  display : grid;
-}
-
-.grid-cols-5 {
-  grid-template-columns : repeat(5, 1fr);
-}
-
-.city-wrapper {
-  flex-direction : column;
-  margin-top : 10px;
-  gap : 12px;
-}
-
-.city-wrapper button {
-  border : 1px solid transparent;
-  background-color : transparent;
-  border-color : transparent;
-  display : flex;
-  align-items : center;
-  justify-content : center;
-  border-radius : 46px;
-  padding : 8px 16px;
-  transition : border-color .2s;
-}
-
-.city-wrapper button.active {
-  border-color : #222222 !important;
-}
-
-.hotplace-wrapper {
-  flex-wrap : wrap;
-  gap : 8px;
-  background-color : #e5e5e5;
-  border-radius : 12px;
-  padding : 8px;
-}
-
-.hotplace-wrapper button {
-  cursor : pointer;
-  display : flex;
-  justify-content : center;
-  align-items : center;
-  transition : all .1s ease-in-out;
-  background-color : #ffffff;
-  padding : 8px 12px;
-  border-radius : 8px;
-}
-
-.hotplace-wrapper button.active {
-  border-color : #ff3d00;
-  color : #ff3d00;
-  background-color : #FFECE5;
-}
-
-hr.seperator {
-  height : 8px;
-  background-color : #f4f4f4;
-}
-
-.scroll-box {
-  overflow-y : scroll;
-  scrollbar-width : none;
-  scrollbar-color : transparent transparent;
-}
-
-.filter-wrapper footer {
-  width : 100%;
-  bottom : 0;
-  z-index : 2;
-}
-
-.filter-drawer footer button {
-  display : flex;
-  margin : 12px 16px;
-  padding : 12px 16px;
-  border-radius : 4px;
-}
-
-.filter-drawer footer button:first-child {
-  width : 108px;
-  border : 1px solid #d5d5d5;
-}
-
-.filter-drawer footer button:last-child {
-  width : 100%;
-  background-color : #ff3d00;
-  color : #ffffff;
-}
-
-.chip-filter .filter-icon button.active {
-  background-color : #fcefe7;
-  border-color : #ff3d00;
-  color : #ff3d00;
-}
-
-header .keyword-search input {
-  caret-color : #000000 !important;
-}
-
-header .keyword-search .btn-delete {
-  display : none;
-  width : 24px;
-  height : 24px;
-  text-indent : -999em;
-  position : absolute;
-  right : 15px;
-  top : 50%;
-  transform : translateY(-50%);
-  background : url("../src/assets/icons/delete-o.svg") 50% 50% no-repeat transparent;
-  overflow : hidden;
-}
-

@@ -1,7 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
-// import { userInfoState } from "../../recoil/atoms/userState";
-// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useLocation } from "react-router-dom";
 import Header from "./components/Header.js";
 import Navbar from "./components/Navbar.js";
@@ -22,6 +20,7 @@ import ReserveForm from "./pages/Restaurant/ReserveForm.js";
 import Restaurant from "./pages/Restaurant/Restaurant.js";
 import ReviewList from "./pages/Restaurant/ReviewList.js";
 import Search from "./pages/Search/Search.js";
+import SearchTotal from "./pages/Search/SearchTotal.js";
 
 function App() {
   // localStorage.clear();
@@ -56,6 +55,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />}></Route>
+          <Route path="/search/total" element={<SearchTotal />}></Route>
           <Route path={`/mydining/my`} element={<MyDining />} />
           <Route path="/dialog" element={<Dialog />} />
           <Route path="/account" element={<Account />}></Route>

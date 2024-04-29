@@ -45,7 +45,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "dev": "node_modules/.bin/nodemon socket_app.js"
+    "dev": "node_modules/.bin/nodemon socket_app.js",
+    "build-css" : "tailwindcss build -i ./src/input.css -o ./src/output.css --watch"
   },
   "eslintConfig": {
     "extends": [

@@ -31,7 +31,7 @@ const Restaurants_sm = () => {
       {restaurants.map((item) => {
         return (
           <SwiperSlide
-          className="slide-item"
+            className="slide-item"
             key={item.id}
             onClick={() => onDetail(item)}
           >

@@ -5,7 +5,7 @@ function Account() {
   const [userInfo, setUserInfo] = useState(false);
 
   useEffect(() => {
-    // localStorage.setItem("token", "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxMzEwMDMzMCwiZXhwIjoxNzEzMTg2NzMwfQ.aMMvk3PnBzYIcDNrvOQ8eOWcZ08B5vLBYsFOjIBpwifQlPlM0myWmrfkWoRovsHQOvmDO6kKwPqghN0SK0nb6Q");
+    localStorage.setItem("token", "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQzNTkwMjAsImV4cCI6MTcxNDQ0NTQyMH0.xWE4pGDywtq7lkLlBFeLO6rOAnTPtEydQfl1Vi-vH_Zk4UE95M34wjOKQ9X0VADCvbcuBR3S5JN5G8u--56QPg");
     if (localStorage.getItem("token") === null) {
       setUserInfo(false);
     } else {
