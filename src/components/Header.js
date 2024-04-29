@@ -247,14 +247,41 @@ const Header = () => {
             </div>
           </div>
         );
-      case "/ct/shop/reservation/form" :
+      case "/owner":
+        return (
+          <div className="header-wrapper flex px-[20px]">
+            <div className="header-left items-center flex w-[100%] justify-start">
+              <a className="header-back-black w-[48px]" onClick={onClickBack}>
+                뒤로
+              </a>
+              <span className=" text-[20px]  font-semibold">
+                사장님 인증하기
+              </span>
+            </div>
+          </div>
+        );
+
+      case "/ct/shop/reservation/form":
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex gap-[12px]">
               <button className="header-close" onClick={onClickBack}>
-                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg" >
-                  <path d="M20 4L4 20" stroke="#222222" stroke-width="1.5"></path>
-                  <path d="M4 4L20 20" stroke="#222222" stroke-width="1.5"></path>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  xmlns="https://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M20 4L4 20"
+                    stroke="#222222"
+                    stroke-width="1.5"
+                  ></path>
+                  <path
+                    d="M4 4L20 20"
+                    stroke="#222222"
+                    stroke-width="1.5"
+                  ></path>
                 </svg>
               </button>
               <a className="text-xl h-[47px] leading-[47px] font-bold">
@@ -266,17 +293,19 @@ const Header = () => {
       default:
         /* 레스토랑 상세 정보 */
 
-        if ( location.indexOf("/ct/shop") != -1 ) {
-          if ( location.indexOf("/reviewList") != -1 ) {
-            return(
+        if (location.indexOf("/ct/shop") != -1) {
+          if (location.indexOf("/reviewList") != -1) {
+            return (
               <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] bg-white">
-              <div className="header-left items-center flex gap-[12px]">
-                <button className="back-b header-icon" onClick={onClickBack}>뒤로</button>
-                <h1>{shopName}</h1>
-              </div>
-              <div className="header-right flex gap-[12px]">
-                <a className="share-b header-icon">공유</a>
-              </div>
+                <div className="header-left items-center flex gap-[12px]">
+                  <button className="back-b header-icon" onClick={onClickBack}>
+                    뒤로
+                  </button>
+                  <h1>{shopName}</h1>
+                </div>
+                <div className="header-right flex gap-[12px]">
+                  <a className="share-b header-icon">공유</a>
+                </div>
               </div>
             );
           } else {

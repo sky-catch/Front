@@ -13,6 +13,7 @@ import KakoRedirectPage from "./pages/MyPage/KakoRedirectPage.js";
 import Login from "./pages/MyPage/Login.js";
 import MyPage from "./pages/MyPage/MyPage.js";
 import MyProfileInfo from "./pages/MyPage/MyProfileInfo.js";
+import Owner from "./pages/MyPage/Owner.js";
 import RestaurantInfo from "./pages/MyPage/RestaurantInfo.js";
 import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
 import ReserveForm from "./pages/Restaurant/ReserveForm.js";
@@ -22,6 +23,25 @@ import Search from "./pages/Search/Search.js";
 import SearchTotal from "./pages/Search/SearchTotal.js";
 
 function App() {
+  // localStorage.clear();
+  localStorage.setItem(
+    "token",
+    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQyNzE2OTIsImV4cCI6MTcxNDM1ODA5Mn0.r8J9A9hjRDQdLxkZDugWERrfArwJOBrEstWDIvacq-hsDeK4BLVPP1ddfvmMPcFVlSwen5v4G345o4VtwypNtQ`
+  );
+  localStorage.setItem(
+    "data",
+    JSON.stringify({
+      usersDTO: {
+        id: 0,
+        nickname: "string",
+        profileImageUrl: "string",
+        email: "string",
+        name: "string",
+        status: "ACTIVE",
+        owner: false,
+      },
+    })
+  );
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;
@@ -45,7 +65,6 @@ function App() {
           <Route path="my/myshop" element={<RestaurantSetting />} />
           <Route path="my/myshop/edit" element={<RestaurantInfo />} />
           <Route
-            // path="/oauth/login/KAKAO"
             path="/oauth/redirected/kakao"
             element={<KakoRedirectPage />}
           />
@@ -61,8 +80,8 @@ function App() {
           <Route path="/ct/shop/reservation/form" element={<ReserveForm />} />
           <Route path="/ct/my" element={<RestaurantSetting />} />
           <Route path={`/chat`} element={<ChatRoom />} />
+          <Route path="/owner" element={<Owner />}></Route>
         </Routes>
-        {/* <ReactQueryDevtools initialIsOpen={true} /> */}
         <Navbar />
       </RecoilRoot>
     </div>
