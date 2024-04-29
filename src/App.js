@@ -1,6 +1,5 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { RecoilRoot } from "recoil";
-import { useLocation } from "react-router-dom";
 import Header from "./components/Header.js";
 import Navbar from "./components/Navbar.js";
 import ChatRoom from "./pages/Dialog/ChatRoom.js";
@@ -24,24 +23,24 @@ import SearchTotal from "./pages/Search/SearchTotal.js";
 
 function App() {
   // localStorage.clear();
-  localStorage.setItem(
-    "token",
-    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQyNzE2OTIsImV4cCI6MTcxNDM1ODA5Mn0.r8J9A9hjRDQdLxkZDugWERrfArwJOBrEstWDIvacq-hsDeK4BLVPP1ddfvmMPcFVlSwen5v4G345o4VtwypNtQ`
-  );
-  localStorage.setItem(
-    "data",
-    JSON.stringify({
-      usersDTO: {
-        id: 0,
-        nickname: "string",
-        profileImageUrl: "string",
-        email: "string",
-        name: "string",
-        status: "ACTIVE",
-        owner: false,
-      },
-    })
-  );
+  // localStorage.setItem(
+  //   "token",
+  //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQzOTA5NTEsImV4cCI6MTcxNDQ3NzM1MX0.YhETtTyHIA6QKjY3hJJTxg2i5dnFZnw8awYZDlsUB4KN7Yy06e6TP7UUgr4d8v3XAI3JDZadua0toABAeGFlxA`
+  // );
+  // localStorage.setItem(
+  //   "data",
+  //   JSON.stringify({
+  //     usersDTO: {
+  //       id: 0,
+  //       nickname: "string",
+  //       profileImageUrl: "string",
+  //       email: "string",
+  //       name: "string",
+  //       status: "ACTIVE",
+  //       owner: false,
+  //     },
+  //   })
+  // );
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;
