@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { searchByKeyword } from "../respository/search.js";
 
 const HeaderItem = [
   {
@@ -44,6 +45,14 @@ const Header = () => {
     navigate("/my/myshop/edit");
   };
 
+  const onClickMove = (param) => {
+    var name = "";
+    if ( param == "/" ) {
+      name = "/search/total";
+    }
+    navigate(name);
+  };
+
   const headerContent = () => {
     switch (location) {
       case "/":
@@ -57,6 +66,7 @@ const Header = () => {
                 className="pl-[44px] pr-[15px] text-xs h-[30px]"
                 type="text"
                 placeholder="지역, 음식, 매장명 검색"
+                onClick={(e)=>{onClickMove(location,e)}}
               ></input>
             </form>
             <div className="header-right flex">
@@ -90,15 +100,30 @@ const Header = () => {
           </div>
         );
       case "/search/total":
+        const handleSearch = (e) => {
+          searchByKeyword(e.target.value)
+            .then((res) => {
+              console.log(res);
+            })
+        }
         return (
           <header>
-            <div className="container">
+            <div className="container header-wrapper flex items-center">
               <div>
-                <a></a>
+                <a className="header-back-black" onClick={onClickBack}>
+                  뒤로
+                </a>
               </div>
-              <form>
-                <input></input>
-                <button></button>
+              <form className="keyword-search keyword-search-main">
+                <input
+                  className="pl-[44px] pr-[15px] text-xs h-[30px]"
+                  type="text"
+                  placeholder="지역, 음식, 매장명 검색"
+                  autoFocus
+                  required
+                  onChange={handleSearch}
+                ></input>
+                <button className="btn-delete" type="reset">초기화</button>
               </form>
             </div>
           </header>

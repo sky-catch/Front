@@ -50,7 +50,7 @@ header {
   right: 0;
   z-index: 99;
   top: 0;
-
+  height : 48px;
   background-color: #fff;
 }
 .tab-menu {
@@ -662,3 +662,180 @@ header {
   border-color: #ff3d00;
   color: #fff;
 }
+.header-back-black {
+  background: url("./assets/icons/back.svg") 50% 50% no-repeat;
+  width: 32px;
+  height: 32px;
+  display: block;
+  text-indent: -999em;
+  overflow: hidden;
+  margin-right: 6px;
+  flex: none;
+}
+hr.seperator {
+  height : 8px;
+  background : #ececec !important;
+}
+.container.gutter-sm {
+  padding: 0 20px;
+}
+.mt-\[18\] {
+  margin-top : 18px !important;
+}
+/* filter drawer */
+.filter-drawer {
+  display : flex;
+  position : relative;
+  flex-direction : column;
+  margin-top : 28px;
+}
+.filter-drawer .filter-wrapper {
+  display : flex;
+  flex-direction : column;
+  position: relative;
+  margin-top: 28px;
+  overflow-y : scroll;
+  scrollbar-width : none;
+  scrollbar-color : transparent transparent;
+}
+.filter-drawer header {
+  position : sticky;
+  top : 0;
+  border-radius : 12px 12px 0 0;
+  padding: 12px 20px 0;
+  margin-bottom: 12px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #d5d5d5;
+  height : 100%;
+  width : 100%;
+}
+.swiper-container {
+  margin-left : auto;
+  margin-right : auto;
+  position : relative;
+  overflow : hidden;
+  list-style : none;
+  padding : 0;
+  z-index : 1;
+}
+.swiper-wrapper {
+  box-sizing: content-box;
+}
+.swiper-wrapper li {
+  padding: 8px 12px;
+  cursor : pointer;
+}
+.w-fit {
+  width: fit-content !important;
+}
+.selected-tap {
+  color : #222222;
+  border-bottom : 2px solid #222222;
+  font-weight : 700;
+}
+.justify-start {
+  justify-content : flex-start;
+}
+.box-border {
+  box-sizing: border-box;
+}
+.box-content {
+  box-sizing: content-box;
+}
+.grid {
+  display : grid;
+}
+.grid-cols-5 {
+  grid-template-columns : repeat(5, 1fr);
+}
+.city-wrapper {
+  flex-direction : column;
+  margin-top : 10px;
+  gap : 12px;
+}
+.city-wrapper button {
+  border : 1px solid transparent;
+  background-color : transparent;
+  border-color : transparent;
+  display : flex;
+  align-items : center;
+  justify-content : center;
+  border-radius : 46px;
+  padding : 8px 16px;
+  transition : border-color .2s;
+}
+.city-wrapper button.active {
+  border-color : #222222 !important;
+}
+.hotplace-wrapper {
+  flex-wrap : wrap;
+  gap : 8px;
+  background-color : #e5e5e5;
+  border-radius : 12px;
+  padding : 8px;
+}
+.hotplace-wrapper button {
+  cursor : pointer;
+  display : flex;
+  justify-content : center;
+  align-items : center;
+  transition : all .1s ease-in-out;
+  background-color : #ffffff;
+  padding : 8px 12px;
+  border-radius : 8px;
+}
+.hotplace-wrapper button.active {
+  border-color : #ff3d00;
+  color : #ff3d00;
+  background-color : #FFECE5;
+}
+hr.seperator {
+  height : 8px;
+  background-color : #f4f4f4;
+}
+.scroll-box {
+  overflow-y : scroll;
+  scrollbar-width : none;
+  scrollbar-color : transparent transparent;
+}
+.filter-wrapper footer {
+  width : 100%;
+  bottom : 0;
+  z-index : 2;
+}
+.filter-drawer footer button {
+  display : flex;
+  margin : 12px 16px;
+  padding : 12px 16px;
+  border-radius : 4px;
+}
+.filter-drawer footer button:first-child {
+  width : 108px;
+  border : 1px solid #d5d5d5;
+}
+.filter-drawer footer button:last-child {
+  width : 100%;
+  background-color : #ff3d00;
+  color : #ffffff;
+}
+.chip-filter .filter-icon button.active {
+  background-color : #fcefe7;
+  border-color : #ff3d00;
+  color : #ff3d00;
+}
+header .keyword-search input {
+  caret-color : #000000 !important;
+}
+header .keyword-search .btn-delete {
+  display : none;
+  width : 24px;
+  height : 24px;
+  text-indent : -999em;
+  position : absolute;
+  right : 15px;
+  top : 50%;
+  transform : translateY(-50%);
+  background : url("../src/assets/icons/delete-o.svg") 50% 50% no-repeat transparent;
+  overflow : hidden;
+}
+

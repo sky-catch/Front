@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -6,6 +6,8 @@ import Restaurants_sm from "../../components/Restaurants-sm.js";
 import search_g from "../../assets/icons/search-gray.svg";
 import calendar from "../../assets/icons/calendar.svg";
 import arrow_d from "../../assets/icons/arrow-down-red.svg";
+import FilterDrawer from "../../components/FilterDrawer.js";
+import {searchByFilter} from "../../respository/search.js"
 
 /**
  * 검색하기 화면
@@ -13,6 +15,7 @@ import arrow_d from "../../assets/icons/arrow-down-red.svg";
  */
 export default function Search() {
   const navigate = useNavigate();
+  const [isFilter, setIsFilter] = useState(false);
   const week = ["일", "월", "화", "수", "목", "금", "토"];
   const [date, setDate] = useState(
     String(new Date().getMonth() + 1).padStart(2, "0") +
@@ -23,7 +26,8 @@ export default function Search() {
       ")"
   );
   const [minNum, setMinNum] = useState(2);
-  const [time, setTime] = useState();
+  const [time, setTime] = useState("7:00");
+  const [filterInfo, setFilterInfo] = useState([]);
   const menuItems = [
     {
       id: 0,
@@ -65,6 +69,26 @@ export default function Search() {
     navigate("/search/total");
   }
 
+  /* 상세 검색 패널 열기 */
+  const toggleFilterDrawer = (e) => {
+    console.log(e.target.className);
+
+    setIsFilter((prevState)=>!prevState);
+  }
+
+  /* 필터 검색하기 */
+  const handleSearch = (e) => {
+    console.log(filterInfo);
+    searchByFilter(filterInfo)
+      .then((res)=>{
+
+      })
+  }
+
+  useEffect(()=> {
+    console.log(filterInfo, filterInfo.length);
+  },[filterInfo])
+
   return (
     <SearchSection>
       <main id="main">
@@ -80,13 +104,14 @@ export default function Search() {
           <div className="datetime-selector">
             <a>
               <span>
-                {date} / {minNum}명 / {time}{" "}
+                {date} / {minNum}명 / {time}
               </span>
             </a>
           </div>
           <div className="chip-filter">
             <div className="filter-icon">
-              <button className="design_system">
+              <button className={`design_system ${filterInfo.length > 0 ? "active" : ""}`} 
+                onClick={toggleFilterDrawer}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -100,7 +125,6 @@ export default function Search() {
                     strokeWidth="1.5"
                   ></path>
                 </svg>
-                {/* <span className="">0</span> */}
               </button>
             </div>
             <span className="seperator"></span>
@@ -109,7 +133,9 @@ export default function Search() {
                 <Swiper slidesPerView={"auto"} className="swiper-wrapper">
                   {menuItems.map((item, index) => {
                     return (
-                      <SwiperSlide className="swiper-slide-chip mr-[8px]" id={index}>
+                      <SwiperSlide 
+                        className={`swiper-slide-chip mr-[8px]`} 
+                        id={index}>
                         <button type="button" className="slide-button">
                           <span>{item.title}</span>
                         </button>
@@ -161,8 +187,16 @@ export default function Search() {
         </section>
       </main>
       <div className="sticky-bottom-btns upper">
-        <button className="btn btn-lg btn-red">검색</button>
+        <button className="btn btn-lg btn-red" onClick={handleSearch}>검색</button>
       </div>
+
+      {/* 필터 패널 Drawer */}
+      <FilterDrawer
+        isFilter={isFilter}
+        toggleFilterDrawer={toggleFilterDrawer}
+        setFilterInfo={setFilterInfo}
+      ></FilterDrawer>
+
     </SearchSection>
   );
 }
