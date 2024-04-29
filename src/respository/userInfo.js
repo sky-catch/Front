@@ -1,5 +1,6 @@
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import apiClient from "../apis/ApiClient";
-
 /**
  * API 사용자 관련정보
  *
@@ -65,4 +66,34 @@ export const getMyRestaurant = async () => {
   } catch (err) {
     console.log("Error >>", err);
   }
+};
+
+// 사장 생성
+
+const createOwner = (registrationNumber) => {
+  const token = localStorage.getItem("token");
+  // const token =
+  //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTM5NjUzODcsImV4cCI6MTcxNDA1MTc4N30._Xipwzi_Z18dUD5xHQe-R5BvBgyMo6dGwbTzHgtYzKXJmKnGcNbFD4N7NXyHEbmd8z55dKV0HmiRTq85wwdf_A";
+  console.log("token", token);
+  return axios.post(`http://15.164.89.177:8080/owner`, registrationNumber, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const CreateOwnerReq = () => {
+  return useMutation({
+    mutationFn: createOwner,
+    // (data) => {
+    //   return createOwner(data);
+    // },
+    mutationKey: ["createOwner"],
+    onSuccess: (isdata) => {
+      console.log("createPost success", isdata);
+    },
+    onError: (error) => {
+      console.log("createPost error", error.response.data);
+    },
+  });
 };

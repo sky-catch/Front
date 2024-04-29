@@ -16,6 +16,7 @@ function MyPage() {
   const [following, setFollowing] = useState(0);
   const [follower, setFollower] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
+  const owner = JSON.parse(localStorage.getItem("data")).usersDTO.owner;
   const [isSave, setIsSave] =
     useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
 
@@ -26,10 +27,14 @@ function MyPage() {
 
   /* Function : 식당 정보 관리 */
   const createRestaurant = () => {
-    console.log(user);
+    // console.log(user);
+    // navigate(`/my/myshop`);
     // navigate(`/my/myshop?restaurantInfor=${}`);
   };
-
+  // 사장 생성
+  const createOwner = () => {
+    navigate(`/owner`);
+  };
   /* Tap 선택 */
   const menuClick = (e, index) => {
     if (index === 0) {
@@ -97,9 +102,11 @@ function MyPage() {
             </button>
             <button
               className="btn btn-md btn-outline btn-rounded mt-18"
-              onClick={createRestaurant}
+              onClick={owner ? createRestaurant : createOwner}
             >
-              <span className="label">사장님 등록</span>
+              <span className="label">
+                {owner ? "내 식당 관리" : "사장님 등록"}
+              </span>
             </button>
           </div>
         </section>
