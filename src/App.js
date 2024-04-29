@@ -25,24 +25,7 @@ import Search from "./pages/Search/Search.js";
 
 function App() {
   // localStorage.clear();
-  localStorage.setItem(
-    "token",
-    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNDM2NTU5NSwiZXhwIjoxNzE0NDUxOTk1fQ.tKmLnxrHkzOSkc8KxoxacCiIXNvw-FzdgF1MZhVoedeKMXTtAdK1och9z22MOPv-Qw3IHrOBB-mP_4ZvIKmDzg`
-  );
-  localStorage.setItem(
-    "data",
-    JSON.stringify({
-      usersDTO: {
-        id: 0,
-        nickname: "string",
-        profileImageUrl: "string",
-        email: "string",
-        name: "string",
-        status: "ACTIVE",
-        owner: false,
-      },
-    })
-  );
+
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;
