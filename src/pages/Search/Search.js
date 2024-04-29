@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
-import Restaurants_sm from "../../components/Restaurants-sm.js";
-import search_g from "../../assets/icons/search-gray.svg";
-import calendar from "../../assets/icons/calendar.svg";
 import arrow_d from "../../assets/icons/arrow-down-red.svg";
+import calendar from "../../assets/icons/calendar.svg";
+import search_g from "../../assets/icons/search-gray.svg";
 import FilterDrawer from "../../components/FilterDrawer.js";
-import {searchByFilter} from "../../respository/search.js"
+import Restaurants_sm from "../../components/Restaurants-sm.js";
+import { searchByFilter } from "../../respository/search.js";
 
 /**
  * 검색하기 화면
@@ -67,27 +67,24 @@ export default function Search() {
 
   const moveToPage = () => {
     navigate("/search/total");
-  }
+  };
 
   /* 상세 검색 패널 열기 */
   const toggleFilterDrawer = (e) => {
     console.log(e.target.className);
 
-    setIsFilter((prevState)=>!prevState);
-  }
+    setIsFilter((prevState) => !prevState);
+  };
 
   /* 필터 검색하기 */
   const handleSearch = (e) => {
     console.log(filterInfo);
-    searchByFilter(filterInfo)
-      .then((res)=>{
+    searchByFilter(filterInfo).then((res) => {});
+  };
 
-      })
-  }
-
-  useEffect(()=> {
+  useEffect(() => {
     console.log(filterInfo, filterInfo.length);
-  },[filterInfo])
+  }, [filterInfo]);
 
   return (
     <SearchSection>
@@ -110,8 +107,12 @@ export default function Search() {
           </div>
           <div className="chip-filter">
             <div className="filter-icon">
-              <button className={`design_system ${filterInfo.length > 0 ? "active" : ""}`} 
-                onClick={toggleFilterDrawer}>
+              <button
+                className={`design_system ${
+                  filterInfo.length > 0 ? "active" : ""
+                }`}
+                onClick={toggleFilterDrawer}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -133,9 +134,11 @@ export default function Search() {
                 <Swiper slidesPerView={"auto"} className="swiper-wrapper">
                   {menuItems.map((item, index) => {
                     return (
-                      <SwiperSlide 
-                        className={`swiper-slide-chip mr-[8px]`} 
-                        id={index}>
+                      <SwiperSlide
+                        className={`swiper-slide-chip mr-[8px]`}
+                        key={index}
+                        id={index}
+                      >
                         <button type="button" className="slide-button">
                           <span>{item.title}</span>
                         </button>
@@ -171,7 +174,10 @@ export default function Search() {
                   <Swiper slidesPerView={"auto"} className="swiper-wrapper">
                     {hashtagItems.map((item, index) => {
                       return (
-                        <SwiperSlide className="swiper-slide-chip mr-[8px]">
+                        <SwiperSlide
+                          className="swiper-slide-chip mr-[8px]"
+                          key={index}
+                        >
                           <button type="button" className="slide-button">
                             <span>{item.title}</span>
                           </button>
@@ -187,7 +193,9 @@ export default function Search() {
         </section>
       </main>
       <div className="sticky-bottom-btns upper">
-        <button className="btn btn-lg btn-red" onClick={handleSearch}>검색</button>
+        <button className="btn btn-lg btn-red" onClick={handleSearch}>
+          검색
+        </button>
       </div>
 
       {/* 필터 패널 Drawer */}
@@ -196,7 +204,6 @@ export default function Search() {
         toggleFilterDrawer={toggleFilterDrawer}
         setFilterInfo={setFilterInfo}
       ></FilterDrawer>
-
     </SearchSection>
   );
 }
@@ -205,28 +212,28 @@ const SearchSection = styled.div`
   .search-header .keyword input {
     cursor: pointer;
     font-size: 13px;
-    height : 56px;
-    padding : 0 20px 0 52px;
-    width : 100%;
-    background : url("${search_g}") 20px 50% no-repeat;
+    height: 56px;
+    padding: 0 20px 0 52px;
+    width: 100%;
+    background: url("${search_g}") 20px 50% no-repeat;
   }
-  .search-header .datetime-selector  {
-    border-bottom : 1px solid #e5e5e5;
-    position : relative;
+  .search-header .datetime-selector {
+    border-bottom: 1px solid #e5e5e5;
+    position: relative;
   }
   .search-header .datetime-selector a {
     cursor: pointer;
-    position : relative;
-    display : block;
-    width : 100%;
-    height : 48px;
-    padding : 0 20px 0 48px;
-    font-size : 14px;
-    line-height : 48px;
-    background : url("${calendar}") 20px 50% no-repeat;
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 48px;
+    padding: 0 20px 0 48px;
+    font-size: 14px;
+    line-height: 48px;
+    background: url("${calendar}") 20px 50% no-repeat;
   }
   .search-header .datetime-selector a::after {
-    background : url("${arrow_d}") 50% 50% no-repeat;
+    background: url("${arrow_d}") 50% 50% no-repeat;
     width: 16px;
     height: 16px;
     content: "";
@@ -248,19 +255,19 @@ const SearchSection = styled.div`
     gap: 8px;
   }
   .design_system {
-    border : 1px solid #D5D5D5;
-    width : 40px;
-    height : 40px;
-    border-radius : 8px;
-    display : flex;
-    align-items : center;
-    justify-content : center;
+    border: 1px solid #d5d5d5;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .seperator {
     display: block;
     width: 1px;
     height: 40px;
-    background-color : #d5d5d5;
+    background-color: #d5d5d5;
   }
   .filter-menu {
     flex: 1;
