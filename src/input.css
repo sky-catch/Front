@@ -839,4 +839,29 @@ header .keyword-search .btn-delete {
   background : url("../src/assets/icons/delete-o.svg") 50% 50% no-repeat transparent;
   overflow : hidden;
 }
+.pt-\[10px\] {
+  padding-top: 10px;
+}
+.form-block .form-block-header {
+  display : flex;
+  align-items : center;
+  padding : 10px 0;
+}
+.form-block .form-block-header h2{
+  font-size : 14px;
+  color : #666;
+  font-weight : 500;
+}
+.searched-keyword-left-item {
+  display : flex;
+  align-items  :center;
+  padding : 12px 0;
+}
+.searched-keyword-left-item .icon {
+  width : 16px;
+  height : 16px;
+  background : url("../src/assets/icons/location-red-sm.svg") 50% 50% no-repeat;
+  background-size : contain;
+  margin-right : 12px;
+}
 

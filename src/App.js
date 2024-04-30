@@ -21,8 +21,10 @@ import Restaurant from "./pages/Restaurant/Restaurant.js";
 import ReviewList from "./pages/Restaurant/ReviewList.js";
 import Search from "./pages/Search/Search.js";
 import SearchTotal from "./pages/Search/SearchTotal.js";
+import { useState } from "react";
 
 function App() {
+  const [searchRes, setSearchRes] = useState({});
   // localStorage.clear();
   localStorage.setItem(
     "token",
@@ -51,11 +53,11 @@ function App() {
   return (
     <div>
       <RecoilRoot>
-        <Header />
+        <Header setSearchRes={setSearchRes}/>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />}></Route>
-          <Route path="/search/total" element={<SearchTotal />}></Route>
+          <Route path="/search/total" element={<SearchTotal searchRes={searchRes}/>}></Route>
           <Route path={`/mydining/my`} element={<MyDining />} />
           <Route path="/dialog" element={<Dialog />} />
           <Route path="/account" element={<Account />}></Route>

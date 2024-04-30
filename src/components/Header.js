@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { searchByKeyword } from "../respository/search.js";
 
@@ -29,11 +29,10 @@ const HeaderItem = [
     to: "/account",
   },
 ];
-const Header = () => {
+const Header = ({setSearchRes}) => {
   const location = useLocation().pathname;
   const shopName = useLocation().state;
   const navigate = new useNavigate();
-  // const [isExit, setIsExit] = useState(false);
   useEffect(() => {}, [location]);
 
   const onClickBack = () => {
@@ -100,11 +99,23 @@ const Header = () => {
           </div>
         );
       case "/search/total":
+        let searchRes = {};
         const handleSearch = (e) => {
-          searchByKeyword(e.target.value)
+          if( e.target.value.length < 2) { 
+            setSearchRes({});
+            return;
+          } else {
+            searchByKeyword(e.target.value)
             .then((res) => {
-              console.log(res);
+              searchRes = res.data;
+              
+              //검색어 추가
+              searchRes.input = e.target.value;
+              
+              console.log(searchRes);
+              setSearchRes(searchRes);
             })
+          }
         }
         return (
           <header>

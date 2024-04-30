@@ -29,6 +29,7 @@ export const searchByKeyword = async(params) => {
 
             }
         })
+        return result;
     } catch(err) {
         console.log("Error >>", err);
     }
