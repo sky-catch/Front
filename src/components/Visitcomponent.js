@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import Drawer from "react-modern-drawer";
 import styled from "styled-components";
 import { CancelReservation, CreateReview } from "../respository/reservation";
+
 const Visitcomponent = ({ itemList }) => {
   // const FormData = require('form-');
   // const FormData = require("form-data");
@@ -125,35 +126,18 @@ const Visitcomponent = ({ itemList }) => {
       return;
     }
 
-    // const formData = new FormData();
     //사진이랑 데이터 보내야됨
 
-    const test = {
+    const reviewItem = {
       createReviewReq: {
         restaurantId: itemList.restaurantId,
         reservationId: itemList.reservationId,
         rate: parseInt(isScore),
         comment: textInput.current.value,
       },
-      files: photoToAddList, // 파일 객체
+      files: photoToAddList,
     };
-    review(test);
-    console.log(photoToAddList);
-    // const createReviewReq = {
-    //   restaurantId: itemList.restaurantId,
-    //   reservationId: itemList.reservationId,
-    //   rate: parseInt(isScore),
-    //   comment: textInput.current.value,
-    // };
-    // const files = [];
-
-    // photoToAddList.map((item, index) => {
-    //   files.push(`files=${item.id}; type=${item.file.type}`);
-    // });
-    // console.log("files", files);
-    // const files = photoToAddList;
-    // const fileInput = document.querySelector('input[type="file"]');
-    // console.log(photoToAddList);
+    review(reviewItem);
   };
   return (
     <>
@@ -368,7 +352,7 @@ const ReviewBtn = styled.button`
   margin-top: 0.75rem;
   ${(props) =>
     props.even == true
-      ? ` color: #000; background-color: #d6d6d6;`
+      ? ` color: #666; background-color: #f4f4f4;`
       : `background-color: #ff3d00;  color: #fff;`}
 `;
 const CloseBtn = styled.button`

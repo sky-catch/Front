@@ -1,50 +1,45 @@
 // import { useEffect } from "react";
-import React, { useEffect } from "react";
-import { createRestaurant } from "../../respository/restaurant";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
+// import { createRestaurant } from "../../respository/restaurant";
 import { getMyRestaurant } from "../../respository/userInfo";
 export default function Restaurantsetting() {
   const addRestaurant = () => {
-    const myRestaurant = {
-      name: "스시미루",
-      category: "스시오마카세",
-      content:
-        "아름다운 맛과 다채로운 구성, 술 곁들이기 아늑한 분위기의 스시오마카세",
-      phone: "02-6402-4044",
-      tablePersonMax: 2,
-      tablePersonMin: 4,
-      openTime: "22:00:00",
-      lastOrderTime: "22:00:00",
-      closeTime: "22:00:00",
-      address: "압구정로데오",
-      detailAddress: "서울특별시 강남구 언주로170길 26-6 2층",
-      lunchPrice: 70000,
-      dinnerPrice: 140000,
-      days: {
-        days: ["MONDAY", "TUESDAY"],
-      },
-      reservationBeginDate: "2024-03-01",
-      reservationEndDate: "2024-04-01",
-      facilities: ["PARKING", "CORKAGE"],
-    };
-
-    createRestaurant()
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // createRestaurant()
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
-  useEffect(() => {
-    getMyRestaurant()
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   getMyRestaurant()
+  //     .then((res) => {
+  //       console.log(res);
 
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
+
+  // 내 식당 관리 페이지
+  const { data } = useQuery({
+    queryKey: ["getMyRestaurant"],
+    queryFn: () => {
+      return getMyRestaurant()
+        .then((res) => {
+          // console.log("res", res);
+          return res;
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    },
+  });
+
+  console.log(data);
   return (
     <div>
       <button
