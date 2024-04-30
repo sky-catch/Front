@@ -922,6 +922,10 @@ video {
   height: 60px;
 }
 
+.h-\[calc\(100\%-48px\)\] {
+  height: calc(100% - 48px);
+}
+
 .h-\[calc\(100\%-88px-45px\)\] {
   height: calc(100% - 88px - 45px);
 }
@@ -1415,6 +1419,10 @@ video {
   padding-bottom: 20px;
 }
 
+.pb-\[30px\] {
+  padding-bottom: 30px;
+}
+
 .pb-\[45px\] {
   padding-bottom: 45px;
 }
@@ -1688,6 +1696,10 @@ input:active {
 
 textarea:focus {
   outline: none;
+}
+
+textarea {
+  width: 100%;
 }
 
 .icon {

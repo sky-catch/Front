@@ -30,7 +30,6 @@ export default function Restaurantsetting() {
     queryFn: () => {
       return getMyRestaurant()
         .then((res) => {
-          // console.log("res", res);
           return res;
         })
         .catch((err) => {

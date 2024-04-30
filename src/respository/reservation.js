@@ -110,7 +110,6 @@ export const GetChatRoomListRes = async () => {
     return result.data;
   } catch (err) {
     console.log("Error >>", err.message);
-    console.log("Error >>", err);
     throw err;
   }
 };

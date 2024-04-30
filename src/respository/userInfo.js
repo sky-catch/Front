@@ -90,9 +90,6 @@ const createOwner = (registrationNumber) => {
 export const CreateOwnerReq = () => {
   return useMutation({
     mutationFn: createOwner,
-    // (data) => {
-    //   return createOwner(data);
-    // },
     mutationKey: ["createOwner"],
     onSuccess: (isdata) => {
       console.log("createPost success", isdata);
