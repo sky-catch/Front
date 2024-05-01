@@ -118,7 +118,7 @@ export const getOwner = async () => {
 };
 
 // 댓글 생성
-const createComment = (comment) => {
+export const CreateCommentReq = (comment) => {
   console.log(comment);
   const token = localStorage.getItem("token");
   return axios.post("http://15.164.89.177:8080/comment", comment, {
@@ -128,18 +128,18 @@ const createComment = (comment) => {
   });
 };
 
-export const CreateCommentReq = () => {
-  return useMutation({
-    mutationFn: createComment,
-    mutationKey: "createComment",
-    onSuccess: (isdata) => {
-      console.log(isdata);
-    },
-    onError: (iserr) => {
-      console.log(iserr);
-    },
-  });
-};
+// export const CreateCommentReq = () => {
+//   return useMutation({
+//     mutationFn: createComment,
+//     mutationKey: "createComment",
+//     onSuccess: (isdata) => {
+//       console.log(isdata);
+//     },
+//     onError: (iserr) => {
+//       console.log(iserr);
+//     },
+//   });
+// };
 
 // 댓글 수정
 const updateComment = (comment) => {
@@ -158,6 +158,7 @@ export const UpdateCommentReq = () => {
     mutationKey: "updateComment",
     onSuccess: (isdata) => {
       console.log(isdata);
+      window.location.reload();
     },
     onError: (iserr) => {
       console.log(iserr);

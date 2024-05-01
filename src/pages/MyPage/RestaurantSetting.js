@@ -11,7 +11,17 @@ export default function Restaurantsetting() {
   const [isOpen, setIsOpen] = useState(false);
   const [isCreate, setIsCreate] = useState(false);
   const textInput = useRef();
-  const { mutate: createComment } = CreateCommentReq();
+  const { mutate: createComment } = useMutation({
+    mutationFn: CreateCommentReq,
+    mutationKey: "CreateCommentReq",
+    onSuccess: (isdata) => {
+      console.log("댓글 작성 성공", isdata);
+      window.location.reload();
+    },
+    onError: (iserr) => {
+      console.log(iserr);
+    },
+  });
   const { mutate: updateComment } = UpdateCommentReq();
   const { mutate: deleteComment } = useMutation({
     mutationFn: DeleteComment,
@@ -24,9 +34,9 @@ export default function Restaurantsetting() {
       console.log(iserr);
     },
   });
-  // const { mutate: deleteComment } = DeleteCommentReq();
+
   const [isReviewId, setIsReviewId] = useState("");
-  const [isCommentId, setIsCommentId] = useState("");
+  const [isCommentId, setIsCommentId] = useState({ index: "", time: "" });
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState);
     alert("작상한 내용이 저장되지 않습니다.");
@@ -68,10 +78,8 @@ export default function Restaurantsetting() {
 
   console.log(data);
   //댓글 수정
-  const commentEdit = (index) => {
-    // console.log("댓글 수정", index);
-    setIsCommentId(index);
-    // setIsCreate(isComment);
+  const commentEdit = (index, time) => {
+    setIsCommentId({ index: index, time: time });
     setIsCreate(false);
     setIsOpen((prevState) => !prevState);
   };
@@ -86,12 +94,10 @@ export default function Restaurantsetting() {
   // 댓글 삭제
   const commentDelete = (index) => {
     alert("정말로 삭제하겠습니까?");
-    console.log("댓글 삭제", index);
     deleteComment(index);
   };
 
   const commentCreateAction = () => {
-    console.log("댓글 생성", isReviewId);
     const currentTime = new Date();
     const commentItems = {
       createdDate: currentTime.toISOString(),
@@ -99,39 +105,19 @@ export default function Restaurantsetting() {
       reviewId: isReviewId,
       content: textInput.current.value,
     };
-    // console.log(commentItems);
-    // if (isCreate) {
-    // 댓글 작성
-    // createComment(commentItems)
-    // } else {
-    // 댓글 수정
-    console.log("댓글 생성");
-    updateComment(commentItems);
-    // }
-    // setIsOpen((prevState) => !prevState);
+
+    createComment(commentItems);
   };
 
   const commentEditAction = () => {
-    console.log("댓글 수정", isCommentId);
-    // console.log("isCreate", isCreate);
-    // const currentTime = new Date();
-    // console.log(currentTime.toISOString());
-    // const commentItems = {
-    //   createdDate: currentTime.toISOString(),
-    //   updatedDate: currentTime.toISOString(),
-    //   commentId: commentId,
-    //   content: textInput.current.value,
-    // };
-    // console.log(commentItems);
-    // if (isCreate) {
-    // 댓글 작성
-    // createComment(commentItems)
-    // } else {
-    // 댓글 수정
-    console.log("댓글 수정");
-    // updateComment(commentItems)
-    // }
-    // setIsOpen((prevState) => !prevState);
+    const currentTime = new Date();
+    const commentItems = {
+      createdDate: isCommentId.time,
+      updatedDate: currentTime.toISOString(),
+      commentId: isCommentId.index,
+      content: textInput.current.value,
+    };
+    updateComment(commentItems);
   };
 
   return (
@@ -190,7 +176,9 @@ export default function Restaurantsetting() {
                   {item.commentContent === null ? (
                     <Btn
                       className="btn btn-md btn-outline btn-rounded"
-                      onClick={(e) => commentCreate(item.reviewId)}
+                      onClick={(e) => {
+                        commentCreate(item.reviewId);
+                      }}
                       colorEven={true}
                     >
                       댓글 작성
@@ -200,7 +188,7 @@ export default function Restaurantsetting() {
                       <Btn
                         className="btn btn-md btn-outline btn-rounded"
                         onClick={(e) => {
-                          commentEdit(item.commentId);
+                          commentEdit(item.commentId, item.commentCreatedDate);
                           textInput.current.value = item.commentContent;
                         }}
                         colorEven={true}
