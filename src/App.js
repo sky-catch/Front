@@ -25,24 +25,24 @@ import Search from "./pages/Search/Search.js";
 
 function App() {
   // localStorage.clear();
-  // localStorage.setItem(
-  //   "token",
-  //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNDQ1NjMyNSwiZXhwIjoxNzE0NTQyNzI1fQ.66d5uGbIEFqmKW8KMvgt3333FAj96vcUN-HxQe9HLmHWzqyq6q6FbkpGtbef6XT5ADAYbGgnPgTuBYMRrfKdJg`
-  // );
-  // localStorage.setItem(
-  //   "data",
-  //   JSON.stringify({
-  //     usersDTO: {
-  //       id: 0,
-  //       nickname: "string",
-  //       profileImageUrl: "string",
-  //       email: "string",
-  //       name: "string",
-  //       status: "ACTIVE",
-  //       owner: true,
-  //     },
-  //   })
-  // );
+  localStorage.setItem(
+    "token",
+    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN1cGVyc3V0ZTE0MkBnbWFpbC5jb20iLCJpc093bmVyIjp0cnVlLCJpYXQiOjE3MTQ1NDI4ODAsImV4cCI6MTcxNDYyOTI4MH0.190MiwY-oFrMWbsKxb9YGumIjg6ZzeWBscdDw_2ahKEx8b7x8KVibj_5p1w8ib-ecLhfqsAn8V5lS2V6z_a5uw`
+  );
+  localStorage.setItem(
+    "data",
+    JSON.stringify({
+      usersDTO: {
+        id: 0,
+        nickname: "string",
+        profileImageUrl: "string",
+        email: "string",
+        name: "string",
+        status: "ACTIVE",
+        owner: true,
+      },
+    })
+  );
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;

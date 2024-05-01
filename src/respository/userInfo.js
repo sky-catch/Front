@@ -116,3 +116,79 @@ export const getOwner = async () => {
       console.log("Error >>", err);
     });
 };
+
+// 댓글 생성
+const createComment = (comment) => {
+  console.log(comment);
+  const token = localStorage.getItem("token");
+  return axios.post("http://15.164.89.177:8080/comment", comment, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const CreateCommentReq = () => {
+  return useMutation({
+    mutationFn: createComment,
+    mutationKey: "createComment",
+    onSuccess: (isdata) => {
+      console.log(isdata);
+    },
+    onError: (iserr) => {
+      console.log(iserr);
+    },
+  });
+};
+
+// 댓글 수정
+const updateComment = (comment) => {
+  console.log(comment);
+  const token = localStorage.getItem("token");
+  return axios.patch("http://15.164.89.177:8080/comment", comment, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const UpdateCommentReq = () => {
+  return useMutation({
+    mutationFn: updateComment,
+    mutationKey: "updateComment",
+    onSuccess: (isdata) => {
+      console.log(isdata);
+    },
+    onError: (iserr) => {
+      console.log(iserr);
+    },
+  });
+};
+// 댓글 삭제 Delete
+
+export const DeleteComment = (id) => {
+  console.log(id);
+  const token = localStorage.getItem("token");
+  return axios.delete(
+    `http://15.164.89.177:8080/comment/${id}`,
+
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+// export const DeleteCommentReq = () => {
+//   return useMutation({
+//     mutationFn: deleteComment,
+//     mutationKey: "deleteComment",
+//     onSuccess: (isdata) => {
+//       console.log(isdata);
+//     },
+//     onError: (iserr) => {
+//       console.log(iserr);
+//     },
+//   });
+// };

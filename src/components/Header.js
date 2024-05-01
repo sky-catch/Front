@@ -36,6 +36,9 @@ const Header = () => {
   useEffect(() => {}, [location]);
 
   const onClickBack = () => {
+    if (location === "/my/myshop/edit") {
+      alert("변경한 내용이 저장되지 않습니다.");
+    }
     window.history.back();
   };
 

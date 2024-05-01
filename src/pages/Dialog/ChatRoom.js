@@ -2,7 +2,7 @@ import { QueryClient, useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 // import io from "socket.io";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import styled from "styled-components";
 import { getRestaurant } from "../../respository/restaurant";
 // import quer
@@ -25,25 +25,25 @@ const ChatRoom = () => {
   const memberChat = true;
   const token = localStorage.getItem("token");
   console.log(chatRoomId);
-  const socket = io("http://localhost:3000/chat", {
-    transports: ["websocket"],
-    timeout: 30000,
-    reconnectionAttempts: 2,
-  });
+  // const socket = io("http://localhost:3000/chat", {
+  //   transports: ["websocket"],
+  //   timeout: 30000,
+  //   reconnectionAttempts: 2,
+  // });
 
-  socket.on("connect_error", (error) => {
-    console.error("Socket.io 연결 에러:", error);
-  });
+  // socket.on("connect_error", (error) => {
+  //   console.error("Socket.io 연결 에러:", error);
+  // });
 
-  socket.on("connect", () => {
-    console.log("서버와 연결되었습니다.");
-  });
-  socket.on("disconnect", () => {
-    console.log("서버와의 연결이 끊어졌습니다.");
-  });
-  socket.on("message", (data) => {
-    console.log("서버로부터 메시지 수신:", data);
-  });
+  // socket.on("connect", () => {
+  //   console.log("서버와 연결되었습니다.");
+  // });
+  // socket.on("disconnect", () => {
+  //   console.log("서버와의 연결이 끊어졌습니다.");
+  // });
+  // socket.on("message", (data) => {
+  //   console.log("서버로부터 메시지 수신:", data);
+  // });
 
   // 서버로 메시지 전송
   // socket.emit("message", "안녕하세요, 서버!");
@@ -87,23 +87,14 @@ const ChatRoom = () => {
     isLoding: restaurantLoding,
     isError: restaurantError,
   } = useQuery({
-    queryKey: ["chatRoomList", 2],
+    queryKey: ["restaurantName"],
     queryFn: () => {
-      return getRestaurant(
-        decodeURIComponent(new URLSearchParams(location.search).get("name"))
-      )
-        .then((res) => {
-          return res;
-        })
-        .catch((err) => {
-          console.log("err >>", err);
-        });
+      return getRestaurant(new URLSearchParams(location.search).get("name"));
     },
-    // enabled: roomInfor.restaurantName,
   });
 
   if (!chatRoomList || !restaurant) return;
-  console.log(chatRoomList);
+  // console.log("chatRoomList", chatRoomList);
   return (
     <ChatBox>
       <div className=" min-h-[40px] container border-solid  leading-[40px] border-b-[#d4d4d4] border-b-[1px]">
@@ -172,7 +163,7 @@ const ChatRoom = () => {
             <input
               className=" size-[47px] block text-[#fff]"
               type="submit"
-              value="Send"
+              value="전송"
               onClick={(e) => {
                 e.preventDefault();
               }}

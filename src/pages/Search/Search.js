@@ -99,7 +99,10 @@ export default function Search() {
                 <Swiper slidesPerView={"auto"} className="swiper-wrapper">
                   {menuItems.map((item, index) => {
                     return (
-                      <SwiperSlide className="swiper-slide-chip mr-[8px]">
+                      <SwiperSlide
+                        className="swiper-slide-chip mr-[8px]"
+                        key={index}
+                      >
                         <button type="button" className="slide-button">
                           <span>{item.title}</span>
                         </button>
@@ -135,7 +138,10 @@ export default function Search() {
                   <Swiper slidesPerView={"auto"} className="swiper-wrapper">
                     {hashtagItems.map((item, index) => {
                       return (
-                        <SwiperSlide className="swiper-slide-chip mr-[8px]">
+                        <SwiperSlide
+                          className="swiper-slide-chip mr-[8px]"
+                          key={index}
+                        >
                           <button type="button" className="slide-button">
                             <span>{item.title}</span>
                           </button>

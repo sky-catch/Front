@@ -54,11 +54,14 @@ export const UpdateRestaurantRes = () => {
 
 export const getRestaurant = async (name) => {
   console.log("restaurant axios : ", name);
+  console.log("restaurant axios : ", decodeURIComponent(name));
   try {
     const res = await apiClient.get(`/restaurants/${name}`, {
-      headers: {},
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
     });
-
+    console.log("res", res);
     return res;
   } catch (err) {
     console.log("Error >>", err);

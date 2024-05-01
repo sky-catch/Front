@@ -629,3 +629,10 @@ header {
   background-size: cover;
   background-image: url("./assets/icons/icon-addition.png");
 }
+.scroll-hide {
+  -ms-overflow-style: none;
+}
+.scroll-hide::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+}
