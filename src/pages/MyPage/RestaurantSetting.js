@@ -15,7 +15,6 @@ export default function Restaurantsetting() {
     mutationFn: CreateCommentReq,
     mutationKey: "CreateCommentReq",
     onSuccess: (isdata) => {
-      console.log("댓글 작성 성공", isdata);
       window.location.reload();
     },
     onError: (iserr) => {
@@ -27,7 +26,6 @@ export default function Restaurantsetting() {
     mutationFn: DeleteComment,
     mutationKey: "DeleteComment",
     onSuccess: (isdata) => {
-      console.log("삭제 성공", isdata);
       window.location.reload();
     },
     onError: (iserr) => {
@@ -63,7 +61,7 @@ export default function Restaurantsetting() {
   // }, []);
 
   // 내 식당 관리 페이지
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["getMyRestaurant"],
     queryFn: () => {
       return getMyRestaurant()
@@ -77,6 +75,9 @@ export default function Restaurantsetting() {
   });
 
   console.log(data);
+  if (isLoading) {
+    return <div className="">...isLoading</div>;
+  }
   //댓글 수정
   const commentEdit = (index, time) => {
     setIsCommentId({ index: index, time: time });
@@ -119,12 +120,12 @@ export default function Restaurantsetting() {
     };
     updateComment(commentItems);
   };
-
+  console.log(data.reviewComments.length);
   return (
     <MainContents>
-      <div className=" container">
-        {data &&
-          data.reviewComments.map((item, index) => {
+      {data && data.reviewComments.length > 0 ? (
+        <div className=" container">
+          {data.reviewComments.map((item, index) => {
             return (
               <div
                 key={index}
@@ -208,28 +209,14 @@ export default function Restaurantsetting() {
               </div>
             );
           })}
-        {/* <div className=" border-b-[#c1c1c1] border-b-[1px] py-[10px]">
-          <div className=" flex items-center justify-between">
-            <span className="color-gray text-[12px]">아이디</span>
-            <span className="color-gray text-[12px]">날짜</span>
-          </div>
-          <div className="p-[7px] my-[12px] rounded-lg bg-[#eaeaea] text-[#2c2c2c] text-[14px] min-h-[80px] max-h-[120px] overflow-auto scroll-hide">
-            내용내용내용 <br />
-            내용내용내용 <br />
-            내용내용내용 <br />
-            내용내용내용 <br />
-            내용내용내용 <br />
-            내용내용내용 <br />
-            내용내용내용 <br />
-            내용내용내용 <br />
-            내용내용내용 <br />
-            내용내용내용 <br />
-          </div>
-          <Btn className="btn btn-md btn-outline btn-rounded" onClick={comment}>
-            댓글 작성
-          </Btn>
-        </div> */}
-      </div>
+        </div>
+      ) : (
+        <div className="h-[100%] w-[100%]  flex items-center justify-center">
+          <span className=" text-[22px] text-[#666]">
+            식당 리뷰가 없습니다.
+          </span>
+        </div>
+      )}
       <Drawer
         open={isOpen}
         onClose={toggleDrawer}

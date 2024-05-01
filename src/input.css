@@ -636,3 +636,17 @@ header {
   display: none;
   width: 0 !important;
 }
+
+.header-back-black {
+  display: block;
+  /* width: 25px; */
+  /* height: 25px; */
+  background-position: center;
+  background-repeat: no-repeat;
+  /* background-size: auto; */
+  width: 35px;
+  height: 35px;
+  background-size: cover;
+  background-image: url("/src/assets/icons/back.svg");
+  /* background-image: url(http://localhost:3000/static/media/setting.840429f….webp); */
+}

@@ -691,28 +691,12 @@ video {
   margin-bottom: 8px;
 }
 
-.my-\[10px\] {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.my-\[17px\] {
-  margin-top: 17px;
-  margin-bottom: 17px;
-}
-
-.my-\[14px\] {
-  margin-top: 14px;
-  margin-bottom: 14px;
-}
-
-.my-\[12px\] {
-  margin-top: 12px;
-  margin-bottom: 12px;
-}
-
 .mb-\[10px\] {
   margin-bottom: 10px;
+}
+
+.mb-\[12px\] {
+  margin-bottom: 12px;
 }
 
 .mb-\[15px\] {
@@ -831,10 +815,6 @@ video {
   margin-top: 80px;
 }
 
-.mb-\[12px\] {
-  margin-bottom: 12px;
-}
-
 .box-border {
   box-sizing: border-box;
 }
@@ -879,6 +859,11 @@ video {
   height: 48px;
 }
 
+.size-\[50px\] {
+  width: 50px;
+  height: 50px;
+}
+
 .size-\[60px\] {
   width: 60px;
   height: 60px;
@@ -894,17 +879,16 @@ video {
   height: 6px;
 }
 
-.size-\[50px\] {
-  width: 50px;
-  height: 50px;
-}
-
 .h-12 {
   height: 3rem;
 }
 
 .h-8 {
   height: 2rem;
+}
+
+.h-\[100\%\] {
+  height: 100%;
 }
 
 .h-\[100vh\] {
@@ -951,6 +935,14 @@ video {
   height: 60px;
 }
 
+.h-\[calc\(100\%-30px\)\] {
+  height: calc(100% - 30px);
+}
+
+.h-\[calc\(100\%-47px-47px\)\] {
+  height: calc(100% - 47px - 47px);
+}
+
 .h-\[calc\(100\%-48px\)\] {
   height: calc(100% - 48px);
 }
@@ -969,26 +961,6 @@ video {
 
 .h-full {
   height: 100%;
-}
-
-.h-\[calc\(100\%-47px\)\] {
-  height: calc(100% - 47px);
-}
-
-.h-\[100\%\] {
-  height: 100%;
-}
-
-.h-\[calc\(100\%-47-47pxpx\)\] {
-  height: calc(100% - 47 - 47pxpx);
-}
-
-.h-\[calc\(100\%-47px-47px\)\] {
-  height: calc(100% - 47px - 47px);
-}
-
-.h-\[calc\(100\%-30px\)\] {
-  height: calc(100% - 30px);
 }
 
 .max-h-\[120px\] {
@@ -1043,6 +1015,10 @@ video {
   width: calc(100% - 47px);
 }
 
+.w-\[calc\(100\%-60px\)\] {
+  width: calc(100% - 60px);
+}
+
 .w-\[calc\(100\%-72px\)\] {
   width: calc(100% - 72px);
 }
@@ -1059,22 +1035,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-\[80\%\] {
-  width: 80%;
-}
-
-.w-\[calc\(100\%50px\)\] {
-  width: calc(100%50px);
-}
-
-.w-\[calc\(100\%-50px\)\] {
-  width: calc(100% - 50px);
-}
-
-.w-\[calc\(100\%-60px\)\] {
-  width: calc(100% - 60px);
 }
 
 .min-w-\[70px\] {
@@ -1153,20 +1113,16 @@ video {
   gap: 1.25rem;
 }
 
+.gap-\[10px\] {
+  gap: 10px;
+}
+
 .gap-\[12px\] {
   gap: 12px;
 }
 
 .gap-\[4px\] {
   gap: 4px;
-}
-
-.gap-\[6px\] {
-  gap: 6px;
-}
-
-.gap-\[10px\] {
-  gap: 10px;
 }
 
 .gap-x-\[10px\] {
@@ -1197,20 +1153,16 @@ video {
   row-gap: 12px;
 }
 
+.gap-y-\[14px\] {
+  row-gap: 14px;
+}
+
 .gap-y-\[20px\] {
   row-gap: 20px;
 }
 
 .gap-y-\[7px\] {
   row-gap: 7px;
-}
-
-.gap-y-\[16px\] {
-  row-gap: 16px;
-}
-
-.gap-y-\[14px\] {
-  row-gap: 14px;
 }
 
 .overflow-auto {
@@ -1341,9 +1293,9 @@ video {
   border-color: transparent;
 }
 
-.border-b-\[\#000\] {
+.border-b-\[\#c1c1c1\] {
   --tw-border-opacity: 1;
-  border-bottom-color: rgb(0 0 0 / var(--tw-border-opacity));
+  border-bottom-color: rgb(193 193 193 / var(--tw-border-opacity));
 }
 
 .border-b-\[\#d4d4d4\] {
@@ -1356,24 +1308,9 @@ video {
   border-bottom-color: rgb(232 232 232 / var(--tw-border-opacity));
 }
 
-.border-b-\[\#4a4a4a\] {
-  --tw-border-opacity: 1;
-  border-bottom-color: rgb(74 74 74 / var(--tw-border-opacity));
-}
-
-.border-b-\[\#c1c1c1\] {
-  --tw-border-opacity: 1;
-  border-bottom-color: rgb(193 193 193 / var(--tw-border-opacity));
-}
-
 .bg-\[\#F6F6F6\] {
   --tw-bg-opacity: 1;
   background-color: rgb(246 246 246 / var(--tw-bg-opacity));
-}
-
-.bg-\[\#eaeaea\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(234 234 234 / var(--tw-bg-opacity));
 }
 
 .bg-\[\#f4f4f4\] {
@@ -1401,6 +1338,11 @@ video {
   background-color: rgb(254 229 0 / var(--tw-bg-opacity));
 }
 
+.bg-slate-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(148 163 184 / var(--tw-bg-opacity));
+}
+
 .bg-transparent {
   background-color: transparent;
 }
@@ -1408,11 +1350,6 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.bg-slate-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(148 163 184 / var(--tw-bg-opacity));
 }
 
 .bg-\[url\(\'\.\/assets\/icons\/alarm-normal\.svg\'\)\] {
@@ -1611,6 +1548,10 @@ video {
 
 .text-\[20px\] {
   font-size: 20px;
+}
+
+.text-\[22px\] {
+  font-size: 22px;
 }
 
 .text-\[26px\] {
@@ -2514,4 +2455,18 @@ header {
 .scroll-hide::-webkit-scrollbar {
   display: none;
   width: 0 !important;
+}
+
+.header-back-black {
+  display: block;
+  /* width: 25px; */
+  /* height: 25px; */
+  background-position: center;
+  background-repeat: no-repeat;
+  /* background-size: auto; */
+  width: 35px;
+  height: 35px;
+  background-size: cover;
+  background-image: url("/src/assets/icons/back.svg");
+  /* background-image: url(http://localhost:3000/static/media/setting.840429f….webp); */
 }
