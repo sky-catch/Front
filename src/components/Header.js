@@ -1,46 +1,58 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { searchByKeyword } from "../respository/search.js";
 
-const HeaderItem = [
-  {
-    id: 0,
-    name: "home",
-    to: "/",
-  },
-  {
-    id: 1,
-    name: "search",
-    to: "/search",
-  },
-  {
-    id: 3,
-    name: "mydining/my",
-    to: "/mydining/my",
-  },
-  {
-    id: 4,
-    name: "mydining",
-    to: "/mydining",
-  },
-  {
-    id: 5,
-    name: "account",
-    to: "/account",
-  },
-];
-const Header = ({setSearchRes}) => {
+// const HeaderItem = [
+//   {
+//     id: 0,
+//     name: "home",
+//     to: "/",
+//   },
+//   {
+//     id: 1,
+//     name: "search",
+//     to: "/search",
+//   },
+//   {
+//     id: 3,
+//     name: "mydining/my",
+//     to: "/mydining/my",
+//   },
+//   {
+//     id: 4,
+//     name: "mydining",
+//     to: "/mydining",
+//   },
+//   {
+//     id: 5,
+//     name: "account",
+//     to: "/account",
+//   },
+// ];
+const Header = ({setSearch, updateSearch}) => {
+  const [ searchRes, setSearchRes ] = useState({}); // 검색결과
   const location = useLocation().pathname;
   const shopName = useLocation().state;
   const navigate = new useNavigate();
-  useEffect(() => {}, [location]);
+  const searchInput = useRef();
+
+  useEffect(() => {
+    setSearch(searchRes);
+    updateSearch(searchRes);
+
+    // 뒤로가기 했을 때
+    if( Object.keys(searchRes).length > 0 && searchInput.current != null) {
+      searchInput.current.defaultValue = searchRes.input;
+    }
+
+  }, [location, searchRes]);
 
   const onClickBack = () => {
     window.history.back();
+    setSearchRes({});
   };
 
   const onEditRestaurant = () => {
-    // navigate("/");
     navigate("/my/myshop/edit");
   };
 
@@ -99,24 +111,42 @@ const Header = ({setSearchRes}) => {
           </div>
         );
       case "/search/total":
-        let searchRes = {};
+        let data = {
+          'city' : null,
+          "cityRestaurantCount": 0,
+          "hotPlace": null,
+          "hotPlaceRestaurantCount": 0,
+          "category": null,
+          "categoryRestaurantCount": 0,
+          "restaurantSummaryDTOList": []
+        };
+
         const handleSearch = (e) => {
-          if( e.target.value.length < 2) { 
-            setSearchRes({});
-            return;
-          } else {
-            searchByKeyword(e.target.value)
+          var text = '';
+          if( e.target.value.length >= 2) { 
+            text = e.target.value;
+            searchByKeyword(text)
             .then((res) => {
-              searchRes = res.data;
+              data = res.data;
               
               //검색어 추가
-              searchRes.input = e.target.value;
-              
-              console.log(searchRes);
-              setSearchRes(searchRes);
+              data.input = e.target.value;
+
+              // 검색 결과가 아무것도 없으면 searchRes 는 ''
+              // 검색 결과가 있으면 searchRes는 res.data
+              if(res.data.city == '' && res.data.hotPlace == '') {
+                setSearchRes({});
+              }else {
+                setSearchRes(data);
+              }
             })
+          } else {
+            console.log('header handle : ',data);
+            data.input = e.target.value;
+            setSearchRes(data);
           }
         }
+
         return (
           <header>
             <div className="container header-wrapper flex items-center">
@@ -133,6 +163,7 @@ const Header = ({setSearchRes}) => {
                   autoFocus
                   required
                   onChange={handleSearch}
+                  ref={searchInput}
                 ></input>
                 <button className="btn-delete" type="reset">초기화</button>
               </form>
