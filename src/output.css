@@ -815,6 +815,10 @@ video {
   margin-top: 80px;
 }
 
+.mt-\[48px\] {
+  margin-top: 48px;
+}
+
 .box-border {
   box-sizing: border-box;
 }
@@ -1101,6 +1105,10 @@ video {
   justify-content: flex-start;
 }
 
+.justify-end {
+  justify-content: flex-end;
+}
+
 .justify-center {
   justify-content: center;
 }
@@ -1163,6 +1171,14 @@ video {
 
 .gap-y-\[7px\] {
   row-gap: 7px;
+}
+
+.gap-y-\[50px\] {
+  row-gap: 50px;
+}
+
+.gap-y-\[30px\] {
+  row-gap: 30px;
 }
 
 .overflow-auto {
@@ -1374,6 +1390,10 @@ video {
 
 .bg-no-repeat {
   background-repeat: no-repeat;
+}
+
+.object-cover {
+  object-fit: cover;
 }
 
 .p-\[30px\] {

@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { LoginState } from "../../States/LoginState";
 import { UpdateRestaurantRes } from "../../respository/restaurant";
-import { getMyRestaurant } from "../../respository/userInfo";
+import { DeleteOwnerReq, getMyRestaurant } from "../../respository/userInfo";
 /**
  * 식당 정보 입력 화면
  * @author jimin
@@ -13,6 +13,7 @@ const testDay = ["MODDAY", "TUESDAY"];
 const testFacility = ["PARKING"];
 export default function RestaurantInfo() {
   const [user, setUser] = useRecoilState(LoginState);
+  const { mutate: deleteOwner } = DeleteOwnerReq();
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedFacilities, setSelectedFacilities] = useState([]);
   const [restaurant, setRestaurant] = useState([]);
@@ -99,12 +100,11 @@ export default function RestaurantInfo() {
       ":" +
       ("0" + today.getSeconds()).slice(-2);
 
-    // console.log("lastOrderTime", lastOrderTime);
     var closeTime =
       document.getElementById("closeTime").value.slice(0, 5) +
       ":" +
       ("0" + today.getSeconds()).slice(-2);
-    // console.log("closeTime", closeTime);
+
     var address = document.getElementById("address").value;
     var detailAddress = document.getElementById("detailAddress").value;
     var lunchPrice = parseInt(document.getElementById("lunchPrice").value);
@@ -192,8 +192,6 @@ export default function RestaurantInfo() {
     setIsNumber(user.shop.phone);
   }, []);
 
-  // console.log("select", selectedDays);
-  // console.log("user", user);
   const inputNumber = (e) => {
     let value = e.target.value;
     const inputValue = value.replace(/\D/g, "");
@@ -208,6 +206,13 @@ export default function RestaurantInfo() {
       }
     );
     setIsNumber(formattedValue);
+  };
+
+  // 식당 삭제
+  const deleteRestaurant = () => {
+    console.log("user", user.shop);
+    const owner = user.shop.ownerId;
+    deleteOwner(owner);
   };
   return (
     <MainContents className="main">
@@ -261,6 +266,7 @@ export default function RestaurantInfo() {
               // defaultValue={isNumber}
               value={user.shop.phone}
               placeholder="식당 전화 번호 입력해주세요. 예시 : 02-0000-0000"
+              maxLength={13}
               onChange={(e) => {
                 let value = e.target.value;
                 const inputValue = value.replace(/\D/g, "");
@@ -437,10 +443,7 @@ export default function RestaurantInfo() {
             </div>
             <Select
               options={daysOptions}
-              defaultValue={
-                defaultDay(testDay)
-                // console.log
-              }
+              defaultValue={defaultDay(testDay)}
               isMulti
               className="basic-multi-select"
               onChange={handleSelectDay}
@@ -477,7 +480,10 @@ export default function RestaurantInfo() {
           </div>
         </div>
       </div>
-      <div className="h-[48px] btn btn-md btn-outline btn-rounded container">
+      <div className="h-[48px] btn btn-md btn-outline btn-rounded container flex justify-between">
+        <DeleteBtn className="" onClick={deleteRestaurant}>
+          식당 삭제
+        </DeleteBtn>
         <InfoBtn className="" onClick={addRestaurantInfo}>
           저장
         </InfoBtn>
@@ -494,13 +500,22 @@ const MainContents = styled.div`
   /* overflow: auto; */
   margin-top: 47px;
 `;
+const DeleteBtn = styled.button`
+  border-radius: 6px;
+  line-height: 48px;
+  text-align: center;
+  font-size: 16px;
+  width: 30%;
+  color: rgb(102, 102, 102);
+  background-color: rgb(244, 244, 244);
+`;
 
 const InfoBtn = styled.button`
   border-radius: 6px;
   line-height: 48px;
   text-align: center;
   font-size: 16px;
-  width: 100%;
+  width: 65%;
   /* margin-top: 0.75rem; */
   background-color: #ff3d00;
   color: #fff;

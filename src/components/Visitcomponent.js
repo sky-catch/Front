@@ -6,7 +6,7 @@ import { CancelReservation, CreateReview } from "../respository/reservation";
 const Visitcomponent = ({ itemList }) => {
   // const FormData = require('form-');
   // const FormData = require("form-data");
-  const formData = new FormData();
+
   const [isOpen, setIsOpen] = useState(false);
   const photoInput = useRef();
   const textInput = useRef();

@@ -68,7 +68,6 @@ export const getMyRestaurant = async () => {
 };
 
 // 사장 생성
-
 const createOwner = (registrationNumber) => {
   const token = localStorage.getItem("token");
 
@@ -117,6 +116,37 @@ export const getOwner = async () => {
     });
 };
 
+// 사장 삭제
+const deleteOwner = (id) => {
+  const token = localStorage.getItem("token");
+  console.log("id", id);
+  return axios
+    .patch(`http://15.164.89.177:8080/owner/${id}`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      console.log("Error >>", err);
+    });
+};
+
+export const DeleteOwnerReq = () => {
+  return useMutation({
+    mutationFn: deleteOwner,
+    mutationKey: ["deleteOwner"],
+    onSuccess: (isdata) => {
+      console.log("createPost success", isdata);
+      window.location.href = "/account";
+    },
+    onError: (error) => {
+      console.log("createPost error", error.response.data);
+    },
+  });
+};
 // 댓글 생성
 export const CreateCommentReq = (comment) => {
   console.log(comment);
