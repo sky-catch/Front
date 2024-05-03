@@ -95,8 +95,11 @@ const FilterDrawer = ({isFilter, toggleFilterDrawer, setFilterInfo}) => {
 
     /* function : 검색적용 */
     const handleSearch = (e) => {
+        setFilterInfo({
+            'cities' : cities,
+            'cost' : cost
+        });
         toggleFilterDrawer(e);
-        setFilterInfo(cities);
     }
 
     /* function : 초기화 */
