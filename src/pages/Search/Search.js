@@ -127,7 +127,7 @@ export default function Search() {
                 </svg>
               </button>
             </div>
-            <span className="seperator"></span>
+            <span className="seperator-vt"></span>
             <div className="filter-menu">
               <div className="swiper swiper-container swiper-container-initialized swiper-container-horizontal">
                 <Swiper slidesPerView={"auto"} className="swiper-wrapper">
@@ -256,7 +256,7 @@ const SearchSection = styled.div`
     align-items : center;
     justify-content : center;
   }
-  .seperator {
+  .seperator-vt {
     display: block;
     width: 1px;
     height: 40px;

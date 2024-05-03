@@ -39,6 +39,25 @@ export default function SearhTotal ({search}) {
         setKeywords([newText, ...keywords]);
     }
 
+    // function : 최근 검색어 삭제창 노출
+    const handleDeleteAlert = (e) => {
+        var recent = e.currentTarget.nextSibling.classList;
+        console.log(e.currentTarget);
+        recent.forEach((item) => {
+            if (item == "show") {
+                recent.remove('show');
+            } else {
+                recent.add('show');
+            }
+        })
+    }
+
+    // function : 최근 검색어 전체 삭제
+    const handleDeleteAll = (e) => {
+        console.log(e.currentTarget.parentNode.classList);
+        setKeywords([]);
+    }
+
     useEffect(()=> {
         // 1. 지역, 레스토랑 저장
         var arr1 = ["city", "hotPlace"];
@@ -78,7 +97,10 @@ export default function SearhTotal ({search}) {
                         <div className="recent-input-header flex justify-between">
                             <h3 className="title">최근 검색어</h3>
                             <div className="dots">
-                                <button type="button"></button>
+                                <button type="button" onClick={handleDeleteAlert}></button>
+                                <div className="delete-alert alert-box">
+                                    <button type="button" onClick={handleDeleteAll}>전체 삭제</button>
+                                </div>
                             </div>
                         </div>
                         <div className="recent-input-body">
@@ -91,6 +113,7 @@ export default function SearhTotal ({search}) {
                                         console.log(item);
                                         return(
                                             <SwiperSlide
+                                                key={index}
                                                 className="swiper-slide-chip chip-design">
                                                     <a>{item.text}</a>
                                             </SwiperSlide>
