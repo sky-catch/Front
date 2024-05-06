@@ -1,3 +1,5 @@
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import apiClient from "../apis/ApiClient";
 
 /**
@@ -25,15 +27,42 @@ export const createRestaurant = async (data) => {
   }
 };
 
+/* 식당 수정 */
+const updateRestaurant = async (info) => {
+  console.log("info", info);
+  const token = sessionStorage.getItem("token");
+  // const token =
+  // "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNDQ1NjMyNSwiZXhwIjoxNzE0NTQyNzI1fQ.66d5uGbIEFqmKW8KMvgt3333FAj96vcUN-HxQe9HLmHWzqyq6q6FbkpGtbef6XT5ADAYbGgnPgTuBYMRrfKdJg";
+  return axios.put(`http://15.164.89.177:8080/restaurants`, info, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+export const UpdateRestaurantRes = () => {
+  return useMutation({
+    mutationKey: ["updateRestaurant"],
+    mutationFn: updateRestaurant,
+    onSuccess: (data) => {
+      console.log("createPost success", data);
+    },
+    onError: (error) => {
+      console.log("createPost error", error);
+    },
+  });
+};
 /* 식당 개별 조회 */
 
 export const getRestaurant = async (name) => {
   console.log("restaurant axios : ", name);
+  console.log("restaurant axios : ", decodeURIComponent(name));
   try {
     const res = await apiClient.get(`/restaurants/${name}`, {
-      headers: {},
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
     });
-
+    console.log("res", res);
     return res;
   } catch (err) {
     console.log("Error >>", err);

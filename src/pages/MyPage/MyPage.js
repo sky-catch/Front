@@ -1,9 +1,11 @@
+import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { LoginState } from "../../States/LoginState";
 import { getRestaurant } from "../../respository/restaurant";
+import { getOwner } from "../../respository/userInfo";
 
 /**
  * 마이페이지
@@ -16,6 +18,7 @@ function MyPage() {
   const [following, setFollowing] = useState(0);
   const [follower, setFollower] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
+
   const [owner, setOwner] = useState([]);
   // const owner = JSON.parse(sessionStorage.getItem("data")).usersDTO.owner;
   const [isSave, setIsSave] =
@@ -26,16 +29,11 @@ function MyPage() {
     navigate("/my/myProfileInfo");
   };
 
-  /* Function : 식당 정보 관리 */
-  const createRestaurant = () => {
-    // console.log(user);
-    // navigate(`/my/myshop`);
-    // navigate(`/my/myshop?restaurantInfor=${}`);
-  };
   // 사장 생성
   const createOwner = () => {
     navigate(`/owner`);
   };
+
   /* Tap 선택 */
   const menuClick = (e, index) => {
     if (index === 0) {
@@ -49,29 +47,46 @@ function MyPage() {
 
   /* Function : 식당 정보 */
   const getUserShop = () => {
-    console.log("id", user.id);
-    getRestaurant(user.id).then((res) => {
-      console.log(res);
-    });
+    getRestaurant(user.id).then((res) => {});
   };
 
   useEffect(() => {
+
     // 유저 정보 세팅
     setUser((prevUser) => ({
       // ...prevUser,
       // id: userInfor.id,
       // nickname: userInfor.nickname,
     }));
-    setUser((prevUser) => ({
-      // ...prevUser,
-      // id: userInfor.id,
-      // nickname: userInfor.nickname,
-    }));
+  
 
+    if (owner.usersDTO.owner === true) {
+      setIsOwner(true);
+    }
     // 유저의 저장 레스토랑 정보 GET
     getUserShop();
   }, []);
 
+  const { data: getOwnerItem, isLoading } = useQuery({
+    queryKey: ["getOwner"],
+    queryFn: () => {
+      return getOwner()
+        .then((res) => {
+          console.log("res", res);
+          return res;
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    },
+  });
+  if (isLoading) {
+    return <></>;
+  }
+  /* Function : 식당 정보 관리 */
+  const createRestaurant = () => {
+    navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
+  };
   return (
     <MainContents className="main">
       {/* 프로필정보 */}
@@ -106,10 +121,10 @@ function MyPage() {
             </button>
             <button
               className="btn btn-md btn-outline btn-rounded mt-18"
-              onClick={owner ? createRestaurant : createOwner}
+              onClick={isOwner ? createRestaurant : createOwner}
             >
               <span className="label">
-                {owner ? "내 식당 관리" : "사장님 등록"}
+                {isOwner ? "내 식당 관리" : "사장님 등록"}
               </span>
             </button>
           </div>

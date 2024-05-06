@@ -24,6 +24,7 @@ import SearchList from "./pages/Search/SearchList.js";
 import SearchTotal from "./pages/Search/SearchTotal.js";
 
 function App() {
+
   const [search, setSearch] = useState({});
   const updateSearch = (param) => {
     setSearch(param);
@@ -34,6 +35,7 @@ function App() {
   // sessionStorage.setItem(
   //   "token",
   //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQzOTMyNzYsImV4cCI6MTcxNDQ3OTY3Nn0.r9izCr_GBklv5U4QJrNIsbGRLndl0Go5F4Mp5p5TF5y7H51ZwGfyunagEVjtrAllLHOHJsFGr24ZR_hlzOpLew`
+
   // );
   // sessionStorage.setItem(
   //   "data",
@@ -49,6 +51,7 @@ function App() {
   //     },
   //   })
   // );
+
 
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {

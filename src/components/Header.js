@@ -47,6 +47,9 @@ const Header = ({ setSearch, updateSearch }) => {
   }, [location, searchRes]);
 
   const onClickBack = () => {
+    if (location === "/my/myshop/edit") {
+      alert("변경한 내용이 저장되지 않습니다.");
+    }
     window.history.back();
     setSearchRes({});
   };
@@ -91,9 +94,7 @@ const Header = ({ setSearch, updateSearch }) => {
         return (
           <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px]">
             <div className="header-left items-center flex gap-[12px]">
-              <a className="back header-icon" onClick={onClickBack}>
-                뒤로
-              </a>
+              <a className="back header-icon" onClick={onClickBack}></a>
               <a className="tohome header-icon">홈</a>
             </div>
             <div className="header-right flex gap-[12px]">
@@ -206,9 +207,7 @@ const Header = ({ setSearch, updateSearch }) => {
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex gap-[12px]">
-              <a className="header-back-black" onClick={onClickBack}>
-                뒤로
-              </a>
+              <a className="header-back-black" onClick={onClickBack}></a>
               <a className="text-xl h-[47px] leading-[47px] font-bold">
                 프로필 수정
               </a>
@@ -219,9 +218,7 @@ const Header = ({ setSearch, updateSearch }) => {
         return (
           <div className="header-wrapper flex px-[20px] items-center">
             <div className="header-left items-center flex gap-[12px]">
-              <a className="header-back-black" onClick={onClickBack}>
-                뒤로
-              </a>
+              <a className="header-back-black" onClick={onClickBack}></a>
               <a className="text-xl h-[47px] leading-[47px] font-bold">
                 내식당 관리
               </a>
@@ -239,9 +236,7 @@ const Header = ({ setSearch, updateSearch }) => {
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex gap-[12px]">
-              <a className="header-back-black" onClick={onClickBack}>
-                뒤로
-              </a>
+              <a className="header-back-black" onClick={onClickBack}></a>
               <a className="text-xl h-[47px] leading-[47px] font-bold">
                 식당 정보
               </a>
@@ -268,9 +263,7 @@ const Header = ({ setSearch, updateSearch }) => {
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex gap-[12px] w-[100%] justify-between">
-              <a className="header-back-black" onClick={onClickBack}>
-                뒤로
-              </a>
+              <a className="header-back-black" onClick={onClickBack}></a>
               <a className="text-xl h-[47px] leading-[47px] font-bold">
                 실시간 채팅 상담
               </a>
@@ -282,9 +275,10 @@ const Header = ({ setSearch, updateSearch }) => {
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex w-[100%] justify-between">
-              <a className="header-back-black w-[48px]" onClick={onClickBack}>
-                뒤로
-              </a>
+              <a
+                className="header-back-black w-[48px]"
+                onClick={onClickBack}
+              ></a>
               <span className=" absolute left-0 right-0 text-[20px] text-center font-semibold">
                 {shopName.name}
               </span>
@@ -295,9 +289,10 @@ const Header = ({ setSearch, updateSearch }) => {
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex w-[100%] justify-start">
-              <a className="header-back-black w-[48px]" onClick={onClickBack}>
-                뒤로
-              </a>
+              <a
+                className="header-back-black w-[48px]"
+                onClick={onClickBack}
+              ></a>
               <span className=" text-[20px]  font-semibold">
                 사장님 인증하기
               </span>

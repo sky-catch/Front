@@ -155,6 +155,7 @@ export default function Search() {
                   {menuItems.map((item, index) => {
                     return (
                       <SwiperSlide
+
                         className={`swiper-slide-chip mr-[8px]`}
                         key={index}
                         id={index}
