@@ -28,7 +28,7 @@ export const createRestaurant = async (data) => {
 /* 식당 개별 조회 */
 
 export const getRestaurant = async (name) => {
-  console.log("restaurant axios : ", name);
+  // console.log("restaurant axios : ", name);
   try {
     const res = await apiClient.get(`/restaurants/${name}`, {
       headers: {

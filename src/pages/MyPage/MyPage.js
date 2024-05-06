@@ -28,8 +28,9 @@ function MyPage() {
 
   /* Function : 식당 정보 관리 */
   const createRestaurant = () => {
+    // console.log("안녕");
     // console.log(user);
-    // navigate(`/my/myshop`);
+    navigate(`/my/myshop`);
     // navigate(`/my/myshop?restaurantInfor=${}`);
   };
   // 사장 생성
@@ -62,13 +63,9 @@ function MyPage() {
       // id: userInfor.id,
       // nickname: userInfor.nickname,
     }));
-    setUser((prevUser) => ({
-      // ...prevUser,
-      // id: userInfor.id,
-      // nickname: userInfor.nickname,
-    }));
 
     // 유저의 저장 레스토랑 정보 GET
+    console.log("user", user);
     getUserShop();
   }, []);
 

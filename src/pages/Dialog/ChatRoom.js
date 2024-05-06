@@ -104,9 +104,6 @@ const ChatRoom = () => {
     // enabled: roomInfor.restaurantName,
   });
 
-  console.log(chatRoomList);
-  console.log(restaurant);
-  console.log("안녕");
   if (!chatRoomList || !restaurant) return;
   return (
     <ChatBox>
