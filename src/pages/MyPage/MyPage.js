@@ -16,7 +16,8 @@ function MyPage() {
   const [following, setFollowing] = useState(0);
   const [follower, setFollower] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
-  const owner = JSON.parse(localStorage.getItem("data")).usersDTO.owner;
+  const [owner, setOwner] = useState([]);
+  // const owner = JSON.parse(localStorage.getItem("data")).usersDTO.owner;
   const [isSave, setIsSave] =
     useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
 
@@ -63,6 +64,11 @@ function MyPage() {
             // id: userInfor.id,
             // nickname: userInfor.nickname,
           }));
+    setUser((prevUser) => ({
+      // ...prevUser,
+      // id: userInfor.id,
+      // nickname: userInfor.nickname,
+    }));
 
     // 유저의 저장 레스토랑 정보 GET
     getUserShop();

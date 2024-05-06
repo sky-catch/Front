@@ -1,6 +1,5 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { RecoilRoot } from "recoil";
-import { useLocation } from "react-router-dom";
 import Header from "./components/Header.js";
 import Navbar from "./components/Navbar.js";
 import ChatRoom from "./pages/Dialog/ChatRoom.js";
@@ -48,6 +47,27 @@ function App() {
       },
     })
   );
+
+  // localStorage.clear();
+  // localStorage.setItem(
+  //   "token",
+  //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQzOTMyNzYsImV4cCI6MTcxNDQ3OTY3Nn0.r9izCr_GBklv5U4QJrNIsbGRLndl0Go5F4Mp5p5TF5y7H51ZwGfyunagEVjtrAllLHOHJsFGr24ZR_hlzOpLew`
+  // );
+  // localStorage.setItem(
+  //   "data",
+  //   JSON.stringify({
+  //     usersDTO: {
+  //       id: 0,
+  //       nickname: "string",
+  //       profileImageUrl: "string",
+  //       email: "string",
+  //       name: "string",
+  //       status: "ACTIVE",
+  //       owner: false,
+  //     },
+  //   })
+  // );
+
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;

@@ -103,7 +103,6 @@ export const GetChatRoomListRes = async () => {
     const result = await apiClient.get(`/chat/roomList`, {
       headers: {
         Authorization: `Bearer ${token}`,
-        // "Access-Control-Allow-Origin": "*",
       },
     });
     console.log("result", result);
