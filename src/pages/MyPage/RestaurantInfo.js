@@ -139,7 +139,7 @@ export default function RestaurantInfo() {
       reservationEndDate: reservationEndDate,
       facilities: selectedFacilities,
     };
-
+    console.log(info);
     /* 모두 필수 : 하나라도 입력하지 않은 경우 알림창 */
     if (
       !name ||
@@ -180,6 +180,7 @@ export default function RestaurantInfo() {
 
   /* 식당이 있으면 조회 */
   useEffect(() => {
+    console.log("user1", user);
     const prevUser = user;
     //내 식당 정보 조회 및 세팅
     getMyRestaurant().then((res) => {
@@ -218,7 +219,7 @@ export default function RestaurantInfo() {
 
   return (
     <MainContents className="main">
-      <div className=" h-[calc(100%-48px)] overflow-auto">
+      <div className=" h-[100%] overflow-auto">
         <div className="container gutter-sm pb-[30px]">
           <div className="form-block mb-[20px]">
             <div className="mb-[6px]">
@@ -333,6 +334,7 @@ export default function RestaurantInfo() {
               placeholder="한 테이블 당 최소 인원을 입력해주세요."
               onChange={(e) => {
                 const newValue = parseInt(e.target.value);
+
                 setUser((prevUser) => ({
                   ...prevUser,
                   shop: {
@@ -460,13 +462,20 @@ export default function RestaurantInfo() {
               className="form-input"
               id="reservationBeginDate"
               required="required"
+              defaultValue={user.shop.reservationBeginDate}
+              // value={user.shop.reservationBeginDate}
             />
           </div>
           <div className="form-block mb-[20px]">
             <div className="mb-[6px]">
               <label className="color-gray text-[12px]">예약 마감 일자</label>
             </div>
-            <input type="date" className="form-input" id="reservationEndDate" />
+            <input
+              type="date"
+              className="form-input"
+              id="reservationEndDate"
+              defaultValue={user.shop.reservationEndDate}
+            />
           </div>
           <div className="form-block mb-[20px]">
             <div className="mb-[6px]">
@@ -500,7 +509,7 @@ const MainContents = styled.div`
   height: calc(100vh - 47px);
   /* min-height: calc(100vh - 47px); */
   /* overflow: auto; */
-  margin-top: 47px;
+  /* margin-top: 47px; */
 `;
 const DeleteBtn = styled.button`
   border-radius: 6px;

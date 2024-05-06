@@ -18,7 +18,7 @@ function MyPage() {
   const [following, setFollowing] = useState(0);
   const [follower, setFollower] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
-  const [isOwner, setIsOwner] = useState(false);
+  const [isOwner, setIsOwner] = useState(true);
 
   const [owner, setOwner] = useState([]);
   // const owner = JSON.parse(sessionStorage.getItem("data")).usersDTO.owner;
@@ -82,13 +82,10 @@ function MyPage() {
 
   useEffect(() => {
     if (getOwnerItem && getOwnerItem.ownerId !== null) {
-      setIsOwner(true);
+      // setIsOwner(true);
     }
   }, [getOwnerItem]);
 
-  if (isLoading) {
-    return <></>;
-  }
   /* Function : 식당 정보 관리 */
   const createRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
@@ -218,7 +215,7 @@ const MainContents = styled.div`
   padding-bottom: 48px;
   box-sizing: border-box;
   height: calc(100vh - 47px);
-  margin-top: 47px;
+  /* margin-top: 47px; */
 
   /* 개인프로필 */
   .mypage-profile .profile-pic .img {

@@ -112,7 +112,6 @@ const Visitcomponent = ({ itemList }) => {
 
   const cancelItem = (id) => {
     cancelList(id);
-    window.location.replace("/mydining/my");
   };
 
   // 리뷰 입력 완료 버튼 클릭시 실행
@@ -139,6 +138,7 @@ const Visitcomponent = ({ itemList }) => {
     };
     review(reviewItem);
   };
+
   return (
     <>
       <div className=" py-[20px] px-[16px] bg-white rounded-[10px] shadow-lg min-h-[180px] relative mb-[15px]">
@@ -236,6 +236,7 @@ const Visitcomponent = ({ itemList }) => {
               open={isOpen}
               onClick={() => {
                 toggleDrawer();
+                // console.log(itemList);
                 cancelItem(itemList.reservationId);
               }}
             >

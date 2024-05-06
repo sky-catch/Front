@@ -278,7 +278,7 @@ export default function MyDining() {
     refetchOnMount: true,
   });
 
-  // console.log("reservationRes", reservationRes);
+  console.log("reservationRes", reservationRes);
 
   const alarmContainer = () => {
     if (alarmSelect === 0) {

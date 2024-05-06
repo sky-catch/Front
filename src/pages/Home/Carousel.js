@@ -27,7 +27,7 @@ const slideItem = [
 
 export default function Carousel() {
   return (
-    <CarouselWrapper className="slider mb-[16px] mt-[48px]">
+    <CarouselWrapper className="slider mb-[16px]">
       <Swiper
         className="swiper-wrapper"
         modules={[Pagination, Autoplay]}

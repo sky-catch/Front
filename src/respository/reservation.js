@@ -163,7 +163,7 @@ const cancelReservationItem = async (reservationId) => {
   const token = sessionStorage.getItem("token");
   return axios.patch(
     `http://15.164.89.177:8080/reservations/${reservationId}`,
-    {},
+    null,
     { headers: { Authorization: `Bearer ${token}` } }
   );
 };
@@ -207,7 +207,6 @@ const createReviewItem = async ({ createReviewReq, files }) => {
     }
   );
   return response.data;
-
 };
 export const CreateReview = () => {
   return useMutation({
