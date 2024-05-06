@@ -17,20 +17,21 @@ const FilterDrawer = ({isFilter, toggleFilterDrawer, setFilterInfo}) => {
     const [isContent, setIsContent] = useState(1);
     const [isSelect, setIsSelect] = useState(0);
     const [cities, setCities] = useState([]);
+
     const cityItems = [
         {name:"핫플"},{name:"서울"},{name:"경기"},{name:"인천"},{name:"부산"},
         {name:"제주"},{name:"울산"},{name:"경남"},{name:"대구"},{name:"경북"},
         {name:"강원"},{name:"대전"},{name:"충남"},{name:"충북"},{name:"세종"},
         {name:"전남"},{name:"광주"},{name:"전북"},
     ];
-    const hotplaces = [
-        {name:"서울 전체"},{name:"강남/역삼/선릉"},{name:"강남구청"},{name:"건대/군자/구의"},{name:"금호/옥수/신당"},{name:"명동/을지로/충무로"},{name:"방이"},
-        {name:"북촌/삼청"},{name:"삼성/대치"}, {name:"상수/합정/망원"}, {name:"서울역/회현"}, {name:"서초/방배"}, {name:"서촌"}, {name:"성수/서울숲"},
-        {name:"신사/논현"}, {name:"신촌/홍대/서교"}, {name:"압구정/청담"}, {name:"양재/도곡"}, {name:"연남"}, {name:"영등포/여의도"}, {name:"용산/삼각지"},
-    ]
+    const addressItems = [
+        ['서울 전체', '강남/역삼/선릉', '강남구청', '건대/군자/구의', '금호/옥수/신당', '명동/을지로/충무로', '방이', '북촌/삼청', '삼성/대치', '상수/합정/망원', '서울역/회현'
+            ,'서초/방배', '서촌', '성수/서울숲', '신사/논현', '신촌/홍대/서교', '압구정/청담', '양재/도곡', '연남', '영등포/여의도', '용산/삼각지'],
+        [],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]
+    ];
     const costItems = [
         {name:"10만원 이하",min:0,max:10},{name:"10만원대",min:10,max:20},{name:"20만원대",min:20,max:30},{name:"30만원대",min:30,max:40},{name:"40만원대 이상",min:40,max:40}
-    ]
+    ];
     const [ selected, setSelected ] = useState([]);
     const [ cost, setCost ] = useState({
         min : 0,
@@ -56,7 +57,6 @@ const FilterDrawer = ({isFilter, toggleFilterDrawer, setFilterInfo}) => {
     /* function : 도시선택 */
     const onSelectCity = (e, newCity) => {
         setCities([newCity, ...cities]);
-
 
         const recent = e.currentTarget.classList;
         const recentText = e.currentTarget.innerText;
@@ -95,8 +95,12 @@ const FilterDrawer = ({isFilter, toggleFilterDrawer, setFilterInfo}) => {
 
     /* function : 검색적용 */
     const handleSearch = (e) => {
+        console.log(cityItems[isSelect].name, cities);
         setFilterInfo({
-            'cities' : cities,
+            'cities' : {
+                'city' : cityItems[isSelect].name,
+                'address' : cities
+            },
             'cost' : cost
         });
         toggleFilterDrawer(e);
@@ -193,12 +197,12 @@ const FilterDrawer = ({isFilter, toggleFilterDrawer, setFilterInfo}) => {
                                     <div></div>
                                 </div>
                                 <div className="flex hotplace-wrapper">
-                                    {hotplaces.map((item,index) => {
+                                    {addressItems[isSelect].map((item,index) => {
                                         return(
                                             <button type="button"
-                                                onClick={(e)=>{onSelectCity(e,item.name)}}
+                                                onClick={(e)=>{onSelectCity(e,item)}}
                                                 ref={el => placeRef.current[index] =el}
-                                                ><span>{item.name}</span></button>
+                                                ><span>{item}</span></button>
                                         )
                                     })}
                                 </div>

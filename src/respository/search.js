@@ -8,10 +8,10 @@ import apiClient from "../apis/ApiClient";
 /* 식당 필터 검색 */
 export const searchByFilter = async(params) => {
     try{
-        console.log(params);
-        const result = await apiClient.get(`/restaurants/search`, params, {
+        // console.log(JSON.parse(params), JSON.stringify(params));
+        const result = await apiClient.get(`/restaurants/search`, params, JSON.stringify(params), {
             headers : {
-
+                "Content-Type" : `application/json`
             }
         });
         return result;
