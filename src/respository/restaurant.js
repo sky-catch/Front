@@ -30,7 +30,7 @@ export const createRestaurant = async (data) => {
 /* 식당 수정 */
 const updateRestaurant = async (info) => {
   console.log("info", info);
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   // const token =
   // "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNDQ1NjMyNSwiZXhwIjoxNzE0NTQyNzI1fQ.66d5uGbIEFqmKW8KMvgt3333FAj96vcUN-HxQe9HLmHWzqyq6q6FbkpGtbef6XT5ADAYbGgnPgTuBYMRrfKdJg";
   return axios.put(`http://15.164.89.177:8080/restaurants`, info, {
@@ -59,7 +59,7 @@ export const getRestaurant = async (name) => {
   try {
     const res = await apiClient.get(`/restaurants/${name}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
     });
     console.log("res", res);
@@ -76,7 +76,7 @@ export const GetReservationRes = async (visitStatus) => {
   try {
     const res = await apiClient.get(`/mydining/my/${visitStatus}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
     });
     return res;
@@ -87,7 +87,7 @@ export const GetReservationRes = async (visitStatus) => {
 
 /* 식당 저장 */
 export const saveRestaurant = async (restaurantId) => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   console.log("restaurantId :", restaurantId, "token : ", token);
   try {
     const res = await apiClient.get(`/saveRestaurant/${restaurantId}`, {

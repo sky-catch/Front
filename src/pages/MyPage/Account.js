@@ -5,8 +5,8 @@ function Account() {
   const [userInfo, setUserInfo] = useState(false);
 
   useEffect(() => {
-    // localStorage.setItem("token", "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxMzEwMDMzMCwiZXhwIjoxNzEzMTg2NzMwfQ.aMMvk3PnBzYIcDNrvOQ8eOWcZ08B5vLBYsFOjIBpwifQlPlM0myWmrfkWoRovsHQOvmDO6kKwPqghN0SK0nb6Q");
-    if (localStorage.getItem("token") === null) {
+    // sessionStorage.setItem("token", "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxMzEwMDMzMCwiZXhwIjoxNzEzMTg2NzMwfQ.aMMvk3PnBzYIcDNrvOQ8eOWcZ08B5vLBYsFOjIBpwifQlPlM0myWmrfkWoRovsHQOvmDO6kKwPqghN0SK0nb6Q");
+    if (sessionStorage.getItem("token") === null) {
       setUserInfo(false);
     } else {
       setUserInfo(true);

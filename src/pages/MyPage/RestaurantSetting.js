@@ -229,9 +229,7 @@ export default function Restaurantsetting() {
             <a
               className="header-back-black h-[47px] leading-[47px] z-50"
               onClick={toggleDrawer}
-            >
-              뒤로
-            </a>
+            ></a>
             <a className="text-xl h-[47px] leading-[47px] font-bold block absolute left-0 right-0 text-center">
               {isCreate ? "리뷰 댓글 작성하기" : "리뷰 댓글 수정하기"}
             </a>

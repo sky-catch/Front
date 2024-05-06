@@ -161,7 +161,7 @@ const Header = () => {
           </div>
         );
       case "/account":
-        return localStorage.getItem("token") !== null ? (
+        return sessionStorage.getItem("token") !== null ? (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left flex items-center">
               <h1 className="text-xl h-[47px] leading-[47px] font-bold">

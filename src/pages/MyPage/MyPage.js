@@ -19,7 +19,7 @@ function MyPage() {
   const [follower, setFollower] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
-  const owner = JSON.parse(localStorage.getItem("data"));
+  const owner = JSON.parse(sessionStorage.getItem("data"));
   const [isSave, setIsSave] =
     useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
 

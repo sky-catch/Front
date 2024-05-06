@@ -24,25 +24,25 @@ import ReviewList from "./pages/Restaurant/ReviewList.js";
 import Search from "./pages/Search/Search.js";
 
 function App() {
-  // localStorage.clear();
-  localStorage.setItem(
-    "token",
-    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNDY1ODA4MSwiZXhwIjoxNzE0NzQ0NDgxfQ._tg7F31dz24WGrEA1Z65rGVHnQouyQxvAAqbpYIgQh-SNq4e8Tqy2QoBFDAhqh5dyhnjtf4OpC7uODmLHZgcLg`
-  );
-  localStorage.setItem(
-    "data",
-    JSON.stringify({
-      usersDTO: {
-        id: 0,
-        nickname: "string",
-        profileImageUrl: "string",
-        email: "string",
-        name: "string",
-        status: "ACTIVE",
-        owner: true,
-      },
-    })
-  );
+  // sessionStorage.clear();
+  // sessionStorage.setItem(
+  //   "token",
+  //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN1cGVyc3V0ZTE0MkBnbWFpbC5jb20iLCJpc093bmVyIjp0cnVlLCJpYXQiOjE3MTQ5OTUxNTUsImV4cCI6MTcxNTA4MTU1NX0.ggC14EvQPjNOwSsrMY3cewBLtn8yXIN9Rbcj70RWatvdgYeSbK27jepMeifL7TVICwOfOzae-YKV2yamLkJyww`
+  // );
+  // sessionStorage.setItem(
+  //   "data",
+  //   JSON.stringify({
+  //     usersDTO: {
+  //       id: 0,
+  //       nickname: "string",
+  //       profileImageUrl: "string",
+  //       email: "string",
+  //       name: "string",
+  //       status: "ACTIVE",
+  //       owner: true,
+  //     },
+  //   })
+  // );
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;

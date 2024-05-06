@@ -53,7 +53,7 @@ export const getSavedRestaurants = async (name) => {
 
 /* 사장 : 내 식당 보기 */
 export const getMyRestaurant = async () => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   console.log(token);
   try {
     const result = await apiClient.get("/owner/restaurant", {
@@ -69,7 +69,7 @@ export const getMyRestaurant = async () => {
 
 // 사장 생성
 const createOwner = (registrationNumber) => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   // const token =
   //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTM5NjUzODcsImV4cCI6MTcxNDA1MTc4N30._Xipwzi_Z18dUD5xHQe-R5BvBgyMo6dGwbTzHgtYzKXJmKnGcNbFD4N7NXyHEbmd8z55dKV0HmiRTq85wwdf_A";
@@ -101,7 +101,7 @@ export const CreateOwnerReq = () => {
 
 // 사장 조회
 export const getOwner = async () => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   return axios
     .get(`http://15.164.89.177:8080/owner`, {
       headers: {
@@ -118,7 +118,7 @@ export const getOwner = async () => {
 
 // 사장 삭제
 const deleteOwner = (id) => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   console.log("id", id);
   return axios
     .patch(`http://15.164.89.177:8080/owner/${id}`, null, {
@@ -150,7 +150,7 @@ export const DeleteOwnerReq = () => {
 // 댓글 생성
 export const CreateCommentReq = (comment) => {
   console.log(comment);
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   return axios.post("http://15.164.89.177:8080/comment", comment, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -174,7 +174,7 @@ export const CreateCommentReq = (comment) => {
 // 댓글 수정
 const updateComment = (comment) => {
   console.log(comment);
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   return axios.patch("http://15.164.89.177:8080/comment", comment, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -199,7 +199,7 @@ export const UpdateCommentReq = () => {
 
 export const DeleteComment = (id) => {
   console.log(id);
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   return axios.delete(
     `http://15.164.89.177:8080/comment/${id}`,
 

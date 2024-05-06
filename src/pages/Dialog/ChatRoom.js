@@ -23,7 +23,7 @@ const ChatRoom = () => {
 
   const chatRoomId = location.state.chatRoomId;
   const memberChat = true;
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   console.log(chatRoomId);
   // const socket = io("http://localhost:3000/chat", {
   //   transports: ["websocket"],
