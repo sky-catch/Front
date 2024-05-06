@@ -1,8 +1,6 @@
-import { Route, Routes } from "react-router-dom";
+import { useState } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { RecoilRoot } from "recoil";
-// import { userInfoState } from "../../recoil/atoms/userState";
-// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { useLocation } from "react-router-dom";
 import Header from "./components/Header.js";
 import Navbar from "./components/Navbar.js";
 import ChatRoom from "./pages/Dialog/ChatRoom.js";
@@ -22,12 +20,22 @@ import ReserveForm from "./pages/Restaurant/ReserveForm.js";
 import Restaurant from "./pages/Restaurant/Restaurant.js";
 import ReviewList from "./pages/Restaurant/ReviewList.js";
 import Search from "./pages/Search/Search.js";
+import SearchList from "./pages/Search/SearchList.js";
+import SearchTotal from "./pages/Search/SearchTotal.js";
 
 function App() {
+
+  const [search, setSearch] = useState({});
+  const updateSearch = (param) => {
+    setSearch(param);
+    // console.log(param);
+  };
+
   // sessionStorage.clear();
   // sessionStorage.setItem(
   //   "token",
-  //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN1cGVyc3V0ZTE0MkBnbWFpbC5jb20iLCJpc093bmVyIjp0cnVlLCJpYXQiOjE3MTQ5OTUxNTUsImV4cCI6MTcxNTA4MTU1NX0.ggC14EvQPjNOwSsrMY3cewBLtn8yXIN9Rbcj70RWatvdgYeSbK27jepMeifL7TVICwOfOzae-YKV2yamLkJyww`
+  //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQzOTMyNzYsImV4cCI6MTcxNDQ3OTY3Nn0.r9izCr_GBklv5U4QJrNIsbGRLndl0Go5F4Mp5p5TF5y7H51ZwGfyunagEVjtrAllLHOHJsFGr24ZR_hlzOpLew`
+
   // );
   // sessionStorage.setItem(
   //   "data",
@@ -39,10 +47,12 @@ function App() {
   //       email: "string",
   //       name: "string",
   //       status: "ACTIVE",
-  //       owner: true,
+  //       owner: false,
   //     },
   //   })
   // );
+
+
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;
@@ -52,10 +62,15 @@ function App() {
   return (
     <div>
       <RecoilRoot>
-        <Header />
+        <Header setSearch={() => setSearch} updateSearch={updateSearch} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />}></Route>
+          <Route
+            path="/search/total"
+            element={<SearchTotal search={search} />}
+          ></Route>
+          <Route path="/search/list" element={<SearchList />}></Route>
           <Route path={`/mydining/my`} element={<MyDining />} />
           <Route path="/dialog" element={<Dialog />} />
           <Route path="/account" element={<Account />}></Route>

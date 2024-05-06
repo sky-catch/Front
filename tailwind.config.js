@@ -7,6 +7,7 @@ module.exports = {
         kakaoColor: "#fee500",
         loginTitle: "#666",
         loginText: "#ff3d00",
+        "point" : "#FF6632",
       },
       backgroundImage: {
         main : "url('./assets/icons/logo.png')",

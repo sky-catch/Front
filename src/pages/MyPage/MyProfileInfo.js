@@ -26,6 +26,7 @@ export default function MyProfileInfo () {
     /* Function : 닉네임 세팅 */
     useEffect(() => {
         setUserInfo();
+        console.log(user);
     }, []);
 
     return(
@@ -69,7 +70,7 @@ export default function MyProfileInfo () {
     )
 }
 
-const MainContents = styled.div`
+const MainContents = styled.main`
   padding-bottom: 48px;
   box-sizing: border-box;
   min-height: calc(100vh - 47px);

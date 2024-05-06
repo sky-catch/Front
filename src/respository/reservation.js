@@ -103,7 +103,6 @@ export const GetChatRoomListRes = async () => {
     const result = await apiClient.get(`/chat/roomList`, {
       headers: {
         Authorization: `Bearer ${token}`,
-        // "Access-Control-Allow-Origin": "*",
       },
     });
     console.log("result", result);
@@ -196,6 +195,7 @@ const createReviewItem = async ({ createReviewReq, files }) => {
   }
 
   const token = sessionStorage.getItem("token");
+
   const response = await axios.post(
     `http://15.164.89.177:8080/review`,
     formData,
@@ -207,6 +207,7 @@ const createReviewItem = async ({ createReviewReq, files }) => {
     }
   );
   return response.data;
+
 };
 export const CreateReview = () => {
   return useMutation({

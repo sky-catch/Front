@@ -1,24 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
+import arrow_d from "../../assets/icons/arrow-down-red.svg";
+import calendar from "../../assets/icons/calendar.svg";
+import search_g from "../../assets/icons/search-gray.svg";
+import FilterDrawer from "../../components/FilterDrawer.js";
 import Restaurants_sm from "../../components/Restaurants-sm.js";
+import { searchByFilter } from "../../respository/search.js";
 
 /**
  * 검색하기 화면
  * @author jimin
  */
 export default function Search() {
+  const navigate = useNavigate();
+  const [isFilter, setIsFilter] = useState(false);
   const week = ["일", "월", "화", "수", "목", "금", "토"];
-  const [date, setDate] = useState(
-    String(new Date().getMonth() + 1).padStart(2, "0") +
-      "." +
-      String(new Date().getDate()).padStart(2, "0") +
-      "(" +
-      week[new Date().getDay()] +
-      ")"
-  );
-  const [minNum, setMinNum] = useState(2);
-  const [time, setTime] = useState();
+  const [date, setDate] = useState(new Date()); // 오늘 날짜
+  const [minNum, setMinNum] = useState(2); // 최소 인원
+  const [time, setTime] = useState("7:00"); // 기본 시간
+  const [filterInfo, setFilterInfo] = useState([]);
   const menuItems = [
     {
       id: 0,
@@ -56,6 +58,48 @@ export default function Search() {
     { title: "#예약 오픈 달력" },
   ];
 
+  const moveToPage = () => {
+    navigate("/search/total");
+  };
+
+  /* 상세 검색 패널 열기 */
+  const toggleFilterDrawer = (e) => {
+    console.log(e.target.className);
+
+    setIsFilter((prevState) => !prevState);
+  };
+
+  /* 필터 검색하기 */
+  const handleSearch = (e) => {
+    const formatDate =
+      date.getFullYear() +
+      "-" +
+      String(date.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(date.getDate()).padStart(2, "0");
+
+    const params = {
+      date: formatDate,
+      time: time,
+      personCount: minNum,
+      koreanCity: filterInfo.cities.city || "",
+      hotPlace: filterInfo.cities.address[0] || "",
+      category: "",
+      minPrice: 0,
+      maxPrice: 0,
+      orderType: "기본순",
+    };
+    // console.log(filterInfo, 'params : ', JSON.parse(params), JSON.stringify(params));
+    searchByFilter(params);
+    // .then((res)=>{
+    // console.log(filterInfo);
+    // searchByFilter(filterInfo).then((res) => {});
+  };
+
+  useEffect(() => {
+    console.log(filterInfo, filterInfo.length);
+  }, [filterInfo]);
+
   return (
     <SearchSection>
       <main id="main">
@@ -65,18 +109,30 @@ export default function Search() {
               type="text"
               name="keyword"
               placeholder="지역, 음식, 매장명 검색"
+              onClick={moveToPage}
             ></input>
           </div>
           <div className="datetime-selector">
             <a>
               <span>
-                {date} / {minNum}명 / {time}{" "}
+                {String(date.getMonth() + 1).padStart(2, "0") +
+                  "." +
+                  String(date.getDate()).padStart(2, "0") +
+                  "(" +
+                  week[date.getDay()] +
+                  ")"}
+                / {minNum}명 / {time}
               </span>
             </a>
           </div>
           <div className="chip-filter">
             <div className="filter-icon">
-              <button className="design_system">
+              <button
+                className={`design_system ${
+                  filterInfo.length > 0 ? "active" : ""
+                }`}
+                onClick={toggleFilterDrawer}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -90,18 +146,19 @@ export default function Search() {
                     strokeWidth="1.5"
                   ></path>
                 </svg>
-                {/* <span className="">0</span> */}
               </button>
             </div>
-            <span className="seperator"></span>
+            <span className="seperator-vt"></span>
             <div className="filter-menu">
               <div className="swiper swiper-container swiper-container-initialized swiper-container-horizontal">
                 <Swiper slidesPerView={"auto"} className="swiper-wrapper">
                   {menuItems.map((item, index) => {
                     return (
                       <SwiperSlide
-                        className="swiper-slide-chip mr-[8px]"
+
+                        className={`swiper-slide-chip mr-[8px]`}
                         key={index}
+                        id={index}
                       >
                         <button type="button" className="slide-button">
                           <span>{item.title}</span>
@@ -157,19 +214,55 @@ export default function Search() {
         </section>
       </main>
       <div className="sticky-bottom-btns upper">
-        <button className="btn btn-lg btn-red">검색</button>
+        <button className="btn btn-lg btn-red" onClick={handleSearch}>
+          검색
+        </button>
       </div>
+
+      {/* 필터 패널 Drawer */}
+      <FilterDrawer
+        isFilter={isFilter}
+        toggleFilterDrawer={toggleFilterDrawer}
+        setFilterInfo={setFilterInfo}
+      ></FilterDrawer>
     </SearchSection>
   );
 }
 
 const SearchSection = styled.div`
-  .keyword input {
+  .search-header .keyword input {
     cursor: pointer;
     font-size: 13px;
+    height: 56px;
+    padding: 0 20px 0 52px;
+    width: 100%;
+    background: url("${search_g}") 20px 50% no-repeat;
+  }
+  .search-header .datetime-selector {
+    border-bottom: 1px solid #e5e5e5;
+    position: relative;
   }
   .search-header .datetime-selector a {
     cursor: pointer;
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 48px;
+    padding: 0 20px 0 48px;
+    font-size: 14px;
+    line-height: 48px;
+    background: url("${calendar}") 20px 50% no-repeat;
+  }
+  .search-header .datetime-selector a::after {
+    background: url("${arrow_d}") 50% 50% no-repeat;
+    width: 16px;
+    height: 16px;
+    content: "";
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
   }
   .chip-filter {
     display: flex;
@@ -181,6 +274,21 @@ const SearchSection = styled.div`
     padding-left: 20px;
     margin-right: 16px;
     gap: 8px;
+  }
+  .design_system {
+    border: 1px solid #d5d5d5;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .seperator-vt {
+    display: block;
+    width: 1px;
+    height: 40px;
+    background-color: #d5d5d5;
   }
   .filter-menu {
     flex: 1;

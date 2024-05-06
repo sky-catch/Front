@@ -54,8 +54,10 @@ export const getSavedRestaurants = async (name) => {
 /* 사장 : 내 식당 보기 */
 export const getMyRestaurant = async () => {
   const token = sessionStorage.getItem("token");
-  console.log(token);
   try {
+   // const token =
+    //  "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxMzY3OTYyOSwiZXhwIjoxNzEzNzY2MDI5fQ.qALwIB3VFm1PlOXx6hicOTKmR1Lx4Z4a0h-ZVMTcmybBvYB4WG5WIT-y7gl24Y_5YCLXB2tAGFl44GzROiC9Fg";
+ 
     const result = await apiClient.get("/owner/restaurant", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -70,7 +72,6 @@ export const getMyRestaurant = async () => {
 // 사장 생성
 const createOwner = (registrationNumber) => {
   const token = sessionStorage.getItem("token");
-
   // const token =
   //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTM5NjUzODcsImV4cCI6MTcxNDA1MTc4N30._Xipwzi_Z18dUD5xHQe-R5BvBgyMo6dGwbTzHgtYzKXJmKnGcNbFD4N7NXyHEbmd8z55dKV0HmiRTq85wwdf_A";
   console.log("token", token);

@@ -18,8 +18,9 @@ function MyPage() {
   const [following, setFollowing] = useState(0);
   const [follower, setFollower] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
-  const [isOwner, setIsOwner] = useState(false);
-  const owner = JSON.parse(sessionStorage.getItem("data"));
+
+  const [owner, setOwner] = useState([]);
+  // const owner = JSON.parse(sessionStorage.getItem("data")).usersDTO.owner;
   const [isSave, setIsSave] =
     useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
 
@@ -50,13 +51,14 @@ function MyPage() {
   };
 
   useEffect(() => {
-    // if (loginUser) {
+
     // 유저 정보 세팅
-    //       setUser((prevUser) => ({
-    //         ...prevUser,
-    //         id: userInfor.id,
-    //         nickname: userInfor.nickname,
-    //       }));
+    setUser((prevUser) => ({
+      // ...prevUser,
+      // id: userInfor.id,
+      // nickname: userInfor.nickname,
+    }));
+  
 
     if (owner.usersDTO.owner === true) {
       setIsOwner(true);
@@ -210,7 +212,6 @@ const MainContents = styled.div`
   padding-bottom: 48px;
   box-sizing: border-box;
   min-height: calc(100vh - 47px);
-  margin-top: 47px;
 
   /* 개인프로필 */
   .mypage-profile .profile-pic .img {
