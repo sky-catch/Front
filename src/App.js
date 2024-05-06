@@ -1,8 +1,5 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { RecoilRoot } from "recoil";
-// import { userInfoState } from "../../recoil/atoms/userState";
-// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { useLocation } from "react-router-dom";
 import Header from "./components/Header.js";
 import Navbar from "./components/Navbar.js";
 import ChatRoom from "./pages/Dialog/ChatRoom.js";
@@ -22,27 +19,32 @@ import ReserveForm from "./pages/Restaurant/ReserveForm.js";
 import Restaurant from "./pages/Restaurant/Restaurant.js";
 import ReviewList from "./pages/Restaurant/ReviewList.js";
 import Search from "./pages/Search/Search.js";
+import SearchTotal from "./pages/Search/SearchTotal.js";
+import SearchList from "./pages/Search/SearchList.js";
+import { useCallback, useState } from "react";
 
 function App() {
+
   // localStorage.clear();
-  localStorage.setItem(
-    "token",
-    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNDY1ODA4MSwiZXhwIjoxNzE0NzQ0NDgxfQ._tg7F31dz24WGrEA1Z65rGVHnQouyQxvAAqbpYIgQh-SNq4e8Tqy2QoBFDAhqh5dyhnjtf4OpC7uODmLHZgcLg`
-  );
-  localStorage.setItem(
-    "data",
-    JSON.stringify({
-      usersDTO: {
-        id: 0,
-        nickname: "string",
-        profileImageUrl: "string",
-        email: "string",
-        name: "string",
-        status: "ACTIVE",
-        owner: true,
-      },
-    })
-  );
+  // localStorage.setItem(
+  //   "token",
+  //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQzOTMyNzYsImV4cCI6MTcxNDQ3OTY3Nn0.r9izCr_GBklv5U4QJrNIsbGRLndl0Go5F4Mp5p5TF5y7H51ZwGfyunagEVjtrAllLHOHJsFGr24ZR_hlzOpLew`
+  // );
+  // localStorage.setItem(
+  //   "data",
+  //   JSON.stringify({
+  //     usersDTO: {
+  //       id: 0,
+  //       nickname: "string",
+  //       profileImageUrl: "string",
+  //       email: "string",
+  //       name: "string",
+  //       status: "ACTIVE",
+  //       owner: false,
+  //     },
+  //   })
+  // );
+
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;
@@ -52,10 +54,12 @@ function App() {
   return (
     <div>
       <RecoilRoot>
-        <Header />
+        <Header setSearch={()=>setSearch} updateSearch={updateSearch} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />}></Route>
+          <Route path="/search/total" element={<SearchTotal search={search}/>}></Route>
+          <Route path="/search/list" element={<SearchList/>}></Route>
           <Route path={`/mydining/my`} element={<MyDining />} />
           <Route path="/dialog" element={<Dialog />} />
           <Route path="/account" element={<Account />}></Route>

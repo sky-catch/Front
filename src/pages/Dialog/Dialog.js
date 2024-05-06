@@ -8,6 +8,7 @@ import DialogComponent from "../../components/DialogComponent";
 import { GetChatRoomListRes } from "../../respository/reservation";
 import Carousel from "../Home/Carousel";
 
+
 function sortDate1(list) {
   const sorted_list = list.sort(function (a, b) {
     return (
@@ -97,7 +98,7 @@ function Dialog() {
   //     hasNewChat ? "true" : "false"
   //   );
   // }
-  console.log(roomList);
+
   return (
     <DialogContents className="">
       {roomList.length > 0 ? (

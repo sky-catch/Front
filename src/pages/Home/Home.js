@@ -6,6 +6,10 @@ import QuickSearch from './QuickSearch.js';
 import Restaurants from '../../components/Restaurants.js';
 import BestFoodList from './BestFoodList.js';
 
+/**
+ * 메인 홈
+ * @returns 
+ */
 export default function Home() {
   const [visible, setVisible] = useState(false);
 

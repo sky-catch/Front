@@ -1,50 +1,70 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { searchByKeyword } from "../respository/search.js";
 
-const HeaderItem = [
-  {
-    id: 0,
-    name: "home",
-    to: "/",
-  },
-  {
-    id: 1,
-    name: "search",
-    to: "/search",
-  },
-  {
-    id: 3,
-    name: "mydining/my",
-    to: "/mydining/my",
-  },
-  {
-    id: 4,
-    name: "mydining",
-    to: "/mydining",
-  },
-  {
-    id: 5,
-    name: "account",
-    to: "/account",
-  },
-];
-const Header = () => {
+// const HeaderItem = [
+//   {
+//     id: 0,
+//     name: "home",
+//     to: "/",
+//   },
+//   {
+//     id: 1,
+//     name: "search",
+//     to: "/search",
+//   },
+//   {
+//     id: 3,
+//     name: "mydining/my",
+//     to: "/mydining/my",
+//   },
+//   {
+//     id: 4,
+//     name: "mydining",
+//     to: "/mydining",
+//   },
+//   {
+//     id: 5,
+//     name: "account",
+//     to: "/account",
+//   },
+// ];
+const Header = ({setSearch, updateSearch}) => {
+  const [ searchRes, setSearchRes ] = useState({}); // 검색결과
   const location = useLocation().pathname;
   const shopName = useLocation().state;
   const navigate = new useNavigate();
-  // const [isExit, setIsExit] = useState(false);
-  useEffect(() => {}, [location]);
+  const searchInput = useRef();
+
+  useEffect(() => {
+    setSearch(searchRes);
+    updateSearch(searchRes);
+
+    // 뒤로가기 했을 때
+    if( Object.keys(searchRes).length > 0 && searchInput.current != null) {
+      searchInput.current.defaultValue = searchRes.input;
+    }
+
+  }, [location, searchRes]);
 
   const onClickBack = () => {
     if (location === "/my/myshop/edit") {
       alert("변경한 내용이 저장되지 않습니다.");
     }
     window.history.back();
+    setSearchRes({});
   };
 
   const onEditRestaurant = () => {
-    // navigate("/");
     navigate("/my/myshop/edit");
+  };
+
+  const onClickMove = (param) => {
+    var name = "";
+    if ( param == "/" ) {
+      name = "/search/total";
+    }
+    navigate(name);
   };
 
   const headerContent = () => {
@@ -60,6 +80,7 @@ const Header = () => {
                 className="pl-[44px] pr-[15px] text-xs h-[30px]"
                 type="text"
                 placeholder="지역, 음식, 매장명 검색"
+                onClick={(e)=>{onClickMove(location,e)}}
               ></input>
             </form>
             <div className="header-right flex">
@@ -89,6 +110,66 @@ const Header = () => {
               검색하기
             </h1>
           </div>
+        );
+      case "/search/total":
+        let data = {
+          'city' : null,
+          "cityRestaurantCount": 0,
+          "hotPlace": null,
+          "hotPlaceRestaurantCount": 0,
+          "category": null,
+          "categoryRestaurantCount": 0,
+          "restaurantSummaryDTOList": []
+        };
+
+        const handleSearch = (e) => {
+          var text = '';
+          if( e.target.value.length >= 2) { 
+            text = e.target.value;
+            searchByKeyword(text)
+            .then((res) => {
+              data = res.data;
+              
+              //검색어 추가
+              data.input = e.target.value;
+
+              // 검색 결과가 아무것도 없으면 searchRes 는 ''
+              // 검색 결과가 있으면 searchRes는 res.data
+              if(res.data.city == '' && res.data.hotPlace == '') {
+                setSearchRes({});
+              }else {
+                setSearchRes(data);
+              }
+            })
+          } else {
+            console.log('header handle : ',data);
+            data.input = e.target.value;
+            setSearchRes(data);
+          }
+        }
+
+        return (
+          <header>
+            <div className="container header-wrapper flex items-center">
+              <div>
+                <a className="header-back-black" onClick={onClickBack}>
+                  뒤로
+                </a>
+              </div>
+              <form className="keyword-search keyword-search-main">
+                <input
+                  className="pl-[44px] pr-[15px] text-xs h-[30px]"
+                  type="text"
+                  placeholder="지역, 음식, 매장명 검색"
+                  autoFocus
+                  required
+                  onChange={handleSearch}
+                  ref={searchInput}
+                ></input>
+                <button className="btn-delete" type="reset">초기화</button>
+              </form>
+            </div>
+          </header>
         );
       case "/dialog":
         return (
