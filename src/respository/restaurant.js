@@ -47,7 +47,7 @@ export const GetReservationRes = async (visitStatus) => {
   try {
     const res = await apiClient.get(`/mydining/my/${visitStatus}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
     });
     return res;
@@ -58,7 +58,7 @@ export const GetReservationRes = async (visitStatus) => {
 
 /* 식당 저장 */
 export const saveRestaurant = async (restaurantId) => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   console.log("restaurantId :", restaurantId, "token : ", token);
   try {
     const res = await apiClient.get(`/saveRestaurant/${restaurantId}`, {

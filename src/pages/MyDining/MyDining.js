@@ -134,12 +134,12 @@ export default function MyDining() {
   };
 
   const moveLoginPage = () => {
-    if (localStorage.getItem("token") == null) {
+    if (sessionStorage.getItem("token") == null) {
       navigate("/account");
     }
   };
   useEffect(() => {
-    if (localStorage.getItem("token") == null) {
+    if (sessionStorage.getItem("token") == null) {
       setLoginState(false);
     } else {
       setLoginState(true);

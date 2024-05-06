@@ -51,7 +51,7 @@ export const ReservationTimes = () => {
 
 // 채팅 추가
 const postChatRoom = (id) => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   return axios.post(
     `http://15.164.89.177:8080/chat/${id}`,
     {},
@@ -96,7 +96,7 @@ export const PostChatRoomItem = () => {
 
 //채팅방 목록 보기
 export const GetChatRoomListRes = async () => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   // const token = `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQwMzA2ODksImV4cCI6MTcxNDExNzA4OX0.cnzXk6pEiaCqvbww_tjq-JjUGE_MW84lqij7y44lZyyjkUhyUFf61ZwIxSzYYjgpaj_NmtwA6kvYPUuKsauc-A`;
 
   try {
@@ -130,7 +130,7 @@ export const getChatRoom = async (chatRoomId) => {
 };
 // 예약 생성
 const createReservation = async (restaurantId, restaurantValue) => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   if (!token) {
     console.error("Token is not available");
     return; // 예외 처리: 토큰이 없을 경우 바로 반환
@@ -159,7 +159,7 @@ export const CreateNewReservation = () => {
 //예약 삭제
 const cancelReservationItem = async (reservationId) => {
   console.log("reservationId", reservationId);
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   return axios.patch(
     `http://15.164.89.177:8080/reservations/${reservationId}`,
     {},
@@ -189,7 +189,7 @@ const createReviewItem = async ({ createReviewReq, files }) => {
     formData.append("files", files[index].file, files[index].file.name);
   }
 
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   return axios.post(`http://15.164.89.177:8080/review`, formData, {
     headers: {
       Authorization: `Bearer ${token}`,

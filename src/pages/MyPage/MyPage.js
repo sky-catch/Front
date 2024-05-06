@@ -17,7 +17,7 @@ function MyPage() {
   const [follower, setFollower] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
   const [owner, setOwner] = useState([]);
-  // const owner = JSON.parse(localStorage.getItem("data")).usersDTO.owner;
+  // const owner = JSON.parse(sessionStorage.getItem("data")).usersDTO.owner;
   const [isSave, setIsSave] =
     useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
 
@@ -56,14 +56,12 @@ function MyPage() {
   };
 
   useEffect(() => {
-
     // 유저 정보 세팅
-          setUser((prevUser) => (
-          {
-            // ...prevUser,
-            // id: userInfor.id,
-            // nickname: userInfor.nickname,
-          }));
+    setUser((prevUser) => ({
+      // ...prevUser,
+      // id: userInfor.id,
+      // nickname: userInfor.nickname,
+    }));
     setUser((prevUser) => ({
       // ...prevUser,
       // id: userInfor.id,

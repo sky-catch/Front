@@ -30,12 +30,12 @@ function App() {
     // console.log(param);
   };
 
-  // localStorage.clear();
-  // localStorage.setItem(
+  // sessionStorage.clear();
+  // sessionStorage.setItem(
   //   "token",
   //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQzOTMyNzYsImV4cCI6MTcxNDQ3OTY3Nn0.r9izCr_GBklv5U4QJrNIsbGRLndl0Go5F4Mp5p5TF5y7H51ZwGfyunagEVjtrAllLHOHJsFGr24ZR_hlzOpLew`
   // );
-  // localStorage.setItem(
+  // sessionStorage.setItem(
   //   "data",
   //   JSON.stringify({
   //     usersDTO: {

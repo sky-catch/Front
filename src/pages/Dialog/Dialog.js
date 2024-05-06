@@ -22,14 +22,14 @@ function Dialog() {
   // const [roomList, setRoomList] = useState([]);
   const queryClient = new QueryClient();
   useEffect(() => {
-    if (localStorage.getItem("token") !== null) {
+    if (sessionStorage.getItem("token") !== null) {
       // getRoomList();
       SetIsLogin(true);
     }
   }, [isLogin]);
 
   // const getRoomList = () => {
-  //   const token = localStorage.getItem("token");
+  //   const token = sessionStorage.getItem("token");
   //   axios
   //     .get("http://15.164.89.177:8080/chat/roomList", {
   //       headers: {
