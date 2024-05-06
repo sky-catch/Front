@@ -129,9 +129,9 @@ function Dialog() {
 }
 export default Dialog;
 const DialogContents = styled.div`
-  padding-bottom: 48px;
+  /* padding-bottom: 48px; */
   box-sizing: border-box;
-  height: calc(100vh - 47px);
+  height: calc(100vh - 47px - 49px);
   margin-top: 47px;
 `;
 const LoginBtn = styled.button`

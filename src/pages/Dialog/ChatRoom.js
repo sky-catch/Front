@@ -19,6 +19,7 @@ const ChatRoom = () => {
   // let name = location.search.split("=");
   useEffect(() => {
     setRoomInfor(location.state);
+    console.log("roomInfor", location);
   }, []);
 
   const chatRoomId = location.state.chatRoomId;
@@ -74,6 +75,7 @@ const ChatRoom = () => {
     queryFn: () => {
       return getChatRoom(chatRoomId)
         .then((res) => {
+          console.log("res", res);
           return res;
         })
         .catch((err) => {
@@ -102,8 +104,10 @@ const ChatRoom = () => {
     // enabled: roomInfor.restaurantName,
   });
 
-  if (!chatRoomList || !restaurant) return;
   console.log(chatRoomList);
+  console.log(restaurant);
+  console.log("안녕");
+  if (!chatRoomList || !restaurant) return;
   return (
     <ChatBox>
       <div className=" min-h-[40px] container border-solid  leading-[40px] border-b-[#d4d4d4] border-b-[1px]">

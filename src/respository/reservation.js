@@ -116,10 +116,11 @@ export const GetChatRoomListRes = async () => {
 
 //채팅 보기
 export const getChatRoom = async (chatRoomId) => {
+  const token = sessionStorage.getItem("token");
   try {
     const result = await apiClient.get(`/chat/${chatRoomId}`, {
       headers: {
-        // Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 

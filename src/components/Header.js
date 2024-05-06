@@ -47,6 +47,7 @@ const Header = ({ setSearch, updateSearch }) => {
   }, [location, searchRes]);
 
   const onClickBack = () => {
+    console.log("안녕");
     window.history.back();
     setSearchRes({});
   };
@@ -268,13 +269,13 @@ const Header = ({ setSearch, updateSearch }) => {
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex gap-[12px] w-[100%] justify-between">
-              <a className="header-back-black" onClick={onClickBack}>
+              <a className="header-back-black z-50" onClick={onClickBack}>
                 뒤로
               </a>
-              <a className="text-xl h-[47px] leading-[47px] font-bold">
+              <a className="text-xl h-[47px] leading-[47px] font-bold text-center absolute left-0 right-0 z-0 w-auto">
                 실시간 채팅 상담
               </a>
-              <a className="icon"></a>
+              {/* <a className="icon"></a> */}
             </div>
           </div>
         );

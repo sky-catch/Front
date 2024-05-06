@@ -350,7 +350,7 @@ export default function MyDining() {
           {loginState ? "나의 알림" : "빈자리 알림"}
         </li>
       </ul>
-      <div className="tab-contens">
+      <TabContens className="tab-contens">
         {loginState ? (
           <div className="login-tab">
             {isSelect ? (
@@ -443,7 +443,7 @@ export default function MyDining() {
             )}
           </div>
         )}
-      </div>
+      </TabContens>
     </MyDiningContents>
   );
 }
@@ -453,4 +453,8 @@ const MyDiningContents = styled.div`
   box-sizing: border-box;
   min-height: calc(100vh - 47px);
   margin-top: 47px;
+`;
+const TabContens = styled.div`
+  overflow: auto;
+  height: calc(100vh - 48px - 48px - 49px);
 `;

@@ -31,24 +31,24 @@ function App() {
   };
 
   // sessionStorage.clear();
-  // sessionStorage.setItem(
-  //   "token",
-  //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQzOTMyNzYsImV4cCI6MTcxNDQ3OTY3Nn0.r9izCr_GBklv5U4QJrNIsbGRLndl0Go5F4Mp5p5TF5y7H51ZwGfyunagEVjtrAllLHOHJsFGr24ZR_hlzOpLew`
-  // );
-  // sessionStorage.setItem(
-  //   "data",
-  //   JSON.stringify({
-  //     usersDTO: {
-  //       id: 0,
-  //       nickname: "string",
-  //       profileImageUrl: "string",
-  //       email: "string",
-  //       name: "string",
-  //       status: "ACTIVE",
-  //       owner: false,
-  //     },
-  //   })
-  // );
+  sessionStorage.setItem(
+    "token",
+    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQ5ODE0MjYsImV4cCI6MTcxNTA2NzgyNn0.pbJUYvFvqgWHKUD4bV2CSdQDmznRZwkDGuKCUiOIrEIKiWZltCD7Hgj6PxBBSZkov304HjKyPcZplkNbp4nQpw`
+  );
+  sessionStorage.setItem(
+    "data",
+    JSON.stringify({
+      usersDTO: {
+        id: 0,
+        nickname: "string",
+        profileImageUrl: "string",
+        email: "string",
+        name: "string",
+        status: "ACTIVE",
+        owner: false,
+      },
+    })
+  );
 
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
