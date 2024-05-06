@@ -56,9 +56,14 @@ function MyPage() {
   };
 
   useEffect(() => {
-    // if (loginUser) {
 
     // 유저 정보 세팅
+          setUser((prevUser) => (
+          {
+            // ...prevUser,
+            // id: userInfor.id,
+            // nickname: userInfor.nickname,
+          }));
     setUser((prevUser) => ({
       // ...prevUser,
       // id: userInfor.id,

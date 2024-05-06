@@ -20,8 +20,34 @@ import Restaurant from "./pages/Restaurant/Restaurant.js";
 import ReviewList from "./pages/Restaurant/ReviewList.js";
 import Search from "./pages/Search/Search.js";
 import SearchTotal from "./pages/Search/SearchTotal.js";
+import SearchList from "./pages/Search/SearchList.js";
+import { useCallback, useState } from "react";
 
 function App() {
+  const [ search, setSearch ] = useState({});
+  const updateSearch = (param) => {
+    setSearch(param);
+    // console.log(param);
+  }
+  // localStorage.setItem(
+  //   "token",
+  //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQyNzE2OTIsImV4cCI6MTcxNDM1ODA5Mn0.r8J9A9hjRDQdLxkZDugWERrfArwJOBrEstWDIvacq-hsDeK4BLVPP1ddfvmMPcFVlSwen5v4G345o4VtwypNtQ`
+  // );
+  localStorage.setItem(
+    "data",
+    JSON.stringify({
+      usersDTO: {
+        id: 0,
+        nickname: "string",
+        profileImageUrl: "string",
+        email: "string",
+        name: "string",
+        status: "ACTIVE",
+        owner: false,
+      },
+    })
+  );
+
   // localStorage.clear();
   // localStorage.setItem(
   //   "token",
@@ -41,6 +67,7 @@ function App() {
   //     },
   //   })
   // );
+
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;
@@ -50,11 +77,12 @@ function App() {
   return (
     <div>
       <RecoilRoot>
-        <Header />
+        <Header setSearch={()=>setSearch} updateSearch={updateSearch} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />}></Route>
-          <Route path="/search/total" element={<SearchTotal />}></Route>
+          <Route path="/search/total" element={<SearchTotal search={search}/>}></Route>
+          <Route path="/search/list" element={<SearchList/>}></Route>
           <Route path={`/mydining/my`} element={<MyDining />} />
           <Route path="/dialog" element={<Dialog />} />
           <Route path="/account" element={<Account />}></Route>
