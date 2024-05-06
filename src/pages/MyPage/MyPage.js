@@ -30,6 +30,8 @@ function MyPage() {
     navigate("/my/myProfileInfo");
   };
 
+  /* Function : 식당 정보 관리 */
+
   // 사장 생성
   const createOwner = () => {
     navigate(`/owner`);
@@ -63,6 +65,7 @@ function MyPage() {
     //   setIsOwner(true);
     // }
     // 유저의 저장 레스토랑 정보 GET
+    console.log("user", user);
     getUserShop();
   }, []);
 
