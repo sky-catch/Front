@@ -214,6 +214,8 @@ export default function RestaurantInfo() {
     const owner = user.shop.ownerId;
     deleteOwner(owner);
   };
+  console.log("user", user);
+
   return (
     <MainContents className="main">
       <div className=" h-[calc(100%-48px)] overflow-auto">

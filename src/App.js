@@ -24,7 +24,6 @@ import SearchList from "./pages/Search/SearchList.js";
 import SearchTotal from "./pages/Search/SearchTotal.js";
 
 function App() {
-
   const [search, setSearch] = useState({});
   const updateSearch = (param) => {
     setSearch(param);
@@ -51,7 +50,6 @@ function App() {
   //     },
   //   })
   // );
-
 
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
