@@ -28,11 +28,11 @@ function App() {
   const updateSearch = (param) => {
     setSearch(param);
     // console.log(param);
-  }
-  // localStorage.setItem(
-  //   "token",
-  //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQyNzE2OTIsImV4cCI6MTcxNDM1ODA5Mn0.r8J9A9hjRDQdLxkZDugWERrfArwJOBrEstWDIvacq-hsDeK4BLVPP1ddfvmMPcFVlSwen5v4G345o4VtwypNtQ`
-  // );
+}
+  localStorage.setItem(
+    "token",
+    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTA4OTE3OCwiZXhwIjoxNzE1MTc1NTc4fQ.mrcezCo-5Z6_c7wfRuTwBNmRRM6R7xOixf4ZRMXOFf8AljME4DHWtb5zlu8bYyOtuEiuctNZM0uX65mx3Oqoqw`
+  );
   localStorage.setItem(
     "data",
     JSON.stringify({

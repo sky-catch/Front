@@ -89,6 +89,7 @@ export default function Search() {
       .then((res)=>{
     console.log(filterInfo);
     searchByFilter(filterInfo).then((res) => {});
+      });
   };
 
   useEffect(() => {

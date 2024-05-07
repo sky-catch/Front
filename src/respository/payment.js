@@ -9,13 +9,15 @@ import apiClient from "../apis/ApiClient";
 
 export const requestPayment = async(data) => {
     try{
-        console.log('data : ', data);
-
-        const result = await apiClient.post('/payments', data, {
+        const token = localStorage.getItem("token");
+        console.log('data : ', data, 'token : ', token);
+        const result = await apiClient.post(`/payments`, data, {
             headers: {
-            //   Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
             },
           });
+        
+        return result;
     } catch ( err ) {
         console.log("Error >>", err);
     }
