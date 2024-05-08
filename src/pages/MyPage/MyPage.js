@@ -56,7 +56,7 @@ function MyPage() {
 
   useEffect(() => {
     getRestaurant(user.id).then((res) => {});
-  };
+  });
 
   useEffect(() => {
     // 유저 정보 세팅
