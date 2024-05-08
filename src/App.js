@@ -31,10 +31,9 @@ function App() {
     // console.log(param);
   };
 
-  // sessionStorage.clear();
   sessionStorage.setItem(
     "token",
-    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTE3MTg4NiwiZXhwIjoxNzE1MjU4Mjg2fQ.s8H1nEK31Ur305bbLYVIasMDX0JD26kLi-Ru-KDSjWpDO6CwfRn7mgPNd1AC1npGD2kbMkVL_8adsjnRnDWdOA`
+    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN1cGVyc3V0ZTE0MkBnbWFpbC5jb20iLCJpc093bmVyIjp0cnVlLCJpYXQiOjE3MTUxODY2NTEsImV4cCI6MTcxNTI3MzA1MX0.iyMM6k7xZJvqS2s-iLrHl8n-zn4S9hAqz5KiNz83S3y-s0N4dZWFSQ7yPHf_auOGpK8-DunQtOBWL9qSb3YkjQ`
   );
   sessionStorage.setItem(
     "data",

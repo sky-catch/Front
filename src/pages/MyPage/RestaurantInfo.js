@@ -180,12 +180,7 @@ export default function RestaurantInfo() {
     } else {
       // 식당 정보 없을때
       console.log("식당 정보 없을때");
-      // console.log("userInfoInfo", user);
-      // setRestaurant(true);
       setRestaurant(false);
-      // setSelectedCategory("HANWOO_OMAKASE");
-      // setSelectedDays(["월"]);
-      // setSelectedFacilities(["주차"]);
     }
   }, []);
 
@@ -629,19 +624,6 @@ export default function RestaurantInfo() {
                 ))}
               </Select>
             </FormControl>
-            {/* <Select
-              options={daysOptions}
-              isSearchable={false}
-              isClearable={false}
-              // isDisabled={false}
-              classNamePrefix="select"
-              closeMenuOnSelect={false}
-              value={defaultDay(selectedDays)}
-              // defaultValue={user ? defaultDay(selectedDays) : ""}
-              isMulti
-              className="basic-multi-select"
-              onChange={handleSelectDay}
-            ></Select> */}
           </div>
           <div className="form-block mb-[20px]">
             <div className="mb-[6px]">
@@ -718,7 +700,7 @@ export default function RestaurantInfo() {
         </div>
       </div>
       {restaurant ? (
-        <div className="h-[48px] btn btn-md btn-outline btn-rounded container flex justify-between">
+        <div className="h-[48px]  btn-rounded container flex justify-between">
           <DeleteBtn className="" onClick={deleteRestaurant}>
             식당 삭제
           </DeleteBtn>

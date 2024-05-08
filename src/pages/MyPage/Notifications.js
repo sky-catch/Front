@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import Drawer from "react-modern-drawer";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { RestaurantState } from "../../States/LoginState";
 import { CreateNotificatRes } from "../../respository/restaurant";
-import { getMyRestaurant } from "../../respository/userInfo";
 const Notifications = () => {
+  const restaurant = useRecoilValue(RestaurantState);
   const [isNotificat, setIsNotificat] = useState([]);
-  const [isRestaurant, setIsRestaurant] = useState([]);
+
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: createNotificat } = CreateNotificatRes();
   const inputRef = useRef([]);
@@ -22,15 +24,17 @@ const Notifications = () => {
   };
 
   useEffect(() => {
-    getMyRestaurant()
-      .then((res) => {
-        console.log("res", res);
-        setIsNotificat(res.notifications);
-        setIsRestaurant(res);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
+    console.log(restaurant);
+    setIsNotificat(restaurant.notifications);
+    // getMyRestaurant()
+    //   .then((res) => {
+    //     console.log("res", res);
+    //     setIsNotificat(res.notifications);
+    //     setIsRestaurant(res);
+    //   })
+    //   .catch((err) => {
+    //     console.log("err", err);
+    //   });
   }, []);
   const setDeadline = (date) => {
     const now = new Date();
@@ -197,8 +201,7 @@ const Notifications = () => {
           </div>
           <CommentSendBtn
             onClick={() => {
-              //   console.log(isRestaurant);
-              sendNotificat(isRestaurant.restaurantId);
+              sendNotificat(restaurant.restaurantId);
             }}
           >
             공지 사항 입력 완료
