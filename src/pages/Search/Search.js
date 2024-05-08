@@ -18,7 +18,7 @@ export default function Search() {
   const [isFilter, setIsFilter] = useState(false);
   const week = ["일", "월", "화", "수", "목", "금", "토"];
   const [date, setDate] = useState(new Date()); // 오늘 날짜
-  const [minNum, setMinNum] = useState(2);  // 최소 인원
+  const [minNum, setMinNum] = useState(2); // 최소 인원
   const [time, setTime] = useState("7:00"); // 기본 시간
   const [filterInfo, setFilterInfo] = useState([]);
   const menuItems = [
@@ -71,25 +71,36 @@ export default function Search() {
 
   /* 필터 검색하기 */
   const handleSearch = (e) => {
-    const formatDate = date.getFullYear()+'-'+String(date.getMonth() + 1).padStart(2, '0')+'-'+String(date.getDate()).padStart(2, '0');
-    
+    const formatDate =
+      date.getFullYear() +
+      "-" +
+      String(date.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(date.getDate()).padStart(2, "0");
+
     const params = {
-      "date" : formatDate,
-      "time" : time,
-      "personCount" : minNum,
-      "koreanCity" : filterInfo.cities.city || '',
-      "hotPlace" : filterInfo.cities.address[0] || '',
-      "category" : '',
-      "minPrice" : 0,
-      "maxPrice" : 0,
-      "orderType" : '기본순'
-    }
+      date: formatDate,
+      time: time,
+      personCount: minNum,
+      koreanCity: filterInfo.cities.city || "",
+      hotPlace: filterInfo.cities.address[0] || "",
+      category: "",
+      minPrice: 0,
+      maxPrice: 0,
+      orderType: "기본순",
+    };
     // console.log(filterInfo, 'params : ', JSON.parse(params), JSON.stringify(params));
+
     searchByFilter(params)
       .then((res)=>{
-    console.log(filterInfo);
-    searchByFilter(filterInfo).then((res) => {});
+        console.log(filterInfo);
+        searchByFilter(filterInfo).then((res) => {});
       });
+
+//     searchByFilter(params);
+    // .then((res)=>{
+    // console.log(filterInfo);
+    // searchByFilter(filterInfo).then((res) => {});
   };
 
   useEffect(() => {
@@ -111,13 +122,13 @@ export default function Search() {
           <div className="datetime-selector">
             <a>
               <span>
-                { String(date.getMonth() + 1).padStart(2, "0") +
+                {String(date.getMonth() + 1).padStart(2, "0") +
                   "." +
                   String(date.getDate()).padStart(2, "0") +
                   "(" +
                   week[date.getDay()] +
-                  ")" }
-                 / {minNum}명 / {time}
+                  ")"}
+                / {minNum}명 / {time}
               </span>
             </a>
           </div>
@@ -151,6 +162,7 @@ export default function Search() {
                   {menuItems.map((item, index) => {
                     return (
                       <SwiperSlide
+
                         className={`swiper-slide-chip mr-[8px]`}
                         key={index}
                         id={index}

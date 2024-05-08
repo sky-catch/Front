@@ -15,9 +15,9 @@ export default function KakoRedirectPage() {
       .then((res) => {
         const { accessToken } = res.data;
         navigate("/");
-        localStorage.clear();
-        localStorage.setItem("data", JSON.stringify(res.data));
-        localStorage.setItem("token", accessToken.value);
+        sessionStorage.clear();
+        sessionStorage.setItem("data", JSON.stringify(res.data));
+        sessionStorage.setItem("token", accessToken.value);
       })
       .catch((err) => {
         console.log("err>>", err);

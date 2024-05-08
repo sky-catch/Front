@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { searchByKeyword } from "../respository/search.js";
 
@@ -29,8 +29,8 @@ import { searchByKeyword } from "../respository/search.js";
 //     to: "/account",
 //   },
 // ];
-const Header = ({setSearch, updateSearch}) => {
-  const [ searchRes, setSearchRes ] = useState({}); // 검색결과
+const Header = ({ setSearch, updateSearch }) => {
+  const [searchRes, setSearchRes] = useState({}); // 검색결과
   const location = useLocation().pathname;
   const shopName = useLocation().state;
   const navigate = new useNavigate();
@@ -41,13 +41,15 @@ const Header = ({setSearch, updateSearch}) => {
     updateSearch(searchRes);
 
     // 뒤로가기 했을 때
-    if( Object.keys(searchRes).length > 0 && searchInput.current != null) {
+    if (Object.keys(searchRes).length > 0 && searchInput.current != null) {
       searchInput.current.defaultValue = searchRes.input;
     }
-
   }, [location, searchRes]);
 
   const onClickBack = () => {
+    if (location === "/my/myshop/edit") {
+      alert("변경한 내용이 저장되지 않습니다.");
+    }
     window.history.back();
     setSearchRes({});
   };
@@ -58,7 +60,7 @@ const Header = ({setSearch, updateSearch}) => {
 
   const onClickMove = (param) => {
     var name = "";
-    if ( param == "/" ) {
+    if (param == "/") {
       name = "/search/total";
     }
     navigate(name);
@@ -77,7 +79,9 @@ const Header = ({setSearch, updateSearch}) => {
                 className="pl-[44px] pr-[15px] text-xs h-[30px]"
                 type="text"
                 placeholder="지역, 음식, 매장명 검색"
-                onClick={(e)=>{onClickMove(location,e)}}
+                onClick={(e) => {
+                  onClickMove(location, e);
+                }}
               ></input>
             </form>
             <div className="header-right flex">
@@ -90,9 +94,7 @@ const Header = ({setSearch, updateSearch}) => {
         return (
           <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px]">
             <div className="header-left items-center flex gap-[12px]">
-              <a className="back header-icon" onClick={onClickBack}>
-                뒤로
-              </a>
+              <a className="back header-icon" onClick={onClickBack}></a>
               <a className="tohome header-icon">홈</a>
             </div>
             <div className="header-right flex gap-[12px]">
@@ -112,40 +114,39 @@ const Header = ({setSearch, updateSearch}) => {
         );
       case "/search/total":
         let data = {
-          'city' : null,
-          "cityRestaurantCount": 0,
-          "hotPlace": null,
-          "hotPlaceRestaurantCount": 0,
-          "category": null,
-          "categoryRestaurantCount": 0,
-          "restaurantSummaryDTOList": []
+          city: null,
+          cityRestaurantCount: 0,
+          hotPlace: null,
+          hotPlaceRestaurantCount: 0,
+          category: null,
+          categoryRestaurantCount: 0,
+          restaurantSummaryDTOList: [],
         };
 
         const handleSearch = (e) => {
-          var text = '';
-          if( e.target.value.length >= 2) { 
+          var text = "";
+          if (e.target.value.length >= 2) {
             text = e.target.value;
-            searchByKeyword(text)
-            .then((res) => {
+            searchByKeyword(text).then((res) => {
               data = res.data;
-              
+
               //검색어 추가
               data.input = e.target.value;
 
               // 검색 결과가 아무것도 없으면 searchRes 는 ''
               // 검색 결과가 있으면 searchRes는 res.data
-              if(res.data.city == '' && res.data.hotPlace == '') {
+              if (res.data.city == "" && res.data.hotPlace == "") {
                 setSearchRes({});
-              }else {
+              } else {
                 setSearchRes(data);
               }
-            })
+            });
           } else {
-            console.log('header handle : ',data);
+            console.log("header handle : ", data);
             data.input = e.target.value;
             setSearchRes(data);
           }
-        }
+        };
 
         return (
           <header>
@@ -165,7 +166,9 @@ const Header = ({setSearch, updateSearch}) => {
                   onChange={handleSearch}
                   ref={searchInput}
                 ></input>
-                <button className="btn-delete" type="reset">초기화</button>
+                <button className="btn-delete" type="reset">
+                  초기화
+                </button>
               </form>
             </div>
           </header>
@@ -204,9 +207,7 @@ const Header = ({setSearch, updateSearch}) => {
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex gap-[12px]">
-              <a className="header-back-black" onClick={onClickBack}>
-                뒤로
-              </a>
+              <a className="header-back-black" onClick={onClickBack}></a>
               <a className="text-xl h-[47px] leading-[47px] font-bold">
                 프로필 수정
               </a>
@@ -217,9 +218,7 @@ const Header = ({setSearch, updateSearch}) => {
         return (
           <div className="header-wrapper flex px-[20px] items-center">
             <div className="header-left items-center flex gap-[12px]">
-              <a className="header-back-black" onClick={onClickBack}>
-                뒤로
-              </a>
+              <a className="header-back-black" onClick={onClickBack}></a>
               <a className="text-xl h-[47px] leading-[47px] font-bold">
                 내식당 관리
               </a>
@@ -237,9 +236,7 @@ const Header = ({setSearch, updateSearch}) => {
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex gap-[12px]">
-              <a className="header-back-black" onClick={onClickBack}>
-                뒤로
-              </a>
+              <a className="header-back-black" onClick={onClickBack}></a>
               <a className="text-xl h-[47px] leading-[47px] font-bold">
                 식당 정보
               </a>
@@ -247,7 +244,7 @@ const Header = ({setSearch, updateSearch}) => {
           </div>
         );
       case "/account":
-        return localStorage.getItem("token") !== null ? (
+        return sessionStorage.getItem("token") !== null ? (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left flex items-center">
               <h1 className="text-xl h-[47px] leading-[47px] font-bold">
@@ -266,9 +263,7 @@ const Header = ({setSearch, updateSearch}) => {
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex gap-[12px] w-[100%] justify-between">
-              <a className="header-back-black" onClick={onClickBack}>
-                뒤로
-              </a>
+              <a className="header-back-black" onClick={onClickBack}></a>
               <a className="text-xl h-[47px] leading-[47px] font-bold">
                 실시간 채팅 상담
               </a>
@@ -280,9 +275,10 @@ const Header = ({setSearch, updateSearch}) => {
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex w-[100%] justify-between">
-              <a className="header-back-black w-[48px]" onClick={onClickBack}>
-                뒤로
-              </a>
+              <a
+                className="header-back-black w-[48px]"
+                onClick={onClickBack}
+              ></a>
               <span className=" absolute left-0 right-0 text-[20px] text-center font-semibold">
                 {shopName.name}
               </span>
@@ -293,9 +289,10 @@ const Header = ({setSearch, updateSearch}) => {
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex w-[100%] justify-start">
-              <a className="header-back-black w-[48px]" onClick={onClickBack}>
-                뒤로
-              </a>
+              <a
+                className="header-back-black w-[48px]"
+                onClick={onClickBack}
+              ></a>
               <span className=" text-[20px]  font-semibold">
                 사장님 인증하기
               </span>

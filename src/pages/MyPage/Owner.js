@@ -21,7 +21,7 @@ const Owner = () => {
 
     // 사업자 번호 전송
     const registrationNumber = {
-      businessRegistrationNumber: "101-01-00015",
+      businessRegistrationNumber: ownerValue,
     };
     presidentCreate(registrationNumber);
   };

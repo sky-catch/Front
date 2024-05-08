@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import DialogComponent from "../../components/DialogComponent";
 import { GetChatRoomListRes } from "../../respository/reservation";
+import Carousel from "../Home/Carousel";
+
 
 function sortDate1(list) {
   const sorted_list = list.sort(function (a, b) {
@@ -22,14 +24,14 @@ function Dialog() {
   // const [roomList, setRoomList] = useState([]);
   const queryClient = new QueryClient();
   useEffect(() => {
-    if (localStorage.getItem("token") !== null) {
+    if (sessionStorage.getItem("token") !== null) {
       // getRoomList();
       SetIsLogin(true);
     }
   }, [isLogin]);
 
   // const getRoomList = () => {
-  //   const token = localStorage.getItem("token");
+  //   const token = sessionStorage.getItem("token");
   //   axios
   //     .get("http://15.164.89.177:8080/chat/roomList", {
   //       headers: {
@@ -96,7 +98,7 @@ function Dialog() {
   //     hasNewChat ? "true" : "false"
   //   );
   // }
-  // console.log(roomList);
+
   return (
     <DialogContents className="">
       {roomList.length > 0 ? (
@@ -122,7 +124,14 @@ function Dialog() {
           </div>
         </>
       ) : (
-        <div className=""></div>
+        <div className=" flex flex-col  h-[100%] justify-end gap-y-[50px]">
+          <span className=" text-center text-[18px]">
+            현재 채팅방이 없습니다.
+          </span>
+          <div className="">
+            <Carousel />
+          </div>
+        </div>
       )}
     </DialogContents>
   );

@@ -53,7 +53,7 @@ export const ReservationTimes = () => {
 
 // 채팅 추가
 const postChatRoom = (id) => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   return axios.post(
     `http://15.164.89.177:8080/chat/${id}`,
     {},
@@ -98,7 +98,7 @@ export const PostChatRoomItem = () => {
 
 //채팅방 목록 보기
 export const GetChatRoomListRes = async () => {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   // const token = `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQwMzA2ODksImV4cCI6MTcxNDExNzA4OX0.cnzXk6pEiaCqvbww_tjq-JjUGE_MW84lqij7y44lZyyjkUhyUFf61ZwIxSzYYjgpaj_NmtwA6kvYPUuKsauc-A`;
 
   try {
@@ -111,17 +111,18 @@ export const GetChatRoomListRes = async () => {
     return result.data;
   } catch (err) {
     console.log("Error >>", err.message);
-    console.log("Error >>", err);
     throw err;
   }
 };
 
 //채팅 보기
 export const getChatRoom = async (chatRoomId) => {
+  const token = sessionStorage.getItem("token");
+  console.log(chatRoomId);
   try {
     const result = await apiClient.get(`/chat/${chatRoomId}`, {
       headers: {
-        // Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -167,7 +168,7 @@ export const CreateNewReservation = () => {
 //예약 삭제
 const cancelReservationItem = async (reservationId) => {
   console.log("reservationId", reservationId);
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   return axios.patch(
     `http://15.164.89.177:8080/reservations/${reservationId}`,
     {},
@@ -189,22 +190,32 @@ export const CancelReservation = () => {
 };
 
 // 리뷰 생성
+
 const createReviewItem = async ({ createReviewReq, files }) => {
   const formData = new FormData();
-  formData.append("createReviewReq", JSON.stringify(createReviewReq));
+
+  const createReviewString = JSON.stringify(createReviewReq);
+  const blob = new Blob([createReviewString], { type: "application/json" });
+  await formData.append("createReviewReq", blob);
 
   for (let index = 0; index < files.length; index++) {
-    formData.append("files", files[index].file, files[index].file.name);
+    await formData.append("files", files[index].file);
   }
 
-  const token = localStorage.getItem("token");
-  return axios.post(`http://15.164.89.177:8080/review`, formData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "multipart/form-data",
-      accept: "*/*",
-    },
-  });
+  const token = sessionStorage.getItem("token");
+
+  const response = await axios.post(
+    `http://15.164.89.177:8080/review`,
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response.data;
+
 };
 export const CreateReview = () => {
   return useMutation({
@@ -212,6 +223,8 @@ export const CreateReview = () => {
     mutationFn: createReviewItem,
     onSuccess: (data) => {
       console.log("createPost success", data);
+      alert("리뷰 작성이 완료됐습니다.");
+      window.location.href = "/mydining/my";
     },
     onError: (error) => {
       console.log("createPost error", error);

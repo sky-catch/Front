@@ -27,11 +27,11 @@ const slideItem = [
 
 export default function Carousel() {
   return (
-    <CarouselWrapper className="slider mb-[16px]">
+    <CarouselWrapper className="slider mb-[16px] mt-[48px]">
       <Swiper
         className="swiper-wrapper"
         modules={[Pagination, Autoplay]}
-        spaceBetween={8}
+        spaceBetween={0}
         pagination={true}
         slidesPerView={"auto"}
         autoplay={{
@@ -61,8 +61,8 @@ const CarouselWrapper = styled.div`
   display: block;
 
   .slide-item {
-    width: 420px;
-    margin-right: 8px;
+    /* width: 420px; */
+    /* margin-right: 8px; */
   }
   .slide-item a {
     display: block;
