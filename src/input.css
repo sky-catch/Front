@@ -1160,3 +1160,6 @@ header .keyword-search .btn-delete {
 .custom-tap {
   width: 100% !important;
 }
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+  padding: 15px 14px !important;
+}

@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.17",
     "@stomp/stompjs": "^7.0.0",
     "@tanstack/react-query": "^5.28.6",
     "@tanstack/react-query-devtools": "^5.28.6",
@@ -29,6 +32,7 @@
     "react-scripts": "^5.0.1",
     "react-select": "^5.8.0",
     "recoil": "^0.7.7",
+    "recoil-persist": "^5.1.0",
     "redux": "^5.0.1",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",

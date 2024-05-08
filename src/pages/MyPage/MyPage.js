@@ -3,9 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { LoginState } from "../../States/LoginState";
+import { LoginState, RestaurantState } from "../../States/LoginState";
 import { getRestaurant } from "../../respository/restaurant";
-import { getMyMain, getOwner } from "../../respository/userInfo";
+import {
+  getMyMain,
+  getMyRestaurant,
+  getOwner,
+} from "../../respository/userInfo";
 /**
  * 마이페이지
  * @author jimin
@@ -14,10 +18,12 @@ import { getMyMain, getOwner } from "../../respository/userInfo";
 function MyPage() {
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(LoginState);
+  const [restaurant, setRestaurant] = useRecoilState(RestaurantState);
   const [following, setFollowing] = useState(0);
   const [follower, setFollower] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
+  const [isRestaurant, setIsRestaurant] = useState(false);
 
   const [owner, setOwner] = useState([]);
   // const owner = JSON.parse(sessionStorage.getItem("data")).usersDTO.owner;
@@ -54,11 +60,11 @@ function MyPage() {
 
   useEffect(() => {
     // 유저 정보 세팅
-    setUser((prevUser) => ({
-      // ...prevUser,
-      // id: userInfor.id,
-      // nickname: userInfor.nickname,
-    }));
+    // setUser((prevUser) => ({
+    // ...prevUser,
+    // id: userInfor.id,
+    // nickname: userInfor.nickname,
+    // }));
 
     // if (owner.usersDTO.owner === true) {
     //   setIsOwner(true);
@@ -67,7 +73,7 @@ function MyPage() {
 
     getMyMain()
       .then((res) => {
-        // console.log("res", res);
+        console.log("res", res);
         setIsOwner(res.data.owner);
       })
       .catch((err) => {
@@ -77,7 +83,27 @@ function MyPage() {
     getUserShop();
   }, []);
 
-  const { data: getOwnerItem, isLoading } = useQuery({
+  // 내 식당 관리 페이지
+  const {
+    data: getRestaurantItem,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["getMyRestaurant"],
+    queryFn: () => {
+      return getMyRestaurant()
+        .then((res) => {
+          console.log("res", res);
+          // setIsRestaurant(true);
+          return res;
+        })
+        .catch((err) => {
+          console.log("err1", err.response);
+        });
+    },
+  });
+
+  const { data: getOwnerItem } = useQuery({
     queryKey: ["getOwner"],
     queryFn: () => {
       return getOwner()
@@ -86,17 +112,43 @@ function MyPage() {
           return res;
         })
         .catch((err) => {
-          console.log("err", err);
+          console.log("err2", err);
         });
     },
   });
 
+  useEffect(() => {
+    if (getRestaurantItem && isOwner) {
+      setIsRestaurant(true);
+      setUser((prevUser) => ({
+        ...getOwnerItem,
+      }));
+
+      setRestaurant((prevUser) => ({
+        ...getRestaurantItem,
+      }));
+
+      // TODO : 데이터 넣어야됨 (식당 정보가 있을때) - recoil
+    }
+  }, [getRestaurantItem, isOwner]);
+
+  console.log(user);
   /* Function : 식당 정보 관리 */
-  const createRestaurant = () => {
+  const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
   };
 
-  console.log("isOwner", isOwner);
+  const createRestaurant = () => {
+    navigate(`/my/myshop/edit`);
+  };
+
+  // console.log("isOwner", isOwner);
+  console.log("user", user);
+  console.log("getOwnerItem", getOwnerItem);
+  console.log("isRestaurant", isRestaurant);
+  console.log("restaurant", restaurant);
+  console.log("getRestaurantItem", getRestaurantItem);
+
   return (
     <MainContents className="main">
       {/* 프로필정보 */}
@@ -131,10 +183,20 @@ function MyPage() {
             </button>
             <button
               className="btn btn-md btn-outline btn-rounded mt-18"
-              onClick={isOwner ? createRestaurant : createOwner}
+              onClick={
+                isOwner
+                  ? isRestaurant
+                    ? manageRestaurant
+                    : createRestaurant
+                  : createOwner
+              }
             >
               <span className="label">
-                {isOwner ? "내 식당 관리" : "사장님 등록"}
+                {isOwner
+                  ? isRestaurant
+                    ? "내 식당 관리"
+                    : "내 식당 등록"
+                  : "사장님 등록"}
               </span>
             </button>
           </div>

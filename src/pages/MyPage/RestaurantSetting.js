@@ -79,6 +79,7 @@ export default function Restaurantsetting() {
     queryFn: () => {
       return getMyRestaurant()
         .then((res) => {
+          console.log("res", res);
           return res;
         })
         .catch((err) => {
@@ -252,16 +253,14 @@ export default function Restaurantsetting() {
               })}
             </div>
           ) : (
-            <div className="h-[100%] w-[100%]  flex items-center justify-center">
-              <span className=" text-[22px] text-[#666]">
+            <div className="h-[500px] w-[100%]  flex items-center justify-center ">
+              <span className=" text-[#c8c8c8] text-[16px] text-bold ">
                 식당 리뷰가 없습니다.
               </span>
             </div>
           )}
         </div>
       )}
-      {/* </div> */}
-
       <Drawer
         open={isOpen}
         onClose={toggleDrawer}

@@ -82,7 +82,7 @@ const Notifications = () => {
   };
   return (
     <MainContents className="">
-      <div className=" container">
+      <div className=" container h-[100%]">
         {isNotificat && isNotificat.length > 0 ? (
           isNotificat.map((item, index) => {
             return (
@@ -112,7 +112,11 @@ const Notifications = () => {
             );
           })
         ) : (
-          <span className="">등록된 공지 사항이 없습니다.</span>
+          <div className="h-[100%] flex justify-center items-center">
+            <span className="text-[#c8c8c8] text-[16px] text-bold">
+              등록된 공지 사항이 없습니다.
+            </span>
+          </div>
         )}
       </div>
       <AddBtn className="btn-icon add icon" onClick={toggleDrawer}></AddBtn>

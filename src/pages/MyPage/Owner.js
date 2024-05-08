@@ -44,20 +44,20 @@ const Owner = () => {
   };
   return (
     <OwnerContents className="container">
-      <span className=" text=[16px] mb-[6px] block pt-[120px]">
-        사업자 등록 번호
-      </span>
+      <div className="mb-[6px]">
+        <label className="color-gray text-[12px]"> 사업자 등록 번호</label>
+      </div>
       <form className="">
         <input
           type="text"
-          className="form-input"
-          id="owner-num"
-          ref={owner}
-          value={isNumber}
-          onChange={(e) => inputNumber(e)}
-          maxLength={12}
+          className="form-input block w-[100%] p-[8px] h-[53px] border border-[#d5d5d5] rounded-md"
           placeholder="사업장 등록 번호를 입력해주세요."
-        />
+          name="displayName"
+          onChange={(e) => inputNumber(e)}
+          value={isNumber}
+          maxLength={12}
+          ref={owner}
+        ></input>
         <div className="container absolute left-0 right-0 bottom-0 ">
           <OwnerBtn className="" onClick={(e) => companyNumber(e)} value="저장">
             저장

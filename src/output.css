@@ -924,6 +924,10 @@ video {
   height: 16px;
 }
 
+.h-\[180px\] {
+  height: 180px;
+}
+
 .h-\[18px\] {
   height: 18px;
 }
@@ -956,6 +960,14 @@ video {
   height: 48px;
 }
 
+.h-\[500px\] {
+  height: 500px;
+}
+
+.h-\[53px\] {
+  height: 53px;
+}
+
 .h-\[60px\] {
   height: 60px;
 }
@@ -982,26 +994,6 @@ video {
 
 .h-full {
   height: 100%;
-}
-
-.h-\[53px\] {
-  height: 53px;
-}
-
-.h-\[100px\] {
-  height: 100px;
-}
-
-.h-\[200px\] {
-  height: 200px;
-}
-
-.h-\[300px\] {
-  height: 300px;
-}
-
-.h-\[180px\] {
-  height: 180px;
 }
 
 .max-h-\[120px\] {
@@ -1044,6 +1036,10 @@ video {
   width: 30px;
 }
 
+.w-\[48\%\] {
+  width: 48%;
+}
+
 .w-\[48px\] {
   width: 48px;
 }
@@ -1080,10 +1076,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-\[48\%\] {
-  width: 48%;
 }
 
 .min-w-\[70px\] {
@@ -1572,10 +1564,6 @@ video {
   padding-top: 10px;
 }
 
-.pt-\[120px\] {
-  padding-top: 120px;
-}
-
 .pt-\[15vh\] {
   padding-top: 15vh;
 }
@@ -1626,10 +1614,6 @@ video {
 
 .text-\[20px\] {
   font-size: 20px;
-}
-
-.text-\[22px\] {
-  font-size: 22px;
 }
 
 .text-\[26px\] {
@@ -3150,4 +3134,8 @@ header .keyword-search .btn-delete {
 
 .custom-tap {
   width: 100% !important;
+}
+
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+  padding: 15px 14px !important;
 }
