@@ -25,11 +25,11 @@ export const getLogin = async (code) => {
 
 // 마이페이지 회원 정보 조회
 export const getMyMain = async () => {
+  const token = sessionStorage.getItem("token");
   try {
     const result = await apiClient.get(`/member/myMain`, {
       headers: {
-        // accept: "*/*",
-        // "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     return result;

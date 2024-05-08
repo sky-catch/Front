@@ -58,6 +58,7 @@ const Navbar = () => {
         location === "/my/myshop" ||
         location === "/owner" ||
         location === "/my/myshop/edit" ||
+        location === "/my/myshop/notifications" ||
         location === "/paymentpage"
           ? " hidden"
           : " block"

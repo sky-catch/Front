@@ -33,15 +33,15 @@ export const LoginState = atom({
       facilities: [
         {
           name: " ",
-          path: "https://skyware-toy-project-imgae-bucket.s3.ap-northeast-2.amazonaws.com/facility-icon/ic_corkage.svg",
+          path: "",
         },
       ],
       days: {
-        days: ["MONDAY", "TUESDAY"],
+        days: [],
       },
       reviewComments: [],
-      lat: 33.450701,
-      lng: 126.570667,
+      lat: 0,
+      lng: 0,
     },
   },
 });

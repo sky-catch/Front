@@ -99,3 +99,33 @@ export const saveRestaurant = async (restaurantId) => {
     console.log("Error >>", err);
   }
 };
+
+// 식당 공지 사항 추가
+const createNotificat = async ({ restaurantId, restaurantItem }) => {
+  console.log("restaurantId", restaurantId);
+  console.log("restaurantItem", restaurantItem);
+  const token = sessionStorage.getItem("token");
+  return axios.post(
+    `http://15.164.89.177:8080/restaurants/${restaurantId}/notifications`,
+    restaurantItem,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+export const CreateNotificatRes = () => {
+  return useMutation({
+    mutationKey: ["createNotificat"],
+    mutationFn: createNotificat,
+    onSuccess: (data) => {
+      console.log("data", data);
+      window.location.href = "/my/myshop/notifications";
+    },
+    onError: (err) => {
+      console.log("err", err);
+    },
+  });
+};

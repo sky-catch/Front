@@ -65,7 +65,9 @@ const Header = ({ setSearch, updateSearch }) => {
     }
     navigate(name);
   };
-
+  const onNotifications = () => {
+    navigate("/my/myshop/notifications");
+  };
   const headerContent = () => {
     switch (location) {
       case "/":
@@ -129,10 +131,8 @@ const Header = ({ setSearch, updateSearch }) => {
             text = e.target.value;
             searchByKeyword(text).then((res) => {
               data = res.data;
-
               //검색어 추가
               data.input = e.target.value;
-
               // 검색 결과가 아무것도 없으면 searchRes 는 ''
               // 검색 결과가 있으면 searchRes는 res.data
               if (res.data.city == "" && res.data.hotPlace == "") {
@@ -220,10 +220,16 @@ const Header = ({ setSearch, updateSearch }) => {
             <div className="header-left items-center flex gap-[12px]">
               <a className="header-back-black" onClick={onClickBack}></a>
               <a className="text-xl h-[47px] leading-[47px] font-bold">
-                내식당 관리
+                식당 관리
               </a>
             </div>
             <div className="header-right flex items-center ml-auto">
+              <button
+                type="button"
+                className="btn-icon annoucement icon"
+                onClick={onNotifications}
+              ></button>
+
               <button
                 type="button"
                 className="btn-icon setting icon"
@@ -239,6 +245,17 @@ const Header = ({ setSearch, updateSearch }) => {
               <a className="header-back-black" onClick={onClickBack}></a>
               <a className="text-xl h-[47px] leading-[47px] font-bold">
                 식당 정보
+              </a>
+            </div>
+          </div>
+        );
+      case "/my/myshop/notifications":
+        return (
+          <div className="header-wrapper flex px-[20px]">
+            <div className="header-left items-center flex gap-[12px]">
+              <a className="header-back-black" onClick={onClickBack}></a>
+              <a className="text-xl h-[47px] leading-[47px] font-bold">
+                식당 공지 사항
               </a>
             </div>
           </div>

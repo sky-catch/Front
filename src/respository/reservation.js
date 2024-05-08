@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import apiClient from "../apis/ApiClient";
+
 const FormData = require("form-data");
-
 // import { useQueryClient } from "@tanstack/react-query";
-
 /**
  * API 식당
  *
@@ -169,10 +169,12 @@ const cancelReservationItem = async (reservationId) => {
 };
 
 export const CancelReservation = () => {
+  const navigate = useNavigate();
   return useMutation({
     mutationKey: ["cancelReservationItem"],
     mutationFn: cancelReservationItem,
     onSuccess: (data) => {
+      navigate("/mydining/my");
       console.log("createPost success", data);
     },
     onError: (error) => {

@@ -5,8 +5,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { LoginState } from "../../States/LoginState";
 import { getRestaurant } from "../../respository/restaurant";
-import { getOwner } from "../../respository/userInfo";
-
+import { getMyMain, getOwner } from "../../respository/userInfo";
 /**
  * 마이페이지
  * @author jimin
@@ -18,7 +17,7 @@ function MyPage() {
   const [following, setFollowing] = useState(0);
   const [follower, setFollower] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
-  const [isOwner, setIsOwner] = useState(true);
+  const [isOwner, setIsOwner] = useState(false);
 
   const [owner, setOwner] = useState([]);
   // const owner = JSON.parse(sessionStorage.getItem("data")).usersDTO.owner;
@@ -65,7 +64,16 @@ function MyPage() {
     //   setIsOwner(true);
     // }
     // 유저의 저장 레스토랑 정보 GET
-    console.log("user", user);
+
+    getMyMain()
+      .then((res) => {
+        // console.log("res", res);
+        setIsOwner(res.data.owner);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+
     getUserShop();
   }, []);
 
@@ -74,7 +82,7 @@ function MyPage() {
     queryFn: () => {
       return getOwner()
         .then((res) => {
-          console.log("res", res);
+          // console.log("res", res);
           return res;
         })
         .catch((err) => {
@@ -83,16 +91,12 @@ function MyPage() {
     },
   });
 
-  useEffect(() => {
-    if (getOwnerItem && getOwnerItem.ownerId !== null) {
-      // setIsOwner(true);
-    }
-  }, [getOwnerItem]);
-
   /* Function : 식당 정보 관리 */
   const createRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
   };
+
+  console.log("isOwner", isOwner);
   return (
     <MainContents className="main">
       {/* 프로필정보 */}

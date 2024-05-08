@@ -13,6 +13,7 @@ import KakoRedirectPage from "./pages/MyPage/KakoRedirectPage.js";
 import Login from "./pages/MyPage/Login.js";
 import MyPage from "./pages/MyPage/MyPage.js";
 import MyProfileInfo from "./pages/MyPage/MyProfileInfo.js";
+import Notifications from "./pages/MyPage/Notifications.js";
 import Owner from "./pages/MyPage/Owner.js";
 import RestaurantInfo from "./pages/MyPage/RestaurantInfo.js";
 import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
@@ -33,7 +34,7 @@ function App() {
   // sessionStorage.clear();
   sessionStorage.setItem(
     "token",
-    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN1cGVyc3V0ZTE0MkBnbWFpbC5jb20iLCJpc093bmVyIjp0cnVlLCJpYXQiOjE3MTQ5OTUxNTUsImV4cCI6MTcxNTA4MTU1NX0.ggC14EvQPjNOwSsrMY3cewBLtn8yXIN9Rbcj70RWatvdgYeSbK27jepMeifL7TVICwOfOzae-YKV2yamLkJyww`
+    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN1cGVyc3V0ZTE0MkBnbWFpbC5jb20iLCJpc093bmVyIjp0cnVlLCJpYXQiOjE3MTUwNzkyODAsImV4cCI6MTcxNTE2NTY4MH0.Op4vetSTp-UPbSSodVxvpdPPA1RrT6bUhLzHTG8VhHjmZ3YcomaOoWrmRJA_XAeSWh6wV9cri8tzwWUPs5BLtg`
   );
   sessionStorage.setItem(
     "data",
@@ -93,6 +94,10 @@ function App() {
           <Route path="/ct/my" element={<RestaurantSetting />} />
           <Route path={`/chat`} element={<ChatRoom />} />
           <Route path="/owner" element={<Owner />}></Route>
+          <Route
+            path="/my/myshop/notifications"
+            element={<Notifications />}
+          ></Route>
         </Routes>
         <Navbar />
       </RecoilRoot>

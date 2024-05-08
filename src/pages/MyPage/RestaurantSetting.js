@@ -10,6 +10,8 @@ import { UpdateCommentReq, getMyRestaurant } from "../../respository/userInfo";
 export default function Restaurantsetting() {
   const [isOpen, setIsOpen] = useState(false);
   const [isCreate, setIsCreate] = useState(false);
+  const [isSelect, setIsSelect] = useState(true);
+  const [isSave, setIsSave] = useState(true);
   const textInput = useRef();
   const { mutate: createComment } = useMutation({
     mutationFn: CreateCommentReq,
@@ -39,6 +41,17 @@ export default function Restaurantsetting() {
     setIsOpen((prevState) => !prevState);
     alert("작상한 내용이 저장되지 않습니다.");
     textInput.current.value = "";
+  };
+
+  /* Tap 선택 */
+  const menuClick = (e, index) => {
+    if (index === 0) {
+      setIsSelect(true);
+      setIsSave(true);
+    } else {
+      setIsSelect(false);
+      setIsSave(false);
+    }
   };
   const addRestaurant = () => {
     // createRestaurant()
@@ -74,7 +87,6 @@ export default function Restaurantsetting() {
     },
   });
 
-  console.log(data);
   if (isLoading) {
     return <div className="">...isLoading</div>;
   }
@@ -120,103 +132,136 @@ export default function Restaurantsetting() {
     };
     updateComment(commentItems);
   };
-  console.log(data.reviewComments.length);
+
   return (
     <MainContents>
-      {data && data.reviewComments.length > 0 ? (
-        <div className=" container">
-          {data.reviewComments.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className=" border-b-[#c1c1c1] border-b-[1px] py-[10px] flex gap-y-[14px] flex-col"
-              >
-                <div className=" flex items-center justify-between">
-                  <span className="color-gray text-[12px]">
-                    {item.nickname}
-                  </span>
-                  <span className="color-gray text-[12px]">
-                    {moment(item.reviewUpdatedDate).format("YY.MM.DD")}
-                  </span>
-                </div>
-                <div className="p-[7px] rounded-lg bg-[#f4f4f4] text-[#2c2c2c] text-[14px] min-h-[80px] max-h-[120px] overflow-auto scroll-hide">
-                  {item.reviewContent}
-                </div>
-                {item.images.length > 0 && (
-                  <div className="img grid grid-cols-4 gap-[10px]">
-                    {item.images.map((itemImg, index) => {
-                      return (
-                        <img
-                          className="rounded-[6px]"
-                          src={itemImg.path}
-                          alt={itemImg.path}
-                          key={index}
-                        />
-                      );
-                    })}
-                  </div>
-                )}
-
-                {item.commentContent !== null && (
-                  <div className=" flex justify-between items-start mb-[12px]">
-                    <div className="size-[50px] rounded-full overflow-hidden bg-slate-400">
-                      {console.log("item", data.images[0].path)}
-                      <img
-                        className="rounded-full"
-                        src={data.images[0].path}
-                        alt={data.images[0].path}
-                      />
-                    </div>
-                    <div className="p-[7px] w-[calc(100%-60px)] rounded-lg bg-[#f4f4f4] text-[#2c2c2c] text-[14px] min-h-[80px] max-h-[120px] overflow-auto scroll-hide">
-                      {item.commentContent}
-                    </div>
-                  </div>
-                )}
-
-                <div className=" flex justify-between items-center">
-                  {item.commentContent === null ? (
-                    <Btn
-                      className="btn btn-md btn-outline btn-rounded"
-                      onClick={(e) => {
-                        commentCreate(item.reviewId);
-                      }}
-                      colorEven={true}
-                    >
-                      댓글 작성
-                    </Btn>
-                  ) : (
-                    <>
-                      <Btn
-                        className="btn btn-md btn-outline btn-rounded"
-                        onClick={(e) => {
-                          commentEdit(item.commentId, item.commentCreatedDate);
-                          textInput.current.value = item.commentContent;
-                        }}
-                        colorEven={true}
-                      >
-                        댓글 수정
-                      </Btn>
-                      <Btn
-                        className="btn btn-md btn-outline btn-rounded"
-                        onClick={(e) => commentDelete(item.commentId)}
-                        colorEven={false}
-                      >
-                        댓글 삭제
-                      </Btn>
-                    </>
-                  )}
-                </div>
-              </div>
-            );
-          })}
+      <ul className="tab-menu sticky top-[0px] mb-[10px] bg-white">
+        <li
+          className={`w-[50%] leading-[48px] text-center ${
+            isSelect ? " active" : ""
+          }`}
+          onClick={(e) => menuClick(e, 0)}
+        >
+          식당 예약 상태
+        </li>
+        <li
+          className={`w-[50%] leading-[48px] text-center ${
+            isSelect ? "" : "active"
+          }`}
+          onClick={(e) => {
+            menuClick(e, 1);
+          }}
+        >
+          식당 리뷰
+        </li>
+      </ul>
+      {isSave ? (
+        <div className="collection">
+          <div className=" container"></div>
         </div>
       ) : (
-        <div className="h-[100%] w-[100%]  flex items-center justify-center">
-          <span className=" text-[22px] text-[#666]">
-            식당 리뷰가 없습니다.
-          </span>
+        <div className="review pb-[20px]">
+          {data && data.reviewComments.length > 0 ? (
+            <div className=" container">
+              {data.reviewComments.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className=" border-b-[#c1c1c1] border-b-[1px] py-[10px] flex gap-y-[14px] flex-col"
+                  >
+                    <div className=" flex items-center justify-between">
+                      <span className="color-gray text-[12px]">
+                        {item.nickname}
+                      </span>
+                      <span className="color-gray text-[12px]">
+                        {moment(item.reviewUpdatedDate).format("YY.MM.DD")}
+                      </span>
+                    </div>
+                    <div className="p-[7px] rounded-lg bg-[#f4f4f4] text-[#2c2c2c] text-[14px] min-h-[80px] max-h-[120px] overflow-auto scroll-hide">
+                      {item.reviewContent}
+                    </div>
+                    {item.images.length > 0 && (
+                      <div className="img grid grid-cols-4 gap-[10px]">
+                        {item.images.map((itemImg, index) => {
+                          return (
+                            <img
+                              className="rounded-[6px]"
+                              src={itemImg.path}
+                              alt={itemImg.path}
+                              key={index}
+                            />
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {item.commentContent !== null && (
+                      <div className=" flex justify-between items-start mb-[12px]">
+                        <div className="size-[50px] rounded-full overflow-hidden bg-slate-400">
+                          {console.log("item", data.images[0].path)}
+                          <img
+                            className="rounded-full"
+                            src={data.images[0].path}
+                            alt={data.images[0].path}
+                          />
+                        </div>
+                        <div className="p-[7px] w-[calc(100%-60px)] rounded-lg bg-[#f4f4f4] text-[#2c2c2c] text-[14px] min-h-[80px] max-h-[120px] overflow-auto scroll-hide">
+                          {item.commentContent}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className=" flex justify-between items-center">
+                      {item.commentContent === null ? (
+                        <Btn
+                          className="btn btn-md btn-outline btn-rounded"
+                          onClick={(e) => {
+                            commentCreate(item.reviewId);
+                          }}
+                          colorEven={true}
+                        >
+                          댓글 작성
+                        </Btn>
+                      ) : (
+                        <>
+                          <Btn
+                            className="btn btn-md btn-outline btn-rounded"
+                            onClick={(e) => {
+                              commentEdit(
+                                item.commentId,
+                                item.commentCreatedDate
+                              );
+                              textInput.current.value = item.commentContent;
+                            }}
+                            colorEven={true}
+                          >
+                            댓글 수정
+                          </Btn>
+                          <Btn
+                            className="btn btn-md btn-outline btn-rounded"
+                            onClick={(e) => commentDelete(item.commentId)}
+                            colorEven={false}
+                          >
+                            댓글 삭제
+                          </Btn>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="h-[100%] w-[100%]  flex items-center justify-center">
+              <span className=" text-[22px] text-[#666]">
+                식당 리뷰가 없습니다.
+              </span>
+            </div>
+          )}
         </div>
       )}
+      {/* </div> */}
+
       <Drawer
         open={isOpen}
         onClose={toggleDrawer}
@@ -225,9 +270,9 @@ export default function Restaurantsetting() {
         size="calc(100vh - 250px)"
       >
         <div className="container h-[100%]">
-          <div className="header-left items-center flex gap-[12px]">
+          <div className="header-left items-center flex gap-[12px] h-[47px]">
             <a
-              className="header-back-black h-[47px] leading-[47px] z-50"
+              className="header-close-black h-[47px] leading-[47px] z-50"
               onClick={toggleDrawer}
             ></a>
             <a className="text-xl h-[47px] leading-[47px] font-bold block absolute left-0 right-0 text-center">
@@ -235,7 +280,7 @@ export default function Restaurantsetting() {
             </a>
           </div>
           <div className="h-[calc(100%-47px-47px)] overflow-y-auto pb-[15px]">
-            <div className=" my-[15px] h-[calc(100%-30px)]">
+            <div className=" my-[10px] h-[calc(100%-30px)]">
               <textarea
                 name="comment"
                 ref={textInput}

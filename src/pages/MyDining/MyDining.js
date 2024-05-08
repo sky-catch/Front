@@ -275,7 +275,7 @@ export default function MyDining() {
           console.log("err", err);
         });
     },
-    refetchOnMount: true,
+    enabled: loginState,
   });
 
   console.log("reservationRes", reservationRes);
