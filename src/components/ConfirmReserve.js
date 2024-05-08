@@ -1,19 +1,34 @@
+import { useEffect, useState } from "react";
 import Drawer from "react-modern-drawer";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 /**
  * 식당 에약 완료 모달창
+ * 
+ * @author jimin
  */
-const ConfirmReserve = ({isConfirmOpen, toggleDrawer, info}) => {
+const ConfirmReserve = ({isConfirmOpen, restaurant, reserveInfo, toggleDrawer}) => {
     const navigate = useNavigate();
+    const [detail, setDetail] = useState();
 
     const onReserve = () => {
-        navigate(`/ct/shop/reservation/form`, {state : info});
+        const params = {
+            cost : 0,
+            detail : detail,
+            restaurant : restaurant
+        }
+       
+        navigate(`/ct/shop/reservation/form`, {state : params});
     }
 
     const onClose = (e) => {
         toggleDrawer(e);
     }
+
+    useEffect(()=> {
+        setDetail(reserveInfo);
+        // console.log(detail,reserveInfo);
+    },[restaurant,reserveInfo])
 
     return(
         <div>
@@ -30,7 +45,21 @@ const ConfirmReserve = ({isConfirmOpen, toggleDrawer, info}) => {
                     <div className="progress"><div className="bar"></div></div>
                     <div className="drawer-box-body">
                         <div className="font-16 color-gray mb-[24px]">방문 일정을 다시 한번 확인해 주세요.</div>
-                        <div></div>
+                        <div className="border-box mb-25">
+                            <div className="restaurant-reservation-detail">
+                                <div className="detail-box-header">
+                                    <h2 className="name">{restaurant ? restaurant.name:""}</h2>
+                                    <h3 className="type">{restaurant ? restaurant.category:""}</h3>
+                                </div>
+                                <div className="detail-box-body">
+                                    <div className="options-with-icon">
+                                        <div className="date">{detail ? detail.date.getMonth()+1 +'월'+ detail.date.getDate()+'일' :""}</div>
+                                        <div className="time">{detail ? detail.date.getHours() +''+ detail.date.getMinutes() :""}</div>
+                                        <div className="people">{detail ? detail.people+'명' :""}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div className="font-16 color-gray">당일취소 및 노쇼는 레스토랑뿐만 아니라 다른 고객님께도 피해가 될 수 있으므로 신중히 예약 부탁드립니다.</div>
                     </div>
                     <div className="drawer-box-footer">

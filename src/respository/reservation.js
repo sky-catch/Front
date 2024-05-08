@@ -25,10 +25,12 @@ const FormData = require("form-data");
 // };
 const checkReservationTimes = (isdata) => {
   if (isdata.numberOfPeople === 0) return;
-  return axios.post(
+  const result = axios.post(
     "http://15.164.89.177:8080/reservations/availTimeSlots",
     isdata
   );
+  console.log(result);
+  return result;
 };
 
 //PostChatRoomRes
@@ -129,18 +131,24 @@ export const getChatRoom = async (chatRoomId) => {
   }
 };
 // 예약 생성
-const createReservation = async (restaurantId, restaurantValue) => {
+export const createReservation = async (restaurantId, restaurantValue) => {
   const token = localStorage.getItem("token");
   if (!token) {
     console.error("Token is not available");
     return; // 예외 처리: 토큰이 없을 경우 바로 반환
   }
 
-  return axios.post(
-    `http://15.164.89.177:8080/reservations/${restaurantId}`,
-    restaurantValue,
-    { headers: { Authorization: `Bearer ${token}` } }
-  );
+  try {
+    const result = await apiClient.post(`/reservations/${restaurantId}`, JSON.stringify(restaurantValue), { 
+        headers: { 
+          Authorization: `Bearer ${token}`
+        } 
+      }
+    );
+    return result;
+  } catch (err) {
+    console.log("Error >>", err);
+  }
 };
 
 export const CreateNewReservation = () => {
@@ -210,3 +218,15 @@ export const CreateReview = () => {
     },
   });
 };
+
+// 예약 조회
+export const getMyReserve = async (param) => {
+  try{
+    const result = await apiClient.get(`/mydining/my/${param}`, {
+      headers : {}
+    })
+    return result;
+  } catch(err) {
+    console.log("err >>", err);
+  }
+}

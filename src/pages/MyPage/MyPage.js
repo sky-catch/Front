@@ -49,27 +49,13 @@ function MyPage() {
 
   /* Function : 식당 정보 */
   const getUserShop = () => {
-    console.log("id", user.id);
+    // console.log("id", user.id);
     getRestaurant(user.id).then((res) => {
       console.log(res);
     });
   };
 
   useEffect(() => {
-
-    // 유저 정보 세팅
-          setUser((prevUser) => (
-          {
-            // ...prevUser,
-            // id: userInfor.id,
-            // nickname: userInfor.nickname,
-          }));
-    setUser((prevUser) => ({
-      // ...prevUser,
-      // id: userInfor.id,
-      // nickname: userInfor.nickname,
-    }));
-
     // 유저의 저장 레스토랑 정보 GET
     getUserShop();
   }, []);

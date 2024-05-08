@@ -1224,3 +1224,93 @@ input.checkbox-btn {
 .form-checkbox:checked {
   background-image: url("../src/assets/icons/checkbox-checked.svg") ;
 }
+textarea.form-input {
+  resize : none;
+}
+.form-input {
+  background : #f9f9f9;
+  font-size : 14px;
+  border-radius : 8px;
+  line-height : 21px;
+}
+.restaurant-reservation-detail {
+  overflow : hidden;
+  word-break : break-all;
+}
+.restaurant-reservation-detail .detail-box-header {
+  text-align : center;
+  margin-bottom : 16px;
+}
+.detail-box-body .options-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-flow: wrap;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  color: #ff3d00;
+}
+.options-with-icon {
+  margin : 0 auto;
+  max-width : 300px;
+}
+.restaurant-reservation-detail .options-with-icon>div {
+  padding: 0 2px;
+}
+.options-with-icon>div {
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
+  color: #000;
+}
+.options-with-icon>div:before {
+  background : 50% 50% no-repeat;
+  width : 48px;
+  height : 48px;
+  display : block;
+  margin : 0 auto 4px;
+  content : "";
+}
+.options-with-icon>div.date:before {
+  background-image : url("../src/assets/icons/calendar-new.svg");
+}
+.options-with-icon>div.time:before {
+  background-image : url("../src/assets/icons/time-new.svg");
+}
+.options-with-icon>div.people:before {
+  background-image : url("../src/assets/icons/people-new.svg");
+}
+.pb-\[24px\] {
+  padding-bottom: 24px !important;
+}
+.pt-\[24px\] {
+  padding-top: 24px !important;
+}
+.border-box {
+  border: 1px solid #f4f4f4;
+  border-radius: 10px;
+  padding: 20px;
+}
+.mb-25 {
+  margin-bottom : 25px !important;
+}
+.restaurant-reservation-detail .detail-box-header .type {
+  font-size: 14px;
+  color: #666;
+  font-weight: 400;
+}
+.drawer-box-footer {
+  padding : 20px;
+}
+.drawer-box .drawer-box-footer .btn-group {
+  display: flex;
+  margin: 0 -5px;
+}
+.drawer-box .drawer-box-footer .btn-group .btn {
+  flex: 1;
+  margin: 0 5px;
+  width: auto;
+  font-weight: 700;
+}

@@ -1,17 +1,28 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { requestPayment } from "../../respository/payment";
+import { useNavigate, useLocation } from "react-router-dom";
+import { createReservation } from "../../respository/reservation"
 
 /**
  * 예약화면
  * @author jimin
  */
-export default function ReserveForm({deposit}) {
+export default function ReserveForm() {
     const [min, setMin] = useState(7);
     const [sec, setSec] = useState(0);
     const [isMethod, setIsMethod] = useState(false);    // 일반결제 radio 버튼 클릭 여부
     const [isContinue, setIsContinue] = useState(0);    // 결제 동의
     const [isReserveAble, setIsReserveAble] = useState(false);  //결제하기 버튼 활성화
+
+    const navigate = useNavigate();
+    const { state } = useLocation();
+    
+    // 예약 시 필요 정보
+    const [memo, setMemo] = useState();
+    const [deposit, setDeposit] = useState(state.cost);
+    const [detail, setDetail] = useState(state.detail);
+    const [restaurantId, setRestaurantId] = useState(state.restaurant.restaurantId);
 
     /* Funciton : 결제 */
     const requestPay = (e) => {
@@ -46,9 +57,6 @@ export default function ReserveForm({deposit}) {
                 console.log("fail");
             }
         })
-
-        // console.log(IMP);
-        // 
     }
     /* Function : 결제 수단 */
     const handlePayMethod =(e) => {
@@ -66,6 +74,40 @@ export default function ReserveForm({deposit}) {
                 setIsContinue((prevState)=>prevState-1);
             }
         } 
+    }
+
+    /* Function : 예약하기 */
+    const requestReserve = (e) => {
+        // const restaurandId = restaurantId;
+        console.log(restaurantId,detail,deposit);
+        const year = detail.date.getFullYear();
+        const month = String(detail.date.getMonth()+1).padStart(2,'0');
+        const date = String(detail.date.getDate()).padStart(2,'0');
+        // const hour = String(detail.date.getHours()).padStart(2,'0');
+        // const min = String(detail.date.getMinutes()).padStart(2,'0');
+
+        const info = {
+            visitDateTime : year+'-'+month+'-'+date+' '+'18'+':'+'00:00',
+            numberOfPeople : detail.people,
+            memo : memo,
+            amountToPay : deposit
+        }
+        console.log(info);
+        // 1. 예약 생성하기
+        createReservation(restaurantId,info)
+            .then((res)=>{
+                console.log(res);
+            })
+        // 2. 나의 예약 화면으로 이동
+        navigate('/mydining/my');
+    }
+
+    /* Function : 식당 예약 메모 저장 */
+    const handleMemo = (e) => {
+        // console.log(e.target.value);
+        if(!e.target.value) return;
+        setMemo(e.target.value);
+        // console.log(memo);
     }
 
     /* 결제에 필요 */
@@ -109,10 +151,11 @@ export default function ReserveForm({deposit}) {
             setIsReserveAble(false);
         }
         
-
-        console.log('isContinue',isContinue, 'setisREserveAble ', isReserveAble);
+        console.log(state);
+        // console.log('isContinue',isContinue, 'setisREserveAble ', isReserveAble);
     },[isContinue])
 
+    const week = ['일','월','화','수','목','금','토'];
     return(
         <>
             <Maincontent>
@@ -126,12 +169,16 @@ export default function ReserveForm({deposit}) {
                         <div className="section-header"><h3 className="section-title font-18">예약 정보</h3></div>
                         <div className="section-body">
                             <div className="summary-info mb-[10px]">
-                                <p className="plain-txt">오늘 (월) . 오후 6시 . 2명</p>
+                                <p className="plain-txt"> 
+                                    {week[detail.date.getDay()]} 
+                                    . {String(detail.date.getHours()).padStart(2, "0")}:
+                                        {String(detail.date.getMinutes()).padStart(2, "0")}  
+                                    . {detail.people}명</p>
                             </div>
                         </div>
                     </div>
                 </section>
-                <div>
+                { deposit ? <div>
                     <hr className="seperator mt-[24px] mb-[24px]" />
                     <section className="section">
                         <div className="container gutter-sm">
@@ -180,7 +227,25 @@ export default function ReserveForm({deposit}) {
                             </div>
                         </div>
                     </section>
-                </div>
+                </div> 
+                : 
+                <div>
+                    <hr className="seperator mt-[24px] mb-[24px]" />
+                    <section className="section">
+                        <div className="container gutter-sm">
+                            <div className="section-header"><h3 className="section-title font-18">고객 요청사항</h3></div>  
+                            <div className="section-body">
+                                <div className="select-textarea">
+                                    <textarea className="form-input"
+                                        placeholder="레스토랑에 요청하실 내용을 입력해주세요."
+                                        rows="4"
+                                        onChange={handleMemo}
+                                        ></textarea>
+                                </div>    
+                            </div>  
+                        </div>
+                    </section>
+                </div> }
             </Maincontent>
             <ReserveButton className="reserve-button">
                 <div className="wrapper">
@@ -188,20 +253,28 @@ export default function ReserveForm({deposit}) {
                         <div className="reserve">
                             <span>예약정보</span>
                             <div>
-                                <div>04월 15일(월) 오후 18:00</div>
+                                <div>{String(detail.date.getMonth()+1).padStart(2,'0')}월
+                                {String(detail.date.getDate()).padStart(2,'0')}일
+                                ({week[detail.date.getDay()]}) 
+                                {String(detail.date.getHours()).padStart(2,'0')}:{String(detail.date.getMinutes()).padStart(2,'0')}</div>
                             </div>
                         </div>
-                        <div className="reserve">
+                        { deposit ? <div className="reserve">
                             <span>결제금액</span>
                             <div>
                                 <div>10,000원</div>
                             </div>
-                        </div>
+                        </div> : ""}
                         <div className="btn-section">
+                            { deposit ? 
                             <button type="button" className={`flex justify-center align-center payment-btn 
                                 ${isReserveAble ? "color-btn" : "disabled-btn"}`} onClick={requestPay}>
                                 <span>결제하기</span>
                             </button>
+                            :
+                            <button type="button" className="flex justify-center align-center color-btn"
+                                onClick={requestReserve}
+                                >에약하기</button>}
                         </div>
                     </div>
                 </div>

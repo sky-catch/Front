@@ -27,46 +27,26 @@ function App() {
   const [ search, setSearch ] = useState({});
   const updateSearch = (param) => {
     setSearch(param);
-    // console.log(param);
-}
+  }
+
   localStorage.setItem(
     "token",
-    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTA4OTE3OCwiZXhwIjoxNzE1MTc1NTc4fQ.mrcezCo-5Z6_c7wfRuTwBNmRRM6R7xOixf4ZRMXOFf8AljME4DHWtb5zlu8bYyOtuEiuctNZM0uX65mx3Oqoqw`
+    'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTE3ODQxMywiZXhwIjoxNzE1MjY0ODEzfQ.hZ7Oj1g_5KAaKqTFRM1CCWPUKIZ-D4nhEZprIk3OV1WUMsH4I8epW0dq-SPYZZZAqnV6xo5h2HmAzwB4jTh8ZA'
   );
   localStorage.setItem(
     "data",
     JSON.stringify({
-      usersDTO: {
-        id: 0,
-        nickname: "string",
-        profileImageUrl: "string",
-        email: "string",
-        name: "string",
+      userDTO: {
+        id: 7,
+        nickname: "front",
+        profileImageUrl: "front",
+        email: "front@front.com",
+        name: "front_name",
         status: "ACTIVE",
-        owner: false,
+        owner: true,
       },
     })
   );
-
-  // localStorage.clear();
-  // localStorage.setItem(
-  //   "token",
-  //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQzOTMyNzYsImV4cCI6MTcxNDQ3OTY3Nn0.r9izCr_GBklv5U4QJrNIsbGRLndl0Go5F4Mp5p5TF5y7H51ZwGfyunagEVjtrAllLHOHJsFGr24ZR_hlzOpLew`
-  // );
-  // localStorage.setItem(
-  //   "data",
-  //   JSON.stringify({
-  //     usersDTO: {
-  //       id: 0,
-  //       nickname: "string",
-  //       profileImageUrl: "string",
-  //       email: "string",
-  //       name: "string",
-  //       status: "ACTIVE",
-  //       owner: false,
-  //     },
-  //   })
-  // );
 
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {

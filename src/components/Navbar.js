@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { useRecoilState } from "recoil";
+import { LoginState } from "../States/LoginState";
+
 const navItem = [
   {
     id: 0,
@@ -46,8 +49,22 @@ const navItem = [
 
 const Navbar = () => {
   const location = useLocation().pathname;
+  const [user,setUser] = useRecoilState(LoginState);
+
   useEffect(() => {
     console.log(`${location}`);
+
+      // recoil 및 user 세팅
+      const obj = JSON.parse(localStorage.getItem("data"));
+      const userInfo = obj.userDTO;
+
+      setUser((prevUser) => ({
+        ...prevUser,
+        id: userInfo.id,
+        nickname: userInfo.nickname,
+        isOwner : userInfo.owner,
+      }))
+
   }, [location]);
 
   return (
