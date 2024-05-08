@@ -47,24 +47,30 @@ export default function Restaurant() {
     useState(false); /* 예약 컨펌 모달창 오픈 */
 
   const [isSelect, setIsSelect] = useState(true);
+
+  /* 예약 관련 정보 */
   const [isReserve, setIsReserve] =
     useState(true); /* 탭 true : 예약, false : 웨이팅 */
+  const [reserveInfo, setReserveInfo] = useState();
+
   const { state } = useLocation();
-
   const [isContent, setIsContent] = useState("home");
-
   const navigate = useNavigate();
   const location = useLocation();
+
   const toggleDrawer = (e) => {
-    console.log(e.target.className);
+    console.log(e.target, reserveInfo);
 
     if (e.target.className.indexOf("closeSaveModal") != -1) {
       setIsSave((prevState) => !prevState);
     } else if (e.target.className.indexOf("confirm-close") != -1) {
       setIsConfirmOpen((prevState) => !prevState);
-    } else if (e.target.className.indexOf("close-modal-btn") != -1) {
+    // } else if (e.target.className.indexOf("close-modal-btn") != -1) {
+    //   setIsConfirmOpen((prevState) => !prevState);
+    } else if (e.target.className.indexOf('calendar-btn') > -1) {
       setIsConfirmOpen((prevState) => !prevState);
     }
+
     if (e.target.className.indexOf("closeSaveModal") == -1) {
       setIsOpen((prevState) => !prevState);
     } else {
@@ -169,7 +175,7 @@ export default function Restaurant() {
       {/* 2. 식당 이름 및 메인 정보 */}
       {restaurant && (
         <Section>
-          <div className="container gutter-sm pt-[7px] pb-[7px]">
+          <div className="container gutter-sm pt-[24px] pb-[24px]">
             <div className="restaurant-summary">
               <span>{restaurant.category}</span>
               <h2>{restaurant.name}</h2>
@@ -286,6 +292,7 @@ export default function Restaurant() {
       <CalendarComponent
         isOpen={isOpen}
         restaurant={restaurant}
+        setReserveInfo={setReserveInfo}
         toggleDrawer={toggleDrawer}
       ></CalendarComponent>
 
@@ -300,13 +307,14 @@ export default function Restaurant() {
         toggleDrawer={toggleDrawer}
       ></SaveConfirmComponent>
 
-      <ConfirmReserve></ConfirmReserve>
+      {/* <ConfirmReserve></ConfirmReserve> */}
 
-      {/* <ConfirmReserve
+      <ConfirmReserve
         isConfirmOpen={isConfirmOpen}
         restaurant={restaurant}
+        reserveInfo={reserveInfo}
         toggleDrawer={toggleDrawer}
-      ></ConfirmReserve> */}
+      ></ConfirmReserve>
     </main>
   );
 }

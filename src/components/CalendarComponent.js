@@ -26,7 +26,7 @@ function SetDateYMD(isDate) {
     String(isDate.getDate()).padStart(2, "0")
   );
 }
-const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
+const CalendarComponent = ({ isOpen, toggleDrawer, setReserveInfo, restaurant }) => {
   const location = useLocation();
   const [date, setDate] = useState(new Date());
 
@@ -66,6 +66,12 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
       searchDate: SetDateYMD(newDate),
       numberOfPeople: 0,
     });
+
+    // 예약정보넘기기
+    setReserveInfo({
+      date : date,
+      people : 2
+    });
   };
   const handleTodayClick = () => {
     const today = new Date();
@@ -81,6 +87,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
       }
       checkReservationTimes(isData);
     }
+    console.log(isTimes);
   }, [isData]);
 
   const createTest = (item) => {
@@ -163,8 +170,16 @@ const CalendarComponent = ({ isOpen, toggleDrawer, restaurant }) => {
                       // setIsPeopleNum(index);
                       e.preventDefault();
                       setIsData({ ...isData, numberOfPeople: item });
+                      
+                      // 240508 예약화면으로 이동 -> 원래는 시간 선택시 이동해야함 (테스트용)
+                      // 예약정보넘기기
+                      setReserveInfo({
+                        date : date,
+                        people : 2
+                      });
+                      toggleDrawer(e);
                     }}
-                    className={` block size-[48px] rounded-[50%] text-center leading-[48px] font-light text-[14px] ${
+                    className={`calendar-btn block size-[48px] rounded-[50%] text-center leading-[48px] font-light text-[14px] ${
                       item === isData.numberOfPeople
                         ? `bg-[#ff3d00] text-[#fff]`
                         : `text-[#aaa] border-[1px] border-[#aaa]`

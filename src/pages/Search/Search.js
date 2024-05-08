@@ -90,7 +90,14 @@ export default function Search() {
       orderType: "기본순",
     };
     // console.log(filterInfo, 'params : ', JSON.parse(params), JSON.stringify(params));
-    searchByFilter(params);
+
+    searchByFilter(params)
+      .then((res)=>{
+        console.log(filterInfo);
+        searchByFilter(filterInfo).then((res) => {});
+      });
+
+//     searchByFilter(params);
     // .then((res)=>{
     // console.log(filterInfo);
     // searchByFilter(filterInfo).then((res) => {});

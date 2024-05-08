@@ -1138,3 +1138,205 @@ header .keyword-search .btn-delete {
 .custom-tap {
   width : 100% !important;
 }
+
+/* reserve form */
+.space-35 {
+  background : transparent;
+  display : block;
+  height : 35px !important;
+}
+.font-18 {
+  font-size : 18px !important;
+}
+.section .section-header .section-title {
+  font-weight : 700;
+  align-items : center;
+  display : flex;
+  letter-spacing : 0;
+  min-width : 1px;
+}
+.section .section-body .summary-info .plain-txt{
+  line-height: 1.5714285714em !important;
+}
+.label-checkbox {
+  position : relative;
+}
+.label-checkbox.label-checkbox-btn {
+  display : flex;
+  align-items : center;
+}
+.label-checkbox.label-checkbox-btn .checkbox-btn {
+  width : 20px;
+  height : 20px;
+  align-self : flex-start;
+  transition: all .4s cubic-bezier(.39,.58,.57,1);
+}
+.label-checkbox.label-checkbox-btn .radio-btn {
+  cursor: pointer;
+  background: url("../src/assets/icons/radio-button.svg") 50% 50% no-repeat;
+}
+.label-checkbox.label-checkbox-btn .radio-btn:checked {
+  background: url("../src/assets/icons/radio-button-selected.svg") 50% 50% no-repeat;
+}
+.label-checkbox .label {
+  display : block;
+  margin-left : 8px;
+  font-size : 14px;
+  line-height : 20px;
+}
+input.checkbox-btn {
+  appearance : none;
+}
+.checkout-methods {
+  display : flex;
+  flex-wrap : wrap;
+  margin : -4px -6px;
+}
+.checkout-methods .__item {
+  padding : 5px 6px;
+  box-sizing : border-box;
+  flex : 1 1 100%; 
+}
+.checkout-methods .__item label input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+.checkout-methods .__item label span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  background: #ffffff 50% 50% no-repeat;
+  border: 1px solid #d5d5d5;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+.checkout-methods .__item label .__kakaopay {
+  text-indent: -999em;
+  overflow: hidden;
+  background-image: url("../src/assets/icons/kakaopay-v2.svg");
+}
+.checkout-methods .__item label input:checked+.__kakaopay {
+  background-image: url("../src/assets/icons/kakaopay-v2.svg");
+  background-color: #ffeb00;
+  border-color: #ffeb00;
+}
+.payment-btn {
+  position : relative;
+  padding : 14px;
+  width : 100%;
+  border-radius : 6px;
+  color : #ffffff;
+}
+.disabled-btn {
+  background: #D5D5D5 !important;
+  cursor: not-allowed !important;
+}
+.form-checkbox {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  display: inline-block;
+  -webkit-appearance: none;
+  appearance: none;
+  background: url("../src/assets/icons/checkbox.svg") 50% 50% no-repeat;
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  box-sizing: border-box;
+}
+.form-checkbox:checked {
+  background-image: url("../src/assets/icons/checkbox-checked.svg") ;
+}
+textarea.form-input {
+  resize : none;
+}
+.form-input {
+  background : #f9f9f9;
+  font-size : 14px;
+  border-radius : 8px;
+  line-height : 21px;
+}
+.restaurant-reservation-detail {
+  overflow : hidden;
+  word-break : break-all;
+}
+.restaurant-reservation-detail .detail-box-header {
+  text-align : center;
+  margin-bottom : 16px;
+}
+.detail-box-body .options-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-flow: wrap;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  color: #ff3d00;
+}
+.options-with-icon {
+  margin : 0 auto;
+  max-width : 300px;
+}
+.restaurant-reservation-detail .options-with-icon>div {
+  padding: 0 2px;
+}
+.options-with-icon>div {
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
+  color: #000;
+}
+.options-with-icon>div:before {
+  background : 50% 50% no-repeat;
+  width : 48px;
+  height : 48px;
+  display : block;
+  margin : 0 auto 4px;
+  content : "";
+}
+.options-with-icon>div.date:before {
+  background-image : url("../src/assets/icons/calendar-new.svg");
+}
+.options-with-icon>div.time:before {
+  background-image : url("../src/assets/icons/time-new.svg");
+}
+.options-with-icon>div.people:before {
+  background-image : url("../src/assets/icons/people-new.svg");
+}
+.pb-\[24px\] {
+  padding-bottom: 24px !important;
+}
+.pt-\[24px\] {
+  padding-top: 24px !important;
+}
+.border-box {
+  border: 1px solid #f4f4f4;
+  border-radius: 10px;
+  padding: 20px;
+}
+.mb-25 {
+  margin-bottom : 25px !important;
+}
+.restaurant-reservation-detail .detail-box-header .type {
+  font-size: 14px;
+  color: #666;
+  font-weight: 400;
+}
+.drawer-box-footer {
+  padding : 20px;
+}
+.drawer-box .drawer-box-footer .btn-group {
+  display: flex;
+  margin: 0 -5px;
+}
+.drawer-box .drawer-box-footer .btn-group .btn {
+  flex: 1;
+  margin: 0 5px;
+  width: auto;
+  font-weight: 700;
+}

@@ -48,6 +48,13 @@ function MyPage() {
 
   /* Function : 식당 정보 */
   const getUserShop = () => {
+    // console.log("id", user.id);
+    getRestaurant(user.id).then((res) => {
+      console.log(res);
+    });
+  };
+
+  useEffect(() => {
     getRestaurant(user.id).then((res) => {});
   };
 
