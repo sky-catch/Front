@@ -82,8 +82,8 @@ export default function Search() {
       date: formatDate,
       time: time,
       personCount: minNum,
-      koreanCity: filterInfo.cities.city || "",
-      hotPlace: filterInfo.cities.address[0] || "",
+      koreanCity: "",
+      hotPlace:  "",
       category: "",
       minPrice: 0,
       maxPrice: 0,
@@ -237,6 +237,8 @@ export default function Search() {
 }
 
 const SearchSection = styled.div`
+  margin-top: 47px;
+
   .search-header .keyword input {
     cursor: pointer;
     font-size: 13px;
