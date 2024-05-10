@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { LoginState } from "../../States/LoginState";
 import { getRestaurant } from "../../respository/restaurant";
@@ -14,7 +14,7 @@ import { getOwner } from "../../respository/userInfo";
 
 function MyPage() {
   const navigate = useNavigate();
-  const [user, setUser] = useRecoilState(LoginState);
+  const user = useRecoilValue(LoginState);
   const [following, setFollowing] = useState(0);
   const [follower, setFollower] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
@@ -59,16 +59,6 @@ function MyPage() {
   });
 
   useEffect(() => {
-    // 유저 정보 세팅
-    setUser((prevUser) => ({
-      // ...prevUser,
-      // id: userInfor.id,
-      // nickname: userInfor.nickname,
-    }));
-
-    // if (owner.usersDTO.owner === true) {
-    //   setIsOwner(true);
-    // }
     // 유저의 저장 레스토랑 정보 GET
     getUserShop();
   }, []);

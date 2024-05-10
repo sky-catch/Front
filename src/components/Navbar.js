@@ -55,16 +55,17 @@ const Navbar = () => {
     console.log(`${location}`);
 
       // recoil 및 user 세팅
-      const obj = JSON.parse(localStorage.getItem("data"));
-      const userInfo = obj.userDTO;
+      const obj = JSON.parse(sessionStorage.getItem("data"));
 
       setUser((prevUser) => ({
         ...prevUser,
-        id: userInfo.id,
-        nickname: userInfo.nickname,
-        isOwner : userInfo.owner,
+        id: obj.id,
+        nickname: obj.nickname,
+        isOwner : obj.isOwner,
       }))
 
+      console.log(obj);
+      
   }, [location]);
 
   return (

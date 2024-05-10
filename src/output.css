@@ -2736,6 +2736,11 @@ header {
   cursor : pointer;
 }
 
+.swiper-wrapper .swiper-slide {
+  overflow : hidden;
+  border-radius : 8px;
+}
+
 .w-fit {
   width: -webkit-fit-content !important;
   width: -moz-fit-content !important;
