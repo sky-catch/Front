@@ -643,21 +643,17 @@ header {
 
 .header-back-black {
   display: block;
-  /* width: 25px; */
-  /* height: 25px; */
   background-position: center;
   background-repeat: no-repeat;
-  /* background-size: auto; */
   width: 35px;
   height: 35px;
   background-size: cover;
   background-image: url("/src/assets/icons/back.svg");
-  /* background-image: url(http://localhost:3000/static/media/setting.840429f….webp); */
 }
 
 
 .main, #main {
-  padding-top : 47px;
+  /* padding-top : 47px; */
 }
 .sticky-bottom-btns {
   display : flex;
@@ -928,21 +924,70 @@ hr.seperator {
   background : linear-gradient(0deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
   opacity : .8;
 }
-.filter-drawer footer button {
+.filter-wrapper footer .btn-grp button {
   display : flex;
   margin : 12px 16px;
   padding : 12px 16px;
   border-radius : 4px;
 }
-.filter-drawer footer button:first-child {
+.filter-wrapper footer .btn-grp button:first-child {
   width : 108px;
   border : 1px solid #d5d5d5;
 }
-.filter-drawer footer button:last-child {
+.filter-wrapper footer .btn-grp button:last-child {
   width : 100%;
   background-color : #ff3d00;
   color : #ffffff;
 }
+.filter-wrapper footer .selected-itmes {
+  display: flex;
+  position: relative;
+  background-color: #ffffff;
+  padding: 12px 16px 0;
+}
+.filter-wrapper footer .selected-itmes .delete-button {
+  background-color: #ffffff;
+  padding-right: 12px;
+}
+.filter-wrapper footer .selected-itmes .delete-button .delete {
+  display: flex;
+  width: 36px;
+  height: 36px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid #d5d5d5;
+}
+.filter-wrapper footer .selected-itmes .items {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}
+.filter-wrapper footer .selected-itmes .items button {
+  border : 1px solid;
+  border-color: #ff3d00;
+  color: #ff3d00;
+  background-color: #FFECE5;
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+  transition: all .1s ease-in-out;
+  white-space: nowrap;
+}
+
+.font-md {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+}
+
+
 .chip-filter .filter-icon button.active {
   background-color : #fcefe7;
   border-color : #ff3d00;
@@ -1339,4 +1384,43 @@ textarea.form-input {
   margin: 0 5px;
   width: auto;
   font-weight: 700;
+}
+/* drawer */
+.drawer-box-header {
+  display: flex;
+  align-items: center;
+  padding: 18px 20px;
+  border-bottom: 1px solid #f1f1f1;
+  justify-content: space-between;
+}
+.drawer-box .drawer-box-body {
+  padding: 20px;
+}
+.drawer-box .drawer-box-footer {
+  padding: 20px;
+}
+
+/* restaurants */
+.restaurant-list .restaurant-list-item .detail .name {
+  width : 80%;
+  line-height : 25px;
+  font-weight: 500;
+  font-size: 16px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-bottom: 4px;
+  line-height: 1.12;
+}
+
+.hotplace-item {
+  color : #222222;
+  font-weight : 400;
+  font-size : 14px;
+  line-height : 150%;
+}
+
+span {
+  font-size : 100%;
+  vertical-align : baseline;
 }

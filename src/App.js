@@ -29,14 +29,13 @@ function App() {
     setSearch(param);
   }
 
-  localStorage.setItem(
+  sessionStorage.setItem(
     "token",
-    'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTE3ODQxMywiZXhwIjoxNzE1MjY0ODEzfQ.hZ7Oj1g_5KAaKqTFRM1CCWPUKIZ-D4nhEZprIk3OV1WUMsH4I8epW0dq-SPYZZZAqnV6xo5h2HmAzwB4jTh8ZA'
+    'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTQyOTM2OCwiZXhwIjoxNzE1NTE1NzY4fQ.bLk7B4Zt_E9m4r89kYiOTloVvgOqXdE9_zFxXmhzrxqDCq3ZC9JsUm_JtgscVNpIGfssYZCpWy8uZt2zM52qmw'
   );
-  localStorage.setItem(
+  sessionStorage.setItem(
     "data",
     JSON.stringify({
-      userDTO: {
         id: 7,
         nickname: "front",
         profileImageUrl: "front",
@@ -44,7 +43,6 @@ function App() {
         name: "front_name",
         status: "ACTIVE",
         owner: true,
-      },
     })
   );
 

@@ -57,6 +57,9 @@ const Navbar = () => {
       // recoil 및 user 세팅
       const obj = JSON.parse(sessionStorage.getItem("data"));
 
+      if(!obj) return;
+      console.log(obj);
+
       setUser((prevUser) => ({
         ...prevUser,
         id: obj.id,
@@ -64,7 +67,7 @@ const Navbar = () => {
         isOwner : obj.isOwner,
       }))
 
-      console.log(obj);
+      // console.log(obj);
       
   }, [location]);
 

@@ -21,35 +21,13 @@ export default function Search() {
   const [minNum, setMinNum] = useState(2); // 최소 인원
   const [time, setTime] = useState("7:00"); // 기본 시간
   const [filterInfo, setFilterInfo] = useState([]);
-  const menuItems = [
-    {
-      id: 0,
-      title: "내 주변",
-    },
-    {
+  const menuItems = [{
       id: 1,
       title: "지역",
-    },
-    {
+    },{
       id: 2,
-      title: "음식 종류",
-    },
-    {
-      id: 3,
       title: "가격",
-    },
-    {
-      id: 4,
-      title: "테이블 타입",
-    },
-    {
-      id: 5,
-      title: "분위기",
-    },
-    {
-      id: 6,
-      title: "편의시설",
-    },
+    }
   ];
   const hashtagItems = [
     { title: "#웨이팅 라인업 공개" },
@@ -64,8 +42,6 @@ export default function Search() {
 
   /* 상세 검색 패널 열기 */
   const toggleFilterDrawer = (e) => {
-    console.log(e.target.className);
-
     setIsFilter((prevState) => !prevState);
   };
 
@@ -162,12 +138,11 @@ export default function Search() {
                   {menuItems.map((item, index) => {
                     return (
                       <SwiperSlide
-
                         className={`swiper-slide-chip mr-[8px]`}
                         key={index}
                         id={index}
                       >
-                        <button type="button" className="slide-button">
+                        <button type="button" className="slide-button" onClick={toggleFilterDrawer}>
                           <span>{item.title}</span>
                         </button>
                       </SwiperSlide>
