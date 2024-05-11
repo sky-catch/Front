@@ -41,29 +41,10 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
   ];
   const addressItems = [
     [
-      "서울 전체",
-      "강남/역삼/선릉",
-      "강남구청",
-      "건대/군자/구의",
-      "금호/옥수/신당",
-      "명동/을지로/충무로",
-      "방이",
-      "북촌/삼청",
-      "삼성/대치",
-      "상수/합정/망원",
-      "서울역/회현",
-      "서초/방배",
-      "서촌",
-      "성수/서울숲",
-      "신사/논현",
-      "신촌/홍대/서교",
-      "압구정/청담",
-      "양재/도곡",
-      "연남",
-      "영등포/여의도",
-      "용산/삼각지",
+      "서울 전체", "강남/역삼/선릉", "강남구청", "건대/군자/구의", "금호/옥수/신당", "명동/을지로/충무로", "방이", "북촌/삼청", "삼성/대치", "상수/합정/망원", "서울역/회현", "서초/방배", "서촌", 
+      "성수/서울숲", "신사/논현", "신촌/홍대/서교", "압구정/청담", "양재/도곡", "연남", "영등포/여의도", "용산/삼각지", 
     ],
-    [],
+    [ '서울 전체', '강남', '서초', '잠실/송파/강동', '영등포/여의도/강서', '건대/성수/왕십리','종로/중구', '홍대/합정/마포', '용산/이태원/한남', '성북/노원/중랑', '구로/관악동작' ],
     [],
     [],
     [],
@@ -89,10 +70,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
     { name: "40만원대 이상", min: 40, max: 40 },
   ];
   const [selected, setSelected] = useState([]);
-  const [cost, setCost] = useState({
-    min: 0,
-    max: 40,
-  });
+  const [cost, setCost] = useState({});
 
   /* tap 클릭이벤트 */
   const contentClick = (e, index) => {
@@ -116,11 +94,11 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
 
     const recent = e.currentTarget.classList;
     const recentText = e.currentTarget.innerText;
-
     //서울 전체인 경우
     const list = placeRef.current;
     if (recentText == "서울 전체") {
-      if (recent.length < 1) {
+      console.log('recent : ', recent, 'recentText:', recentText, recent.length);
+      if (recent.length < 2) {
         list.map((item) => {
           const arr1 = item.classList;
           arr1.add("active");
@@ -172,6 +150,18 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
     });
   };
 
+  /* function : 전체초기화 */
+  const handleResetAll = (e) => {
+    setCities([]);
+    const list = placeRef.current;
+    list.map((item) => {
+      const arr1 = item.classList;
+      arr1.remove("active");
+    });
+    setCost([]);
+    console.log(sliderRef.current);
+  }
+
   /* function : 닫기 */
   const handleClose = (e) => {
     handleReset();
@@ -181,7 +171,6 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
   /* function : 가격 설정 */
   const handleChange = (props) => {
     const [min, max] = props;
-    console.log(min, max);
     setCost({
       min: min,
       max: max,
@@ -269,6 +258,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
                     return (
                       <button
                         type="button"
+                        className="hotplace-item"
                         key={index}
                         onClick={(e) => {
                           onSelectCity(e, item);
@@ -294,8 +284,9 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
                 </div>
                 <div className="slider-wrapper">
                   <h3 className="title">
-                    {cost.min > 0 ? `${cost.min}만원` : `${cost.min}원`} ~{" "}
-                    {`${cost.max}만원`}
+                    {
+                      cost.min ? cost.min > 0 ? `${cost.min}만원 ~ ${cost.max}만원` : `${cost.min}원 ~ ${cost.max}만원` : `0원 ~ 40만원`
+                    }
                   </h3>
                   <div className="slider-wrapper-inner">
                     <Slider
@@ -305,7 +296,8 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
                       defaultValue={[0, 40]}
                       marks={{ 0: "0원", 20: "20만원", 40: "40만원 이상" }}
                       onChange={handleChange}
-                      tipFormatter={(value) => `${value}`}
+                      // value={cost}
+                      ref={sliderRef}
                     />
                   </div>
                   <div className="slider-help">
@@ -329,8 +321,43 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
           </main>
           <footer className="fixed">
             <div className="gradient"></div>
-            <div></div>
-            <div className="flex items-center bg-[#fff] btn-box">
+            { cities.length > 0 || cost.min ? 
+            <div className="selected-itmes">
+                    <div className="delete-button">
+                      <button type="button" className="delete" onClick={handleResetAll}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M4.16699 6.24992L5.13921 2.08325L14.8614 2.08332L15.8337 6.24992" stroke="currentColor" strokeWidth="1.25" strokeMiterlimit="10" strokeLinejoin="round"></path>
+                        <path d="M4.16699 6.24992L5.13921 2.08325L14.8614 2.08332L15.8337 6.24992" stroke="currentColor" strokeWidth="1.25" strokeMiterlimit="10" strokeLinejoin="round"></path>
+                        <path d="M1.66699 6.66675H18.3337" stroke="currentColor" strokeWidth="1.25" strokeMiterlimit="10"></path>
+                        <path d="M8.33301 9.16675V15.0001" stroke="currentColor" strokeWidth="1.25" strokeMiterlimit="10"></path>
+                        <path d="M11.667 9.16675V15.0001" stroke="currentColor" strokeWidth="1.25" strokeMiterlimit="10"></path>
+                        <path d="M3.33301 6.25L4.69304 15.7702C4.86899 17.0018 5.92379 17.9167 7.16791 17.9167H12.8314C14.0756 17.9167 15.1304 17.0018 15.3063 15.7702L16.6663 6.25" stroke="currentColor" strokeWidth="1.25"></path>
+                          </svg>
+                      </button>
+                    </div>
+                    <div className="items">
+                      {cities.map((item,index)=>{
+                        return(
+                          <button className="item-btn font-md">
+                            <span>{item}</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none" class="design_system_1mb4yfk4 design_system_1mb4yfk5">
+                              <path d="M9 1L1 9" stroke="currentColor" strokeWidth="0.75" strokeMiterlimit="10"></path>
+                              <path d="M1 1L9 9" stroke="currentColor" strokeWidth="0.75" strokeMiterlimit="10"></path>
+                            </svg>
+                          </button>
+                        )
+                      })}
+                      { 
+                        cost.min >= 0 ? <button className="item-btn font-md"><span>{cost.min}원 ~ {cost.max}만원</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none" class="design_system_1mb4yfk4 design_system_1mb4yfk5">
+                          <path d="M9 1L1 9" stroke="currentColor" strokeWidth="0.75" strokeMiterlimit="10"></path>
+                          <path d="M1 1L9 9" stroke="currentColor" strokeWidth="0.75" strokeMiterlimit="10"></path>
+                        </svg>
+                        </button> : ''
+                      }
+                    </div>
+            </div> : "" }
+            <div className="flex items-center bg-[#fff] btn-box btn-grp">
               <button
                 className="flex items-center justify-center"
                 onClick={(e) => handleClose(e)}

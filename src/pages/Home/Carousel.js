@@ -14,10 +14,10 @@ const slideItem = [{
     url: "https://ugc-images.catchtable.co.kr/admin/marketing/banner/images/dd3cf3ca4172400795af5de7f7ef3bbb",
   },{
     id: 2,
-    url: "https://ugc-images.catchtable.co.kr/admin/marketing/banner/images/dd3cf3ca4172400795af5de7f7ef3bbb",
+    url: "https://ugc-images.catchtable.co.kr/admin/marketing/banner/images/fa84ce5706f046508828f5032cd6dc78",
   }, {
     id : 3,
-    url : "https://ugc-images.catchtable.co.kr/admin/marketing/banner/images/fa84ce5706f046508828f5032cd6dc78"
+    url : "https://ugc-images.catchtable.co.kr/admin/marketing/banner/images/b62bbe9454a946fc90834334406ddda8"
   },{
     id: 4,
     url: "https://d3kzx7mqemhf0.cloudfront.net/common_img/comm_2422211081434326.webp",
@@ -25,7 +25,7 @@ const slideItem = [{
 
 export default function Carousel() {
   return (
-    <CarouselWrapper className="slider mb-[16px] mt-[48px]">
+    <CarouselWrapper className="slider mb-[16px]">
       <Swiper
         className="swiper-wrapper"
         modules={[Pagination, Autoplay]}
