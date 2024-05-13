@@ -29,9 +29,10 @@ function App() {
     setSearch(param);
   }
 
+  /* 카카오 로그인 구현 시 뜨는 에러로 인해 현재 sessionStorage에 임시저장하여 기능 구현중 */
   sessionStorage.setItem(
     "token",
-    'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTQyOTM2OCwiZXhwIjoxNzE1NTE1NzY4fQ.bLk7B4Zt_E9m4r89kYiOTloVvgOqXdE9_zFxXmhzrxqDCq3ZC9JsUm_JtgscVNpIGfssYZCpWy8uZt2zM52qmw'
+    'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTU4NzY0NiwiZXhwIjoxNzE1Njc0MDQ2fQ.bxxGYX-wiSIznfXg-mO8muPT3BofsOLym5J7VGicgSLU0k6vqphuOzurIcCyCQOc-KGjf-Zp7tnbP6kx4c8OBg'
   );
   sessionStorage.setItem(
     "data",

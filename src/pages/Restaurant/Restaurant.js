@@ -22,18 +22,18 @@ import RestaurantInfor from "./RestaurantInfor";
  * @author jimin
  */
 
-const shopImgItem = {
-  shopImg: [
-    {
-      id: 0,
-      url: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?detail750",
-    },
-    {
-      id: 1,
-      url: "https://ugc-images.catchtable.co.kr/admin/marketing/banner/images/3bf5d2c1564a46368375bae358767d3f",
-    },
-  ],
-};
+// const shopImgItem = {
+//   shopImg: [
+//     {
+//       id: 0,
+//       url: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?detail750",
+//     },
+//     {
+//       id: 1,
+//       url: "https://ugc-images.catchtable.co.kr/admin/marketing/banner/images/3bf5d2c1564a46368375bae358767d3f",
+//     },
+//   ],
+// };
 
 export default function Restaurant() {
   const [restaurant, setRestaurant] = useState();
@@ -143,9 +143,8 @@ export default function Restaurant() {
     if (!restaurant) {
       setRestaurantInfo(state);
     }
-    // console.log(restaurant.reviewAvg);
 
-    console.log(state);
+    // console.log(state);
     if (!restaurant) {
       setRestaurantInfo(state);
     }
@@ -155,12 +154,20 @@ export default function Restaurant() {
     <main className="pb-[74px]">
       {/* 1. 식당 이미지 */}
       <Section>
-        <Swiper>
-          {shopImgItem.shopImg.map((item, index) => {
+        <Swiper
+          className="slide-image-wrapper">
+          { restaurant && restaurant.images.length < 1 ? 
+           <SwiperSlide className="slide-none">
+            이미지가 없습니다.
+           </SwiperSlide>
+           : restaurant && restaurant.images.map((item, index) => {
+            console.log(item);
             return (
-              <SwiperSlide key={item.id}>
+              <SwiperSlide key={item.id}
+                className="slide-image-item slide-none"
+              >
                 <a>
-                  <img src={item.url}></img>
+                  <img width='100%' src={item.path}></img>
                 </a>
               </SwiperSlide>
             );

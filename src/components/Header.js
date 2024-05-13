@@ -2,33 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { searchByKeyword } from "../respository/search.js";
 
-// const HeaderItem = [
-//   {
-//     id: 0,
-//     name: "home",
-//     to: "/",
-//   },
-//   {
-//     id: 1,
-//     name: "search",
-//     to: "/search",
-//   },
-//   {
-//     id: 3,
-//     name: "mydining/my",
-//     to: "/mydining/my",
-//   },
-//   {
-//     id: 4,
-//     name: "mydining",
-//     to: "/mydining",
-//   },
-//   {
-//     id: 5,
-//     name: "account",
-//     to: "/account",
-//   },
-// ];
+/**
+ * Header (헤더)
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
 const Header = ({ setSearch, updateSearch }) => {
   const [searchRes, setSearchRes] = useState({}); // 검색결과
   const location = useLocation().pathname;
@@ -142,7 +121,6 @@ const Header = ({ setSearch, updateSearch }) => {
               }
             });
           } else {
-            console.log("header handle : ", data);
             data.input = e.target.value;
             setSearchRes(data);
           }
@@ -351,7 +329,7 @@ const Header = ({ setSearch, updateSearch }) => {
             return (
               <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px]">
                 <div className="header-left items-center flex gap-[12px]">
-                  <a className="back header-icon" onClick={onClickBack}>
+                  <a className="back-w header-icon" onClick={onClickBack}>
                     뒤로
                   </a>
                   <a className="tohome header-icon">홈</a>
@@ -363,6 +341,20 @@ const Header = ({ setSearch, updateSearch }) => {
               </div>
             );
           }
+        }
+
+        /* 검색 결과 */
+        { if(location.indexOf("/search/list") != -1 ) {
+          return(
+          <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] bg-white">
+            <div className="header-left items-center flex gap-[12px]">
+              <button className="back-b header-icon" onClick={onClickBack}>
+                뒤로
+              </button>
+              <h1 className="page-title">검색결과</h1>
+            </div>
+          </div>
+          )}
         }
         break;
     }
