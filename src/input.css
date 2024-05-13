@@ -1445,6 +1445,10 @@ span {
   flex: none;
 }
 
+.header-tp-wrapper .header-left .back-b {
+  background: url('../src/assets/icons/back.svg') 50% 50% no-repeat;
+}
+
 .header-tp-wrapper .header-left .back-w {
   background: url('../src/assets/icons/back-w.svg') 50% 50% no-repeat;
 }

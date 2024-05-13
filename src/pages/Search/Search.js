@@ -54,6 +54,10 @@ export default function Search() {
 
   /* 필터 검색하기 */
   const handleSearch = (e) => {
+
+    const cost = filterInfo.cost;
+    const cityList = filterInfo.cities;
+
     const formatDate =
       date.getFullYear() +
       "-" +
@@ -65,11 +69,11 @@ export default function Search() {
       date: formatDate,
       time: time,
       personCount: minNum,
-      koreanCity: "",
+      koreanCity: JSON.stringify(cityList),
       hotPlace:  "",
       category: "",
-      minPrice: 0,
-      maxPrice: 0,
+      minPrice: cost ? cost.min : 0,
+      maxPrice: cost ? cost.max : 0,
       orderType: "기본순",
     };
 

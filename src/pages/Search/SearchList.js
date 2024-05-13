@@ -54,7 +54,7 @@ export default function SearchList (params) {
                     <div className="datetime-selector" onClick={handleCalendarDialog}>
                         <a>
                         <span>
-                          
+                          {filter && filter.date}
                         </span>
                         </a>
                     </div>
