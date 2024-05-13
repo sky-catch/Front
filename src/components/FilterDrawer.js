@@ -70,7 +70,8 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
     { name: "40만원대 이상", min: 40, max: 40 },
   ];
   const [selected, setSelected] = useState([]);
-  const [cost, setCost] = useState({});
+  const [cost, setCost] = useState(); /* rc-slider 값 */
+  const [Value, setValue] = useState([0,40]);
 
   /* tap 클릭이벤트 */
   const contentClick = (e, index) => {
@@ -129,52 +130,88 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
 
   /* function : 검색적용 */
   const handleSearch = (e) => {
-    console.log(cityItems[isSelect].name, cities);
-    setFilterInfo({
-      cities: {
-        city: cityItems[isSelect].name,
-        address: cities,
-      },
-      cost: cost,
-    });
+    console.log(cityItems[isSelect].name, cities,cost);
+    if(cities.length > 0 ) {
+      setFilterInfo((prevFilterInfo)=> ({
+        ...prevFilterInfo,
+        cities: {
+          city: cityItems[isSelect].name,
+          address: cities,
+        }
+      }));
+    } else {
+      setFilterInfo();
+    }
+    if (cost) {
+      setFilterInfo((prevFilterInfo)=> ({
+        ...prevFilterInfo,
+        'cost' : cost
+      }));
+    } else {
+      setCost();
+    }
+
     toggleFilterDrawer(e);
   };
 
   /* function : 초기화 */
   const handleReset = (e) => {
-    setCities([]);
-    const list = placeRef.current;
-    list.map((item) => {
-      const arr1 = item.classList;
-      arr1.remove("active");
+    const name = e.currentTarget.classList;
+    let cityselected = false;
+    let costselected = false;
+    
+    name.forEach((item)=>{
+      if(item.indexOf('city') > -1) {
+        cityselected = true;
+      }
+      if(item.indexOf('cost') > -1) {
+        costselected = true;
+      }
     });
+    
+    if(cityselected) {
+      setCities([]);
+      const list = placeRef.current;
+      list.map((item) => {
+        const arr1 = item.classList;
+        arr1.remove("active");
+      });
+    } else if (costselected) {
+      setCost();
+      setValue([0,40]);
+    }
+      
   };
 
   /* function : 전체초기화 */
   const handleResetAll = (e) => {
+    /* 1. 지역리셋 */
     setCities([]);
     const list = placeRef.current;
     list.map((item) => {
       const arr1 = item.classList;
       arr1.remove("active");
     });
-    setCost([]);
-    console.log(sliderRef.current);
+    /* 2. 가격리셋 */
+    setCost();
+    setValue([0,40]);
   }
 
   /* function : 닫기 */
   const handleClose = (e) => {
-    handleReset();
+    handleResetAll();
     toggleFilterDrawer(e);
   };
 
   /* function : 가격 설정 */
   const handleChange = (props) => {
     const [min, max] = props;
+    
     setCost({
       min: min,
       max: max,
     });
+    setValue([min,max]);
   };
 
   /* function : 가격 설정 */
@@ -184,7 +221,9 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
 
     handleChange([min, max]);
   };
-
+  useEffect(()=>{
+    console.log(cost,Value);
+  },[cost,Value])
   useEffect(() => {
     console.log(cities);
   }, [cities]);
@@ -193,7 +232,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
     <div className="filter-drawer">
       <Drawer
         open={isFilter}
-        onClose={toggleFilterDrawer}
+        onClose={handleClose}
         direction="bottom"
         className="drawer-box custom-box"
         size="calc(100vh - 150px)"
@@ -233,7 +272,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
               >
                 <div className="flex justify-between">
                   <h3 className="title">지역</h3>
-                  <button className="reset-btn" onClick={handleReset}>
+                  <button className="reset-btn city" onClick={handleReset}>
                     초기화
                   </button>
                 </div>
@@ -280,12 +319,12 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
               >
                 <div className="flex justify-between">
                   <h3 className="title">가격</h3>
-                  <button className="reset-btn">초기화</button>
+                  <button className="reset-btn cost" onClick={handleReset}>초기화</button>
                 </div>
                 <div className="slider-wrapper">
                   <h3 className="title">
                     {
-                      cost.min ? cost.min > 0 ? `${cost.min}만원 ~ ${cost.max}만원` : `${cost.min}원 ~ ${cost.max}만원` : `0원 ~ 40만원`
+                      cost ? cost.min > 0 ? `${cost.min}만원 ~ ${cost.max}만원` : `${cost.min}원 ~ ${cost.max}만원` : `0원 ~ 40만원`
                     }
                   </h3>
                   <div className="slider-wrapper-inner">
@@ -293,17 +332,16 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
                       range
                       min={0}
                       max={40}
-                      defaultValue={[0, 40]}
+                      defaultValue={Value}
                       marks={{ 0: "0원", 20: "20만원", 40: "40만원 이상" }}
                       onChange={handleChange}
-                      // value={cost}
-                      ref={sliderRef}
+                      value={Value}
+                      // ref={sliderRef}
                     />
                   </div>
                   <div className="slider-help">
                     {costItems.map((item, index) => {
                       return (
-                        // <button key={index}>{item}</button>
                         <button
                           key={index}
                           onClick={handleClickCost}
@@ -321,7 +359,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
           </main>
           <footer className="fixed">
             <div className="gradient"></div>
-            { cities.length > 0 || cost.min ? 
+            { cities.length >0 || cost ? 
             <div className="selected-itmes">
                     <div className="delete-button">
                       <button type="button" className="delete" onClick={handleResetAll}>
@@ -340,7 +378,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
                         return(
                           <button className="item-btn font-md">
                             <span>{item}</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none" class="design_system_1mb4yfk4 design_system_1mb4yfk5">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none" class="design_system_1mb4yfk4 design_system_1mb4yfk5 city" onClick={handleReset}>
                               <path d="M9 1L1 9" stroke="currentColor" strokeWidth="0.75" strokeMiterlimit="10"></path>
                               <path d="M1 1L9 9" stroke="currentColor" strokeWidth="0.75" strokeMiterlimit="10"></path>
                             </svg>
@@ -348,8 +386,8 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
                         )
                       })}
                       { 
-                        cost.min >= 0 ? <button className="item-btn font-md"><span>{cost.min}원 ~ {cost.max}만원</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none" class="design_system_1mb4yfk4 design_system_1mb4yfk5">
+                        (cost && (cost.min || cost.max)) ? <button className="item-btn font-md"><span>{cost.min}원 ~ {cost.max}만원</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none" class="design_system_1mb4yfk4 design_system_1mb4yfk5 cost" onClick={handleReset}>
                           <path d="M9 1L1 9" stroke="currentColor" strokeWidth="0.75" strokeMiterlimit="10"></path>
                           <path d="M1 1L9 9" stroke="currentColor" strokeWidth="0.75" strokeMiterlimit="10"></path>
                         </svg>

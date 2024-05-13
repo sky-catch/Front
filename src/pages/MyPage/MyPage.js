@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { LoginState } from "../../States/LoginState";
-import { getRestaurant } from "../../respository/restaurant";
+import { getMyRestaurant } from "../../respository/userInfo";
 import { getOwner } from "../../respository/userInfo";
 
 /**
@@ -19,11 +19,8 @@ function MyPage() {
   const [follower, setFollower] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
-
   const [owner, setOwner] = useState([]);
-  // const owner = JSON.parse(sessionStorage.getItem("data")).usersDTO.owner;
-  const [isSave, setIsSave] =
-    useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
+  const [isSave, setIsSave] = useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
 
   /* Function : 프로필 수정 */
   const updateUserInfo = () => {
@@ -47,21 +44,16 @@ function MyPage() {
   };
 
   /* Function : 식당 정보 */
-  const getUserShop = () => {
-    // console.log("id", user.id);
-    getRestaurant(user.id).then((res) => {
+  const getMyShop = () => {
+    getMyRestaurant()
+    .then((res) => {
       console.log(res);
     });
   };
 
   useEffect(() => {
-    getRestaurant(user.id).then((res) => {});
-  });
-
-  useEffect(() => {
-    // 유저의 저장 레스토랑 정보 GET
-    getUserShop();
-  }, []);
+    getMyShop();
+  },[user]);
 
   const { data: getOwnerItem, isLoading } = useQuery({
     queryKey: ["getOwner"],
@@ -215,7 +207,7 @@ const MainContents = styled.div`
   padding-bottom: 48px;
   box-sizing: border-box;
   height: calc(100vh - 47px);
-  margin-top: 47px;
+  // margin-top: 47px;
 
   /* 개인프로필 */
   .mypage-profile .profile-pic .img {

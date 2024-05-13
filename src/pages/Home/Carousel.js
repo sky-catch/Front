@@ -73,5 +73,7 @@ const CarouselWrapper = styled.section`
   .carousels {
     width : 429.041px;
     margin-right : 8px;
+    border-radius : 8px;
+    overflow : hidden;
   }
 `;
