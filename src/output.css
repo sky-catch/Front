@@ -1214,12 +1214,12 @@ video {
   row-gap: 50px;
 }
 
-.gap-y-\[7px\] {
-  row-gap: 7px;
-}
-
 .gap-y-\[5px\] {
   row-gap: 5px;
+}
+
+.gap-y-\[7px\] {
+  row-gap: 7px;
 }
 
 .self-end {
@@ -1469,6 +1469,11 @@ video {
   padding-right: 30px;
 }
 
+.px-\[5px\] {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
 .px-\[7px\] {
   padding-left: 7px;
   padding-right: 7px;
@@ -1522,11 +1527,6 @@ video {
 .py-\[8px\] {
   padding-top: 8px;
   padding-bottom: 8px;
-}
-
-.px-\[5px\] {
-  padding-left: 5px;
-  padding-right: 5px;
 }
 
 .pb-32 {
@@ -1645,10 +1645,6 @@ video {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
-}
-
-.text-\[15px\] {
-  font-size: 15px;
 }
 
 .font-bold {
