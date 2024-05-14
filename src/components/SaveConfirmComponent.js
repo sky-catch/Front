@@ -4,7 +4,7 @@ import styled from "styled-components";
  * 식당 저장 완료창
  * @author jimin
  */
-const SaveConfirmComponent = ({isSave, toggleDrawer}) => {
+const SaveConfirmComponent = ({isSave, toggleSavedDrawer}) => {
     return(
         <div>
             <Drawer
@@ -13,7 +13,7 @@ const SaveConfirmComponent = ({isSave, toggleDrawer}) => {
                 className="drawer-box"
                 size="120px"
             >
-                <CloseBtn className="closeSaveModal" type="button" open={isSave} onClick={toggleDrawer}>
+                <CloseBtn className="closeSaveModal" type="button" open={isSave} onClick={toggleSavedDrawer}>
                     X
                 </CloseBtn>
                 <DrawerContents className="container">

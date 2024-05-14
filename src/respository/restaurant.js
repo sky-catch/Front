@@ -13,6 +13,7 @@ const token = sessionStorage.getItem("token");
 /* 식당 생성 */
 export const createRestaurant = async (data) => {
   try {
+   const result = await apiClient.post("/restaurants", data, {
     // console.log("data : ", data);
     /* 테스트를 위한 7번 사장님 사용자의 jwt token 하드코딩 */
     const token = sessionStorage.getItem("token");
@@ -69,11 +70,10 @@ export const getRestaurant = async (name) => {
 //나의 예약 조회
 export const GetReservationRes = async (visitStatus) => {
   console.log("visitStatus", visitStatus);
-
   try {
     const res = await apiClient.get(`/mydining/my/${visitStatus}`, {
       headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     return res;
@@ -84,10 +84,9 @@ export const GetReservationRes = async (visitStatus) => {
 
 /* 식당 저장 */
 export const saveRestaurant = async (restaurantId) => {
-  const token = sessionStorage.getItem("token");
   console.log("restaurantId :", restaurantId, "token : ", token);
   try {
-    const res = await apiClient.get(`/saveRestaurant/${restaurantId}`, {
+    const res = await apiClient.post(`/savedRestaurant/${restaurantId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -98,6 +98,9 @@ export default function ReserveForm() {
             .then((res)=>{
                 console.log(res);
             })
+            .catch((err)=> {
+                console.log(err);
+            })
         // 2. 나의 예약 화면으로 이동
         navigate('/mydining/my');
     }
@@ -151,9 +154,11 @@ export default function ReserveForm() {
             setIsReserveAble(false);
         }
         
-        console.log(state);
-        // console.log('isContinue',isContinue, 'setisREserveAble ', isReserveAble);
     },[isContinue])
+
+    useEffect(()=> {
+        console.log(state);
+    },[])
 
     const week = ['일','월','화','수','목','금','토'];
     return(
@@ -170,9 +175,9 @@ export default function ReserveForm() {
                         <div className="section-body">
                             <div className="summary-info mb-[10px]">
                                 <p className="plain-txt"> 
-                                    {week[detail.date.getDay()]} 
-                                    . {String(detail.date.getHours()).padStart(2, "0")}:
-                                        {String(detail.date.getMinutes()).padStart(2, "0")}  
+                                {String(detail.date.getMonth()+1).padStart(2,'0')}월
+                                {String(detail.date.getDate()).padStart(2,'0')}일 {week[detail.date.getDay()]} 
+                                    . {detail.time.substr(0,2) > 12 ? '오후' : '오전'} {`${detail.time.substr(0,2) % 12}:${detail.time.substr(3,4)}`}
                                     . {detail.people}명</p>
                             </div>
                         </div>
@@ -256,7 +261,7 @@ export default function ReserveForm() {
                                 <div>{String(detail.date.getMonth()+1).padStart(2,'0')}월
                                 {String(detail.date.getDate()).padStart(2,'0')}일
                                 ({week[detail.date.getDay()]}) 
-                                {String(detail.date.getHours()).padStart(2,'0')}:{String(detail.date.getMinutes()).padStart(2,'0')}</div>
+                                {detail.time.substr(0,2) > 12 ? '오후' : '오전'} {`${detail.time.substr(0,2) % 12}:${detail.time.substr(3,4)}`}</div>
                             </div>
                         </div>
                         { deposit ? <div className="reserve">
