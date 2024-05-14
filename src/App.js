@@ -27,29 +27,25 @@ function App() {
   const [search, setSearch] = useState({});
   const updateSearch = (param) => {
     setSearch(param);
-    // console.log(param);
-  };
+  }
 
-  // sessionStorage.clear();
-  // sessionStorage.setItem(
-  //   "token",
-  //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQzOTMyNzYsImV4cCI6MTcxNDQ3OTY3Nn0.r9izCr_GBklv5U4QJrNIsbGRLndl0Go5F4Mp5p5TF5y7H51ZwGfyunagEVjtrAllLHOHJsFGr24ZR_hlzOpLew`
-
-  // );
-  // sessionStorage.setItem(
-  //   "data",
-  //   JSON.stringify({
-  //     usersDTO: {
-  //       id: 0,
-  //       nickname: "string",
-  //       profileImageUrl: "string",
-  //       email: "string",
-  //       name: "string",
-  //       status: "ACTIVE",
-  //       owner: false,
-  //     },
-  //   })
-  // );
+  /* 카카오 로그인 구현 시 뜨는 에러로 인해 현재 sessionStorage에 임시저장하여 기능 구현중 */
+  sessionStorage.setItem(
+    "token",
+    'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTU4NzY0NiwiZXhwIjoxNzE1Njc0MDQ2fQ.bxxGYX-wiSIznfXg-mO8muPT3BofsOLym5J7VGicgSLU0k6vqphuOzurIcCyCQOc-KGjf-Zp7tnbP6kx4c8OBg'
+  );
+  sessionStorage.setItem(
+    "data",
+    JSON.stringify({
+        id: 7,
+        nickname: "front",
+        profileImageUrl: "front",
+        email: "front@front.com",
+        name: "front_name",
+        status: "ACTIVE",
+        owner: true,
+    })
+  );
 
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {

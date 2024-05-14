@@ -45,7 +45,6 @@ const Restaurants = () => {
   const onDetail = ({ name, id }) => {
     console.log("name : ", name);
     navigate(`/ct/shop/${name}`, { state: name });
-//     navigate(`/ct/shop/${name}?id=${id}`, { state: name });
   };
 
   return (
@@ -62,11 +61,13 @@ const Restaurants = () => {
             </a>
             <div className="detail">
               <a className="btn-bookmark"></a>
-              <h3 className="name">{item.name}</h3>
-              <div className="meta">
-                <span className="star">{item.meta.star}</span>
-                <span className="tags">{item.meta.tags}</span>
-              </div>
+              <a>
+                <h3 className="name">{item.name}</h3>
+                <div className="meta">
+                  <span className="star">{item.meta.star}</span>
+                  <span className="tags">{item.meta.tags}</span>
+                </div>
+              </a>
             </div>
           </div>
         );

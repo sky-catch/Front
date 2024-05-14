@@ -22,18 +22,18 @@ import RestaurantInfor from "./RestaurantInfor";
  * @author jimin
  */
 
-const shopImgItem = {
-  shopImg: [
-    {
-      id: 0,
-      url: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?detail750",
-    },
-    {
-      id: 1,
-      url: "https://ugc-images.catchtable.co.kr/admin/marketing/banner/images/3bf5d2c1564a46368375bae358767d3f",
-    },
-  ],
-};
+// const shopImgItem = {
+//   shopImg: [
+//     {
+//       id: 0,
+//       url: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?detail750",
+//     },
+//     {
+//       id: 1,
+//       url: "https://ugc-images.catchtable.co.kr/admin/marketing/banner/images/3bf5d2c1564a46368375bae358767d3f",
+//     },
+//   ],
+// };
 
 export default function Restaurant() {
   const [restaurant, setRestaurant] = useState();
@@ -47,24 +47,30 @@ export default function Restaurant() {
     useState(false); /* 예약 컨펌 모달창 오픈 */
 
   const [isSelect, setIsSelect] = useState(true);
+
+  /* 예약 관련 정보 */
   const [isReserve, setIsReserve] =
     useState(true); /* 탭 true : 예약, false : 웨이팅 */
+  const [reserveInfo, setReserveInfo] = useState();
+
   const { state } = useLocation();
-
   const [isContent, setIsContent] = useState("home");
-
   const navigate = useNavigate();
   const location = useLocation();
+
   const toggleDrawer = (e) => {
-    console.log(e.target.className);
+    console.log(e.target, reserveInfo);
 
     if (e.target.className.indexOf("closeSaveModal") != -1) {
       setIsSave((prevState) => !prevState);
     } else if (e.target.className.indexOf("confirm-close") != -1) {
       setIsConfirmOpen((prevState) => !prevState);
-    } else if (e.target.className.indexOf("close-modal-btn") != -1) {
+    // } else if (e.target.className.indexOf("close-modal-btn") != -1) {
+    //   setIsConfirmOpen((prevState) => !prevState);
+    } else if (e.target.className.indexOf('calendar-btn') > -1) {
       setIsConfirmOpen((prevState) => !prevState);
     }
+
     if (e.target.className.indexOf("closeSaveModal") == -1) {
       setIsOpen((prevState) => !prevState);
     } else {
@@ -137,9 +143,8 @@ export default function Restaurant() {
     if (!restaurant) {
       setRestaurantInfo(state);
     }
-    // console.log(restaurant.reviewAvg);
 
-    console.log(state);
+    // console.log(state);
     if (!restaurant) {
       setRestaurantInfo(state);
     }
@@ -149,12 +154,20 @@ export default function Restaurant() {
     <main className="pb-[74px]">
       {/* 1. 식당 이미지 */}
       <Section>
-        <Swiper>
-          {shopImgItem.shopImg.map((item, index) => {
+        <Swiper
+          className="slide-image-wrapper">
+          { restaurant && restaurant.images.length < 1 ? 
+           <SwiperSlide className="slide-none">
+            이미지가 없습니다.
+           </SwiperSlide>
+           : restaurant && restaurant.images.map((item, index) => {
+            console.log(item);
             return (
-              <SwiperSlide key={item.id}>
+              <SwiperSlide key={item.id}
+                className="slide-image-item slide-none"
+              >
                 <a>
-                  <img src={item.url}></img>
+                  <img width='100%' src={item.path}></img>
                 </a>
               </SwiperSlide>
             );
@@ -169,7 +182,7 @@ export default function Restaurant() {
       {/* 2. 식당 이름 및 메인 정보 */}
       {restaurant && (
         <Section>
-          <div className="container gutter-sm pt-[7px] pb-[7px]">
+          <div className="container gutter-sm pt-[24px] pb-[24px]">
             <div className="restaurant-summary">
               <span>{restaurant.category}</span>
               <h2>{restaurant.name}</h2>
@@ -286,6 +299,7 @@ export default function Restaurant() {
       <CalendarComponent
         isOpen={isOpen}
         restaurant={restaurant}
+        setReserveInfo={setReserveInfo}
         toggleDrawer={toggleDrawer}
       ></CalendarComponent>
 
@@ -300,13 +314,14 @@ export default function Restaurant() {
         toggleDrawer={toggleDrawer}
       ></SaveConfirmComponent>
 
-      <ConfirmReserve></ConfirmReserve>
+      {/* <ConfirmReserve></ConfirmReserve> */}
 
-      {/* <ConfirmReserve
+      <ConfirmReserve
         isConfirmOpen={isConfirmOpen}
         restaurant={restaurant}
+        reserveInfo={reserveInfo}
         toggleDrawer={toggleDrawer}
-      ></ConfirmReserve> */}
+      ></ConfirmReserve>
     </main>
   );
 }

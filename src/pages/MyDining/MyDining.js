@@ -7,6 +7,8 @@ import styled from "styled-components";
 import Visitcomponent from "../../components/Visitcomponent";
 import { GetReservationRes } from "../../respository/restaurant";
 import RecommendPage from "./RecommendPage";
+import {getMyReserve} from "../../respository/reservation"
+
 const stateList = [
   {
     id: "PLANNED",
@@ -144,6 +146,8 @@ export default function MyDining() {
     } else {
       setLoginState(true);
     }
+
+    getMyReserve('PLANNED');
   }, [loginState]);
 
   const itemClick = (index) => {
