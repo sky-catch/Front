@@ -803,6 +803,10 @@ video {
   margin-top: 30px;
 }
 
+.mt-\[48px\] {
+  margin-top: 48px;
+}
+
 .mt-\[5px\] {
   margin-top: 5px;
 }
@@ -817,10 +821,6 @@ video {
 
 .mt-\[80px\] {
   margin-top: 80px;
-}
-
-.mt-\[48px\] {
-  margin-top: 48px;
 }
 
 .box-border {
@@ -1117,7 +1117,6 @@ video {
   justify-content: flex-start;
 }
 
-
 .justify-end {
   justify-content: flex-end;
 }
@@ -1182,16 +1181,12 @@ video {
   row-gap: 20px;
 }
 
-.gap-y-\[7px\] {
-  row-gap: 7px;
-}
-
 .gap-y-\[50px\] {
   row-gap: 50px;
 }
 
-.gap-y-\[30px\] {
-  row-gap: 30px;
+.gap-y-\[7px\] {
+  row-gap: 7px;
 }
 
 .overflow-auto {
@@ -1403,10 +1398,6 @@ video {
 
 .bg-no-repeat {
   background-repeat: no-repeat;
-}
-
-.object-cover {
-  object-fit: cover;
 }
 
 .p-\[30px\] {
@@ -2494,7 +2485,6 @@ header {
   background-image: url("./assets/icons/icon-addition.png");
 }
 
-
 .scroll-hide {
   -ms-overflow-style: none;
 }
@@ -2517,7 +2507,7 @@ header {
   background-image: url("/src/assets/icons/back.svg");
   /* background-image: url(http://localhost:3000/static/media/setting.840429f….webp); */
 }
-=======
+
 .main, #main {
   padding-top : 47px;
 }
@@ -3088,4 +3078,3 @@ header .keyword-search .btn-delete {
 .custom-tap {
   width : 100% !important;
 }
-
