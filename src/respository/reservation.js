@@ -23,11 +23,17 @@ const FormData = require("form-data");
 //     console.log("Error >>", err.message);
 //   }
 // };
-const checkReservationTimes = (isdata) => {
+const token = sessionStorage.getItem("token");
+
+export const checkReservationTimes = async (isdata) => {
   if (isdata.numberOfPeople === 0) return;
-  const result = axios.post(
+  const result = await axios.post(
     "http://15.164.89.177:8080/reservations/availTimeSlots",
-    isdata
+    isdata, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   );
   console.log(result);
   return result;
@@ -133,7 +139,7 @@ export const getChatRoom = async (chatRoomId) => {
 };
 // 예약 생성
 export const createReservation = async (restaurantId, restaurantValue) => {
-  const token = localStorage.getItem("token");
+  console.log(restaurantValue);
   if (!token) {
     console.error("Token is not available");
     return; // 예외 처리: 토큰이 없을 경우 바로 반환

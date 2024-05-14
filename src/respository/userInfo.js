@@ -7,6 +7,9 @@ import apiClient from "../apis/ApiClient";
  *
  * @author jimin
  */
+
+const token = sessionStorage.getItem('token');
+
 // 로그인 사용자 로그인 처리
 export const getLogin = async (code) => {
   try {
@@ -24,28 +27,14 @@ export const getLogin = async (code) => {
 };
 
 // 마이페이지 회원 정보 조회
-export const getMyMain = async () => {
+export const getUserInfo = async () => {
   try {
     const result = await apiClient.get(`/member/myMain`, {
       headers: {
-        // accept: "*/*",
-        // "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     return result;
-  } catch (err) {
-    console.log("Error >>", err);
-  }
-};
-
-/* 저장된 레스토랑 정보 불러오기 */
-export const getSavedRestaurants = async (name) => {
-  try {
-    // const result = await apiClient.post("", data, {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   });
   } catch (err) {
     console.log("Error >>", err);
   }

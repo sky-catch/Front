@@ -11,7 +11,7 @@ import { searchByKeyword } from "../respository/search.js";
 const Header = ({ setSearch, updateSearch }) => {
   const [searchRes, setSearchRes] = useState({}); // 검색결과
   const location = useLocation().pathname;
-  const shopName = useLocation().state;
+  const state = useLocation().state;
   const navigate = new useNavigate();
   const searchInput = useRef();
 
@@ -39,8 +39,13 @@ const Header = ({ setSearch, updateSearch }) => {
 
   const onClickMove = (param) => {
     var name = "";
+    console.log(param);
     if (param == "/") {
       name = "/search/total";
+    } else if (param == 'mypage') {
+      name = "/my";
+    } else if (param== 'home') {
+      name = "/";
     }
     navigate(name);
   };
@@ -64,7 +69,7 @@ const Header = ({ setSearch, updateSearch }) => {
               ></input>
             </form>
             <div className="header-right flex">
-              <a className="w-[30px] h-[30px] bg-bookmark bg-[30px] bg-no-repeat ml-[8px]"></a>
+              <a className="w-[30px] h-[30px] bg-bookmark bg-[30px] bg-no-repeat ml-[8px]" onClick={(e)=>{onClickMove('mypage', e)}}></a>
               <button className="w-[30px] h-[30px] bg-alert bg-[30px] bg-no-repeat ml-[8px]"></button>
             </div>
           </div>
@@ -77,7 +82,7 @@ const Header = ({ setSearch, updateSearch }) => {
               <a className="tohome header-icon">홈</a>
             </div>
             <div className="header-right flex gap-[12px]">
-              <button className="bookmark header-icon">저장</button>
+              {/* <button className="bookmark header-icon">저장</button> */}
               <a className="share header-icon">공유</a>
             </div>
           </div>
@@ -258,7 +263,7 @@ const Header = ({ setSearch, updateSearch }) => {
                 onClick={onClickBack}
               ></a>
               <span className=" absolute left-0 right-0 text-[20px] text-center font-semibold">
-                {shopName.name}
+                {state ? JSON.parse(state).name : ''}
               </span>
             </div>
           </div>
@@ -318,7 +323,7 @@ const Header = ({ setSearch, updateSearch }) => {
                   <button className="back-b header-icon" onClick={onClickBack}>
                     뒤로
                   </button>
-                  <h1>{shopName}</h1>
+                  <h1>{state ? JSON.parse(state).name : ''}</h1>
                 </div>
                 <div className="header-right flex gap-[12px]">
                   <a className="share-b header-icon">공유</a>
@@ -332,10 +337,10 @@ const Header = ({ setSearch, updateSearch }) => {
                   <a className="back-w header-icon" onClick={onClickBack}>
                     뒤로
                   </a>
-                  <a className="tohome header-icon">홈</a>
+                  <a className="tohome header-icon" onClick={(e)=>onClickMove('home',e)}>홈</a>
                 </div>
                 <div className="header-right flex gap-[12px]">
-                  <button className="bookmark header-icon">저장</button>
+                  {/* <button className="bookmark header-icon">저장</button> */}
                   <a className="share header-icon">공유</a>
                 </div>
               </div>

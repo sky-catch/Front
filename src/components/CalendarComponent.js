@@ -26,7 +26,7 @@ function SetDateYMD(isDate) {
     String(isDate.getDate()).padStart(2, "0")
   );
 }
-const CalendarComponent = ({ isOpen, toggleDrawer, setReserveInfo, restaurant }) => {
+const CalendarComponent = ({ isOpen, toggleDrawer, setReserveInfo, restaurant, timeSlots }) => {
   const location = useLocation();
   const [date, setDate] = useState(new Date());
 
@@ -46,6 +46,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer, setReserveInfo, restaurant })
   const [activeStartDate, setActiveStartDate] = useState(new Date());
   const visitTimeHours = String(new Date().getHours()).padStart(2, "0");
   const visitTimeMinutes = String(new Date().getMinutes()).padStart(2, "0");
+
 
   /* 방문확인 모달추가 */
   const handleReserve = (e) => {
@@ -173,13 +174,13 @@ const CalendarComponent = ({ isOpen, toggleDrawer, setReserveInfo, restaurant })
                       
                       // 240508 예약화면으로 이동 -> 원래는 시간 선택시 이동해야함 (테스트용)
                       // 예약정보넘기기
-                      setReserveInfo({
-                        date : date,
-                        people : 2
-                      });
-                      toggleDrawer(e);
+                      // setReserveInfo({
+                      //   date : date,
+                      //   people : 2
+                      // });
+                      // toggleDrawer(e);
                     }}
-                    className={`calendar-btn block size-[48px] rounded-[50%] text-center leading-[48px] font-light text-[14px] ${
+                    className={`block size-[48px] rounded-[50%] text-center leading-[48px] font-light text-[14px] ${
                       item === isData.numberOfPeople
                         ? `bg-[#ff3d00] text-[#fff]`
                         : `text-[#aaa] border-[1px] border-[#aaa]`
@@ -195,7 +196,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer, setReserveInfo, restaurant })
         </Swiper>
 
         {/* 시간 */}
-        {isTimes && isTimes.data.timeSlots.length > 0 ? (
+        {timeSlots && timeSlots.length > 0 ? (
           <Swiper
             className=" pl-[20px] py-[15px]"
             spaceBetween={7}
@@ -203,16 +204,24 @@ const CalendarComponent = ({ isOpen, toggleDrawer, setReserveInfo, restaurant })
             onSlideChange={() => console.log("slide change")}
             onSwiper={(swiper) => console.log(swiper)}
           >
-            {isTimes &&
-              isTimes.data.timeSlots.map((item, index) => {
+            {timeSlots &&
+              timeSlots.map((item, index) => {
                 return (
                   <SwiperSlide
                     key={index}
                     onClick={(e) => {
-                      e.preventDefault();
-                      createTest(item);
+                        e.preventDefault();
+                        
+                        // 240508 예약화면으로 이동 -> 원래는 시간 선택시 이동해야함 (테스트용)
+                        // 예약정보넘기기
+                        setReserveInfo({
+                          date : date,
+                          time : item.time,
+                          people : isData.numberOfPeople
+                        });
+                        toggleDrawer(e);
                     }}
-                    className=" min-w-[70px] h-[38px] rounded-[6px]  text-[#333] border-[rgb(170 170 170)] border-[1px] w-fit text-[13px] text-center leading-[38px]"
+                    className="calendar-btn min-w-[70px] h-[38px] rounded-[6px]  text-[#333] border-[rgb(170 170 170)] border-[1px] w-fit text-[13px] text-center leading-[38px]"
                   >
                     {item.time.slice(0, 2) < 13
                       ? `오전 ${item.time.slice(0, 2)}`

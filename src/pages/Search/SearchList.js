@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import FilterDrawer from "../../components/FilterDrawer.js";
+import FilterDrawer from "../../components/Modal/FilterDrawer.js";
 import { FaStar } from "react-icons/fa";
 
 /**

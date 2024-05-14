@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import arrow_d from "../../assets/icons/arrow-down-red.svg";
 import calendar from "../../assets/icons/calendar.svg";
 import search_g from "../../assets/icons/search-gray.svg";
-import FilterDrawer from "../../components/FilterDrawer.js";
+import FilterDrawer from "../../components/Modal/FilterDrawer.js";
 import Restaurants_sm from "../../components/Restaurants-sm.js";
 import { searchByFilter } from "../../respository/search.js";
 import CalendarComponent from "../../components/CalendarComponent";
@@ -54,9 +54,9 @@ export default function Search() {
 
   /* 필터 검색하기 */
   const handleSearch = (e) => {
-
-    const cost = filterInfo.cost;
-    const cityList = filterInfo.cities;
+    console.log(filterInfo);
+    const cost = filterInfo ? filterInfo.cost : filterInfo;
+    const cityList = filterInfo ? filterInfo.cities : filterInfo;
 
     const formatDate =
       date.getFullYear() +

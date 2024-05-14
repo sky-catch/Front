@@ -14,6 +14,7 @@ export const LoginState = atom({
     nickname: "",
     introduce: "",
     isOwner: false,
+    isSaved : false,
     shop: {
       name: "",
       category: "",

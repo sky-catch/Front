@@ -23,7 +23,7 @@ export default function ReviewItem({info}) {
             <Contents>
                 <div className="__header">
                     <div className="__user-info flex">
-                        <a className="profile">
+                        <a className="profile flex">
                             <div className="profile-pic"><img src="https://app.catchtable.co.kr/public/img/noimg/profile_default_v2.png"></img></div>
                             <h4 className="name usename"><span className="txt">{reviewEach ? reviewEach.nickname:""}</span></h4>
                         </a>

@@ -66,8 +66,6 @@ const Navbar = () => {
         nickname: obj.nickname,
         isOwner : obj.isOwner,
       }))
-
-      // console.log(obj);
       
   }, [location]);
 
