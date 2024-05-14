@@ -3,14 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { LoginState } from "../../States/LoginState";
-import { getMyRestaurant } from "../../respository/userInfo";
-import { getOwner } from "../../respository/userInfo";
 import { FaStar } from "react-icons/fa";
-import { getUserInfo } from "../../respository/userInfo";
 import { LoginState, RestaurantState } from "../../States/LoginState";
 import {
-  getMyMain,
+  getUserInfo,
   getMyRestaurant,
   getOwner,
 } from "../../respository/userInfo";
@@ -66,7 +62,7 @@ function MyPage() {
   };
 
   useEffect(() => {
-    getMyMain()
+    getUserInfo()
       .then((res) => {
         console.log("res", res);
         setIsOwner(res.data.owner);
@@ -76,9 +72,6 @@ function MyPage() {
       });
     // getUserShop();
   }, []);
-
-  // //  getMyShop();
-  // },[user]);
 
   // 내 식당 관리 페이지
   const {
@@ -132,6 +125,7 @@ function MyPage() {
         ...getRestaurantItem,
       }));
     }
+  }
   }, [getRestaurantItem, isOwner]);
 
   console.log(user);

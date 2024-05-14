@@ -47,6 +47,8 @@ export const LoginState = atom({
       ],
       days: {
         days: ["MONDAY", "TUESDAY"],
+      },
+    },
     businessRegistrationNumber: "",
     createdDate: "",
     email: "",
