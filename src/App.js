@@ -31,24 +31,24 @@ function App() {
     // console.log(param);
   };
 
-  sessionStorage.setItem(
-    "token",
-    `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN1cGVyc3V0ZTE0MkBnbWFpbC5jb20iLCJpc093bmVyIjp0cnVlLCJpYXQiOjE3MTUxODY2NTEsImV4cCI6MTcxNTI3MzA1MX0.iyMM6k7xZJvqS2s-iLrHl8n-zn4S9hAqz5KiNz83S3y-s0N4dZWFSQ7yPHf_auOGpK8-DunQtOBWL9qSb3YkjQ`
-  );
-  sessionStorage.setItem(
-    "data",
-    JSON.stringify({
-      usersDTO: {
-        id: 0,
-        nickname: "string",
-        profileImageUrl: "string",
-        email: "string",
-        name: "string",
-        status: "ACTIVE",
-        owner: false,
-      },
-    })
-  );
+  // sessionStorage.setItem(
+  //   "token",
+  //   `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTU2NjMxNTMsImV4cCI6MTcxNTc0OTU1M30.sDrmLVLugKxo6PStcTg4j9t_OCMEy5gwZ__PS96n0TkyfVfa6nFB_7pGGWtCjU9tGQH-6sK9XjVDUEB73Z-rXw`
+  // );
+  // sessionStorage.setItem(
+  //   "data",
+  //   JSON.stringify({
+  //     usersDTO: {
+  //       id: 0,
+  //       nickname: "string",
+  //       profileImageUrl: "string",
+  //       email: "string",
+  //       name: "string",
+  //       status: "ACTIVE",
+  //       owner: false,
+  //     },
+  //   })
+  // );
 
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
@@ -75,7 +75,7 @@ function App() {
           <Route path="my" element={<MyPage />} />
           <Route path="my/myProfileInfo" element={<MyProfileInfo />} />
           <Route path="my/myshop" element={<RestaurantSetting />} />
-          <Route path="my/myshop/edit" element={<RestaurantInfo />} />
+          <Route path="my/myshop/edit/:text" element={<RestaurantInfo />} />
           <Route
             path="/oauth/redirected/kakao"
             element={<KakoRedirectPage />}

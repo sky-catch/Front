@@ -94,6 +94,8 @@ function MyPage() {
       return getMyRestaurant()
         .then((res) => {
           console.log("res", res);
+          // sessionStorage.removeItem("loginStorage");
+          // sessionStorage.removeItem("LoginState");
           // setIsRestaurant(true);
           return res;
         })
@@ -108,6 +110,8 @@ function MyPage() {
     queryFn: () => {
       return getOwner()
         .then((res) => {
+          // sessionStorage.removeItem("loginStorage");
+          // sessionStorage.removeItem("LoginState");
           // console.log("res", res);
           return res;
         })
@@ -118,11 +122,14 @@ function MyPage() {
   });
 
   useEffect(() => {
-    if (getRestaurantItem && isOwner) {
-      setIsRestaurant(true);
+    if (isOwner) {
       setUser((prevUser) => ({
         ...getOwnerItem,
       }));
+    }
+    if (getRestaurantItem) {
+      console.log("정보가 있을때");
+      setIsRestaurant(true);
 
       setRestaurant((prevUser) => ({
         ...getRestaurantItem,
@@ -139,14 +146,14 @@ function MyPage() {
   };
 
   const createRestaurant = () => {
-    navigate(`/my/myshop/edit`);
+    navigate(`/my/myshop/edit/:add`);
   };
 
-  // console.log("isOwner", isOwner);
-  console.log("user", user);
+  // console.log("restaurant", restaurant);
+  // console.log("user", user);
   console.log("getOwnerItem", getOwnerItem);
-  console.log("isRestaurant", isRestaurant);
-  console.log("restaurant", restaurant);
+  // console.log("isRestaurant", isRestaurant);
+  // console.log("isOwner", isOwner);
   console.log("getRestaurantItem", getRestaurantItem);
 
   return (

@@ -57,7 +57,7 @@ const Navbar = () => {
         location === "/chat" ||
         location === "/my/myshop" ||
         location === "/owner" ||
-        location === "/my/myshop/edit" ||
+        location.indexOf("my/myshop/edit") > 0 ||
         location === "/my/myshop/notifications" ||
         location === "/paymentpage"
           ? " hidden"

@@ -1218,6 +1218,14 @@ video {
   row-gap: 7px;
 }
 
+.gap-y-\[5px\] {
+  row-gap: 5px;
+}
+
+.self-end {
+  align-self: flex-end;
+}
+
 .overflow-auto {
   overflow: auto;
 }
@@ -1516,6 +1524,11 @@ video {
   padding-bottom: 8px;
 }
 
+.px-\[5px\] {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
 .pb-32 {
   padding-bottom: 8rem;
 }
@@ -1632,6 +1645,10 @@ video {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-\[15px\] {
+  font-size: 15px;
 }
 
 .font-bold {

@@ -224,3 +224,32 @@ export const CreateReview = () => {
     },
   });
 };
+//예약들 노쇼로 바꾸는 기능
+const changeReservationsItem = async (noShowIds) => {
+  const token = sessionStorage.getItem("token");
+
+  return axios.patch(
+    `http://15.164.89.177:8080/owner/reservations`,
+    noShowIds,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+export const ChangeReservations = () => {
+  return useMutation({
+    mutationKey: ["changeReservationsItem"],
+    mutationFn: changeReservationsItem,
+    onSuccess: (data) => {
+      console.log("createPost success", data);
+      alert("상태 변경이 완료됐습니다.");
+      // window.location.reload();
+    },
+    onError: (error) => {
+      console.log("createPost error", error);
+    },
+  });
+};

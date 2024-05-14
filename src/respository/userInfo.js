@@ -195,7 +195,6 @@ export const UpdateCommentReq = () => {
   });
 };
 // 댓글 삭제 Delete
-
 export const DeleteComment = (id) => {
   console.log(id);
   const token = sessionStorage.getItem("token");
@@ -209,7 +208,17 @@ export const DeleteComment = (id) => {
     }
   );
 };
-
+// 식당 예약 보기
+export const getReservation = async () => {
+  const token = sessionStorage.getItem("token");
+  return axios
+    .get(`http://15.164.89.177:8080/owner/reservation`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
 // export const DeleteCommentReq = () => {
 //   return useMutation({
 //     mutationFn: deleteComment,

@@ -26,15 +26,6 @@ const Notifications = () => {
   useEffect(() => {
     console.log(restaurant);
     setIsNotificat(restaurant.notifications);
-    // getMyRestaurant()
-    //   .then((res) => {
-    //     console.log("res", res);
-    //     setIsNotificat(res.notifications);
-    //     setIsRestaurant(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log("err", err);
-    //   });
   }, []);
   const setDeadline = (date) => {
     const now = new Date();

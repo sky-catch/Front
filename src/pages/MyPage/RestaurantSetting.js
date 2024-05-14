@@ -1,13 +1,38 @@
 // import { useEffect } from "react";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Drawer from "react-modern-drawer";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { CreateCommentReq, DeleteComment } from "../../respository/userInfo";
+import { RestaurantState } from "../../States/LoginState";
+import { ChangeReservations } from "../../respository/reservation";
+import {
+  CreateCommentReq,
+  DeleteComment,
+  getReservation,
+} from "../../respository/userInfo";
 // import { createRestaurant } from "../../respository/restaurant";
-import { UpdateCommentReq, getMyRestaurant } from "../../respository/userInfo";
+import { UpdateCommentReq } from "../../respository/userInfo";
 export default function Restaurantsetting() {
+  const user = useRecoilValue(RestaurantState);
+  const { mutate: changeStatus } = ChangeReservations();
+  const { data: reservationItems, isLoading } = useQuery({
+    queryKey: ["reservation"],
+    queryFn: () => {
+      return getReservation()
+        .then((res) => {
+          console.log("res", res);
+          return res;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  });
   const [isOpen, setIsOpen] = useState(false);
   const [isCreate, setIsCreate] = useState(false);
   const [isSelect, setIsSelect] = useState(true);
@@ -42,7 +67,17 @@ export default function Restaurantsetting() {
     alert("작상한 내용이 저장되지 않습니다.");
     textInput.current.value = "";
   };
+  const [status, setStatus] = useState("");
 
+  const handleChange = (event, idNumber) => {
+    setStatus(event.target.value);
+    console.log(status);
+    console.log(idNumber);
+    let noShowIdArray = new Array();
+    noShowIdArray[0] = idNumber;
+    console.log(noShowIdArray);
+    changeStatus(noShowIdArray);
+  };
   /* Tap 선택 */
   const menuClick = (e, index) => {
     if (index === 0) {
@@ -62,35 +97,10 @@ export default function Restaurantsetting() {
     //     console.log(err);
     //   });
   };
-  // useEffect(() => {
-  //   getMyRestaurant()
-  //     .then((res) => {
-  //       console.log(res);
+  useEffect(() => {
+    // console.log("reservationItems", reservationItems.list.length);
+  }, []);
 
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
-  // 내 식당 관리 페이지
-  const { data, isLoading } = useQuery({
-    queryKey: ["getMyRestaurant"],
-    queryFn: () => {
-      return getMyRestaurant()
-        .then((res) => {
-          console.log("res", res);
-          return res;
-        })
-        .catch((err) => {
-          console.log("err", err);
-        });
-    },
-  });
-
-  if (isLoading) {
-    return <div className="">...isLoading</div>;
-  }
   //댓글 수정
   const commentEdit = (index, time) => {
     setIsCommentId({ index: index, time: time });
@@ -133,7 +143,9 @@ export default function Restaurantsetting() {
     };
     updateComment(commentItems);
   };
-
+  if (isLoading) {
+    return <div>...isLoading</div>;
+  }
   return (
     <MainContents>
       <ul className="tab-menu sticky top-[0px] mb-[10px] bg-white">
@@ -158,13 +170,85 @@ export default function Restaurantsetting() {
       </ul>
       {isSave ? (
         <div className="collection">
-          <div className=" container"></div>
+          {reservationItems && reservationItems.list.length > 0 ? (
+            <div className=" container">
+              {reservationItems.list.map((item, index) => {
+                return (
+                  <div
+                    className="py-[10px] flex flex-col gap-y-[5px] border-b-[#c1c1c1] border-b-[1px]"
+                    key={index}
+                  >
+                    <div className="self-end">
+                      <span
+                        className={`text-[12px] px-[5px] py-[3px] ${
+                          item.status !== "PLANNED" &&
+                          "w-fit rounded-full border border-[#d5d5d5]"
+                        } `}
+                      >
+                        {item.status === "CANCEL" ? (
+                          "방문 취소"
+                        ) : item.status === "PLANNED" ? (
+                          <FormControl
+                            sx={{ minWidth: 100, minHeight: 30 }}
+                            size="small"
+                          >
+                            <Select
+                              value={status}
+                              onChange={(e) => {
+                                handleChange(e, item.reservationId);
+                              }}
+                              displayEmpty
+                              style={{ height: 30 }}
+                            >
+                              <MenuItem value="">
+                                <em>방문 예정</em>
+                              </MenuItem>
+                              <MenuItem value={"CANCEL"}>노쇼/취소</MenuItem>
+                            </Select>
+                          </FormControl>
+                        ) : (
+                          "방문 완료"
+                        )}
+                      </span>
+                    </div>
+                    <span className="text-[14px] text-[#2c2c2c]">
+                      예약자 :
+                      <em className="">
+                        {item.memberName.replace(
+                          item.memberName.slice(1, item.memberName.length - 1),
+                          "*"
+                        )}
+                      </em>
+                    </span>
+                    <span className="text-[14px] text-[#2c2c2c]">
+                      메모 : <em className="">{item.memo}</em>
+                    </span>
+                    <span className="text-[14px] text-[#2c2c2c]">
+                      예약 날짜 :<em className="">{item.time.split("T")[0]}</em>
+                    </span>
+                    <span className="text-[14px] text-[#2c2c2c]">
+                      예약 시간 :{" "}
+                      <em className="">
+                        {item.time.split("T")[1].slice(0, 5)}
+                      </em>
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="h-[500px] w-[100%]  flex items-center justify-center ">
+              <span className=" text-[#c8c8c8] text-[16px] text-bold ">
+                예약된 식당이 없습니다.
+              </span>
+            </div>
+          )}
         </div>
       ) : (
         <div className="review pb-[20px]">
-          {data && data.reviewComments.length > 0 ? (
+          {user && user.reviewComments.length > 0 ? (
             <div className=" container">
-              {data.reviewComments.map((item, index) => {
+              {user.reviewComments.map((item, index) => {
                 return (
                   <div
                     key={index}
@@ -199,11 +283,11 @@ export default function Restaurantsetting() {
                     {item.commentContent !== null && (
                       <div className=" flex justify-between items-start mb-[12px]">
                         <div className="size-[50px] rounded-full overflow-hidden bg-slate-400">
-                          {console.log("item", data.images[0].path)}
+                          {console.log("item", user.images[0].path)}
                           <img
                             className="rounded-full"
-                            src={data.images[0].path}
-                            alt={data.images[0].path}
+                            src={user.images[0].path}
+                            alt={user.images[0].path}
                           />
                         </div>
                         <div className="p-[7px] w-[calc(100%-60px)] rounded-lg bg-[#f4f4f4] text-[#2c2c2c] text-[14px] min-h-[80px] max-h-[120px] overflow-auto scroll-hide">

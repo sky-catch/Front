@@ -55,7 +55,7 @@ const Header = ({ setSearch, updateSearch }) => {
   };
 
   const onEditRestaurant = () => {
-    navigate("/my/myshop/edit");
+    navigate("/my/myshop/edit/:update");
   };
 
   const onClickMove = (param) => {
@@ -105,7 +105,6 @@ const Header = ({ setSearch, updateSearch }) => {
             </div>
           </div>
         );
-
       case "/search":
         return (
           <div className="">
@@ -238,17 +237,6 @@ const Header = ({ setSearch, updateSearch }) => {
             </div>
           </div>
         );
-      case "/my/myshop/edit":
-        return (
-          <div className="header-wrapper flex px-[20px]">
-            <div className="header-left items-center flex gap-[12px]">
-              <a className="header-back-black" onClick={onClickBack}></a>
-              <a className="text-xl h-[47px] leading-[47px] font-bold">
-                식당 정보
-              </a>
-            </div>
-          </div>
-        );
       case "/my/myshop/notifications":
         return (
           <div className="header-wrapper flex px-[20px]">
@@ -316,7 +304,6 @@ const Header = ({ setSearch, updateSearch }) => {
             </div>
           </div>
         );
-
       case "/ct/shop/reservation/form":
         return (
           <div className="header-wrapper flex px-[20px]">
@@ -348,7 +335,6 @@ const Header = ({ setSearch, updateSearch }) => {
         );
       default:
         /* 레스토랑 상세 정보 */
-
         if (location.indexOf("/ct/shop") != -1) {
           if (location.indexOf("/reviewList") != -1) {
             return (
@@ -380,6 +366,19 @@ const Header = ({ setSearch, updateSearch }) => {
               </div>
             );
           }
+        }
+
+        if (location.indexOf("my/myshop/edit") > 0) {
+          return (
+            <div className="header-wrapper flex px-[20px]">
+              <div className="header-left items-center flex gap-[12px]">
+                <a className="header-back-black" onClick={onClickBack}></a>
+                <a className="text-xl h-[47px] leading-[47px] font-bold">
+                  식당 정보
+                </a>
+              </div>
+            </div>
+          );
         }
         break;
     }
