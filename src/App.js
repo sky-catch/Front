@@ -13,6 +13,7 @@ import KakoRedirectPage from "./pages/MyPage/KakoRedirectPage.js";
 import Login from "./pages/MyPage/Login.js";
 import MyPage from "./pages/MyPage/MyPage.js";
 import MyProfileInfo from "./pages/MyPage/MyProfileInfo.js";
+import Notifications from "./pages/MyPage/Notifications.js";
 import Owner from "./pages/MyPage/Owner.js";
 import RestaurantInfo from "./pages/MyPage/RestaurantInfo.js";
 import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
@@ -29,10 +30,12 @@ function App() {
     setSearch(param);
   };
 
+
   /* 카카오 로그인 구현 시 뜨는 에러로 인해 현재 sessionStorage에 임시저장하여 기능 구현중 */
   // sessionStorage.setItem(
   //   "token",
   //   'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTU4NzY0NiwiZXhwIjoxNzE1Njc0MDQ2fQ.bxxGYX-wiSIznfXg-mO8muPT3BofsOLym5J7VGicgSLU0k6vqphuOzurIcCyCQOc-KGjf-Zp7tnbP6kx4c8OBg'
+
   // );
   // sessionStorage.setItem(
   //   "data",
@@ -72,7 +75,7 @@ function App() {
           <Route path="my" element={<MyPage />} />
           <Route path="my/myProfileInfo" element={<MyProfileInfo />} />
           <Route path="my/myshop" element={<RestaurantSetting />} />
-          <Route path="my/myshop/edit" element={<RestaurantInfo />} />
+          <Route path="my/myshop/edit/:text" element={<RestaurantInfo />} />
           <Route
             path="/oauth/redirected/kakao"
             element={<KakoRedirectPage />}
@@ -90,6 +93,10 @@ function App() {
           <Route path="/ct/my" element={<RestaurantSetting />} />
           <Route path={`/chat`} element={<ChatRoom />} />
           <Route path="/owner" element={<Owner />}></Route>
+          <Route
+            path="/my/myshop/notifications"
+            element={<Notifications />}
+          ></Route>
         </Routes>
         <Navbar />
       </RecoilRoot>

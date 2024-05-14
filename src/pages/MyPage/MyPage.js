@@ -3,9 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { LoginState } from "../../States/LoginState";
-import { getMyRestaurant } from "../../respository/userInfo";
-import { getOwner } from "../../respository/userInfo";
+import { LoginState, RestaurantState } from "../../States/LoginState";
+import { getRestaurant } from "../../respository/restaurant";
+import {
+  getMyMain,
+  getMyRestaurant,
+  getOwner,
+} from "../../respository/userInfo";
 
 /**
  * 마이페이지
@@ -14,11 +18,15 @@ import { getOwner } from "../../respository/userInfo";
 
 function MyPage() {
   const navigate = useNavigate();
-  const user = useRecoilValue(LoginState);
+
+  const [user, setUser] = useRecoilState(LoginState);
+  const [restaurant, setRestaurant] = useRecoilState(RestaurantState);
+
   const [following, setFollowing] = useState(0);
   const [follower, setFollower] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
+  const [isRestaurant, setIsRestaurant] = useState(false);
   const [owner, setOwner] = useState([]);
   const [isSave, setIsSave] = useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
 
@@ -26,6 +34,8 @@ function MyPage() {
   const updateUserInfo = () => {
     navigate("/my/myProfileInfo");
   };
+
+  /* Function : 식당 정보 관리 */
 
   // 사장 생성
   const createOwner = () => {
@@ -52,36 +62,94 @@ function MyPage() {
   };
 
   useEffect(() => {
-    getMyShop();
+    getMyMain()
+      .then((res) => {
+        console.log("res", res);
+        setIsOwner(res.data.owner);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+    getUserShop();
+  }, []);
+
+  //  getMyShop();
   },[user]);
 
-  const { data: getOwnerItem, isLoading } = useQuery({
+
+  // 내 식당 관리 페이지
+  const {
+    data: getRestaurantItem,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["getMyRestaurant"],
+    queryFn: () => {
+      return getMyRestaurant()
+        .then((res) => {
+          console.log("res", res);
+          // sessionStorage.removeItem("loginStorage");
+          // sessionStorage.removeItem("LoginState");
+          // setIsRestaurant(true);
+          return res;
+        })
+        .catch((err) => {
+          console.log("err1", err.response);
+        });
+    },
+  });
+
+  const { data: getOwnerItem } = useQuery({
     queryKey: ["getOwner"],
     queryFn: () => {
       return getOwner()
         .then((res) => {
-          console.log("res", res);
+          // sessionStorage.removeItem("loginStorage");
+          // sessionStorage.removeItem("LoginState");
+          // console.log("res", res);
           return res;
         })
         .catch((err) => {
-          console.log("err", err);
+          console.log("err2", err);
         });
     },
   });
 
   useEffect(() => {
-    if (getOwnerItem && getOwnerItem.ownerId !== null) {
-      setIsOwner(true);
+    if (isOwner) {
+      setUser((prevUser) => ({
+        ...getOwnerItem,
+      }));
     }
-  }, [getOwnerItem]);
+    if (getRestaurantItem) {
+      console.log("정보가 있을때");
+      setIsRestaurant(true);
 
-  if (isLoading) {
-    return <></>;
-  }
+      setRestaurant((prevUser) => ({
+        ...getRestaurantItem,
+      }));
+
+      // TODO : 데이터 넣어야됨 (식당 정보가 있을때) - recoil
+    }
+  }, [getRestaurantItem, isOwner]);
+
+  console.log(user);
   /* Function : 식당 정보 관리 */
-  const createRestaurant = () => {
+  const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
   };
+
+  const createRestaurant = () => {
+    navigate(`/my/myshop/edit/:add`);
+  };
+
+  // console.log("restaurant", restaurant);
+  // console.log("user", user);
+  console.log("getOwnerItem", getOwnerItem);
+  // console.log("isRestaurant", isRestaurant);
+  // console.log("isOwner", isOwner);
+  console.log("getRestaurantItem", getRestaurantItem);
+
   return (
     <MainContents className="main">
       {/* 프로필정보 */}
@@ -116,10 +184,20 @@ function MyPage() {
             </button>
             <button
               className="btn btn-md btn-outline btn-rounded mt-18"
-              onClick={isOwner ? createRestaurant : createOwner}
+              onClick={
+                isOwner
+                  ? isRestaurant
+                    ? manageRestaurant
+                    : createRestaurant
+                  : createOwner
+              }
             >
               <span className="label">
-                {isOwner ? "내 식당 관리" : "사장님 등록"}
+                {isOwner
+                  ? isRestaurant
+                    ? "내 식당 관리"
+                    : "내 식당 등록"
+                  : "사장님 등록"}
               </span>
             </button>
           </div>
@@ -207,7 +285,6 @@ const MainContents = styled.div`
   padding-bottom: 48px;
   box-sizing: border-box;
   height: calc(100vh - 47px);
-  // margin-top: 47px;
 
   /* 개인프로필 */
   .mypage-profile .profile-pic .img {

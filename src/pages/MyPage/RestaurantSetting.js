@@ -1,15 +1,42 @@
 // import { useEffect } from "react";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Drawer from "react-modern-drawer";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { CreateCommentReq, DeleteComment } from "../../respository/userInfo";
+import { RestaurantState } from "../../States/LoginState";
+import { ChangeReservations } from "../../respository/reservation";
+import {
+  CreateCommentReq,
+  DeleteComment,
+  getReservation,
+} from "../../respository/userInfo";
 // import { createRestaurant } from "../../respository/restaurant";
-import { UpdateCommentReq, getMyRestaurant } from "../../respository/userInfo";
+import { UpdateCommentReq } from "../../respository/userInfo";
 export default function Restaurantsetting() {
+  const user = useRecoilValue(RestaurantState);
+  const { mutate: changeStatus } = ChangeReservations();
+  const { data: reservationItems, isLoading } = useQuery({
+    queryKey: ["reservation"],
+    queryFn: () => {
+      return getReservation()
+        .then((res) => {
+          console.log("res", res);
+          return res;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  });
   const [isOpen, setIsOpen] = useState(false);
   const [isCreate, setIsCreate] = useState(false);
+  const [isSelect, setIsSelect] = useState(true);
+  const [isSave, setIsSave] = useState(true);
   const textInput = useRef();
   const { mutate: createComment } = useMutation({
     mutationFn: CreateCommentReq,
@@ -40,6 +67,27 @@ export default function Restaurantsetting() {
     alert("작상한 내용이 저장되지 않습니다.");
     textInput.current.value = "";
   };
+  const [status, setStatus] = useState("");
+
+  const handleChange = (event, idNumber) => {
+    setStatus(event.target.value);
+    console.log(status);
+    console.log(idNumber);
+    let noShowIdArray = new Array();
+    noShowIdArray[0] = idNumber;
+    console.log(noShowIdArray);
+    changeStatus(noShowIdArray);
+  };
+  /* Tap 선택 */
+  const menuClick = (e, index) => {
+    if (index === 0) {
+      setIsSelect(true);
+      setIsSave(true);
+    } else {
+      setIsSelect(false);
+      setIsSave(false);
+    }
+  };
   const addRestaurant = () => {
     // createRestaurant()
     //   .then((res) => {
@@ -49,35 +97,10 @@ export default function Restaurantsetting() {
     //     console.log(err);
     //   });
   };
-  // useEffect(() => {
-  //   getMyRestaurant()
-  //     .then((res) => {
-  //       console.log(res);
+  useEffect(() => {
+    // console.log("reservationItems", reservationItems.list.length);
+  }, []);
 
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
-  // 내 식당 관리 페이지
-  const { data, isLoading } = useQuery({
-    queryKey: ["getMyRestaurant"],
-    queryFn: () => {
-      return getMyRestaurant()
-        .then((res) => {
-          return res;
-        })
-        .catch((err) => {
-          console.log("err", err);
-        });
-    },
-  });
-
-  console.log(data);
-  if (isLoading) {
-    return <div className="">...isLoading</div>;
-  }
   //댓글 수정
   const commentEdit = (index, time) => {
     setIsCommentId({ index: index, time: time });
@@ -120,101 +143,206 @@ export default function Restaurantsetting() {
     };
     updateComment(commentItems);
   };
-  console.log(data.reviewComments.length);
+  if (isLoading) {
+    return <div>...isLoading</div>;
+  }
   return (
     <MainContents>
-      {data && data.reviewComments.length > 0 ? (
-        <div className=" container">
-          {data.reviewComments.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className=" border-b-[#c1c1c1] border-b-[1px] py-[10px] flex gap-y-[14px] flex-col"
-              >
-                <div className=" flex items-center justify-between">
-                  <span className="color-gray text-[12px]">
-                    {item.nickname}
-                  </span>
-                  <span className="color-gray text-[12px]">
-                    {moment(item.reviewUpdatedDate).format("YY.MM.DD")}
-                  </span>
-                </div>
-                <div className="p-[7px] rounded-lg bg-[#f4f4f4] text-[#2c2c2c] text-[14px] min-h-[80px] max-h-[120px] overflow-auto scroll-hide">
-                  {item.reviewContent}
-                </div>
-                {item.images.length > 0 && (
-                  <div className="img grid grid-cols-4 gap-[10px]">
-                    {item.images.map((itemImg, index) => {
-                      return (
-                        <img
-                          className="rounded-[6px]"
-                          src={itemImg.path}
-                          alt={itemImg.path}
-                          key={index}
-                        />
-                      );
-                    })}
-                  </div>
-                )}
-
-                {item.commentContent !== null && (
-                  <div className=" flex justify-between items-start mb-[12px]">
-                    <div className="size-[50px] rounded-full overflow-hidden bg-slate-400">
-                      {console.log("item", data.images[0].path)}
-                      <img
-                        className="rounded-full"
-                        src={data.images[0].path}
-                        alt={data.images[0].path}
-                      />
-                    </div>
-                    <div className="p-[7px] w-[calc(100%-60px)] rounded-lg bg-[#f4f4f4] text-[#2c2c2c] text-[14px] min-h-[80px] max-h-[120px] overflow-auto scroll-hide">
-                      {item.commentContent}
-                    </div>
-                  </div>
-                )}
-
-                <div className=" flex justify-between items-center">
-                  {item.commentContent === null ? (
-                    <Btn
-                      className="btn btn-md btn-outline btn-rounded"
-                      onClick={(e) => {
-                        commentCreate(item.reviewId);
-                      }}
-                      colorEven={true}
-                    >
-                      댓글 작성
-                    </Btn>
-                  ) : (
-                    <>
-                      <Btn
-                        className="btn btn-md btn-outline btn-rounded"
-                        onClick={(e) => {
-                          commentEdit(item.commentId, item.commentCreatedDate);
-                          textInput.current.value = item.commentContent;
-                        }}
-                        colorEven={true}
+      <ul className="tab-menu sticky top-[0px] mb-[10px] bg-white">
+        <li
+          className={`w-[50%] leading-[48px] text-center ${
+            isSelect ? " active" : ""
+          }`}
+          onClick={(e) => menuClick(e, 0)}
+        >
+          식당 예약 상태
+        </li>
+        <li
+          className={`w-[50%] leading-[48px] text-center ${
+            isSelect ? "" : "active"
+          }`}
+          onClick={(e) => {
+            menuClick(e, 1);
+          }}
+        >
+          식당 리뷰
+        </li>
+      </ul>
+      {isSave ? (
+        <div className="collection">
+          {reservationItems && reservationItems.list.length > 0 ? (
+            <div className=" container">
+              {reservationItems.list.map((item, index) => {
+                return (
+                  <div
+                    className="py-[10px] flex flex-col gap-y-[5px] border-b-[#c1c1c1] border-b-[1px]"
+                    key={index}
+                  >
+                    <div className="self-end">
+                      <span
+                        className={`text-[12px] px-[5px] py-[3px] ${
+                          item.status !== "PLANNED" &&
+                          "w-fit rounded-full border border-[#d5d5d5]"
+                        } `}
                       >
-                        댓글 수정
-                      </Btn>
-                      <Btn
-                        className="btn btn-md btn-outline btn-rounded"
-                        onClick={(e) => commentDelete(item.commentId)}
-                        colorEven={false}
-                      >
-                        댓글 삭제
-                      </Btn>
-                    </>
-                  )}
-                </div>
-              </div>
-            );
-          })}
+                        {item.status === "CANCEL" ? (
+                          "방문 취소"
+                        ) : item.status === "PLANNED" ? (
+                          <FormControl
+                            sx={{ minWidth: 100, minHeight: 30 }}
+                            size="small"
+                          >
+                            <Select
+                              value={status}
+                              onChange={(e) => {
+                                handleChange(e, item.reservationId);
+                              }}
+                              displayEmpty
+                              style={{ height: 30 }}
+                            >
+                              <MenuItem value="">
+                                <em>방문 예정</em>
+                              </MenuItem>
+                              <MenuItem value={"CANCEL"}>노쇼/취소</MenuItem>
+                            </Select>
+                          </FormControl>
+                        ) : (
+                          "방문 완료"
+                        )}
+                      </span>
+                    </div>
+                    <span className="text-[14px] text-[#2c2c2c]">
+                      예약자 :
+                      <em className="">
+                        {item.memberName.replace(
+                          item.memberName.slice(1, item.memberName.length - 1),
+                          "*"
+                        )}
+                      </em>
+                    </span>
+                    <span className="text-[14px] text-[#2c2c2c]">
+                      메모 : <em className="">{item.memo}</em>
+                    </span>
+                    <span className="text-[14px] text-[#2c2c2c]">
+                      예약 날짜 :<em className="">{item.time.split("T")[0]}</em>
+                    </span>
+                    <span className="text-[14px] text-[#2c2c2c]">
+                      예약 시간 :{" "}
+                      <em className="">
+                        {item.time.split("T")[1].slice(0, 5)}
+                      </em>
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="h-[500px] w-[100%]  flex items-center justify-center ">
+              <span className=" text-[#c8c8c8] text-[16px] text-bold ">
+                예약된 식당이 없습니다.
+              </span>
+            </div>
+          )}
         </div>
       ) : (
-        <div className="h-[100%] w-[100%]  flex items-center justify-center">
-          <span className=" text-[22px] text-[#666]">
-            식당 리뷰가 없습니다.
-          </span>
+        <div className="review pb-[20px]">
+          {user && user.reviewComments.length > 0 ? (
+            <div className=" container">
+              {user.reviewComments.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className=" border-b-[#c1c1c1] border-b-[1px] py-[10px] flex gap-y-[14px] flex-col"
+                  >
+                    <div className=" flex items-center justify-between">
+                      <span className="color-gray text-[12px]">
+                        {item.nickname}
+                      </span>
+                      <span className="color-gray text-[12px]">
+                        {moment(item.reviewUpdatedDate).format("YY.MM.DD")}
+                      </span>
+                    </div>
+                    <div className="p-[7px] rounded-lg bg-[#f4f4f4] text-[#2c2c2c] text-[14px] min-h-[80px] max-h-[120px] overflow-auto scroll-hide">
+                      {item.reviewContent}
+                    </div>
+                    {item.images.length > 0 && (
+                      <div className="img grid grid-cols-4 gap-[10px]">
+                        {item.images.map((itemImg, index) => {
+                          return (
+                            <img
+                              className="rounded-[6px]"
+                              src={itemImg.path}
+                              alt={itemImg.path}
+                              key={index}
+                            />
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {item.commentContent !== null && (
+                      <div className=" flex justify-between items-start mb-[12px]">
+                        <div className="size-[50px] rounded-full overflow-hidden bg-slate-400">
+                          {console.log("item", user.images[0].path)}
+                          <img
+                            className="rounded-full"
+                            src={user.images[0].path}
+                            alt={user.images[0].path}
+                          />
+                        </div>
+                        <div className="p-[7px] w-[calc(100%-60px)] rounded-lg bg-[#f4f4f4] text-[#2c2c2c] text-[14px] min-h-[80px] max-h-[120px] overflow-auto scroll-hide">
+                          {item.commentContent}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className=" flex justify-between items-center">
+                      {item.commentContent === null ? (
+                        <Btn
+                          className="btn btn-md btn-outline btn-rounded"
+                          onClick={(e) => {
+                            commentCreate(item.reviewId);
+                          }}
+                          colorEven={true}
+                        >
+                          댓글 작성
+                        </Btn>
+                      ) : (
+                        <>
+                          <Btn
+                            className="btn btn-md btn-outline btn-rounded"
+                            onClick={(e) => {
+                              commentEdit(
+                                item.commentId,
+                                item.commentCreatedDate
+                              );
+                              textInput.current.value = item.commentContent;
+                            }}
+                            colorEven={true}
+                          >
+                            댓글 수정
+                          </Btn>
+                          <Btn
+                            className="btn btn-md btn-outline btn-rounded"
+                            onClick={(e) => commentDelete(item.commentId)}
+                            colorEven={false}
+                          >
+                            댓글 삭제
+                          </Btn>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="h-[500px] w-[100%]  flex items-center justify-center ">
+              <span className=" text-[#c8c8c8] text-[16px] text-bold ">
+                식당 리뷰가 없습니다.
+              </span>
+            </div>
+          )}
         </div>
       )}
       <Drawer
@@ -225,9 +353,9 @@ export default function Restaurantsetting() {
         size="calc(100vh - 250px)"
       >
         <div className="container h-[100%]">
-          <div className="header-left items-center flex gap-[12px]">
+          <div className="header-left items-center flex gap-[12px] h-[47px]">
             <a
-              className="header-back-black h-[47px] leading-[47px] z-50"
+              className="header-close-black h-[47px] leading-[47px] z-50"
               onClick={toggleDrawer}
             ></a>
             <a className="text-xl h-[47px] leading-[47px] font-bold block absolute left-0 right-0 text-center">
@@ -235,7 +363,7 @@ export default function Restaurantsetting() {
             </a>
           </div>
           <div className="h-[calc(100%-47px-47px)] overflow-y-auto pb-[15px]">
-            <div className=" my-[15px] h-[calc(100%-30px)]">
+            <div className=" my-[10px] h-[calc(100%-30px)]">
               <textarea
                 name="comment"
                 ref={textInput}

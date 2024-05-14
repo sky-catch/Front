@@ -25,11 +25,11 @@ export const getLogin = async (code) => {
 
 // 마이페이지 회원 정보 조회
 export const getMyMain = async () => {
+  const token = sessionStorage.getItem("token");
   try {
     const result = await apiClient.get(`/member/myMain`, {
       headers: {
-        // accept: "*/*",
-        // "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     return result;
@@ -194,7 +194,6 @@ export const UpdateCommentReq = () => {
   });
 };
 // 댓글 삭제 Delete
-
 export const DeleteComment = (id) => {
   console.log(id);
   const token = sessionStorage.getItem("token");
@@ -208,7 +207,17 @@ export const DeleteComment = (id) => {
     }
   );
 };
-
+// 식당 예약 보기
+export const getReservation = async () => {
+  const token = sessionStorage.getItem("token");
+  return axios
+    .get(`http://15.164.89.177:8080/owner/reservation`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => {
+      return res.data;
+    });
+};
 // export const DeleteCommentReq = () => {
 //   return useMutation({
 //     mutationFn: deleteComment,

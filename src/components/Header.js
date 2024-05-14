@@ -34,7 +34,7 @@ const Header = ({ setSearch, updateSearch }) => {
   };
 
   const onEditRestaurant = () => {
-    navigate("/my/myshop/edit");
+    navigate("/my/myshop/edit/:update");
   };
 
   const onClickMove = (param) => {
@@ -44,7 +44,9 @@ const Header = ({ setSearch, updateSearch }) => {
     }
     navigate(name);
   };
-
+  const onNotifications = () => {
+    navigate("/my/myshop/notifications");
+  };
   const headerContent = () => {
     switch (location) {
       case "/":
@@ -82,7 +84,6 @@ const Header = ({ setSearch, updateSearch }) => {
             </div>
           </div>
         );
-
       case "/search":
         return (
           <div className="">
@@ -108,10 +109,8 @@ const Header = ({ setSearch, updateSearch }) => {
             text = e.target.value;
             searchByKeyword(text).then((res) => {
               data = res.data;
-
               //검색어 추가
               data.input = e.target.value;
-
               // 검색 결과가 아무것도 없으면 searchRes 는 ''
               // 검색 결과가 있으면 searchRes는 res.data
               if (res.data.city == "" && res.data.hotPlace == "") {
@@ -198,10 +197,16 @@ const Header = ({ setSearch, updateSearch }) => {
             <div className="header-left items-center flex gap-[12px]">
               <a className="header-back-black" onClick={onClickBack}></a>
               <a className="text-xl h-[47px] leading-[47px] font-bold">
-                내식당 관리
+                식당 관리
               </a>
             </div>
             <div className="header-right flex items-center ml-auto">
+              <button
+                type="button"
+                className="btn-icon annoucement icon"
+                onClick={onNotifications}
+              ></button>
+
               <button
                 type="button"
                 className="btn-icon setting icon"
@@ -210,13 +215,13 @@ const Header = ({ setSearch, updateSearch }) => {
             </div>
           </div>
         );
-      case "/my/myshop/edit":
+      case "/my/myshop/notifications":
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex gap-[12px]">
               <a className="header-back-black" onClick={onClickBack}></a>
               <a className="text-xl h-[47px] leading-[47px] font-bold">
-                식당 정보
+                식당 공지 사항
               </a>
             </div>
           </div>
@@ -242,10 +247,10 @@ const Header = ({ setSearch, updateSearch }) => {
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex gap-[12px] w-[100%] justify-between">
               <a className="header-back-black" onClick={onClickBack}></a>
-              <a className="text-xl h-[47px] leading-[47px] font-bold">
+              <a className="text-xl h-[47px] leading-[47px] font-bold text-center absolute left-0 right-0 z-0 w-auto">
                 실시간 채팅 상담
               </a>
-              <a className="icon"></a>
+              {/* <a className="icon"></a> */}
             </div>
           </div>
         );
@@ -277,7 +282,6 @@ const Header = ({ setSearch, updateSearch }) => {
             </div>
           </div>
         );
-
       case "/ct/shop/reservation/form":
         return (
           <div className="header-wrapper flex px-[20px]">
@@ -309,7 +313,6 @@ const Header = ({ setSearch, updateSearch }) => {
         );
       default:
         /* 레스토랑 상세 정보 */
-
         if (location.indexOf("/ct/shop") != -1) {
           if (location.indexOf("/reviewList") != -1) {
             return (
@@ -343,8 +346,21 @@ const Header = ({ setSearch, updateSearch }) => {
           }
         }
 
+
+        if (location.indexOf("my/myshop/edit") > 0) {
+          return (
+            <div className="header-wrapper flex px-[20px]">
+              <div className="header-left items-center flex gap-[12px]">
+                <a className="header-back-black" onClick={onClickBack}></a>
+                <a className="text-xl h-[47px] leading-[47px] font-bold">
+                  식당 정보
+                </a>
+              </div>
+            </div>
+          );
+
         /* 검색 결과 */
-        { if(location.indexOf("/search/list") != -1 ) {
+        if(location.indexOf("/search/list") != -1 ) {
           return(
           <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] bg-white">
             <div className="header-left items-center flex gap-[12px]">
@@ -355,7 +371,8 @@ const Header = ({ setSearch, updateSearch }) => {
             </div>
           </div>
           )}
-        }
+
+        
         break;
     }
   };
