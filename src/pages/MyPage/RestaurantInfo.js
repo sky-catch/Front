@@ -1,5 +1,3 @@
-import { useEffect, useRef, useState } from "react";
-// import Select from "react-select";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import FormControl from "@mui/material/FormControl";
@@ -7,13 +5,15 @@ import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Select from "@mui/material/Select";
 import { useTheme } from "@mui/material/styles";
-import { createRestaurant } from "../../respository/restaurant";
-// import { useRecoilState } from "recoil";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { RestaurantState } from "../../States/LoginState";
-import { UpdateRestaurantRes } from "../../respository/restaurant";
+import {
+  UpdateRestaurantRes,
+  createRestaurant,
+} from "../../respository/restaurant";
 import { DeleteOwnerReq } from "../../respository/userInfo";
 
 /**
@@ -112,75 +112,7 @@ export default function RestaurantInfo() {
           : theme.typography.fontWeightMedium,
     };
   }
-  // const facilityOptions = [
-  //   { value: "주차", label: "PARKING" },
-  //   { value: "발렛 가능", label: "VALET_PARKING" },
-  //   { value: "콜키지 가능", label: "CORKAGE" },
-  //   { value: "콜키지 프리", label: "CORKAGE_FREE" },
-  //   { value: "대관 가능", label: "RENT" },
-  //   { value: "노키즈존", label: "NO_KIDS" },
-  //   { value: "와인배송", label: "WINE_DELIVERY" },
-  //   { value: "레터링", label: "LETTERING" },
-  //   { value: "전문 소믈리에", label: "SOMMELIER" },
-  //   { value: "반려동물 동반", label: "PET" },
-  //   { value: "장애인 편의시설", label: "ACCESSIBLE" },
-  // ];
-  // const facilites = [
-  //   { value: "PARKING", label: "주차" },
-  //   { value: "VALET_PARKING", label: "발렛 가능" },
-  //   { value: "CORKAGE", label: "콜키지 가능" },
-  //   { value: "CORKAGE_FREE", label: "콜키지 프리" },
-  //   { value: "RENT", label: "대관 가능" },
-  //   { value: "NO_KIDS", label: "노키즈존" },
-  //   { value: "WINE_DELIVERY", label: "와인배송" },
-  //   { value: "LETTERING", label: "레터링" },
-  //   { value: "SOMMELIER", label: "전문 소믈리에" },
-  //   { value: "PET", label: "반려동물 동반" },
-  //   { value: "ACCESSIBLE", label: "장애인 편의시설" },
-  // ];
-  // const facilityOptions = [
-  //   "주차",
-  //   "발렛 가능",
-  //   "콜키지 가능",
-  //   "콜키지 프리",
-  //   "대관 가능",
-  //   "노키즈존",
-  //   "와인배송",
-  //   "레터링",
-  //   "전문 소믈리에",
-  //   "반려동물 동반",
-  //   "장애인 편의시설",
-  // ];
-  // const categoryOptions = [
-  //   { value: "스시 오마카세", label: "스시 오마카세" },
-  //   { value: "한우 오마카세", label: "한우 오마카세" },
-  //   { value: "스테이크", label: "스테이크" },
-  //   { value: "한식", label: "한식" },
-  //   { value: "쇠고기 그릴", label: "쇠고기 그릴" },
-  //   { value: "중국식", label: "중국식" },
-  //   { value: "일본식", label: "일본식" },
-  //   { value: "이탈리아식", label: "이탈리아식" },
-  //   { value: "프랑스식", label: "프랑스식" },
-  //   { value: "ASIAN", label: "아시아식" },
-  //   { value: "와인", label: "와인" },
-  //   { value: "맥주", label: "맥주" },
-  //   { value: "기타", label: "기타" },
-  // ];
-  const categoryOptions = [
-    { value: "스시 오마카세", label: "스시 오마카세" },
-    { value: "한우 오마카세", label: "한우 오마카세" },
-    { value: "스테이크", label: "스테이크" },
-    { value: "한식", label: "한식" },
-    { value: "쇠고기 그릴", label: "쇠고기 그릴" },
-    { value: "중국식", label: "중국식" },
-    { value: "일본식", label: "일본식" },
-    { value: "이탈리아식", label: "이탈리아식" },
-    { value: "프랑스식", label: "프랑스식" },
-    { value: "ASIAN", label: "아시아식" },
-    { value: "와인", label: "와인" },
-    { value: "맥주", label: "맥주" },
-    { value: "기타", label: "기타" },
-  ];
+
   /* 식당이 있으면 조회 */
   useEffect(() => {
     //내 식당 정보 조회 및 세팅
@@ -377,19 +309,6 @@ export default function RestaurantInfo() {
                   ref={(el) => (inputRef.current[1] = el)}
                   onChange={handleSelectCategory}
                 >
-                  {/* <MenuItem value={"SUSHI_OMAKASE"}>스시 오마카세</MenuItem>
-                  <MenuItem value={"HANWOO_OMAKASE"}>한우 오마카세</MenuItem>
-                  <MenuItem value={"STEAK"}>스테이크</MenuItem>
-                  <MenuItem value={"KOREAN"}>한식</MenuItem>
-                  <MenuItem value={"BEEF_GRILL"}>쇠고기 그릴</MenuItem>
-                  <MenuItem value={"CHINESE"}>중국식</MenuItem>
-                  <MenuItem value={"JAPANESE"}>일본식</MenuItem>
-                  <MenuItem value={"ITALIAN"}>이탈리아식</MenuItem>
-                  <MenuItem value={"FRENCH"}>프랑스식</MenuItem>
-                  <MenuItem value={"ASIAN"}>아시아식</MenuItem>
-                  <MenuItem value={"WINE"}>와인</MenuItem>
-                  <MenuItem value={"BEER"}>맥주</MenuItem>
-                  <MenuItem value={"OTHER"}>기타</MenuItem> */}
                   <MenuItem value={"스시오마카세"}>스시오마카세</MenuItem>
                   <MenuItem value={"한우오마카세"}>한우 오마카세</MenuItem>
                   <MenuItem value={"스테이크"}>스테이크</MenuItem>
@@ -678,9 +597,7 @@ export default function RestaurantInfo() {
             </div>
 
             <FormControl sx={{ width: 100 + "%" }}>
-              {/* <InputLabel id="">운영 날짜</InputLabel> */}
               <Select
-                // labelId="demo-multiple-chip-label"
                 id="demo-multiple-chip"
                 multiple
                 ref={(el) => (inputRef.current[16] = el)}
