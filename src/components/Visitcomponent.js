@@ -112,7 +112,6 @@ const Visitcomponent = ({ itemList }) => {
 
   const cancelItem = (id) => {
     cancelList(id);
-    window.location.replace("/mydining/my");
   };
 
   // 리뷰 입력 완료 버튼 클릭시 실행
@@ -139,10 +138,11 @@ const Visitcomponent = ({ itemList }) => {
     };
     review(reviewItem);
   };
+
   return (
     <>
       <div className=" py-[20px] px-[16px] bg-white rounded-[10px] shadow-lg min-h-[180px] relative mb-[15px]">
-        <span className="text-[#666] text-[12px] bg-[#f4f4f4] py-[3px] px-[8px] rounded-full">
+        <span className="text-[#666] text-[12px] bg-[#f4f4f4] py-[3px] px-[8px] rounded-full ">
           {itemList.status === "PLANNED"
             ? timeGap(new Date(itemList.time.split("T")[0]) - new Date())
             : itemList.status === "DONE"
@@ -151,7 +151,7 @@ const Visitcomponent = ({ itemList }) => {
         </span>
         {itemList.status === "PLANNED" && (
           <span
-            className="text-[#666] text-[12px] float-right"
+            className="text-[#666] text-[12px] float-right rounded-full py-[3px] px-[8px] border border-[#d5d5d5]"
             onClick={() => {
               toggleDrawer();
             }}
@@ -202,7 +202,7 @@ const Visitcomponent = ({ itemList }) => {
         size="270px"
       >
         <div className="container">
-          <span className="text-[#000] text-[18px] font-bold py-[10px] block">
+          <span className="text-[#000] text-[18px] font-bold py-[13px] block">
             예약을 취소하시겠어요?
           </span>
 
@@ -236,6 +236,7 @@ const Visitcomponent = ({ itemList }) => {
               open={isOpen}
               onClick={() => {
                 toggleDrawer();
+                // console.log(itemList);
                 cancelItem(itemList.reservationId);
               }}
             >
@@ -256,11 +257,9 @@ const Visitcomponent = ({ itemList }) => {
         <div className="container">
           <div className="header-left items-center flex gap-[12px]">
             <a
-              className="header-back-black h-[47px] leading-[47px] z-50"
+              className="header-close-black h-[47px] leading-[47px] z-50"
               onClick={toggleDrawerReview}
-            >
-              뒤로
-            </a>
+            ></a>
             <a className="text-xl h-[47px] leading-[47px] font-bold block absolute left-0 right-0 text-center">
               리뷰 쓰기
             </a>
@@ -359,9 +358,9 @@ const CloseBtn = styled.button`
   padding: 0 5%;
   width: 43%;
   margin: 0 auto;
-  height: 48px;
+  height: 40px;
   border-width: 1px;
-  line-height: 46px;
+  line-height: 40px;
   border-radius: 6px;
   font-size: 14px;
   box-sizing: border-box;

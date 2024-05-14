@@ -6,6 +6,7 @@ const { persistAtom } = recoilPersist({
   storage : sessionStorage,
 })
 
+
 export const LoginState = atom({
   key: "LoginState",
   effects_UNSTABLE : [persistAtom],
@@ -46,10 +47,57 @@ export const LoginState = atom({
       ],
       days: {
         days: ["MONDAY", "TUESDAY"],
-      },
-      reviewComments: [],
-      lat: 33.450701,
-      lng: 126.570667,
-    },
+    businessRegistrationNumber: "",
+    createdDate: "",
+    email: "",
+    imagePath: "",
+    name: "",
+    ownerId: null,
+    status: "",
+    updatedDate: "",
   },
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const RestaurantState = atom({
+  key: "RestaurantState",
+  default: {
+    // shop: {
+    name: "",
+    category: "",
+    content: "",
+    phone: "",
+    tablePersonMax: 0,
+    tablePersonMin: 0,
+    openTime: "",
+    lastOrderTime: "",
+    closeTime: "",
+    address: "",
+    detailAddress: "",
+    createdDate: "",
+    updatedDate: "",
+    restaurantId: 0,
+    ownerId: 0,
+    lunchPrice: 0,
+    dinnerPrice: 0,
+    savedCount: 0,
+    reviewCount: 0,
+    reviewAvg: 0,
+    images: [],
+    notifications: [],
+    facilities: [
+      {
+        name: " ",
+        path: "",
+      },
+    ],
+    days: {
+      days: [],
+    },
+    reviewComments: [],
+    lat: 0,
+    lng: 0,
+  },
+  effects_UNSTABLE: [persistAtom],
+  // },
 });

@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import apiClient from "../apis/ApiClient";
+
 const FormData = require("form-data");
-
 // import { useQueryClient } from "@tanstack/react-query";
-
 /**
  * API 식당
  *
@@ -177,16 +177,18 @@ const cancelReservationItem = async (reservationId) => {
   const token = sessionStorage.getItem("token");
   return axios.patch(
     `http://15.164.89.177:8080/reservations/${reservationId}`,
-    {},
+    null,
     { headers: { Authorization: `Bearer ${token}` } }
   );
 };
 
 export const CancelReservation = () => {
+  const navigate = useNavigate();
   return useMutation({
     mutationKey: ["cancelReservationItem"],
     mutationFn: cancelReservationItem,
     onSuccess: (data) => {
+      navigate("/mydining/my");
       console.log("createPost success", data);
     },
     onError: (error) => {
@@ -221,7 +223,6 @@ const createReviewItem = async ({ createReviewReq, files }) => {
     }
   );
   return response.data;
-
 };
 export const CreateReview = () => {
   return useMutation({
@@ -238,6 +239,37 @@ export const CreateReview = () => {
   });
 };
 
+//예약들 노쇼로 바꾸는 기능
+const changeReservationsItem = async (noShowIds) => {
+  const token = sessionStorage.getItem("token");
+
+  return axios.patch(
+    `http://15.164.89.177:8080/owner/reservations`,
+    noShowIds,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+export const ChangeReservations = () => {
+  return useMutation({
+    mutationKey: ["changeReservationsItem"],
+    mutationFn: changeReservationsItem,
+    onSuccess: (data) => {
+      console.log("createPost success", data);
+      alert("상태 변경이 완료됐습니다.");
+      // window.location.reload();
+    },
+    onError: (error) => {
+      console.log("createPost error", error);
+    },
+  });
+};
+
+
 // 예약 조회
 export const getMyReserve = async (param) => {
   try{
@@ -249,3 +281,4 @@ export const getMyReserve = async (param) => {
     console.log("err >>", err);
   }
 }
+

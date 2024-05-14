@@ -14,6 +14,10 @@ const token = sessionStorage.getItem("token");
 export const createRestaurant = async (data) => {
   try {
    const result = await apiClient.post("/restaurants", data, {
+    // console.log("data : ", data);
+    /* 테스트를 위한 7번 사장님 사용자의 jwt token 하드코딩 */
+    const token = sessionStorage.getItem("token");
+    const result = await apiClient.post("/restaurants", data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -27,6 +31,7 @@ export const createRestaurant = async (data) => {
 
 /* 식당 수정 */
 const updateRestaurant = async (info) => {
+  const token = sessionStorage.getItem("token");
   return axios.put(`http://15.164.89.177:8080/restaurants`, info, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -39,6 +44,7 @@ export const UpdateRestaurantRes = () => {
     mutationFn: updateRestaurant,
     onSuccess: (data) => {
       console.log("createPost success", data);
+      window.location.href = "/account";
     },
     onError: (error) => {
       console.log("createPost error", error);
@@ -54,7 +60,7 @@ export const getRestaurant = async (name) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    
+
     return res;
   } catch (err) {
     console.log("Error >>", err);
@@ -88,4 +94,34 @@ export const saveRestaurant = async (restaurantId) => {
   } catch (err) {
     console.log("Error >>", err);
   }
+};
+
+// 식당 공지 사항 추가
+const createNotificat = async ({ restaurantId, restaurantItem }) => {
+  console.log("restaurantId", restaurantId);
+  console.log("restaurantItem", restaurantItem);
+  const token = sessionStorage.getItem("token");
+  return axios.post(
+    `http://15.164.89.177:8080/restaurants/${restaurantId}/notifications`,
+    restaurantItem,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+export const CreateNotificatRes = () => {
+  return useMutation({
+    mutationKey: ["createNotificat"],
+    mutationFn: createNotificat,
+    onSuccess: (data) => {
+      console.log("data", data);
+      window.location.reload();
+    },
+    onError: (err) => {
+      console.log("err", err);
+    },
+  });
 };
