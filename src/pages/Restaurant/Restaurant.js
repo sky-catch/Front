@@ -9,31 +9,20 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import dinner_dark from "../../assets/icons/time-dinner-dark.svg";
 import lunch_dark from "../../assets/icons/time-lunch-dark.svg";
 import CalendarComponent from "../../components/CalendarComponent";
-import ConfirmReserve from "../../components/ConfirmReserve.js";
+import ConfirmReserve from "../../components/Modal/ConfirmReserve.js";
 import RestaurantTap from "../../components/RestaurantTap.js";
 import SaveConfirmComponent from "../../components/SaveConfirmComponent.js";
 import StarsComponent from "../../components/StarsComponent.js";
 import { getRestaurant, saveRestaurant } from "../../respository/restaurant";
 import RestaurantInfor from "./RestaurantInfor";
+import { LocationDrawer } from "../../components/Modal/Location.js";
+import {checkReservationTimes} from "../../respository/reservation.js"
 
 /**
  * 식당
  *
  * @author jimin
  */
-
-// const shopImgItem = {
-//   shopImg: [
-//     {
-//       id: 0,
-//       url: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?detail750",
-//     },
-//     {
-//       id: 1,
-//       url: "https://ugc-images.catchtable.co.kr/admin/marketing/banner/images/3bf5d2c1564a46368375bae358767d3f",
-//     },
-//   ],
-// };
 
 export default function Restaurant() {
   const [restaurant, setRestaurant] = useState();
@@ -43,30 +32,33 @@ export default function Restaurant() {
   const [isInforOpen, setIsInforOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false); /* 예약하기 모달창 오픈 */
   const [isSave, setIsSave] = useState(false); /* 저장하기 모달창 오픈 */
-  const [isConfirmOpen, setIsConfirmOpen] =
-    useState(false); /* 예약 컨펌 모달창 오픈 */
-
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false); /* 예약 컨펌 모달창 오픈 */
+  const [isOpenLo, setIsOpenLo] = useState(false); /* 위치 정보 모달창 오픈 */
   const [isSelect, setIsSelect] = useState(true);
 
   /* 예약 관련 정보 */
   const [isReserve, setIsReserve] =
     useState(true); /* 탭 true : 예약, false : 웨이팅 */
-  const [reserveInfo, setReserveInfo] = useState();
+  const [reserveInfo, setReserveInfo] = useState({
+    date : new Date(),
+    people : 2
+  });
 
   const { state } = useLocation();
   const [isContent, setIsContent] = useState("home");
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [imgIndex, setImgIndex] = useState(1); /* 이미지 슬라이드 현재 보고있는 이미지번호 */
+  const [watch, setWatch] = useState(0); /* 현재 해당 식당을 보고 있는 사람들 수 */
+  const [timeSlots, setTimeSlots] = useState(); /* 해당 식당의 예약 가능한 시간 */
+
   const toggleDrawer = (e) => {
-    console.log(e.target, reserveInfo);
 
     if (e.target.className.indexOf("closeSaveModal") != -1) {
       setIsSave((prevState) => !prevState);
     } else if (e.target.className.indexOf("confirm-close") != -1) {
       setIsConfirmOpen((prevState) => !prevState);
-    // } else if (e.target.className.indexOf("close-modal-btn") != -1) {
-    //   setIsConfirmOpen((prevState) => !prevState);
     } else if (e.target.className.indexOf('calendar-btn') > -1) {
       setIsConfirmOpen((prevState) => !prevState);
     }
@@ -80,13 +72,20 @@ export default function Restaurant() {
   const toggleDrawerInfor = () => {
     setIsInforOpen((prevState) => !prevState);
   };
-  const onReserveCalendar = () => {
+  const onReserveCalendar = (param, e) => {
+    console.log(param,e);
     setIsOpen((prevState) => !prevState);
   };
 
   const onReserveInfor = () => {
     setIsInforOpen((prevState) => !prevState);
   };
+
+  /* 저장 완료 창 */
+  const toggleSavedDrawer = () => {
+    setIsSave((prevState) => !prevState);
+  }
+
   const menuClick = (e, index) => {
     if (index === 0) {
       setIsSelect(true);
@@ -115,9 +114,15 @@ export default function Restaurant() {
       .then((res) => {
         //TODO: 데이터 적용 완료
         setRestaurant(res.data);
-        console.log(res.data, ",", restaurant);
-        // setRestaturant(res.data);
-        console.log(res.data, ",", restaurant);
+        const info = {
+            "restaurantId":  res.data.restaurantId,
+            "numberOfPeople": 2,
+            "searchDate": "2024-05-15",
+            "visitTime": "18:00"
+        };
+        checkReservationTimes(info).then((result)=>{
+          setTimeSlots(result.data.timeSlots);
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -126,40 +131,52 @@ export default function Restaurant() {
 
   /* Function : 식당 저장 */
   const saveMyRestaurant = (e) => {
-    setIsSave((prevState) => !prevState);
+    
     const restaurantId = restaurant.restaurantId;
     saveRestaurant(restaurantId)
       .then((res) => {
         console.log(res);
         /* 저장 완료 모달창 노출 */
+        toggleSavedDrawer();
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  useEffect(() => {
-    console.log(state, restaurant);
-    if (!restaurant) {
-      setRestaurantInfo(state);
-    }
+  /**
+   * Function 슬라이드 넘기는 이벤트 : 슬라이드 변경 시마다 imgIndex 상태 변경 
+   */
+  const onChangeSlide = (e) => {
+    setImgIndex(e.realIndex+1);
+  }
 
-    // console.log(state);
+  const onHandleLocation = (e) => {
+    console.log('s');
+    setIsOpenLo((prevState) => !prevState);
+  }
+
+  useEffect(() => {
     if (!restaurant) {
       setRestaurantInfo(state);
     }
-  }, [restaurant]);
+    console.log(state, restaurant, reserveInfo);
+  }, [restaurant,timeSlots,reserveInfo]);
+
+  const week = ['일','월','화','수','목','금','토','일'];
 
   return (
     <main className="pb-[74px]">
       {/* 1. 식당 이미지 */}
       <Section>
         <Swiper
-          className="slide-image-wrapper">
+          className="slide-image-wrapper"
+          onSlideChange={onChangeSlide} >
           { restaurant && restaurant.images.length < 1 ? 
            <SwiperSlide className="slide-none">
             이미지가 없습니다.
            </SwiperSlide>
+          // ''
            : restaurant && restaurant.images.map((item, index) => {
             console.log(item);
             return (
@@ -175,8 +192,8 @@ export default function Restaurant() {
         </Swiper>
 
         <div className="restaurant-img-detail">
-          <span>명이 보는중!</span>
-          <div>n/m</div>
+          <span>{watch}명이 보는중!</span>
+          <div>{restaurant && `${imgIndex}/${restaurant.images.length}`}</div>
         </div>
       </Section>
       {/* 2. 식당 이름 및 메인 정보 */}
@@ -203,7 +220,7 @@ export default function Restaurant() {
               <a className="call" href={`tel:${restaurant.phone}`}>
                 전화
               </a>
-              <a className="location">위치</a>
+              <a className="location" onClick={onHandleLocation}>위치</a>
               <a
                 className="building"
                 onClick={() => {
@@ -252,20 +269,36 @@ export default function Restaurant() {
                     className="btn btn-lg btn-outline btn-cta full-width arrowdown"
                   >
                     <span>
-                      <span className="label calendar">오늘 (월) / 2 명</span>
+                      <span className="label calendar"> 오늘 ({week[new Date().getDay()]}) / 2 명</span>
                     </span>
                   </a>
                 </div>
-                <div className="section-time-slot">
-                  <div className="time-slot-unavailable-box">
-                    <p className="time-slot-unavailable">예약 오픈전입니다.</p>
+                { timeSlots && timeSlots.length > 0 ?
+                <>
+                  <div className="section-time-slot mb-[24px]">
+                    <Swiper
+                      className="timetable-list-sm"
+                    >
+                      { timeSlots.map((item,index)=> {
+                         return(<SwiperSlide key={index} onClick={(e)=>onReserveCalendar(item.time,e)}>
+                          <button className="timetable-list-item">
+                            <span className="time">{item.time}</span>
+                          </button>
+                          </SwiperSlide>)
+                      })}
+                    </Swiper>
                   </div>
+                  <div className="btn-centered">
+                      <a className="btn btn-rounded btn-outline-red btn-outline-red-rounded">
+                        <span className="label arrow">예약가능 날짜 찾기</span>
+                      </a>
+                  </div>
+                  </>
+                : 
+                <div className="time-slot-unavailable-box">
+                  <p className="time-slot-unavailable">예약 시간 나열!</p>
                 </div>
-                <div className="btn-centered">
-                  <a className="btn btn-rounded btn-outline-red">
-                    <span className="label arrow">예약가능 날짜 찾기</span>
-                  </a>
-                </div>
+                }
               </div>
             </div>
           </ReserveSection>
@@ -288,7 +321,7 @@ export default function Restaurant() {
       {/* 12. 이 주변 예약이 많은 레스토랑 */}
       {/* 예약 슬라이드 페이지 */}
       <BottomBtn>
-        <div className="savebtn">
+        <div className={`savebtn ${restaurant&&restaurant.saved ? 'active' : ''}`}>
           <button onClick={saveMyRestaurant}>저장</button>
           <span>{restaurant ? restaurant.savedCount : 0}</span>
         </div>
@@ -296,32 +329,46 @@ export default function Restaurant() {
           <div>예약하기</div>
         </button>
       </BottomBtn>
+
+      {/* 예약 캘린더 모달창 */}
       <CalendarComponent
         isOpen={isOpen}
         restaurant={restaurant}
         setReserveInfo={setReserveInfo}
         toggleDrawer={toggleDrawer}
+        timeSlots={timeSlots}
       ></CalendarComponent>
-
-      <RestaurantInfor
-        isInforOpen={isInforOpen}
-        restaurant={restaurant}
-        toggleDrawerInfor={toggleDrawerInfor}
-      ></RestaurantInfor>
-
-      <SaveConfirmComponent
-        isSave={isSave}
-        toggleDrawer={toggleDrawer}
-      ></SaveConfirmComponent>
-
-      {/* <ConfirmReserve></ConfirmReserve> */}
-
+      
+      {/* 캘린더 날짜 선택 후 진행 확인 모달창 */}
       <ConfirmReserve
         isConfirmOpen={isConfirmOpen}
         restaurant={restaurant}
         reserveInfo={reserveInfo}
         toggleDrawer={toggleDrawer}
       ></ConfirmReserve>
+
+      {/* 매장 정보 모달창 */}
+      <RestaurantInfor
+        isInforOpen={isInforOpen}
+        restaurant={restaurant}
+        toggleDrawerInfor={toggleDrawerInfor}
+      ></RestaurantInfor>
+
+      {/* 저장 완료 모달창 */}
+      <SaveConfirmComponent
+        isSave={isSave}
+        toggleSavedDrawer={toggleSavedDrawer}
+      ></SaveConfirmComponent>
+
+      {/* 위치 정보 모달창 */}
+      <LocationDrawer
+        isOpen={isOpenLo}
+        toggleDrawer={onHandleLocation}
+        info={restaurant}
+      >
+
+      </LocationDrawer>
+
     </main>
   );
 }
@@ -496,6 +543,10 @@ const BottomBtn = styled.aside`
     height: 24px;
     text-indent: -999em;
     background: url("https://app.catchtable.co.kr/public/img/icons/header-mark.svg")
+      50% 50% no-repeat;
+  }
+  .savebtn.active > button {
+    background: url("https://app.catchtable.co.kr/public/img/icons/mark-saved.svg")
       50% 50% no-repeat;
   }
   .savebtn > span {

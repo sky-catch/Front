@@ -31,6 +31,7 @@ function App() {
   };
 
   /* 카카오 로그인 구현 시 뜨는 에러로 인해 현재 sessionStorage에 임시저장하여 기능 구현중 */
+
   // sessionStorage.setItem(
   //   "token",
   //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTY3NDYyMCwiZXhwIjoxNzE1NzYxMDIwfQ.raBfvnZkDjgkSMuXs7050U4mRvHEtXdlrnGkrAzy3L8i5RId6IUMT9m8tr7A2M08VltPAeqbcBtcynP3pYiPvQ"
@@ -48,6 +49,7 @@ function App() {
   //     owner: true,
   //   })
   // );
+
 
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {

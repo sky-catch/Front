@@ -34,7 +34,7 @@ export default function RestaurantTap({restaurantInfo}) {
         contentClick(e, 3);
         console.log('restaurantInfo : ', restaurantInfo);
         const restaurantName= restaurantInfo ? restaurantInfo.name : "";
-        navigate(`/ct/shop/${restaurantName}/reviewList`, {state : restaurantName});
+        navigate(`/ct/shop/${restaurantName}/reviewList`, {state : JSON.stringify(restaurantInfo)});
     }
 
     useEffect(()=> {

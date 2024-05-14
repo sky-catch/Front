@@ -8,7 +8,7 @@ import styled from "styled-components";
  */
 const StarsComponent = ({startAvg}) => {
     const totalStars = 5;
-    const [stars, setStars] = useState(startAvg);
+    const [stars, setStars] = useState(startAvg <= 5 ? startAvg.toFixed(1) : 5);
     const createArray = (length) => [...Array(length)]
     
     const Stars = ({selected=false, onSelect=(f)=>f}) => (

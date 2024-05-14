@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { FaStar } from "react-icons/fa";
 import { LoginState, RestaurantState } from "../../States/LoginState";
 import {
-  getMyMain,
+  getUserInfo,
   getMyRestaurant,
   getOwner,
 } from "../../respository/userInfo";
@@ -61,7 +62,7 @@ function MyPage() {
   };
 
   useEffect(() => {
-    getMyMain()
+    getUserInfo()
       .then((res) => {
         console.log("res", res);
         setIsOwner(res.data.owner);
@@ -71,9 +72,6 @@ function MyPage() {
       });
     // getUserShop();
   }, []);
-
-  // //  getMyShop();
-  // },[user]);
 
   // 내 식당 관리 페이지
   const {
@@ -111,6 +109,9 @@ function MyPage() {
   });
 
   useEffect(() => {
+    if (getOwnerItem && getOwnerItem.ownerId !== null) {
+      setIsOwner(true);
+      getSavedShop();
     if (isOwner) {
       setUser((prevUser) => ({
         ...getOwnerItem,
@@ -124,6 +125,7 @@ function MyPage() {
         ...getRestaurantItem,
       }));
     }
+  }
   }, [getRestaurantItem, isOwner]);
 
   console.log(user);
@@ -131,6 +133,13 @@ function MyPage() {
   const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
   };
+
+  /* Function : 로그인 유저 회원정보 조회 */
+  const getSavedShop = () => {
+    getUserInfo().then((res)=> {
+      console.log(res.data)
+    });
+  }
 
   const createRestaurant = () => {
     navigate(`/my/myshop/edit/:add`);
@@ -149,7 +158,13 @@ function MyPage() {
               <div className="img"></div>
             </div>
             <div className="mypage-profile-meta">
-              <h4 className="name">{user.nickname}</h4>
+              <div className="userInfo flex">
+                <h4 className="name">{user.nickname}</h4>
+                {isOwner ? 
+                <div className="isOwner flex">
+                  <FaStar color="#ff3d00"></FaStar>
+                </div> : '' }
+              </div>
               <div className="meta">
                 <dl className="flex gap-5">
                   <dt>팔로잉</dt>
@@ -229,7 +244,7 @@ function MyPage() {
           </ul>
           {isSave ? (
             <div className="collection">
-              <section className="section pt-[20px]">
+              {/* <section className="section pt-[20px]">
                 <div className="container gutter-sm">
                   <div className="section-header justify-between">
                     <h3 className="section-title">
@@ -240,7 +255,7 @@ function MyPage() {
                     <span className="add">새 컬렉션 만들기</span>
                   </button>
                 </div>
-              </section>
+              </section> */}
               <section className="section pt-[20px]">
                 <div className="container gutter-sm">
                   <div className="__d-flex">

@@ -54,7 +54,7 @@ const ConfirmReserve = ({isConfirmOpen, restaurant, reserveInfo, toggleDrawer}) 
                                 <div className="detail-box-body">
                                     <div className="options-with-icon">
                                         <div className="date">{detail ? detail.date.getMonth()+1 +'월'+ detail.date.getDate()+'일' :""}</div>
-                                        <div className="time">{detail ? detail.date.getHours() +''+ detail.date.getMinutes() :""}</div>
+                                        <div className="time">{detail ? detail.time :""}</div>
                                         <div className="people">{detail ? detail.people+'명' :""}</div>
                                     </div>
                                 </div>
