@@ -4,9 +4,9 @@ import { searchByKeyword } from "../respository/search.js";
 
 /**
  * Header (헤더)
- * 
- * @param {*} param0 
- * @returns 
+ *
+ * @param {*} param0
+ * @returns
  */
 const Header = ({ setSearch, updateSearch }) => {
   const [searchRes, setSearchRes] = useState({}); // 검색결과
@@ -346,7 +346,6 @@ const Header = ({ setSearch, updateSearch }) => {
           }
         }
 
-
         if (location.indexOf("my/myshop/edit") > 0) {
           return (
             <div className="header-wrapper flex px-[20px]">
@@ -358,21 +357,22 @@ const Header = ({ setSearch, updateSearch }) => {
               </div>
             </div>
           );
+        }
 
         /* 검색 결과 */
-        if(location.indexOf("/search/list") != -1 ) {
-          return(
-          <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] bg-white">
-            <div className="header-left items-center flex gap-[12px]">
-              <button className="back-b header-icon" onClick={onClickBack}>
-                뒤로
-              </button>
-              <h1 className="page-title">검색결과</h1>
+        if (location.indexOf("/search/list") != -1) {
+          return (
+            <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] bg-white">
+              <div className="header-left items-center flex gap-[12px]">
+                <button className="back-b header-icon" onClick={onClickBack}>
+                  뒤로
+                </button>
+                <h1 className="page-title">검색결과</h1>
+              </div>
             </div>
-          </div>
-          )}
+          );
+        }
 
-        
         break;
     }
   };

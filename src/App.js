@@ -30,23 +30,21 @@ function App() {
     setSearch(param);
   };
 
-
   /* 카카오 로그인 구현 시 뜨는 에러로 인해 현재 sessionStorage에 임시저장하여 기능 구현중 */
   // sessionStorage.setItem(
   //   "token",
-  //   'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTU4NzY0NiwiZXhwIjoxNzE1Njc0MDQ2fQ.bxxGYX-wiSIznfXg-mO8muPT3BofsOLym5J7VGicgSLU0k6vqphuOzurIcCyCQOc-KGjf-Zp7tnbP6kx4c8OBg'
-
+  //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTY3NDYyMCwiZXhwIjoxNzE1NzYxMDIwfQ.raBfvnZkDjgkSMuXs7050U4mRvHEtXdlrnGkrAzy3L8i5RId6IUMT9m8tr7A2M08VltPAeqbcBtcynP3pYiPvQ"
   // );
   // sessionStorage.setItem(
   //   "data",
   //   JSON.stringify({
-  //       id: 7,
-  //       nickname: "front",
-  //       profileImageUrl: "front",
-  //       email: "front@front.com",
-  //       name: "front_name",
-  //       status: "ACTIVE",
-  //       owner: true,
+  //     id: 7,
+  //     nickname: "front",
+  //     profileImageUrl: "front",
+  //     email: "front@front.com",
+  //     name: "front_name",
+  //     status: "ACTIVE",
+  //     owner: true,
   //   })
   // );
 

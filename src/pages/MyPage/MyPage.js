@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { LoginState, RestaurantState } from "../../States/LoginState";
-import { getRestaurant } from "../../respository/restaurant";
 import {
   getMyMain,
   getMyRestaurant,
@@ -28,7 +27,8 @@ function MyPage() {
   const [isOwner, setIsOwner] = useState(false);
   const [isRestaurant, setIsRestaurant] = useState(false);
   const [owner, setOwner] = useState([]);
-  const [isSave, setIsSave] = useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
+  const [isSave, setIsSave] =
+    useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
 
   /* Function : 프로필 수정 */
   const updateUserInfo = () => {
@@ -55,8 +55,7 @@ function MyPage() {
 
   /* Function : 식당 정보 */
   const getMyShop = () => {
-    getMyRestaurant()
-    .then((res) => {
+    getMyRestaurant().then((res) => {
       console.log(res);
     });
   };
@@ -70,12 +69,11 @@ function MyPage() {
       .catch((err) => {
         console.log("err", err);
       });
-    getUserShop();
+    // getUserShop();
   }, []);
 
-  //  getMyShop();
-  },[user]);
-
+  // //  getMyShop();
+  // },[user]);
 
   // 내 식당 관리 페이지
   const {
@@ -104,9 +102,6 @@ function MyPage() {
     queryFn: () => {
       return getOwner()
         .then((res) => {
-          // sessionStorage.removeItem("loginStorage");
-          // sessionStorage.removeItem("LoginState");
-          // console.log("res", res);
           return res;
         })
         .catch((err) => {
@@ -128,8 +123,6 @@ function MyPage() {
       setRestaurant((prevUser) => ({
         ...getRestaurantItem,
       }));
-
-      // TODO : 데이터 넣어야됨 (식당 정보가 있을때) - recoil
     }
   }, [getRestaurantItem, isOwner]);
 
@@ -143,12 +136,8 @@ function MyPage() {
     navigate(`/my/myshop/edit/:add`);
   };
 
-  // console.log("restaurant", restaurant);
-  // console.log("user", user);
-  console.log("getOwnerItem", getOwnerItem);
-  // console.log("isRestaurant", isRestaurant);
-  // console.log("isOwner", isOwner);
-  console.log("getRestaurantItem", getRestaurantItem);
+  // console.log("getRestaurantItem", getRestaurantItem);
+  // console.log("getOwnerItem", getOwnerItem);
 
   return (
     <MainContents className="main">

@@ -59,7 +59,7 @@ export const getRestaurant = async (name) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    
+
     return res;
   } catch (err) {
     console.log("Error >>", err);
@@ -119,7 +119,7 @@ export const CreateNotificatRes = () => {
     mutationFn: createNotificat,
     onSuccess: (data) => {
       console.log("data", data);
-      window.location.href = "/my/myshop/notifications";
+      window.location.reload();
     },
     onError: (err) => {
       console.log("err", err);
