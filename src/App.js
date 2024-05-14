@@ -32,22 +32,24 @@ function App() {
 
   /* 카카오 로그인 구현 시 뜨는 에러로 인해 현재 sessionStorage에 임시저장하여 기능 구현중 */
 
-  sessionStorage.setItem(
-    "token",
-    'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImhvbmdAZXhhbXBsZS5jb20iLCJpc093bmVyIjp0cnVlLCJpYXQiOjE3MTU2Nzg0MzQsImV4cCI6MTcxNTc2NDgzNH0.5Wc2I2-34SiOX4v1Cfol57eBdBvT9pDEkN0FCL0H9l_UycY2b2jelygWlusA4Wp5xbzpvvJvznqax5LTqvH4MQ'
-  );
-  sessionStorage.setItem(
-    "data",
-    JSON.stringify({
-      "id": 1,
-      "nickname": "홍길동3",
-      "profileImageUrl": "https://skyware-toy-project-imgae-bucket.s3.ap-northeast-2.amazonaws.com/image/319a423b-ee58-405a-9a10-0cee06f96dd5.jpg",
-      "email": "hong@example.com",
-      "name": "홍길동3",
-      "status": "ACTIVE",
-      "owner": true
-    })
-  );
+  // sessionStorage.setItem(
+  //   "token",
+  //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTY3NDYyMCwiZXhwIjoxNzE1NzYxMDIwfQ.raBfvnZkDjgkSMuXs7050U4mRvHEtXdlrnGkrAzy3L8i5RId6IUMT9m8tr7A2M08VltPAeqbcBtcynP3pYiPvQ"
+  // );
+
+  // sessionStorage.setItem(
+  //   "data",
+  //   JSON.stringify({
+  //     id: 7,
+  //     nickname: "front",
+  //     profileImageUrl: "front",
+  //     email: "front@front.com",
+  //     name: "front_name",
+  //     status: "ACTIVE",
+  //     owner: true,
+  //   })
+  // );
+
 
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
