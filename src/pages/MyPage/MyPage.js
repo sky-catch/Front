@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { LoginState, RestaurantState } from "../../States/LoginState";
 import { getRestaurant } from "../../respository/restaurant";
@@ -10,6 +10,7 @@ import {
   getMyRestaurant,
   getOwner,
 } from "../../respository/userInfo";
+
 /**
  * 마이페이지
  * @author jimin
@@ -17,18 +18,17 @@ import {
 
 function MyPage() {
   const navigate = useNavigate();
+
   const [user, setUser] = useRecoilState(LoginState);
   const [restaurant, setRestaurant] = useRecoilState(RestaurantState);
+
   const [following, setFollowing] = useState(0);
   const [follower, setFollower] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
   const [isRestaurant, setIsRestaurant] = useState(false);
-
   const [owner, setOwner] = useState([]);
-  // const owner = JSON.parse(sessionStorage.getItem("data")).usersDTO.owner;
-  const [isSave, setIsSave] =
-    useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
+  const [isSave, setIsSave] = useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
 
   /* Function : 프로필 수정 */
   const updateUserInfo = () => {
@@ -54,23 +54,14 @@ function MyPage() {
   };
 
   /* Function : 식당 정보 */
-  const getUserShop = () => {
-    getRestaurant(user.id).then((res) => {});
+  const getMyShop = () => {
+    getMyRestaurant()
+    .then((res) => {
+      console.log(res);
+    });
   };
 
   useEffect(() => {
-    // 유저 정보 세팅
-    // setUser((prevUser) => ({
-    // ...prevUser,
-    // id: userInfor.id,
-    // nickname: userInfor.nickname,
-    // }));
-
-    // if (owner.usersDTO.owner === true) {
-    //   setIsOwner(true);
-    // }
-    // 유저의 저장 레스토랑 정보 GET
-
     getMyMain()
       .then((res) => {
         console.log("res", res);
@@ -79,9 +70,12 @@ function MyPage() {
       .catch((err) => {
         console.log("err", err);
       });
-
     getUserShop();
   }, []);
+
+  //  getMyShop();
+  },[user]);
+
 
   // 내 식당 관리 페이지
   const {
@@ -291,7 +285,6 @@ const MainContents = styled.div`
   padding-bottom: 48px;
   box-sizing: border-box;
   height: calc(100vh - 47px);
-  /* margin-top: 47px; */
 
   /* 개인프로필 */
   .mypage-profile .profile-pic .img {

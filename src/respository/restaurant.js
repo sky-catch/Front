@@ -8,13 +8,14 @@ import apiClient from "../apis/ApiClient";
  * @author jimin
  */
 
+const token = sessionStorage.getItem("token");
+
 /* 식당 생성 */
 export const createRestaurant = async (data) => {
   try {
-    console.log("data : ", data);
+    // console.log("data : ", data);
     /* 테스트를 위한 7번 사장님 사용자의 jwt token 하드코딩 */
     const token = sessionStorage.getItem("token");
-
     const result = await apiClient.post("/restaurants", data, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -29,9 +30,7 @@ export const createRestaurant = async (data) => {
 
 /* 식당 수정 */
 const updateRestaurant = async (info) => {
-  console.log("info", info);
   const token = sessionStorage.getItem("token");
-
   return axios.put(`http://15.164.89.177:8080/restaurants`, info, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -51,18 +50,16 @@ export const UpdateRestaurantRes = () => {
     },
   });
 };
-/* 식당 개별 조회 */
 
+/* 식당 개별 조회 */
 export const getRestaurant = async (name) => {
-  console.log("restaurant axios : ", name);
-  console.log("restaurant axios : ", decodeURIComponent(name));
   try {
     const res = await apiClient.get(`/restaurants/${name}`, {
       headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     });
-    console.log("res", res);
+    
     return res;
   } catch (err) {
     console.log("Error >>", err);

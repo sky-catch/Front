@@ -55,7 +55,6 @@ export const getSavedRestaurants = async (name) => {
 export const getMyRestaurant = async () => {
   const token = sessionStorage.getItem("token");
   try {
-    console.log(token);
     const result = await apiClient.get("/owner/restaurant", {
       headers: {
         Authorization: `Bearer ${token}`,
