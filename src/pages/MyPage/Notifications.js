@@ -7,7 +7,6 @@ import { RestaurantState } from "../../States/LoginState";
 import { CreateNotificatRes } from "../../respository/restaurant";
 import { getMyRestaurant } from "../../respository/userInfo";
 const Notifications = () => {
-  // TODO: 저장한 데이터로 공지사항 보여지면 안됌, 관련 데이터 받고 만들어야됨
   const restaurant = useRecoilValue(RestaurantState);
   // const [isNotificat, setIsNotificat] = useState([]);
   const [isOpen, setIsOpen] = useState(false);

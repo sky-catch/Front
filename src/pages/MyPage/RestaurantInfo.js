@@ -10,12 +10,12 @@ import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { RestaurantState } from "../../States/LoginState";
+import { geocodeAddress } from "../../apis/geocodeAddress";
 import {
   UpdateRestaurantRes,
   createRestaurant,
 } from "../../respository/restaurant";
 import { DeleteOwnerReq } from "../../respository/userInfo";
-
 /**
  * 식당 정보 입력 화면
  * @author jimin
@@ -89,6 +89,7 @@ export default function RestaurantInfo() {
   const [selectedFacilities, setSelectedFacilities] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [restaurant, setRestaurant] = useState(false);
+  const [location, setLocation] = useState({ lat: 0, lon: 0 });
   const [isNumber, setIsNumber] = useState("");
   const theme = useTheme();
   const inputRef = useRef([]);
@@ -143,6 +144,7 @@ export default function RestaurantInfo() {
         });
         setSelectedFacilities(facilities);
       }
+      // setLocation({ lat: prevUser.lat, lan: prevUser.lan });
       setRestaurant(true);
     }
   }, []);
@@ -191,7 +193,6 @@ export default function RestaurantInfo() {
 
     const reservationBeginDate = inputRef.current[14].value;
     const reservationEndDate = inputRef.current[15].value;
-
     const info = {
       name: name,
       category: category,
@@ -204,8 +205,8 @@ export default function RestaurantInfo() {
       closeTime: closeTime,
       address: address,
       detailAddress: detailAddress,
-      lat: 0,
-      lng: 0,
+      lat: location.lat,
+      lon: location.lon,
       lunchPrice: lunchPrice,
       dinnerPrice: dinnerPrice,
       days: {
@@ -215,32 +216,34 @@ export default function RestaurantInfo() {
       reservationEndDate: reservationEndDate,
       facilities: dataChage(selectedFacilities, facilites, "en"),
     };
-    console.log("name", name);
-    console.log("selectedCategory", selectedCategory);
+
+    console.log("location", location);
     /* 모두 필수 : 하나라도 입력하지 않은 경우 알림창 */
-    if (
-      !name ||
-      !selectedCategory ||
-      phone.length < 12 ||
-      !tablePersonMax ||
-      !tablePersonMin ||
-      !openTime ||
-      !lastOrderTime ||
-      !closeTime ||
-      !address ||
-      !detailAddress ||
-      !reservationBeginDate ||
-      !reservationEndDate
-    ) {
-      alert("식당 정보를 모두 입력해주세요");
-      return;
-    }
+    // if (
+    //   !name ||
+    //   !selectedCategory ||
+    //   phone.length < 12 ||
+    //   !tablePersonMax ||
+    //   !tablePersonMin ||
+    //   !openTime ||
+    //   !lastOrderTime ||
+    //   !closeTime ||
+    //   !address ||
+    //   !detailAddress ||
+    //   !reservationBeginDate ||
+    //   !reservationEndDate
+    // ) {
+    //   alert("식당 정보를 모두 입력해주세요");
+    //   return;
+    // }
 
     //식당 추가
 
     if (text.indexOf("add") > 0) {
       // 식당 정보 없을때
       console.log("식당 정보 없을때");
+      console.log("식당 정보 없을때", info);
+
       createRestaurant(info)
         .then((res) => {
           window.location.href = "/account";
@@ -250,11 +253,21 @@ export default function RestaurantInfo() {
           console.log(err);
         });
     } else {
-      //식당 생성
-      info.lat = user.lat;
-      info.lng = user.lng;
+      //식당 정보 있을때
+      // info.lat = user.lat;
+      // info.lng = user.lng;
       updateRestaurant(info);
     }
+  };
+  const addressLocation = () => {
+    const address = inputRef.current[9].value;
+    geocodeAddress(address)
+      .then((res) => {
+        setLocation({ lat: res.lat, lon: res.lon });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const inputNumber = (e) => {
@@ -473,6 +486,7 @@ export default function RestaurantInfo() {
               id="address"
               placeholder="식당 주소를 입력해주세요."
               defaultValue={user ? user.address : ""}
+              onBlur={addressLocation}
             />
             <input
               type="text"

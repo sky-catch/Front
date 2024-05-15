@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { FaStar } from "react-icons/fa";
 import { LoginState, RestaurantState } from "../../States/LoginState";
 import {
-  getUserInfo,
   getMyRestaurant,
   getOwner,
+  getUserInfo,
 } from "../../respository/userInfo";
 
 /**
@@ -84,9 +84,7 @@ function MyPage() {
       return getMyRestaurant()
         .then((res) => {
           console.log("res", res);
-          // sessionStorage.removeItem("loginStorage");
-          // sessionStorage.removeItem("LoginState");
-          // setIsRestaurant(true);
+
           return res;
         })
         .catch((err) => {
@@ -112,23 +110,22 @@ function MyPage() {
     if (getOwnerItem && getOwnerItem.ownerId !== null) {
       setIsOwner(true);
       getSavedShop();
-    if (isOwner) {
-      setUser((prevUser) => ({
-        ...getOwnerItem,
-      }));
-    }
-    if (getRestaurantItem) {
-      console.log("정보가 있을때");
-      setIsRestaurant(true);
+      if (isOwner) {
+        setUser((prevUser) => ({
+          ...getOwnerItem,
+        }));
+      }
+      if (getRestaurantItem) {
+        console.log("정보가 있을때");
+        setIsRestaurant(true);
 
-      setRestaurant((prevUser) => ({
-        ...getRestaurantItem,
-      }));
+        setRestaurant((prevUser) => ({
+          ...getRestaurantItem,
+        }));
+      }
     }
-  }
   }, [getRestaurantItem, isOwner]);
 
-  console.log(user);
   /* Function : 식당 정보 관리 */
   const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
@@ -136,17 +133,26 @@ function MyPage() {
 
   /* Function : 로그인 유저 회원정보 조회 */
   const getSavedShop = () => {
-    getUserInfo().then((res)=> {
-      console.log(res.data)
+    getUserInfo().then((res) => {
+      console.log(res.data);
     });
-  }
+  };
 
   const createRestaurant = () => {
     navigate(`/my/myshop/edit/:add`);
   };
 
-  // console.log("getRestaurantItem", getRestaurantItem);
-  // console.log("getOwnerItem", getOwnerItem);
+  useEffect(() => {
+    // geocodeAddress("서울 광진구 중곡2동 135-8")
+    //   .then((result) => {
+    //     console.log("result", result);
+    //     // return result;
+    //   })
+    //   .catch((err) => {
+    //     console.log("err", err);
+    //   });
+    // // console.log(test);
+  }, []);
 
   return (
     <MainContents className="main">
@@ -160,10 +166,13 @@ function MyPage() {
             <div className="mypage-profile-meta">
               <div className="userInfo flex">
                 <h4 className="name">{user.nickname}</h4>
-                {isOwner ? 
-                <div className="isOwner flex">
-                  <FaStar color="#ff3d00"></FaStar>
-                </div> : '' }
+                {isOwner ? (
+                  <div className="isOwner flex">
+                    <FaStar color="#ff3d00"></FaStar>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
               <div className="meta">
                 <dl className="flex gap-5">

@@ -2,20 +2,19 @@ import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist({
-  key : 'user',
-  storage : sessionStorage,
-})
-
+  key: "user",
+  storage: sessionStorage,
+});
 
 export const LoginState = atom({
   key: "LoginState",
-  effects_UNSTABLE : [persistAtom],
+  effects_UNSTABLE: [persistAtom],
   default: {
     id: "",
     nickname: "",
     introduce: "",
     isOwner: false,
-    isSaved : false,
+    isSaved: false,
     shop: {
       name: "",
       category: "",
@@ -58,7 +57,6 @@ export const LoginState = atom({
     status: "",
     updatedDate: "",
   },
-  effects_UNSTABLE: [persistAtom],
 });
 
 export const RestaurantState = atom({
@@ -98,7 +96,7 @@ export const RestaurantState = atom({
     },
     reviewComments: [],
     lat: 0,
-    lng: 0,
+    lon: 0,
   },
   effects_UNSTABLE: [persistAtom],
   // },
