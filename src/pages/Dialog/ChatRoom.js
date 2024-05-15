@@ -1,8 +1,8 @@
 import { QueryClient, useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 // import io from "socket.io";
-// import io from "socket.io-client";
+import io from "socket.io-client";
 import styled from "styled-components";
 import { getRestaurant } from "../../respository/restaurant";
 // import quer
@@ -19,13 +19,39 @@ const ChatRoom = () => {
   // let name = location.search.split("=");
   useEffect(() => {
     setRoomInfor(location.state);
-    console.log("roomInfor", location);
+    console.log("roomInfor", location.state.chatRoomId);
   }, []);
 
   const chatRoomId = location.state.chatRoomId;
   const memberChat = true;
   const token = sessionStorage.getItem("token");
-  console.log(chatRoomId);
+
+  useEffect(() => {
+    const socket = io("http://15.164.89.177:8080/chat", {
+      extraHeaders: {
+        Authorization: `Bearer ${token}`, // 여기서 token은 획득한 인증 토큰입니다.
+        chatRoomId: String(chatRoomId),
+        memberchat: String(memberChat),
+      },
+    });
+    socket.on("connect", () => {
+      console.log("Connected to server");
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Disconnected from server");
+    });
+
+    socket.on("message", (message) => {
+      console.log("Received message:", message);
+      // 여기에서 메시지를 처리하거나 상태를 업데이트할 수 있습니다.
+    });
+    // 컴포넌트가 언마운트될 때 소켓 연결을 닫습니다.
+    return () => {
+      socket.disconnect();
+    };
+  }, [chatRoomId, memberChat, token]);
+
   // const socket = io("http://localhost:3000/chat", {
   //   transports: ["websocket"],
   //   timeout: 30000,
@@ -55,16 +81,7 @@ const ChatRoom = () => {
   //   .catch((error) => {
   //     console.log("error", error);
   // socket.onclose = (event) => console.log(`Closed ${event.code}`);
-  // GetChatRoomListRes()
-  //   .then((res) => {
-  //     console.log("res", res);
-  //   })
-  //   .catch(() => {
-  //     console.log();
-  //   });
-  // }, []);
 
-  // console.log(String(item.updatedDate).split("T")[1].slice(0, 2));
   const queryClient = new QueryClient();
   const {
     data: chatRoomList,
@@ -104,7 +121,7 @@ const ChatRoom = () => {
       </div>
       <div className="w-[calc(100vw-40px)] px-[7px] py-[4px] top-[50px] bg-white rounded-lg absolute left-0 right-0 mx-[auto] shadow-md">
         <span className="text-[12px] text-center">
-          영업 시간 :{" "}
+          영업 시간 :
           {String(restaurant.data.openTime).slice(0, 5) +
             " ~ " +
             String(restaurant.data.closeTime).slice(0, 5) +

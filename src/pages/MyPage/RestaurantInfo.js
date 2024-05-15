@@ -11,6 +11,8 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { RestaurantState } from "../../States/LoginState";
 import { geocodeAddress } from "../../apis/geocodeAddress";
+import FileUpLoad from "../../components/FileUpLoad";
+import { CreateRestaurantImagesItem } from "../../respository/reservation";
 import {
   UpdateRestaurantRes,
   createRestaurant,
@@ -66,6 +68,15 @@ const testFacilities = (items) => {
   });
   return array;
 };
+const testFile = (photoList) => {
+  const photoArray = [];
+  const photoLength = photoList.length - 1;
+  photoList.map((item, index) => {
+    photoArray.push(photoLength === index ? "REPRESENTATIVE" : "NORMAL");
+  });
+
+  return photoArray;
+};
 
 const dataChage = (items, data, lan) => {
   const array = [];
@@ -82,6 +93,7 @@ const dataChage = (items, data, lan) => {
 };
 export default function RestaurantInfo() {
   const [user, setUser] = useState([]);
+  const { mutate: createImages } = CreateRestaurantImagesItem();
   const { text } = useParams();
   const userInfo = useRecoilValue(RestaurantState);
   const { mutate: deleteOwner } = DeleteOwnerReq();
@@ -89,11 +101,13 @@ export default function RestaurantInfo() {
   const [selectedFacilities, setSelectedFacilities] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [restaurant, setRestaurant] = useState(false);
-  const [location, setLocation] = useState({ lat: 0, lon: 0 });
+
+  const [location, setLocation] = useState({ lat: 0, lng: 0 });
   const [isNumber, setIsNumber] = useState("");
   const theme = useTheme();
   const inputRef = useRef([]);
   const { mutate: updateRestaurant } = UpdateRestaurantRes();
+  const [photoToAddList, setPhotoToAddList] = useState([]);
   const ITEM_HEIGHT = 40;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
@@ -117,16 +131,15 @@ export default function RestaurantInfo() {
   /* 식당이 있으면 조회 */
   useEffect(() => {
     //내 식당 정보 조회 및 세팅
-    console.log("text", text);
+
     if (text.indexOf("add") > 0) {
       // 식당 정보 없을때
 
-      console.log("식당 정보 없을때");
       setRestaurant(false);
     } else {
       // 식당 정보 있을때
       const prevUser = userInfo;
-      console.log("식당 정보 있을때");
+
       setUser(prevUser);
       if (prevUser.days.days) {
         const foundDay = dataChage(prevUser.days.days, days, "ko");
@@ -134,7 +147,6 @@ export default function RestaurantInfo() {
       }
 
       if (prevUser.category) {
-        console.log("안녕카테고리");
         setSelectedCategory(prevUser.category);
       }
 
@@ -144,8 +156,13 @@ export default function RestaurantInfo() {
         });
         setSelectedFacilities(facilities);
       }
-      // setLocation({ lat: prevUser.lat, lan: prevUser.lan });
+      console.log("prevUser", prevUser);
+      setLocation({ lat: prevUser.lat, lan: prevUser.lng });
       setRestaurant(true);
+      if (prevUser.images) {
+        console.log(prevUser.images);
+        // setPhotoToAddList(prevUser.images);
+      }
     }
   }, []);
 
@@ -205,10 +222,10 @@ export default function RestaurantInfo() {
       closeTime: closeTime,
       address: address,
       detailAddress: detailAddress,
-      lat: location.lat,
-      lon: location.lon,
-      lunchPrice: lunchPrice,
-      dinnerPrice: dinnerPrice,
+      lat: Number(location.lat),
+      lng: Number(location.lng),
+      lunchPrice: lunchPrice ? lunchPrice : null,
+      dinnerPrice: dinnerPrice ? dinnerPrice : null,
       days: {
         days: dataChage(selectedDays, days, "en"),
       },
@@ -217,25 +234,36 @@ export default function RestaurantInfo() {
       facilities: dataChage(selectedFacilities, facilites, "en"),
     };
 
-    console.log("location", location);
+    // console.log("name", name);
+    // console.log("selectedCategory", selectedCategory);
+    // console.log("phone", phone.length < 12);
+    // console.log("tablePersonMax", tablePersonMax);
+    // console.log("tablePersonMin", tablePersonMin);
+    // console.log("openTime", openTime);
+    // console.log("lastOrderTime", lastOrderTime);
+    // console.log("address", address);
+    // console.log("detailAddress", detailAddress);
+    // console.log("reservationBeginDate", reservationBeginDate);
+    // console.log("reservationEndDate", reservationEndDate);
     /* 모두 필수 : 하나라도 입력하지 않은 경우 알림창 */
-    // if (
-    //   !name ||
-    //   !selectedCategory ||
-    //   phone.length < 12 ||
-    //   !tablePersonMax ||
-    //   !tablePersonMin ||
-    //   !openTime ||
-    //   !lastOrderTime ||
-    //   !closeTime ||
-    //   !address ||
-    //   !detailAddress ||
-    //   !reservationBeginDate ||
-    //   !reservationEndDate
-    // ) {
-    //   alert("식당 정보를 모두 입력해주세요");
-    //   return;
-    // }
+    if (
+      !name ||
+      !selectedCategory ||
+      phone.length < 12 ||
+      !tablePersonMax ||
+      !tablePersonMin ||
+      !openTime ||
+      !lastOrderTime ||
+      !closeTime ||
+      !address ||
+      !detailAddress ||
+      !reservationBeginDate ||
+      !reservationEndDate ||
+      photoToAddList.length === 0
+    ) {
+      alert("식당 정보를 모두 입력해주세요");
+      return;
+    }
 
     //식당 추가
 
@@ -246,7 +274,7 @@ export default function RestaurantInfo() {
 
       createRestaurant(info)
         .then((res) => {
-          window.location.href = "/account";
+          // window.location.href = "/account";
           console.log(res);
         })
         .catch((err) => {
@@ -258,12 +286,24 @@ export default function RestaurantInfo() {
       // info.lng = user.lng;
       updateRestaurant(info);
     }
+
+    //사진 추가
+
+    const restaurantItem = {
+      addRestaurantImagesReq: {
+        restaurantImageTypes: testFile(photoToAddList),
+      },
+      files: photoToAddList,
+      restaurantId: userInfo.restaurantId,
+    };
+    console.log("photoToAddList", photoToAddList);
+    createImages(restaurantItem);
   };
   const addressLocation = () => {
     const address = inputRef.current[9].value;
     geocodeAddress(address)
       .then((res) => {
-        setLocation({ lat: res.lat, lon: res.lon });
+        setLocation({ lat: res.lat, lng: res.lon });
       })
       .catch((err) => {
         console.log(err);
@@ -291,6 +331,11 @@ export default function RestaurantInfo() {
     const owner = user.ownerId;
     deleteOwner(owner);
   };
+
+  useEffect(() => {
+    // console.log("photoToAddList", photoToAddList[0].file);
+    // console.log("photoToAddList", photoToAddList.file);
+  }, [photoToAddList]);
 
   return (
     <MainContents className="main">
@@ -639,6 +684,22 @@ export default function RestaurantInfo() {
               </Select>
             </FormControl>
           </div>
+          {text.indexOf("add") > 0 && (
+            <div className="form-block mb-[20px]">
+              <div className="mb-[6px]">
+                <Serious className="color-gray text-[12px]">
+                  식당 이미지
+                </Serious>
+              </div>
+              <span className="text-center text-[12px] block mb-[15px]">
+                최대 10장 가능합니다. 마지막 이미지가 메인 입니다.
+              </span>
+              <FileUpLoad
+                photoToAddList={photoToAddList}
+                setPhotoToAddList={setPhotoToAddList}
+              ></FileUpLoad>
+            </div>
+          )}
         </div>
       </div>
       {restaurant ? (
@@ -664,6 +725,11 @@ export default function RestaurantInfo() {
 const MainContents = styled.div`
   box-sizing: border-box;
   height: calc(100vh - 47px);
+`;
+const PictureFilled = styled.div`
+  width: 100px;
+  height: 100px;
+  background-color: #eee;
 `;
 const DeleteBtn = styled.button`
   border-radius: 6px;

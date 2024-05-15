@@ -13,10 +13,10 @@ const token = sessionStorage.getItem("token");
 /* 식당 생성 */
 export const createRestaurant = async (data) => {
   try {
-   const result = await apiClient.post("/restaurants", data, {
-    // console.log("data : ", data);
-    /* 테스트를 위한 7번 사장님 사용자의 jwt token 하드코딩 */
-    
+    const result = await apiClient.post("/restaurants", data, {
+      // console.log("data : ", data);
+      /* 테스트를 위한 7번 사장님 사용자의 jwt token 하드코딩 */
+
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -97,9 +97,6 @@ export const saveRestaurant = async (restaurantId) => {
 
 // 식당 공지 사항 추가
 const createNotificat = async ({ restaurantId, restaurantItem }) => {
-  console.log("restaurantId", restaurantId);
-  console.log("restaurantItem", restaurantItem);
-  const token = sessionStorage.getItem("token");
   return axios.post(
     `http://15.164.89.177:8080/restaurants/${restaurantId}/notifications`,
     restaurantItem,

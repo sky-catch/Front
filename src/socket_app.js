@@ -1,26 +1,22 @@
-// const express = require("express");
-// const app = express();
-// const path = require("path");
-// const http = require("http");
-// const server = http.createServer(app);
-// const socketIO = require("socket.io");
-// const io = socketIO(server);
-// const url = require("url");
-// const cors = require("cors");
+const http = require("http");
+const socketIo = require("socket.io");
 
-// console.log(url.URLSearchParams());
-// const corsOptions = {
-//   origin: "http://localhost:3000",
-// };
+const server = http.createServer();
+const io = socketIo(server);
 
-// app.use(cors(corsOptions), function () {
-//   console.log("안녕");
-// });
+// Socket.IO 설정
+io.on("connection", (socket) => {
+  console.log("A user connected");
 
-// app.use(express.static(path.join(__dirname, "public")));
-// io.on("connection", () => {});
-// const PORT = process.env.PORT || 5000;
-// console.log(`포스트`);
-// server.listen(PORT, () => {
-//   console.log(`서버 진행 ${PORT}`);
-// });
+  // 클라이언트로부터 받은 메시지를 다시 클라이언트로 전송
+  socket.on("message", (message) => {
+    console.log("Received message:", message);
+    // 클라이언트에게 메시지 전송
+    io.emit("message", message);
+  });
+});
+
+const PORT = process.env.PORT || 8080;
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});

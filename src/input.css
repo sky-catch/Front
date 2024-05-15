@@ -620,6 +620,9 @@ header {
 .photoBox.addPhoto {
   position: relative;
 }
+.photoBox:last-child {
+  border: 1px solid #ff3d00;
+}
 .photoUploaderContent {
   display: grid;
   row-gap: 10px;

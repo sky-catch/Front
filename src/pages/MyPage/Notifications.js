@@ -1,5 +1,8 @@
+import AddIcon from "@mui/icons-material/Add";
+import Box from "@mui/material/Box";
+import Fab from "@mui/material/Fab";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Drawer from "react-modern-drawer";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -127,14 +130,25 @@ const Notifications = () => {
             );
           })
         ) : (
-          <div className="h-[100%] flex justify-center items-center">
-            <span className="text-[#c8c8c8] text-[16px] text-bold">
+          <div className="h-[500px] w-[100%]  flex-col gap-y-[20px] flex items-center justify-center ">
+            <img
+              className=" size-[70px]"
+              src={require("../../assets/icons/empty.png")}
+            />
+            <span className=" text-[#47566A] text-[16px] text-bold ">
               등록된 공지 사항이 없습니다.
             </span>
           </div>
         )}
       </div>
-      <AddBtn className="btn-icon add icon" onClick={toggleDrawer}></AddBtn>
+      <AddBtn onClick={toggleDrawer}>
+        <Box>
+          <Fab size="medium" color="#ff3d00" aria-label="add">
+            <AddIcon />
+          </Fab>
+        </Box>
+      </AddBtn>
+      {/* <AddBtn className="btn-icon add icon" onClick={toggleDrawer}></AddBtn> */}
       <Drawer
         open={isOpen}
         onClose={toggleDrawer}
@@ -236,10 +250,9 @@ const AddBtn = styled.button`
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 55px;
-  height: 55px;
-  background-color: #ff3d00;
-  border-radius: 50%;
+  && button {
+    background-color: #ff3d00;
+  }
 `;
 
 const CommentSendBtn = styled.button`

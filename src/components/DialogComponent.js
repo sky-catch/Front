@@ -1,9 +1,10 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import restauranticon from "../assets/icons/not_restaurant.png";
 function dataReset(date) {
   if (!date) return;
+
+  console.log(date);
   const nowDate =
     new Date().getFullYear() +
     "-" +
@@ -17,12 +18,7 @@ function dataReset(date) {
     String(new Date().getMonth() + 1).padStart(2, "0") +
     "-" +
     String(new Date().getDay() - 1).padStart(2, "0");
-  const chatRoomDate =
-    new Date(date).getFullYear() +
-    "-" +
-    String(new Date(date).getMonth() + 1).padStart(2, "0") +
-    "-" +
-    String(new Date(date).getDay()).padStart(2, "0");
+  const chatRoomDate = date.split("T")[0];
 
   if (nowDate == chatRoomDate) {
     return (
@@ -39,7 +35,6 @@ function dataReset(date) {
   }
 }
 const DialogComponent = ({ item }) => {
-  console.log("item", item);
   const navigate = useNavigate();
   return (
     <div
@@ -69,7 +64,9 @@ const DialogComponent = ({ item }) => {
         </ItemContents>
       </div>
       <span className=" absolute top-[10px] right-[10px] text-[#b3b3b3] text-[12px]">
-        {dataReset(item.lastChatDate)}
+        {item.lastChat
+          ? dataReset(item.lastChatDate)
+          : dataReset(item.createdDate)}
       </span>
     </div>
   );

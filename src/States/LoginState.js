@@ -96,7 +96,7 @@ export const RestaurantState = atom({
     },
     reviewComments: [],
     lat: 0,
-    lon: 0,
+    lng: 0,
   },
   effects_UNSTABLE: [persistAtom],
   // },
