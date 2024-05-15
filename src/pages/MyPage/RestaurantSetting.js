@@ -175,7 +175,7 @@ export default function Restaurantsetting() {
               {reservationItems.list.map((item, index) => {
                 return (
                   <div
-                    className="py-[10px] flex flex-col gap-y-[5px] border-b-[#c1c1c1] border-b-[1px]"
+                    className="py-[10px] px-[15px] flex flex-col gap-y-[5px] rounded-md shadow mb-[15px]"
                     key={index}
                   >
                     <div className="self-end">
@@ -237,8 +237,12 @@ export default function Restaurantsetting() {
               })}
             </div>
           ) : (
-            <div className="h-[500px] w-[100%]  flex items-center justify-center ">
-              <span className=" text-[#c8c8c8] text-[16px] text-bold ">
+            <div className="h-[500px] w-[100%]  flex-col gap-y-[20px] flex items-center justify-center ">
+              <img
+                className=" size-[70px]"
+                src={require("../../assets/icons/empty.png")}
+              />
+              <span className=" text-[#47566A] text-[16px] text-bold ">
                 예약된 식당이 없습니다.
               </span>
             </div>
@@ -252,7 +256,7 @@ export default function Restaurantsetting() {
                 return (
                   <div
                     key={index}
-                    className=" border-b-[#c1c1c1] border-b-[1px] py-[10px] flex gap-y-[14px] flex-col"
+                    className=" py-[10px] px-[15px] flex gap-y-[14px] flex-col rounded-md shadow mb-[15px]"
                   >
                     <div className=" flex items-center justify-between">
                       <span className="color-gray text-[12px]">
@@ -337,8 +341,12 @@ export default function Restaurantsetting() {
               })}
             </div>
           ) : (
-            <div className="h-[500px] w-[100%]  flex items-center justify-center ">
-              <span className=" text-[#c8c8c8] text-[16px] text-bold ">
+            <div className="h-[500px] w-[100%] flex-col gap-y-[20px]  flex items-center justify-center ">
+              <img
+                className=" size-[70px]"
+                src={require("../../assets/icons/empty.png")}
+              />
+              <span className=" text-[#47566A] text-[16px] text-bold ">
                 식당 리뷰가 없습니다.
               </span>
             </div>

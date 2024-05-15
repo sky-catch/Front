@@ -1,13 +1,15 @@
+import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";
 import Drawer from "react-modern-drawer";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { RestaurantState } from "../../States/LoginState";
 import { CreateNotificatRes } from "../../respository/restaurant";
+import { getMyRestaurant } from "../../respository/userInfo";
 const Notifications = () => {
   // TODO: 저장한 데이터로 공지사항 보여지면 안됌, 관련 데이터 받고 만들어야됨
   const restaurant = useRecoilValue(RestaurantState);
-  const [isNotificat, setIsNotificat] = useState([]);
+  // const [isNotificat, setIsNotificat] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: createNotificat } = CreateNotificatRes();
   const inputRef = useRef([]);
@@ -25,8 +27,27 @@ const Notifications = () => {
 
   useEffect(() => {
     console.log(restaurant);
-    setIsNotificat(restaurant.notifications);
+    // setIsNotificat(restaurant.notifications);
   }, []);
+
+  // 내 식당 관리 페이지
+  const {
+    data: getRestaurantItem,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["getMyRestaurant"],
+    queryFn: () => {
+      return getMyRestaurant()
+        .then((res) => {
+          return res;
+        })
+        .catch((err) => {
+          console.log("err1", err.response);
+        });
+    },
+  });
+
   const setDeadline = (date) => {
     const now = new Date();
     const nowStart = new Date(date);
@@ -78,14 +99,14 @@ const Notifications = () => {
   return (
     <MainContents className="">
       <div className=" container h-[100%]">
-        {isNotificat && isNotificat.length > 0 ? (
-          isNotificat.map((item, index) => {
+        {getRestaurantItem && getRestaurantItem.notifications.length > 0 ? (
+          getRestaurantItem.notifications.map((item, index) => {
             return (
               <div
-                className=" border-b-[#c1c1c1] border-b-[1px] py-[10px] flex gap-y-[14px] flex-col"
+                className="rounded-md shadow mb-[15px] px-[15px] py-[10px] flex gap-y-[14px] flex-col"
                 key={index}
               >
-                <span className=" flex items-center">
+                <span className=" flex items-center text-hidden">
                   {`${item.title}`}
                   {setDeadline(item.endDate) && (
                     <em className=" text-[12px] text-[#ff3d00] ml-[10px]">
@@ -93,7 +114,7 @@ const Notifications = () => {
                     </em>
                   )}
                 </span>
-                <div className="p-[7px] rounded-lg bg-[#f4f4f4] text-[#2c2c2c] text-[14px] min-h-[80px] max-h-[120px] overflow-auto scroll-hide">
+                <div className="p-[7px] rounded-md bg-[#f4f4f4] text-[#2c2c2c] text-[14px] min-h-[80px] max-h-[120px] overflow-auto scroll-hide">
                   {item.content}
                 </div>
                 <div className=" flex items-center justify-end gap-x-[5px]">
