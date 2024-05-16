@@ -14,14 +14,11 @@ const token = sessionStorage.getItem("token");
 export const createRestaurant = async (data) => {
   try {
     const result = await apiClient.post("/restaurants", data, {
-      // console.log("data : ", data);
       /* 테스트를 위한 7번 사장님 사용자의 jwt token 하드코딩 */
-
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-
     return result;
   } catch (err) {
     console.log("Error >>", err);
@@ -47,6 +44,9 @@ export const UpdateRestaurantRes = () => {
     },
     onError: (error) => {
       console.log("createPost error", error);
+      if (error.response.status === 400) {
+        alert("중복된 식당 이름이 존재합니다.");
+      }
     },
   });
 };

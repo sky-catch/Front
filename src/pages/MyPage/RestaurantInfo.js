@@ -223,9 +223,9 @@ export default function RestaurantInfo() {
       address: address,
       detailAddress: detailAddress,
       lat: Number(location.lat),
-      lng: Number(location.lng),
-      lunchPrice: lunchPrice ? lunchPrice : null,
-      dinnerPrice: dinnerPrice ? dinnerPrice : null,
+      lng: Number(location.lan),
+      lunchPrice: lunchPrice ? lunchPrice : 0,
+      dinnerPrice: dinnerPrice ? dinnerPrice : 0,
       days: {
         days: dataChage(selectedDays, days, "en"),
       },
@@ -258,8 +258,7 @@ export default function RestaurantInfo() {
       !address ||
       !detailAddress ||
       !reservationBeginDate ||
-      !reservationEndDate ||
-      photoToAddList.length === 0
+      !reservationEndDate
     ) {
       alert("식당 정보를 모두 입력해주세요");
       return;
@@ -274,7 +273,7 @@ export default function RestaurantInfo() {
 
       createRestaurant(info)
         .then((res) => {
-          // window.location.href = "/account";
+          window.location.href = "/account";
           console.log(res);
         })
         .catch((err) => {
@@ -282,23 +281,29 @@ export default function RestaurantInfo() {
         });
     } else {
       //식당 정보 있을때
-      // info.lat = user.lat;
-      // info.lng = user.lng;
+      console.log("식당 정보 있을때", info);
+
       updateRestaurant(info);
     }
 
     //사진 추가
-
-    const restaurantItem = {
-      addRestaurantImagesReq: {
-        restaurantImageTypes: testFile(photoToAddList),
-      },
-      files: photoToAddList,
-      restaurantId: userInfo.restaurantId,
-    };
-    console.log("photoToAddList", photoToAddList);
-    createImages(restaurantItem);
+    if (text.indexOf("add") === -1) {
+      // if (photoToAddList.length === 0) {
+      //   alert("식당 정보를 모두 입력해주세요");
+      //   return;
+      // }
+      const restaurantItem = {
+        addRestaurantImagesReq: {
+          restaurantImageTypes: testFile(photoToAddList),
+        },
+        files: photoToAddList,
+        restaurantId: userInfo.restaurantId,
+      };
+      console.log("photoToAddList", photoToAddList);
+      createImages(restaurantItem);
+    }
   };
+
   const addressLocation = () => {
     const address = inputRef.current[9].value;
     geocodeAddress(address)
@@ -684,7 +689,7 @@ export default function RestaurantInfo() {
               </Select>
             </FormControl>
           </div>
-          {text.indexOf("add") > 0 && (
+          {text.indexOf("add") === -1 && (
             <div className="form-block mb-[20px]">
               <div className="mb-[6px]">
                 <Serious className="color-gray text-[12px]">

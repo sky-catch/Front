@@ -5,9 +5,9 @@ import "react-modern-drawer/dist/index.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Visitcomponent from "../../components/Visitcomponent";
+import { getMyReserve } from "../../respository/reservation";
 import { GetReservationRes } from "../../respository/restaurant";
 import RecommendPage from "./RecommendPage";
-import {getMyReserve} from "../../respository/reservation"
 
 const stateList = [
   {
@@ -23,32 +23,7 @@ const stateList = [
     title: "취소/노쇼",
   },
 ];
-const visitList = [
-  {
-    name: "매장 이름",
-    type: "한식",
-    visitType: "온라인 웨이팅",
-    img: "",
-    location: "혜화",
-    date: "20240301",
-  },
-  {
-    name: "매장 이름",
-    type: "한식",
-    visitType: "온라인 웨이팅",
-    img: "",
-    location: "혜화",
-    date: "20240301",
-  },
-  {
-    name: "매장 이름",
-    type: "한식",
-    visitType: "온라인 웨이팅",
-    img: "",
-    location: "혜화",
-    date: "20240301",
-  },
-];
+
 const alarmList = [
   {
     id: "0",
@@ -147,7 +122,7 @@ export default function MyDining() {
       setLoginState(true);
     }
 
-    getMyReserve('PLANNED');
+    getMyReserve("PLANNED");
   }, [loginState]);
 
   const itemClick = (index) => {
@@ -225,30 +200,6 @@ export default function MyDining() {
             레스토랑 둘러보기
           </Link>
         </div>
-        // <div className="">
-        //   <div className="mt-[30px] flex items-center justify-between">
-        //     <span className="text-[18px] font-extrabold">
-        //       총 {visitList.length}권
-        //     </span>
-        //     <div
-        //       className={`btn-sort text-[13px] font-medium cursor-pointer ${
-        //         isRiseIcon === false ? "active" : ""
-        //       }`}
-        //       onClick={() => {
-        //         setIsRiseIcon(!isRiseIcon);
-        //       }}
-        //     >
-        //       방문일자
-        //     </div>
-        //   </div>
-        //   <div className="mt-[20px] flex flex-col gap-y-[20px]">
-        //     {visitList.map((item, index) => {
-        //       return (
-        //         <Visitcomponent key={index} itemList={item}></Visitcomponent>
-        //       );
-        //     })}
-        //   </div>
-        // </div>
       );
     } else {
       return (

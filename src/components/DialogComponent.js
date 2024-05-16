@@ -35,6 +35,7 @@ function dataReset(date) {
   }
 }
 const DialogComponent = ({ item }) => {
+  console.log("item", item);
   const navigate = useNavigate();
   return (
     <div
@@ -42,9 +43,11 @@ const DialogComponent = ({ item }) => {
         item.hasNewChat ? "read-icon" : ""
       }`}
       onClick={(e) => {
-        navigate(`/chat?name=${encodeURIComponent(item.restaurantName)}`, {
-          state: item,
-        });
+        navigate(
+          `/chat?name=${encodeURIComponent(
+            item.restaurantName
+          )}&id=${encodeURIComponent(item.chatRoomId)}`
+        );
       }}
     >
       <div className=" size-[60px] rounded-[12px] overflow-hidden">

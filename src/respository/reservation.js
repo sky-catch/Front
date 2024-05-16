@@ -176,6 +176,7 @@ export const CancelReservation = () => {
     mutationFn: cancelReservationItem,
     onSuccess: (data) => {
       navigate("/mydining/my");
+
       console.log("createPost success", data);
     },
     onError: (error) => {
@@ -196,9 +197,6 @@ const createReviewItem = async ({ createReviewReq, files }) => {
   for (let index = 0; index < files.length; index++) {
     await formData.append("files", files[index].file);
   }
-
-  // const token = sessionStorage.getItem("token");
-
   const response = await axios.post(
     `http://15.164.89.177:8080/review`,
     formData,
@@ -273,7 +271,9 @@ const changeReservationsItem = async (noShowIds) => {
 
   return axios.patch(
     `http://15.164.89.177:8080/owner/reservations`,
-    noShowIds,
+    {
+      noShowIds: noShowIds,
+    },
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -289,7 +289,7 @@ export const ChangeReservations = () => {
     onSuccess: (data) => {
       console.log("createPost success", data);
       alert("상태 변경이 완료됐습니다.");
-      // window.location.reload();
+      window.location.reload();
     },
     onError: (error) => {
       console.log("createPost error", error);

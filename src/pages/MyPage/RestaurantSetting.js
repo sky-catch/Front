@@ -1,10 +1,7 @@
 // import { useEffect } from "react";
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Drawer from "react-modern-drawer";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -67,15 +64,11 @@ export default function Restaurantsetting() {
     alert("작상한 내용이 저장되지 않습니다.");
     textInput.current.value = "";
   };
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState({});
 
   const handleChange = (event, idNumber) => {
-    setStatus(event.target.value);
-    console.log(status);
-    console.log(idNumber);
     let noShowIdArray = new Array();
     noShowIdArray[0] = idNumber;
-    console.log(noShowIdArray);
     changeStatus(noShowIdArray);
   };
   /* Tap 선택 */
@@ -180,35 +173,13 @@ export default function Restaurantsetting() {
                   >
                     <div className="self-end">
                       <span
-                        className={`text-[12px] px-[5px] py-[3px] ${
-                          item.status !== "PLANNED" &&
-                          "w-fit rounded-full border border-[#d5d5d5]"
-                        } `}
+                        className={`text-[12px] px-[5px] py-[3px]w-fit rounded-full border border-[#d5d5d5] `}
                       >
-                        {item.status === "CANCEL" ? (
-                          "방문 취소"
-                        ) : item.status === "PLANNED" ? (
-                          <FormControl
-                            sx={{ minWidth: 100, minHeight: 30 }}
-                            size="small"
-                          >
-                            <Select
-                              value={status}
-                              onChange={(e) => {
-                                handleChange(e, item.reservationId);
-                              }}
-                              displayEmpty
-                              style={{ height: 30 }}
-                            >
-                              <MenuItem value="">
-                                <em>방문 예정</em>
-                              </MenuItem>
-                              <MenuItem value={"CANCEL"}>노쇼/취소</MenuItem>
-                            </Select>
-                          </FormControl>
-                        ) : (
-                          "방문 완료"
-                        )}
+                        {item.status === "CANCEL"
+                          ? "방문 취소"
+                          : item.status === "PLANNED"
+                          ? "방문 예정"
+                          : "방문 완료"}
                       </span>
                     </div>
                     <span className="text-[14px] text-[#2c2c2c]">
@@ -232,6 +203,16 @@ export default function Restaurantsetting() {
                         {item.time.split("T")[1].slice(0, 5)}
                       </em>
                     </span>
+                    {item.status === "PLANNED" && (
+                      <CancelBtn
+                        className=""
+                        onClick={(e) => {
+                          handleChange(e, item.reservationId);
+                        }}
+                      >
+                        방문 취소
+                      </CancelBtn>
+                    )}
                   </div>
                 );
               })}
@@ -430,4 +411,14 @@ const Btn = styled.button`
     prop.colorEven
       ? " background-color: #ff3d00; color: #fff;"
       : "color: #666; background-color: #f4f4f4;"}
+`;
+const CancelBtn = styled.button`
+  border-radius: 6px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 14px;
+  width: 100%;
+  background-color: #ff3d00;
+  color: #fff;
+  margin-top: 10px;
 `;
