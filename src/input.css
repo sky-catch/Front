@@ -74,6 +74,7 @@ header {
   border-bottom: 2px solid #000;
   box-sizing: border-box;
 }
+
 .container {
   /* padding: 0 20px; */
   padding-right: 20px;
@@ -263,12 +264,33 @@ header {
 }
 
 /* section */
+.reserve, .noti {
+  padding: 24px 0 30px 0;
+}
+
+.reserve .section-header,
+.noti .section-header {
+  padding-bottom: 12px;
+  margin-bottom: 0px;
+}
+
+.reserve .section-header h3,
+.noti .section-header h3 {
+  font-weight: 700;
+  font-size: 20px;
+  align-items: center;
+  display: flex;
+  letter-spacing: 0;
+  min-width: 1px;
+}
+
 .section-header {
   display: flex;
   position: relative;
   align-items: center;
   margin-bottom: 15px;
 }
+
 .section-header > h3 {
   width: 78%;
   letter-spacing: -0.5px;
@@ -281,12 +303,35 @@ header {
   margin-top: 4px;
 }
 .section-body .v-scroll {
-  /* margin : 0 -20px; */
-  /* padding : 0 20px; */
   overflow-x: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.section .section-header .utils {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.section .section-header .btn-all {
+  display: flex;
+  align-items: center;
+}
+
+.section .section-header .btn-all:after {
+  content: "";
+  background: url("/src/assets/icons/arrow-right-g.svg") 50% 50% no-repeat;
+  background-size: cover;
+  display: block;
+  width: 16px;
+  height: 16px;
+  text-indent: -999em;
+  overflow: hidden;
+  margin-left: 4px;
+}
+
 .v-scroll-inner {
   display: inline-block;
 }
@@ -699,6 +744,13 @@ header {
 
 .btn-md.btn-cta>span .label.calendar, .btn-lg.btn-cta>span .label.calendar {
   padding-left: 29px;
+  font-size : 14px;
+}
+
+.btn-md.btn-cta>span .label, .btn-lg.btn-cta>span .label {
+  margin-right: 7px;
+  display: block;
+  position: relative;
 }
 
 .btn-md.btn-cta>span .label.calendar:before, .btn-lg.btn-cta>span .label.calendar:before {
@@ -784,8 +836,6 @@ header {
   border-bottom: 1px solid #d5d5d5;
   margin: 0 0 12px 0 !important;
   height: 100% !important;
-  /* 
-  width : 100%; */
 }
 .filter-drawer .filter-wrapper .region-box .title,
 .filter-drawer .filter-wrapper .cost-box .title {
@@ -990,7 +1040,7 @@ hr.seperator {
   width: 100%;
   background-color: #ff3d00;
   color: #ffffff;
-
+}
 .filter-wrapper footer .btn-grp button {
   display : flex;
   margin : 12px 16px;
@@ -1527,6 +1577,19 @@ textarea.form-input {
 }
 
 /* restaurants */
+.restaurant-detail {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.restaurant-detail > p {
+  font-weight : 400;
+  font-size : 16px;
+  line-height : 150%;
+}
+
 .restaurant-list .restaurant-list-item .detail .name {
   width : 80%;
   line-height : 25px;
@@ -1623,7 +1686,8 @@ span {
   line-height: 48px;
   background: url("../src/assets/icons/calendar.svg") 20px 50% no-repeat;
 }
-.search-header .datetime-selector a::after {
+.search-header .datetime-selector a::after,
+.btn-lg.btn-cta.arrowdown:after {
   background: url("../src/assets/icons/arrow-down-red.svg") 50% 50% no-repeat;
   width: 16px;
   height: 16px;

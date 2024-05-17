@@ -6,26 +6,14 @@ import apiClient from "../apis/ApiClient";
 const FormData = require("form-data");
 // import { useQueryClient } from "@tanstack/react-query";
 /**
- * API 식당
+ * 예약 API
  *
- * @author jimin
  */
 /* 예약 가능한 시간 조회 */
-// export const checkReservationTimes = async (data) => {
-//   try {
-//     const result = await apiClient.post("/reservations/availTimeSlots", data, {
-//       headers: {
-
-//       },
-//     });
-//     return result;
-//   } catch (err) {
-//     console.log("Error >>", err.message);
-//   }
-// };
 const token = sessionStorage.getItem("token");
 
-export const checkReservationTimes = async (isdata) => {
+export const checkReservationTimes = async ({queryKey}) => {
+  const [isdata] = queryKey;
   if (isdata.numberOfPeople === 0) return;
   const result = await axios.post(
     "http://15.164.89.177:8080/reservations/availTimeSlots",
@@ -35,8 +23,7 @@ export const checkReservationTimes = async (isdata) => {
       },
     }
   );
-  console.log(result);
-  return result;
+  return result.data;
 };
 
 //PostChatRoomRes
