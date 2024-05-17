@@ -64,7 +64,6 @@ export default function Restaurantsetting() {
     alert("작상한 내용이 저장되지 않습니다.");
     textInput.current.value = "";
   };
-  const [status, setStatus] = useState({});
 
   const handleChange = (event, idNumber) => {
     let noShowIdArray = new Array();

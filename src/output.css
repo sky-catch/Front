@@ -818,10 +818,6 @@ video {
   margin-top: 18;
 }
 
-.mt-\[20px\] {
-  margin-top: 20px;
-}
-
 .mt-\[24px\] {
   margin-top: 24px;
 }
@@ -1668,10 +1664,6 @@ video {
 
 .font-bold {
   font-weight: 700;
-}
-
-.font-extrabold {
-  font-weight: 800;
 }
 
 .font-light {

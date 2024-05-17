@@ -84,13 +84,16 @@ function MyPage() {
       return getMyRestaurant()
         .then((res) => {
           console.log("res", res);
-
+          if (res === undefined) {
+            throw new Error("Data is undefined");
+          }
           return res;
         })
         .catch((err) => {
           console.log("err1", err.response);
         });
     },
+    enabled: isOwner,
   });
 
   const { data: getOwnerItem } = useQuery({
@@ -98,12 +101,17 @@ function MyPage() {
     queryFn: () => {
       return getOwner()
         .then((res) => {
+          if (res === undefined) {
+            throw new Error("Data is undefined");
+          }
           return res;
         })
         .catch((err) => {
           console.log("err2", err);
+          throw err;
         });
     },
+    enabled: isOwner,
   });
 
   useEffect(() => {
@@ -141,18 +149,6 @@ function MyPage() {
   const createRestaurant = () => {
     navigate(`/my/myshop/edit/:add`);
   };
-
-  useEffect(() => {
-    // geocodeAddress("서울 광진구 중곡2동 135-8")
-    //   .then((result) => {
-    //     console.log("result", result);
-    //     // return result;
-    //   })
-    //   .catch((err) => {
-    //     console.log("err", err);
-    //   });
-    // // console.log(test);
-  }, []);
 
   return (
     <MainContents className="main">

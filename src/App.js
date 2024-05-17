@@ -32,10 +32,10 @@ function App() {
 
   /* 카카오 로그인 구현 시 뜨는 에러로 인해 현재 sessionStorage에 임시저장하여 기능 구현중 */
 
-  sessionStorage.setItem(
-    "token",
-    "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTg3MDg3NCwiZXhwIjoxNzE1OTU3Mjc0fQ.PF7AR25fiEV25kCy21UOFkiVzAkf0moTNUAs_jF11OcZDb-ktje6Wq5a6yup6CSmcZAKN5olFY_SKA_TdPnGqA"
-  );
+  // sessionStorage.setItem(
+  //   "token",
+  //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTkyMTI0MCwiZXhwIjoxNzE2MDA3NjQwfQ.z3y_e6FzEW0qtiDusibgrNOryUZDxVgNoge8vVHkByT2yfz_Eq0By19WgI1p1xH-2is0RSZXKk2ya1e0tpPHWA"
+  // );
 
   // sessionStorage.setItem(
   //   "data",

@@ -60,14 +60,6 @@ const days = [
 ];
 const daysOptions = ["월", "화", "수", "목", "금", "토", "일"];
 
-const testFacilities = (items) => {
-  const array = [];
-  items.map((item) => {
-    const found = facilites.find((fa) => fa.label === item);
-    array.push(found.value);
-  });
-  return array;
-};
 const testFile = (photoList) => {
   const photoArray = [];
   const photoLength = photoList.length - 1;
@@ -332,9 +324,10 @@ export default function RestaurantInfo() {
   };
 
   // 식당 삭제
-  const deleteRestaurant = () => {
-    const owner = user.ownerId;
-    deleteOwner(owner);
+  const deleteRestaurant = (ownerId) => {
+    console.log(ownerId);
+    // const owner = user.ownerId;
+    deleteOwner(ownerId);
   };
 
   useEffect(() => {
@@ -709,7 +702,12 @@ export default function RestaurantInfo() {
       </div>
       {restaurant ? (
         <div className="h-[48px]  btn-rounded container flex justify-between">
-          <DeleteBtn className="" onClick={deleteRestaurant}>
+          <DeleteBtn
+            className=""
+            onClick={() => {
+              deleteRestaurant(user.ownerId);
+            }}
+          >
             식당 삭제
           </DeleteBtn>
           <InfoBtn className="" even={restaurant} onClick={addRestaurantInfo}>
