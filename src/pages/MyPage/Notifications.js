@@ -130,7 +130,7 @@ const Notifications = () => {
             );
           })
         ) : (
-          <div className="h-[500px] w-[100%]  flex-col gap-y-[20px] flex items-center justify-center ">
+          <div className="h-[100%] w-[100%]  flex-col gap-y-[20px] flex items-center justify-center ">
             <img
               className=" size-[70px]"
               src={require("../../assets/icons/empty.png")}
@@ -246,7 +246,7 @@ const MainContents = styled.div`
   overflow: auto;
   margin-top: 47px;
 `;
-const AddBtn = styled.button`
+const AddBtn = styled.div`
   position: fixed;
   bottom: 20px;
   right: 20px;

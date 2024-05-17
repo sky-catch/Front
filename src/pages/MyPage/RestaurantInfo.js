@@ -149,7 +149,7 @@ export default function RestaurantInfo() {
         setSelectedFacilities(facilities);
       }
       console.log("prevUser", prevUser);
-      setLocation({ lat: prevUser.lat, lan: prevUser.lng });
+      setLocation({ lat: prevUser.lat, lng: prevUser.lng });
       setRestaurant(true);
       if (prevUser.images) {
         console.log(prevUser.images);
@@ -215,7 +215,7 @@ export default function RestaurantInfo() {
       address: address,
       detailAddress: detailAddress,
       lat: Number(location.lat),
-      lng: Number(location.lan),
+      lng: Number(location.lng),
       lunchPrice: lunchPrice ? lunchPrice : 0,
       dinnerPrice: dinnerPrice ? dinnerPrice : 0,
       days: {
@@ -227,6 +227,7 @@ export default function RestaurantInfo() {
     };
 
     // console.log("name", name);
+    console.log("location", location);
     // console.log("selectedCategory", selectedCategory);
     // console.log("phone", phone.length < 12);
     // console.log("tablePersonMax", tablePersonMax);

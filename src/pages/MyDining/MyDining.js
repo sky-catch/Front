@@ -5,7 +5,7 @@ import "react-modern-drawer/dist/index.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Visitcomponent from "../../components/Visitcomponent";
-import { getMyReserve } from "../../respository/reservation";
+// import { getMyReserve } from "../../respository/reservation";
 import { GetReservationRes } from "../../respository/restaurant";
 import RecommendPage from "./RecommendPage";
 
@@ -122,7 +122,7 @@ export default function MyDining() {
       setLoginState(true);
     }
 
-    getMyReserve("PLANNED");
+    // getMyReserve("PLANNED");
   }, [loginState]);
 
   const itemClick = (index) => {

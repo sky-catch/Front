@@ -1,25 +1,16 @@
-import { QueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-// import{useQ}
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import DialogComponent from "../../components/DialogComponent";
 import { GetChatRoomListRes } from "../../respository/reservation";
 import Carousel from "../Home/Carousel";
 
-function sortDate1(list) {
-  const sorted_list = list.sort(function (a, b) {
-    return (
-      new Date(b.lastChatDate).getTime() - new Date(a.lastChatDate).getTime()
-    );
-  });
-  return sorted_list;
-}
-
 function Dialog() {
   const [isLogin, SetIsLogin] = useState(false);
-  const queryClient = new QueryClient();
+  const [filterText, setFilterText] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+
   useEffect(() => {
     if (sessionStorage.getItem("token") !== null) {
       SetIsLogin(true);
@@ -44,8 +35,21 @@ function Dialog() {
     enabled: isLogin,
   });
 
-  // console.log("data", data);
-  // FIXME 절대 지우지말것.
+  const searchRestaurant = (e) => {
+    console.log(roomList);
+    let searchValue = e.target.value;
+    setFilterText(searchValue);
+  };
+  useEffect(() => {
+    if (!roomList) return;
+
+    const filterData = roomList.filter((item) => {
+      return item.restaurantName.includes(filterText);
+    });
+
+    setFilteredData(filterData);
+  }, [filterText]);
+
   if (!isLogin) {
     return (
       <DialogContents className="">
@@ -81,13 +85,15 @@ function Dialog() {
                 className="pl-[44px] pr-[15px] text-xs h-[30px]"
                 type="text"
                 placeholder="가게 이름 검색"
+                value={filterText}
+                onChange={searchRestaurant}
               ></input>
             </form>
           </div>
           <div className="mt-[5px] container">
             <div className="">
               {roomList &&
-                roomList.map((item, index) => {
+                (filterText ? filteredData : roomList).map((item, index) => {
                   return (
                     <DialogComponent key={index} item={item}></DialogComponent>
                   );
@@ -116,7 +122,6 @@ function Dialog() {
 }
 export default Dialog;
 const DialogContents = styled.div`
-  /* padding-bottom: 48px; */
   box-sizing: border-box;
   height: calc(100vh - 47px - 49px);
   margin-top: 47px;

@@ -62,6 +62,7 @@ function MyPage() {
   };
 
   useEffect(() => {
+    console.log("안녕");
     getUserInfo()
       .then((res) => {
         console.log("res", res);
@@ -84,16 +85,16 @@ function MyPage() {
       return getMyRestaurant()
         .then((res) => {
           console.log("res", res);
-          if (res === undefined) {
-            throw new Error("Data is undefined");
-          }
+          // if (res === undefined) {
+          //   throw new Error("Data is undefined");
+          // }
           return res;
         })
         .catch((err) => {
           console.log("err1", err.response);
         });
     },
-    enabled: isOwner,
+    // enabled: isOwner,
   });
 
   const { data: getOwnerItem } = useQuery({
@@ -111,7 +112,7 @@ function MyPage() {
           throw err;
         });
     },
-    enabled: isOwner,
+    // enabled: isOwner,
   });
 
   useEffect(() => {

@@ -14,7 +14,6 @@ const token = sessionStorage.getItem("token");
 export const createRestaurant = async (data) => {
   try {
     const result = await apiClient.post("/restaurants", data, {
-      /* 테스트를 위한 7번 사장님 사용자의 jwt token 하드코딩 */
       headers: {
         Authorization: `Bearer ${token}`,
       },
