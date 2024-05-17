@@ -50,7 +50,7 @@ const DialogComponent = ({ item }) => {
         );
       }}
     >
-      <div className=" size-[60px] rounded-[12px] overflow-hidden">
+      <div className=" size-[60px] rounded-full overflow-hidden">
         <img
           className="size-[60px] "
           src={

@@ -52,13 +52,13 @@ export const UpdateRestaurantRes = () => {
 
 /* 식당 개별 조회 */
 export const getRestaurant = async (name) => {
+  console.log("name", name);
   try {
     const res = await apiClient.get(`/restaurants/${name}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-
     return res;
   } catch (err) {
     console.log("Error >>", err);

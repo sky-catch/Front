@@ -77,6 +77,7 @@ export const PostChatRoomItem = () => {
     mutationKey: ["postChatRoom"],
     mutationFn: postChatRoom,
     onSuccess: (data) => {
+      window.location.href = "/dialog";
       console.log("createPost success", data);
     },
     onError: (error) => {

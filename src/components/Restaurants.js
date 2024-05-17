@@ -4,7 +4,7 @@ const restaurants = [
   {
     id: 8,
     img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    name: "ㅁㅁ오마카세",
+    name: "식당 생성 테스트2",
     meta: {
       star: 4.2,
       tags: "돼지고기구이 * 석촌",
@@ -14,7 +14,6 @@ const restaurants = [
     id: 1,
     img: "https://image.toast.com/aaaaaqx/catchtable/shopinfo/s4bykFRYK9M267n2BIZXZjg/4bykfryk9m267n2bizxzjg_236815131963864.jpg?small400",
     name: "스시미루",
-    name: "ㅁㅁ오마카세",
     meta: {
       star: 4.2,
       tags: "스시, 초밥 * 제주 서귀포",
