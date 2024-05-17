@@ -265,7 +265,7 @@ export default function Restaurant() {
       <Seperator></Seperator>
       {/* 4. 탭 */}
       <RestaurantTap restaurantInfo={restaurant}></RestaurantTap>
-      <section className="section">
+      { restaurant.notifications[0] && <section className="section">
         <div className="noti">
             <div className="container gutter-sm">
               <div className="section-header mb-[30px]">
@@ -275,15 +275,79 @@ export default function Restaurant() {
                 </div>
               </div>
               <div className="section-body">
-                
+                <div className="v-scroll">
+                  <div className="v-scroll-inner">
+                    <div className="restaurant-notice">
+                      <article className="restaurant-notice-item">
+                        <div className="notice-content flex">
+                          <div className="pic"><div className="img"></div></div>
+                          <div className="desc">
+                            <p>{restaurant.notifications[0].content}</p>
+                            <a className="_more"><span>더보기</span></a>
+                          </div>
+                        </div>
+                      </article>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
         </div>
-      </section>
+      </section>}
+      <Seperator></Seperator>
       {/* 5. 편의시설 */}
+      <section className="section">
+        <div className="facilities">
+          <div className="container gutter-sm">
+            <div className="section-header mb-[30px]">
+              <h3>편의시설</h3>
+            </div>
+            <div className="section-body">
+              <div className="restaurant-features mb-[20px]">
+                {restaurant.facilities.map((item,idx)=>(
+                  <span className="feature-item" key={idx}>
+                    <img src={item.path}></img>
+                    <span className="label">{item.name}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* 6. 메뉴 */}
       {/* 7. 사진 */}
       {/* 8. 추천 리뷰 */}
+      <Seperator></Seperator>
+      <section className="section">
+        <div className="cmmt">
+          <div className="container gutter-sm">
+            <div className="section-header mb-[30px]">
+              <h3>추천 리뷰</h3>
+              <div className="utils">
+                <a className="btn-all">전체보기</a>
+              </div>
+            </div>
+            <div className="section-body">
+              <div className="rating-summary">
+                <div className="rating">
+                  <span className="star">{restaurant.reviewAvg}</span>
+                  <span className="count">{`(${restaurant.reviewCount})`}</span>
+                </div>
+              </div>
+              <div className="review-post-list mb-[25px]">
+                <div className="v-scroll">
+                  <div className="v-scroll-inner">
+                    <div className="review-post-list">
+                      {restaurant.reviewComments}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+      </section>
       {/* 9. 비슷한 레스토랑 추천 */}
       {/* 10. 매장 위치 */}
       {/* 11. 상세정보 */}
