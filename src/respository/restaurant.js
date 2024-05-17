@@ -14,9 +14,6 @@ const token = sessionStorage.getItem("token");
 export const createRestaurant = async (data) => {
   try {
    const result = await apiClient.post("/restaurants", data, {
-    // console.log("data : ", data);
-    /* 테스트를 위한 7번 사장님 사용자의 jwt token 하드코딩 */
-    
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -52,17 +49,19 @@ export const UpdateRestaurantRes = () => {
 };
 
 /* 식당 개별 조회 */
-export const getRestaurant = async (name) => {
+export const getRestaurant = async ({queryKey}) => {
   try {
+    const [name] = queryKey;
     const res = await apiClient.get(`/restaurants/${name}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
-    return res;
+    return res.data;
   } catch (err) {
     console.log("Error >>", err);
+    throw new Error("Failed to fetch data");
   }
 };
 
