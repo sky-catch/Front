@@ -7,7 +7,7 @@ import calendar from "../../assets/icons/calendar.svg";
 import search_g from "../../assets/icons/search-gray.svg";
 import FilterDrawer from "../../components/Modal/FilterDrawer.js";
 import Restaurants_sm from "../../components/Restaurants-sm.js";
-import { searchByFilter } from "../../respository/search.js";
+// import { searchByFilter } from "../../respository/search.js";
 import CalendarComponent from "../../components/CalendarComponent";
 
 /**
@@ -51,13 +51,13 @@ export default function Search() {
   const toggleDrawer = (e) => {
     setIsOpen((prevState) => !prevState);
   }
-
+  console.log('time:',time);
   /* 필터 검색하기 */
   const handleSearch = (e) => {
+    const cost = filterInfo?.cost;
+    const cityList = filterInfo?.cities;
+    const hotPl = filterInfo?.cities?.city;
     console.log(filterInfo);
-    const cost = filterInfo ? filterInfo.cost : filterInfo;
-    const cityList = filterInfo ? filterInfo.cities : filterInfo;
-
     const formatDate =
       date.getFullYear() +
       "-" +
@@ -67,22 +67,21 @@ export default function Search() {
 
     const params = {
       date: formatDate,
-      time: time,
+      time: `${time}:00`,
       personCount: minNum,
       koreanCity: JSON.stringify(cityList),
-      hotPlace:  "",
+      hotPlace:  hotPl,
       category: "",
       minPrice: cost ? cost.min : 0,
       maxPrice: cost ? cost.max : 0,
       orderType: "기본순",
     };
-
-    searchByFilter(params)
-      .then((res)=>{
-        console.log(res.data);
-        // const 
-        navigate(`/search/list?`, {state : res.data});
-      });
+    
+    navigate(`/search/list?`, {state : params});
+    // searchByFilter(params)
+    //   .then((res)=>{
+    //     console.log(res.data);
+    //   });
   };
 
   /* 캘린더 다이얼로그 열기 */
@@ -91,11 +90,11 @@ export default function Search() {
   }
 
   useEffect(() => {
-    console.log(time,date);
+    console.log(filterInfo);
   }, [filterInfo]);
 
   return (
-    <SearchSection>
+    <div>
       <main id="main">
         <div className="search-header">
           <div className="keyword">
@@ -123,7 +122,7 @@ export default function Search() {
             <div className="filter-icon">
               <button
                 className={`design_system ${
-                  filterInfo && filterInfo.cities.address.length > 0 ? "active" : ""
+                  filterInfo?.cities?.address.length > 0 || (filterInfo?.cost && Object.values(filterInfo.cost).length > 0) ? "active" : ""
                 }`}
                 onClick={toggleFilterDrawer}
               >
@@ -140,6 +139,8 @@ export default function Search() {
                     strokeWidth="1.5"
                   ></path>
                 </svg>
+                <span className={`filters ${ filterInfo?.cities?.address.length > 0 || (filterInfo?.cost && Object.values(filterInfo.cost).length > 0)  ? "active" : "" }`}>
+                  {filterInfo?Object.values(filterInfo).length:''}</span>
               </button>
             </div>
             <span className="seperator-vt"></span>
@@ -157,7 +158,7 @@ export default function Search() {
                           ${filterInfo && (( filterInfo.cities && filterInfo.cities.address.length > 0 && index==0 )
                             || (filterInfo.cost && index==1)) ? 'active' : ''}
                         `} onClick={toggleFilterDrawer}>
-                          <span>{item.title}</span>
+                          <span>{filterInfo?.cities && index==0 ? filterInfo.cities.address : item.title}</span>
                         </button>
                       </SwiperSlide>
                     );
@@ -236,87 +237,7 @@ export default function Search() {
         toggleDrawer={toggleDrawer}
       ></CalendarComponent>
 
-    </SearchSection>
+    </div>
   );
 }
 
-const SearchSection = styled.div`
-  // margin-top: 47px;
-
-  // .search-header .keyword input {
-  //   cursor: pointer;
-  //   font-size: 13px;
-  //   height: 56px;
-  //   padding: 0 20px 0 52px;
-  //   width: 100%;
-  //   background: url("${search_g}") 20px 50% no-repeat;
-  // }
-  // .search-header .datetime-selector {
-  //   border-bottom: 1px solid #e5e5e5;
-  //   position: relative;
-  // }
-  // .search-header .datetime-selector a {
-  //   cursor: pointer;
-  //   position: relative;
-  //   display: block;
-  //   width: 100%;
-  //   height: 48px;
-  //   padding: 0 20px 0 48px;
-  //   font-size: 14px;
-  //   line-height: 48px;
-  //   background: url("${calendar}") 20px 50% no-repeat;
-  // }
-  // .search-header .datetime-selector a::after {
-  //   background: url("${arrow_d}") 50% 50% no-repeat;
-  //   width: 16px;
-  //   height: 16px;
-  //   content: "";
-  //   display: block;
-  //   position: absolute;
-  //   right: 20px;
-  //   top: 50%;
-  //   transform: translateY(-50%);
-  // }
-  // .chip-filter {
-  //   display: flex;
-  //   align-items: center;
-  //   padding: 12px 0;
-  // }
-  // .filter-icon {
-  //   display: flex;
-  //   padding-left: 20px;
-  //   margin-right: 16px;
-  //   gap: 8px;
-  // }
-  // .design_system {
-  //   border: 1px solid #d5d5d5;
-  //   width: 40px;
-  //   height: 40px;
-  //   border-radius: 8px;
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: center;
-  // }
-  // .seperator-vt {
-  //   display: block;
-  //   width: 1px;
-  //   height: 40px;
-  //   background-color: #d5d5d5;
-  // }
-  // .filter-menu {
-  //   flex: 1;
-  //   overflow: hidden;
-  //   padding-right: 20px;
-  //   padding-left: 16px;
-  // }
-  // .slide-button {
-  //   border: 1px solid #d5d5d5;
-  //   box-sizing: border-box;
-  //   border-radius: 18px;
-  //   display: flex;
-  //   height: 36px;
-  //   align-items: center;
-  //   padding: 0 14px;
-  //   font-size: 14px;
-  // }
-`;

@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import FilterDrawer from "../../components/Modal/FilterDrawer.js";
 import { FaStar } from "react-icons/fa";
+import { useQuery } from "@tanstack/react-query";
+import { searchByFilter } from "../../respository/search.js";
 
 /**
  * 검색 결과
@@ -11,8 +13,12 @@ import { FaStar } from "react-icons/fa";
 export default function SearchList (params) {
     const navigate = useNavigate();
     const {state} = useLocation();
-    const [restaurantList, setRestaurantList] = useState(); //검색 결과 레스토랑 리스트
-    const [filter, setFilter] = useState();  // 검색 결과 필터 정보
+    const {data: searchList} = useQuery({queryKey : [state], queryFn : searchByFilter, enabled:!!state});
+    let restaurantList = searchList?.getRestaurantSearchListRes; // 레스토랑 리스트
+    let filter = searchList?.searchFilter; // 검색 결과 필터 정보
+    console.log('state:', state);
+    console.log(searchList);
+    
     const [isFilter, setIsFilter] = useState(false);  // 필터패널 open 여부 (false : 닫음, true : 열림)
 
     const menuItems = [{
@@ -41,29 +47,37 @@ export default function SearchList (params) {
 
     useEffect(()=>{
         if(!state) return;
-        setRestaurantList(state.getRestaurantSearchListRes);
-        setFilter(state.searchFilter);
+        // setRestaurantList(state.getRestaurantSearchListRes);
+        // setFilter(state.searchFilter);
         console.log(restaurantList,filter);
     },[state])
 
     const week = ["일", "월", "화", "수", "목", "금", "토"];
+    const date = new Date(filter?.date);
+    const minNum = filter?.personCount;
+    const time = filter?.time;
     return (
         <main id="main">
             <div>   
                 <div className="search-header">
                     <div className="datetime-selector" onClick={handleCalendarDialog}>
                         <a>
-                        <span>
-                          {filter && filter.date}
-                        </span>
+                            <span>
+                                { String(date.getMonth() + 1).padStart(2, "0") +
+                                "." +
+                                String(date.getDate()).padStart(2, "0") +
+                                "(" +
+                                week[date.getDay()] +
+                                ")"} / {minNum}명 / {time}
+                            </span>
                         </a>
                     </div>
                     <div className="chip-filter">
                         <div className="filter-icon">
                         <button
                             className={`design_system ${
-                                filter ? "active" : ""
-                            }`}
+                                state?.koreanCity.length > 0 || (state?.maxPrice > 0 || state?.minPrice > 0) ? "active" : ""
+                              }`}
                             onClick={toggleFilterDrawer}
                         >
                             <svg
@@ -78,6 +92,8 @@ export default function SearchList (params) {
                                 stroke="currentColor"
                                 strokeWidth="1.5"
                             ></path>
+                             <span className={`filters ${ state?.koreanCity.length > 0 || (state?.maxPrice > 0 || state?.minPrice > 0)  ? "active" : "" }`}>
+                                {1}</span>
                             </svg>
                         </button>
                         </div>
@@ -93,7 +109,8 @@ export default function SearchList (params) {
                                     id={index}
                                 >
                                     <button type="button" className={`slide-button
-                                    ${filter ? 'active' : ''}
+                                         ${ state?.koreanCity.length > 0 && index==0
+                                            || ( (state?.maxPrice > 0 || state?.minPrice > 0) && index==1) ? 'active' : ''}
                                     `} onClick={toggleFilterDrawer}>
                                     <span>{item.title}</span>
                                     </button>
