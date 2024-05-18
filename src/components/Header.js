@@ -10,20 +10,21 @@ import { searchByKeyword } from "../respository/search.js";
  */
 const Header = ({ setSearch, updateSearch }) => {
   const [searchRes, setSearchRes] = useState({}); // 검색결과
+  const [inputTxt, setInputTxt] = useState(); // 검색어
   const location = useLocation().pathname;
   const state = useLocation().state;
   const navigate = new useNavigate();
   const searchInput = useRef();
 
   useEffect(() => {
-    setSearch(searchRes);
-    updateSearch(searchRes);
+    setSearch(inputTxt);
+    updateSearch(inputTxt);
 
     // 뒤로가기 했을 때
     if (Object.keys(searchRes).length > 0 && searchInput.current != null) {
       searchInput.current.defaultValue = searchRes.input;
     }
-  }, [location, searchRes]);
+  }, [location, inputTxt]);
 
   const onClickBack = () => {
     if (location === "/my/myshop/edit") {
@@ -98,36 +99,38 @@ const Header = ({ setSearch, updateSearch }) => {
           </div>
         );
       case "/search/total":
-        let data = {
-          city: null,
-          cityRestaurantCount: 0,
-          hotPlace: null,
-          hotPlaceRestaurantCount: 0,
-          category: null,
-          categoryRestaurantCount: 0,
-          restaurantSummaryDTOList: [],
-        };
-
+        // let data = {
+        //   city: null,
+        //   cityRestaurantCount: 0,
+        //   hotPlace: null,
+        //   hotPlaceRestaurantCount: 0,
+        //   category: null,
+        //   categoryRestaurantCount: 0,
+        //   restaurantSummaryDTOList: [],
+        // };
         const handleSearch = (e) => {
-          var text = "";
-          if (e.target.value.length >= 2) {
-            text = e.target.value;
-            searchByKeyword(text).then((res) => {
-              data = res.data;
-              //검색어 추가
-              data.input = e.target.value;
-              // 검색 결과가 아무것도 없으면 searchRes 는 ''
-              // 검색 결과가 있으면 searchRes는 res.data
-              if (res.data.city == "" && res.data.hotPlace == "") {
-                setSearchRes({});
-              } else {
-                setSearchRes(data);
-              }
-            });
-          } else {
-            data.input = e.target.value;
-            setSearchRes(data);
-          }
+          var text = e.target.value;
+          setInputTxt(text);
+        // console.log(text);
+        //   if (e.target.value.length >= 2) {
+        //     text = e.target.value;
+        //     searchByKeyword(text).then((res) => {
+        //       data = res.data;
+        //       console.log('data', data);
+        //       //검색어 추가
+        //       data.input = e.target.value;
+        //       // 검색 결과가 아무것도 없으면 searchRes 는 ''
+        //       // 검색 결과가 있으면 searchRes는 res.data
+        //       if (res.data.city == "" && res.data.hotPlace == "") {
+        //         setSearchRes({});
+        //       } else {
+        //         setSearchRes(data);
+        //       }
+        //     });
+        //   } else {
+        //     data.input = e.target.value;
+        //     setSearchRes(data);
+        //   }
         };
 
         return (

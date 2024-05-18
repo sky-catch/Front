@@ -1183,7 +1183,7 @@ header .keyword-search .btn-delete {
   margin-right: 12px;
 }
 .searched-keyword-left-item .tb {
-  background-color: gray;
+  background-color: #F1F1F1;
   width: 48px;
   height: 64px;
   border-radius: 10px;
@@ -1212,6 +1212,22 @@ header .keyword-search .btn-delete {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.searched-keyword-left-item .tb .img {
+  width: 48px;
+  height: 64px;
+  border-radius: 6px;
+  background: 50% 50% no-repeat;
+  background-image : url("../src/assets/icons/restaurant.svg");
+  background-size: cover;
+  object-fit: cover;
+  overflow : hidden;
+  border : transparent;
+}
+
+.searched-keyword-left-item .tb .img[src='']{
+  background-image : url("../src/assets/icons/restaurant.svg");
+}
+
 .recent-input-header {
   margin: 18px 0 16px;
   height: 24px;
@@ -2017,3 +2033,8 @@ span {
   margin-left: 5px;
   color: #aaa;
 }
+
+.mb-\[50px\] {
+  margin-bottom : 50px !important;
+}
+

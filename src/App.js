@@ -25,16 +25,14 @@ import SearchList from "./pages/Search/SearchList.js";
 import SearchTotal from "./pages/Search/SearchTotal.js";
 
 function App() {
-  const [search, setSearch] = useState({});
-  const updateSearch = (param) => {
-    setSearch(param);
-  };
+  const [search, setSearch] = useState();
+  const updateSearch = (param) => { setSearch(param);};
 
   /* 카카오 로그인 구현 시 뜨는 에러로 인해 현재 sessionStorage에 임시저장하여 기능 구현중 */
 
   sessionStorage.setItem(
     "token",
-    'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNTk0NzUyMSwiZXhwIjoxNzE2MDMzOTIxfQ.OpKDND3GKa4mVCQZumGEPMUL5bAy_9nF2fSjNYfsMiHYp7MXNf9tLjOG-Kv7-MVSWX-URuMRHXmdsV5ceFPrLQ'
+    'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNjAzOTc1MCwiZXhwIjoxNzE2MTI2MTUwfQ.hGXzSPNikrk69Dt1_pTToS7UpAU9sxmvFJtgJ28AuNpsZtb01L-hI0rir1nJzzYhkTVT8HaOLKG54564Z6Oeqw'
   );
   sessionStorage.setItem(
     "data",

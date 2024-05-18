@@ -20,17 +20,18 @@ export const searchByFilter = async(params) => {
     }
 }
 /* 식당 요약 검색 */
-export const searchByKeyword = async(params) => {
+export const searchByKeyword = async({queryKey}) => {
     try{
-        console.log(params);
-        const keyword = params;
+        const [keyword] = queryKey;
+        console.log('keyword',keyword);
         const result = await apiClient.get(`/restaurants/search/${keyword}`, {
             headers : {
 
             }
         })
-        return result;
+        return result.data;
     } catch(err) {
         console.log("Error >>", err);
+        throw new Error("Failed to fetch data");
     }
 }
