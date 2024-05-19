@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Drawer from "react-modern-drawer";
 import styled from "styled-components";
 import { CancelReservation, CreateReview } from "../respository/reservation";
@@ -342,6 +342,7 @@ const PictureFilled = styled.div`
   height: 100px;
   background-color: #eee;
 `;
+
 const ReviewBtn = styled.button`
   border-radius: 6px;
   line-height: 36px;

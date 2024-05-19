@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import { CreateOwnerReq } from "../../respository/userInfo";
 const Owner = () => {
@@ -44,7 +44,7 @@ const Owner = () => {
   };
   return (
     <OwnerContents className="container">
-      <div className="mb-[6px]">
+      <div className="mb-[6px] mt-[30px] inline-block">
         <label className="color-gray text-[12px]"> 사업자 등록 번호</label>
       </div>
       <form className="">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import styled from "styled-components";
@@ -23,7 +23,6 @@ const RestaurantInfor = ({ isInforOpen, restaurant, toggleDrawerInfor }) => {
     <div>
       <Drawer
         open={isInforOpen}
-        // onClose={toggleDrawer}
         direction="bottom"
         className="drawer-box container"
         size="620px"
@@ -44,14 +43,17 @@ const RestaurantInfor = ({ isInforOpen, restaurant, toggleDrawerInfor }) => {
               {restaurant.phone}
             </a>
           </div>
-          <div className="py-[10px]">
-            <span className="text-[16px] font-semibold mb-[5px] block">
-              매장소개
-            </span>
-            <span className="text-[14px] text-[#515151]">
-              {restaurant.content}
-            </span>
-          </div>
+          {restaurant.content && (
+            <div className="py-[10px]">
+              <span className="text-[16px] font-semibold mb-[5px] block">
+                매장소개
+              </span>
+              <span className="text-[14px] text-[#515151]">
+                {restaurant.content}
+              </span>
+            </div>
+          )}
+
           <div className="py-[10px]">
             <span className="text-[16px] font-semibold mb-[5px] block">
               영업시간

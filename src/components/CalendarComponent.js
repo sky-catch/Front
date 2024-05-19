@@ -1,6 +1,6 @@
 // import moment from "moment";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import Drawer from "react-modern-drawer";
@@ -26,7 +26,13 @@ function SetDateYMD(isDate) {
     String(isDate.getDate()).padStart(2, "0")
   );
 }
-const CalendarComponent = ({ isOpen, toggleDrawer, setReserveInfo, restaurant, timeSlots }) => {
+const CalendarComponent = ({
+  isOpen,
+  toggleDrawer,
+  setReserveInfo,
+  restaurant,
+  timeSlots,
+}) => {
   const location = useLocation();
   const [date, setDate] = useState(new Date());
 
@@ -37,6 +43,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer, setReserveInfo, restaurant, t
     mutate: checkReservationTimes,
     data: isTimes,
     isLoading,
+    error,
   } = ReservationTimes();
   const { mutate: createReservat } = CreateNewReservation();
   const people = ["1", "2", "3", "4", "5", "6", "7", "8"];
@@ -46,7 +53,6 @@ const CalendarComponent = ({ isOpen, toggleDrawer, setReserveInfo, restaurant, t
   const [activeStartDate, setActiveStartDate] = useState(new Date());
   const visitTimeHours = String(new Date().getHours()).padStart(2, "0");
   const visitTimeMinutes = String(new Date().getMinutes()).padStart(2, "0");
-
 
   /* 방문확인 모달추가 */
   const handleReserve = (e) => {
@@ -70,8 +76,8 @@ const CalendarComponent = ({ isOpen, toggleDrawer, setReserveInfo, restaurant, t
 
     // 예약정보넘기기
     setReserveInfo({
-      date : date,
-      people : 2
+      date: date,
+      people: 2,
     });
   };
   const handleTodayClick = () => {
@@ -88,7 +94,6 @@ const CalendarComponent = ({ isOpen, toggleDrawer, setReserveInfo, restaurant, t
       }
       checkReservationTimes(isData);
     }
-    console.log(isTimes);
   }, [isData]);
 
   const createTest = (item) => {
@@ -118,7 +123,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer, setReserveInfo, restaurant, t
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
+  console.log("error", error);
   return (
     <div>
       <Drawer
@@ -171,7 +176,7 @@ const CalendarComponent = ({ isOpen, toggleDrawer, setReserveInfo, restaurant, t
                       // setIsPeopleNum(index);
                       e.preventDefault();
                       setIsData({ ...isData, numberOfPeople: item });
-                      
+
                       // 240508 예약화면으로 이동 -> 원래는 시간 선택시 이동해야함 (테스트용)
                       // 예약정보넘기기
                       // setReserveInfo({
@@ -210,16 +215,16 @@ const CalendarComponent = ({ isOpen, toggleDrawer, setReserveInfo, restaurant, t
                   <SwiperSlide
                     key={index}
                     onClick={(e) => {
-                        e.preventDefault();
-                        
-                        // 240508 예약화면으로 이동 -> 원래는 시간 선택시 이동해야함 (테스트용)
-                        // 예약정보넘기기
-                        setReserveInfo({
-                          date : date,
-                          time : item.time,
-                          people : isData.numberOfPeople
-                        });
-                        toggleDrawer(e);
+                      e.preventDefault();
+
+                      // 240508 예약화면으로 이동 -> 원래는 시간 선택시 이동해야함 (테스트용)
+                      // 예약정보넘기기
+                      setReserveInfo({
+                        date: date,
+                        time: item.time,
+                        people: isData.numberOfPeople,
+                      });
+                      toggleDrawer(e);
                     }}
                     className="calendar-btn min-w-[70px] h-[38px] rounded-[6px]  text-[#333] border-[rgb(170 170 170)] border-[1px] w-fit text-[13px] text-center leading-[38px]"
                   >

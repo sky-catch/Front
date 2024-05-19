@@ -18,7 +18,6 @@ export const createRestaurant = async (data) => {
         Authorization: `Bearer ${token}`,
       },
     });
-
     return result;
   } catch (err) {
     console.log("Error >>", err);
@@ -44,12 +43,17 @@ export const UpdateRestaurantRes = () => {
     },
     onError: (error) => {
       console.log("createPost error", error);
+      if (error.response.status === 400) {
+        alert("중복된 식당 이름이 존재합니다.");
+      }
     },
   });
 };
 
 /* 식당 개별 조회 */
+
 export const getRestaurant = async ({queryKey}) => {
+
   try {
     const [name] = queryKey;
     const res = await apiClient.get(`/restaurants/${name}`, {
@@ -57,7 +61,6 @@ export const getRestaurant = async ({queryKey}) => {
         Authorization: `Bearer ${token}`,
       },
     });
-
     return res.data;
   } catch (err) {
     console.log("Error >>", err);
@@ -96,9 +99,6 @@ export const saveRestaurant = async (restaurantId) => {
 
 // 식당 공지 사항 추가
 const createNotificat = async ({ restaurantId, restaurantItem }) => {
-  console.log("restaurantId", restaurantId);
-  console.log("restaurantItem", restaurantItem);
-  const token = sessionStorage.getItem("token");
   return axios.post(
     `http://15.164.89.177:8080/restaurants/${restaurantId}/notifications`,
     restaurantItem,
