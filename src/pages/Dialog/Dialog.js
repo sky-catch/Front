@@ -1,51 +1,22 @@
-import { QueryClient } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
-// import{useQ}
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import DialogComponent from "../../components/DialogComponent";
 import { GetChatRoomListRes } from "../../respository/reservation";
 import Carousel from "../Home/Carousel";
 
-
-function sortDate1(list) {
-  const sorted_list = list.sort(function (a, b) {
-    return (
-      new Date(b.lastChatDate).getTime() - new Date(a.lastChatDate).getTime()
-    );
-  });
-  return sorted_list;
-}
-
 function Dialog() {
   const [isLogin, SetIsLogin] = useState(false);
+  const [filterText, setFilterText] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
-  // const [roomList, setRoomList] = useState([]);
-  const queryClient = new QueryClient();
   useEffect(() => {
     if (sessionStorage.getItem("token") !== null) {
-      // getRoomList();
       SetIsLogin(true);
     }
   }, [isLogin]);
 
-  // const getRoomList = () => {
-  //   const token = sessionStorage.getItem("token");
-  //   axios
-  //     .get("http://15.164.89.177:8080/chat/roomList", {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       console.log("createPost success", res);
-  //       SetIsLogin(true);
-  //     })
-  //     .catch((error) => {
-  //       console.log("createPost error", error);
-  //     });
-  // };
   const {
     data: roomList,
     isLoading,
@@ -55,7 +26,6 @@ function Dialog() {
     queryFn: async () => {
       try {
         const result = await GetChatRoomListRes();
-        console.log("result", result);
         return result;
       } catch (err) {
         console.log("Error >>", err.message);
@@ -65,8 +35,21 @@ function Dialog() {
     enabled: isLogin,
   });
 
-  // console.log("data", data);
-  // FIXME 절대 지우지말것.
+  const searchRestaurant = (e) => {
+    console.log(roomList);
+    let searchValue = e.target.value;
+    setFilterText(searchValue);
+  };
+  useEffect(() => {
+    if (!roomList) return;
+
+    const filterData = roomList.filter((item) => {
+      return item.restaurantName.includes(filterText);
+    });
+
+    setFilteredData(filterData);
+  }, [filterText]);
+
   if (!isLogin) {
     return (
       <DialogContents className="">
@@ -91,13 +74,6 @@ function Dialog() {
   }
 
   //FIXME 채팅방이 없을때 작업하기 위해 일부로 없앴음
-  // roomList.splice(0);
-
-  // if (roomList.length > 0) {
-  //   let test01 = Object.groupBy(roomList, ({ hasNewChat }) =>
-  //     hasNewChat ? "true" : "false"
-  //   );
-  // }
 
   return (
     <DialogContents className="">
@@ -109,13 +85,15 @@ function Dialog() {
                 className="pl-[44px] pr-[15px] text-xs h-[30px]"
                 type="text"
                 placeholder="가게 이름 검색"
+                value={filterText}
+                onChange={searchRestaurant}
               ></input>
             </form>
           </div>
           <div className="mt-[5px] container">
             <div className="">
               {roomList &&
-                roomList.map((item, index) => {
+                (filterText ? filteredData : roomList).map((item, index) => {
                   return (
                     <DialogComponent key={index} item={item}></DialogComponent>
                   );
@@ -125,9 +103,15 @@ function Dialog() {
         </>
       ) : (
         <div className=" flex flex-col  h-[100%] justify-end gap-y-[50px]">
-          <span className=" text-center text-[18px]">
-            현재 채팅방이 없습니다.
-          </span>
+          <div className="h-[500px] w-[100%]  flex-col gap-y-[20px] flex items-center justify-center ">
+            <img
+              className=" size-[70px]"
+              src={require("../../assets/icons/empty.png")}
+            />
+            <span className=" text-[#47566A] text-[16px] text-bold ">
+              현재 채팅방이 없습니다.
+            </span>
+          </div>
           <div className="">
             <Carousel />
           </div>
@@ -138,7 +122,6 @@ function Dialog() {
 }
 export default Dialog;
 const DialogContents = styled.div`
-  /* padding-bottom: 48px; */
   box-sizing: border-box;
   height: calc(100vh - 47px - 49px);
   margin-top: 47px;

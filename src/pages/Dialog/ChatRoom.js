@@ -1,70 +1,62 @@
 import { QueryClient, useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 // import io from "socket.io";
 // import io from "socket.io-client";
+import { io } from "socket.io-client";
 import styled from "styled-components";
 import { getRestaurant } from "../../respository/restaurant";
 // import quer
 import { getChatRoom } from "../../respository/reservation";
 
 const ChatRoom = () => {
-  const [roomInfor, setRoomInfor] = useState();
+  // const message = useRef();
   const location = useLocation();
-
+  const [isMessage, setIsMessage] = useState("");
   // 웹 소켓 연결 이벤트
   // : "ws://15.164.89.177:8080/chat";
 
   let name = new URLSearchParams(location.search).get("name");
-  // let name = location.search.split("=");
-  useEffect(() => {
-    setRoomInfor(location.state);
-    console.log("roomInfor", location);
-  }, []);
+  let roomId = new URLSearchParams(location.search).get("id");
 
-  const chatRoomId = location.state.chatRoomId;
+  const chatRoomId = roomId;
   const memberChat = true;
   const token = sessionStorage.getItem("token");
-  console.log(chatRoomId);
-  // const socket = io("http://localhost:3000/chat", {
-  //   transports: ["websocket"],
-  //   timeout: 30000,
-  //   reconnectionAttempts: 2,
-  // });
+  // const socket = io("http://localhost:3000", {
+  // const socket = io(`${window.location.origin}`, {
+  const socket = io("http://15.164.89.177:8080/chat", {
+    reconnection: true,
+    reconnectionAttempts: 5,
+    extraHeaders: {
+      Authorization: `Bearer ${token}`, // 여기서 token은 획득한 인증 토큰입니다.
+      chatRoomId: String(chatRoomId),
+      memberchat: String(memberChat),
+    },
+  });
 
-  // socket.on("connect_error", (error) => {
-  //   console.error("Socket.io 연결 에러:", error);
-  // });
+  socket.on("connect", () => {
+    console.log("Connected to server");
+  });
 
-  // socket.on("connect", () => {
-  //   console.log("서버와 연결되었습니다.");
-  // });
-  // socket.on("disconnect", () => {
-  //   console.log("서버와의 연결이 끊어졌습니다.");
-  // });
-  // socket.on("message", (data) => {
-  //   console.log("서버로부터 메시지 수신:", data);
-  // });
+  socket.on("disconnect", () => {
+    console.log("Disconnected from server");
+  });
 
-  // 서버로 메시지 전송
-  // socket.emit("message", "안녕하세요, 서버!");
-  // GetChatRoom()
-  //   .then((res) => {
-  //     console.log("res", res);
-  //   })
-  //   .catch((error) => {
-  //     console.log("error", error);
-  // socket.onclose = (event) => console.log(`Closed ${event.code}`);
-  // GetChatRoomListRes()
-  //   .then((res) => {
-  //     console.log("res", res);
-  //   })
-  //   .catch(() => {
-  //     console.log();
-  //   });
-  // }, []);
+  socket.on("message", (message) => {
+    console.log("Received message:", message);
+    // 여기에서 메시지를 처리하거나 상태를 업데이트할 수 있습니다.
+  });
 
-  // console.log(String(item.updatedDate).split("T")[1].slice(0, 2));
+  const sendMessage = (e) => {
+    e.preventDefault(); // 폼 제출 이벤트 기본 동작 방지
+    if (!isMessage.trim()) {
+      return;
+    }
+    socket.emit("message", isMessage);
+
+    // 메시지 입력 상태 초기화
+    setIsMessage("");
+  };
   const queryClient = new QueryClient();
   const {
     data: chatRoomList,
@@ -75,7 +67,6 @@ const ChatRoom = () => {
     queryFn: () => {
       return getChatRoom(chatRoomId)
         .then((res) => {
-          console.log("res", res);
           return res;
         })
         .catch((err) => {
@@ -91,7 +82,7 @@ const ChatRoom = () => {
   } = useQuery({
     queryKey: ["restaurantName"],
     queryFn: () => {
-      return getRestaurant(new URLSearchParams(location.search).get("name"));
+      return getRestaurant(name);
     },
   });
 
@@ -100,11 +91,11 @@ const ChatRoom = () => {
   return (
     <ChatBox>
       <div className=" min-h-[40px] container border-solid  leading-[40px] border-b-[#d4d4d4] border-b-[1px]">
-        {location.state.restaurantName}
+        {name}
       </div>
       <div className="w-[calc(100vw-40px)] px-[7px] py-[4px] top-[50px] bg-white rounded-lg absolute left-0 right-0 mx-[auto] shadow-md">
         <span className="text-[12px] text-center">
-          영업 시간 :{" "}
+          영업 시간 :
           {String(restaurant.data.openTime).slice(0, 5) +
             " ~ " +
             String(restaurant.data.closeTime).slice(0, 5) +
@@ -136,7 +127,7 @@ const ChatRoom = () => {
                     >
                       {item.content}
                     </div>
-                    {console.log("item", item)}
+
                     <span className=" text-[12px]">
                       {(String(item.updatedDate).split("T")[1].slice(0, 2) > 12
                         ? "오후 "
@@ -159,17 +150,19 @@ const ChatRoom = () => {
             <input
               type="text"
               name="message"
+              value={isMessage}
               maxLength="50"
+              onChange={(e) => {
+                setIsMessage(e.target.value);
+              }}
               className=" w-[calc(100%-47px)] bg-[#ff3d00] text-[#fff] caret-white"
             />
-            <input
-              className=" size-[47px] block text-[#fff]"
-              type="submit"
-              value="전송"
-              onClick={(e) => {
-                e.preventDefault();
-              }}
-            />
+            <button
+              className="size-[47px] block text-[#fff]"
+              onClick={sendMessage}
+            >
+              전송
+            </button>
           </form>
         </div>
       </div>

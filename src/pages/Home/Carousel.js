@@ -6,22 +6,28 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const slideItem = [{
+const slideItem = [
+  {
     id: 0,
     url: "https://ugc-images.catchtable.co.kr/admin/marketing/banner/images/6872af8d3926459382a6d8c3bd05d0be",
-  },{
+  },
+  {
     id: 1,
     url: "https://ugc-images.catchtable.co.kr/admin/marketing/banner/images/dd3cf3ca4172400795af5de7f7ef3bbb",
-  },{
+  },
+  {
     id: 2,
     url: "https://ugc-images.catchtable.co.kr/admin/marketing/banner/images/fa84ce5706f046508828f5032cd6dc78",
-  }, {
-    id : 3,
-    url : "https://ugc-images.catchtable.co.kr/admin/marketing/banner/images/b62bbe9454a946fc90834334406ddda8"
-  },{
+  },
+  {
+    id: 3,
+    url: "https://ugc-images.catchtable.co.kr/admin/marketing/banner/images/b62bbe9454a946fc90834334406ddda8",
+  },
+  {
     id: 4,
     url: "https://d3kzx7mqemhf0.cloudfront.net/common_img/comm_2422211081434326.webp",
-  }];
+  },
+];
 
 export default function Carousel() {
   return (
@@ -33,7 +39,7 @@ export default function Carousel() {
         spaceBetween={0}
         pagination={true}
         slidesPerView={"auto"}
-        autoplay={{ delay: 3500}}
+        autoplay={{ delay: 3500 }}
         centeredSlides={true}
       >
         {slideItem.map((item, index) => {
@@ -71,9 +77,10 @@ const CarouselWrapper = styled.section`
     height: auto;
   }
   .carousels {
-    width : 429.041px;
-    margin-right : 8px;
-    border-radius : 8px;
-    overflow : hidden;
+    max-width: 429.041px;
+    width: calc(100vw - 40px);
+    margin-right: 8px;
+    border-radius: 8px;
+    overflow: hidden;
   }
 `;

@@ -1,13 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import AddIcon from "@mui/icons-material/Add";
+import Box from "@mui/material/Box";
+import Fab from "@mui/material/Fab";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
 import Drawer from "react-modern-drawer";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { RestaurantState } from "../../States/LoginState";
 import { CreateNotificatRes } from "../../respository/restaurant";
+import { getMyRestaurant } from "../../respository/userInfo";
 const Notifications = () => {
-  // TODO: 저장한 데이터로 공지사항 보여지면 안됌, 관련 데이터 받고 만들어야됨
   const restaurant = useRecoilValue(RestaurantState);
-  const [isNotificat, setIsNotificat] = useState([]);
+  // const [isNotificat, setIsNotificat] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const { mutate: createNotificat } = CreateNotificatRes();
   const inputRef = useRef([]);
@@ -25,8 +29,27 @@ const Notifications = () => {
 
   useEffect(() => {
     console.log(restaurant);
-    setIsNotificat(restaurant.notifications);
+    // setIsNotificat(restaurant.notifications);
   }, []);
+
+  // 내 식당 관리 페이지
+  const {
+    data: getRestaurantItem,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["getMyRestaurant"],
+    queryFn: () => {
+      return getMyRestaurant()
+        .then((res) => {
+          return res;
+        })
+        .catch((err) => {
+          console.log("err1", err.response);
+        });
+    },
+  });
+
   const setDeadline = (date) => {
     const now = new Date();
     const nowStart = new Date(date);
@@ -78,14 +101,14 @@ const Notifications = () => {
   return (
     <MainContents className="">
       <div className=" container h-[100%]">
-        {isNotificat && isNotificat.length > 0 ? (
-          isNotificat.map((item, index) => {
+        {getRestaurantItem && getRestaurantItem.notifications.length > 0 ? (
+          getRestaurantItem.notifications.map((item, index) => {
             return (
               <div
-                className=" border-b-[#c1c1c1] border-b-[1px] py-[10px] flex gap-y-[14px] flex-col"
+                className="rounded-md shadow mb-[15px] px-[15px] py-[10px] flex gap-y-[14px] flex-col"
                 key={index}
               >
-                <span className=" flex items-center">
+                <span className=" flex items-center text-hidden">
                   {`${item.title}`}
                   {setDeadline(item.endDate) && (
                     <em className=" text-[12px] text-[#ff3d00] ml-[10px]">
@@ -93,7 +116,7 @@ const Notifications = () => {
                     </em>
                   )}
                 </span>
-                <div className="p-[7px] rounded-lg bg-[#f4f4f4] text-[#2c2c2c] text-[14px] min-h-[80px] max-h-[120px] overflow-auto scroll-hide">
+                <div className="p-[7px] rounded-md bg-[#f4f4f4] text-[#2c2c2c] text-[14px] min-h-[80px] max-h-[120px] overflow-auto scroll-hide">
                   {item.content}
                 </div>
                 <div className=" flex items-center justify-end gap-x-[5px]">
@@ -107,14 +130,25 @@ const Notifications = () => {
             );
           })
         ) : (
-          <div className="h-[100%] flex justify-center items-center">
-            <span className="text-[#c8c8c8] text-[16px] text-bold">
+          <div className="h-[100%] w-[100%]  flex-col gap-y-[20px] flex items-center justify-center ">
+            <img
+              className=" size-[70px]"
+              src={require("../../assets/icons/empty.png")}
+            />
+            <span className=" text-[#47566A] text-[16px] text-bold ">
               등록된 공지 사항이 없습니다.
             </span>
           </div>
         )}
       </div>
-      <AddBtn className="btn-icon add icon" onClick={toggleDrawer}></AddBtn>
+      <AddBtn onClick={toggleDrawer}>
+        <Box>
+          <Fab size="medium" color="#ff3d00" aria-label="add">
+            <AddIcon />
+          </Fab>
+        </Box>
+      </AddBtn>
+      {/* <AddBtn className="btn-icon add icon" onClick={toggleDrawer}></AddBtn> */}
       <Drawer
         open={isOpen}
         onClose={toggleDrawer}
@@ -212,14 +246,13 @@ const MainContents = styled.div`
   overflow: auto;
   margin-top: 47px;
 `;
-const AddBtn = styled.button`
+const AddBtn = styled.div`
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 55px;
-  height: 55px;
-  background-color: #ff3d00;
-  border-radius: 50%;
+  && button {
+    background-color: #ff3d00;
+  }
 `;
 
 const CommentSendBtn = styled.button`
