@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
-import "react-modern-drawer/dist/index.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import "swiper/css";
@@ -18,12 +16,8 @@ import SaveConfirmComponent from "../../components/SaveConfirmComponent.js";
 import StarsComponent from "../../components/StarsComponent.js";
 import { getRestaurant, useSaveRestaurant, useDeleteRestaurant } from "../../respository/restaurant";
 import RestaurantInfor from "./RestaurantInfor";
-import { LocationDrawer } from "../../components/Modal/Location.js";
-import {checkReservationTimes} from "../../respository/reservation.js"
 import { MapComponent } from "../../components/MapComponent.js";
 import { checkReservationTimes } from "../../respository/reservation.js";
-import { getRestaurant, saveRestaurant } from "../../respository/restaurant";
-import RestaurantInfor from "./RestaurantInfor";
 
 /**
  * 식당 상세 정보 페이지
@@ -59,28 +53,6 @@ export default function Restaurant() {
     queryClient.invalidateQueries({queryKey : [state]})
   }});
   
-  const { data: restaurant, isLoading } = useQuery({
-    queryKey: [state],
-    queryFn: getRestaurant,
-  }); /* 식당 정보 */
-  const shopId = restaurant?.restaurantId;
-  const { data: availTimes } = useQuery({
-    queryKey: [
-      {
-        restaurantId: shopId,
-        numberOfPeople: 2,
-        searchDate: "2024-05-18",
-        visitTime: "18:00",
-      },
-    ],
-    queryFn: checkReservationTimes,
-    enabled: !!shopId,
-  });
-  const timeSlots = availTimes
-    ? availTimes["timeSlots"]
-    : null; /* 예약 가능한 시간 */
-
-
   const [openBottom, setOpenBottom] = React.useState(false);
   const openDrawerBottom = () => setOpenBottom(true);
   const closeDrawerBottom = () => setOpenBottom(false);
@@ -242,25 +214,6 @@ export default function Restaurant() {
     <main className="pb-[74px]">
       {/* 1. 식당 이미지 */}
       <Section>
-        <Swiper
-          className="slide-image-wrapper"
-          onSlideChange={onChangeSlide} >
-          { restaurant.images?.length < 1 ? 
-           <SwiperSlide className="slide-none">
-            이미지가 없습니다.
-           </SwiperSlide>
-          // ''
-           : restaurant.images?.map((item, index) => {
-            // console.log(item);
-            return (
-              <SwiperSlide key={item.id}
-                className="slide-image-item slide-none">
-                {/* <a> */}
-                  <img className="shopImg" width='100%' src={item.path}></img>
-                {/* </a> */}
-              </SwiperSlide>
-            );
-          })}
         <Swiper className="slide-image-wrapper" onSlideChange={onChangeSlide}>
           {restaurant && restaurant.images.length < 1 ? (
             <SwiperSlide className="slide-none">이미지가 없습니다.</SwiperSlide>
@@ -326,94 +279,53 @@ export default function Restaurant() {
           </div>
         </div>
       </Section>
-      {/* <Seperator></Seperator> */}
+      <hr className="seperator"></hr>
       {/* 3. 예약 일시 */}
-      {/* <section className="section">
+      <section className="section">
         <div className="reserve">
           <div className="container gutter-sm">
             <div className="section-header">
               <h3>예약 일시</h3>
-            </div>
-            <div className="section-body">
-              <div className="mb-[8px]">
-                <a
-                  href={`#`}
-                  className="btn btn-lg btn-outline btn-cta full-width arrowdown"
-                >
-                  <span>
-                    <span className="label calendar">
-                      {" "}
-                      오늘 ({week[new Date().getDay()]}) / 2 명
-                    </span>
-                  </span>
-                </a>
+                    </div>
+                    <div className="section-body">
+                    <div className="mb-[8px]">
+                        <a
+                        className="btn btn-lg btn-outline btn-cta full-width arrowdown">
+                        <span>
+                          <span className="label calendar"> 오늘 ({week[new Date().getDay()]}) / 2 명</span>
+                        </span>
+                      </a>
+                    </div>
+                    { timeSlots && timeSlots.length > 0 ?
+                    <>
+                      <div className="section-time-slot mb-[24px]">
+                        <Swiper
+                          className="timetable-list-sm"
+                        >
+                          { timeSlots.map((item,index)=> {
+                            const hour = item.time.slice(0,2);
+                            const min = item.time.slice(2,5);
+                              return(<SwiperSlide key={index} onClick={(e)=>onReserveCalendar(item.time,e)}>
+                              <button className="timetable-list-item">
+                                <span className="time">{hour%12>0 ? `오후 ${hour%12}` : `오전 ${hour}`}{min}</span>
+                              </button>
+                              </SwiperSlide>)
+                          })}
+                        </Swiper>
+                      </div>
+                      </>
+              : 
+              <div className="time-slot-unavailable-box">
+                <p className="time-slot-unavailable">예약 시간 나열!</p>
               </div>
-              {/* { timeSlots && timeSlots.length > 0 ?
-              <>
-                <div className="section-time-slot mb-[24px]">
-                  <Swiper
-                    className="timetable-list-sm"
-                  >
-                    { timeSlots.map((item,index)=> {
-                      const hour = item.time.slice(0,2);
-                      const min = item.time.slice(2,5);
-                        return(<SwiperSlide key={index} onClick={(e)=>onReserveCalendar(item.time,e)}>
-                        <button className="timetable-list-item">
-                          <span className="time">{hour%12>0 ? `오후 ${hour%12}` : `오전 ${hour}`}{min}</span>
-                        </button>
-                        </SwiperSlide>)
-                    })}
-                  </Swiper>
-                </div>
-                {/* <div className="btn-centered">
-                    <a className="btn btn-rounded btn-outline-red btn-outline-red-rounded">
-                      <span className="label arrow">예약가능 날짜 찾기</span>
-                    </a>
-                </div> */}
-                    <span>
-                      <span className="label calendar">
-                        {" "}
-                        오늘 ({week[new Date().getDay()]}) / 2 명
-                      </span>
-                    </span>
-                  </a>
-                </div> 
-              {timeSlots && timeSlots.length > 0 ? (
-                <>
-                  <div className="section-time-slot mb-[24px]">
-                    <Swiper className="timetable-list-sm">
-                      {timeSlots.map((item, index) => {
-                        return (
-                          <SwiperSlide
-                            key={index}
-                            onClick={(e) => onReserveCalendar(item.time, e)}
-                          >
-                            <button className="timetable-list-item">
-                              <span className="time">{item.time}</span>
-                            </button>
-                          </SwiperSlide>
-                        );
-                      })}
-                    </Swiper>
-                  </div>
-                  <div className="btn-centered">
-                    <a className="btn btn-rounded btn-outline-red btn-outline-red-rounded">
-                      <span className="label arrow">예약가능 날짜 찾기</span>
-                    </a>
-                  </div>
-                </>
-              ) : (
-                <div className="time-slot-unavailable-box">
-                  <p className="time-slot-unavailable">예약 시간 나열!</p>
-                </div>
-              )}
+              }
             </div>
           </div>
         </div>
-      </section> */}
+      </section>
       <Seperator></Seperator>
       {/* 4. 탭 */}
-      <RestaurantTap restaurantInfo={restaurant}></RestaurantTap>
+      <RestaurantTap restaurant={restaurant}></RestaurantTap>
       {restaurant.notifications[0] && (
         <section className="section">
           <div className="noti">
@@ -546,7 +458,7 @@ export default function Restaurant() {
             restaurant && restaurant.saved ? "active" : ""
           }`}
         >
-          <button onClick={saveMyRestaurant}>저장</button>
+          <button onClick={useSaveMyRestaurant}>저장</button>
           <span>{restaurant ? restaurant.savedCount : 0}</span>
         </div>
         <button className="reservebtn" onClick={onReserveCalendar}>
