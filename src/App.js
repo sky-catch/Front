@@ -23,14 +23,15 @@ import ReviewList from "./pages/Restaurant/ReviewList.js";
 import Search from "./pages/Search/Search.js";
 import SearchList from "./pages/Search/SearchList.js";
 import SearchTotal from "./pages/Search/SearchTotal.js";
+import { MenuList } from "./pages/Restaurant/MenuList.js";
+import { PhotoList } from "./pages/Restaurant/PhotoList.js";
 
 function App() {
-  const [search, setSearch] = useState({});
-  const updateSearch = (param) => {
-    setSearch(param);
-  };
+  const [search, setSearch] = useState();
+  const updateSearch = (param) => { setSearch(param);};
 
   /* 카카오 로그인 구현 시 뜨는 에러로 인해 현재 sessionStorage에 임시저장하여 기능 구현중 */
+
 
   // sessionStorage.setItem(
   //   "token",
@@ -88,6 +89,14 @@ function App() {
           <Route
             path="/ct/shop/:restaurantName/reviewList"
             element={<ReviewList />}
+          />
+          <Route
+            path="/ct/shop/:restaurantName/menuList"
+            element={<MenuList />}
+          />
+          <Route
+            path="/ct/shop/:restaurantName/photoList"
+            element={<PhotoList />}
           />
           <Route path="/ct/shop/reservation/form" element={<ReserveForm />} />
           <Route path="/ct/my" element={<RestaurantSetting />} />

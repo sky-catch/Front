@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { TempDrawer } from "../../components/Modal/TempDrawer"
+
 const shortcutItem = [
   {
     id: 0,
@@ -77,12 +80,18 @@ const shortcutItem = [
 ];
 
 export default function ShortCut() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleRank = (e) => {
+    setIsOpen((prevState)=>!prevState);
+  }
+
   return (
     <section className="shorcut-list-wrap pb-[20px] px-[20px]">
       <div className="shortcut-list">
         {shortcutItem.map((item) => {
           return (
-            <div className="list-item" key={item.id}>
+            <div className="list-item" key={item.id} onClick={handleRank}>
               <div className="icon-wrap">
                 <img src={item.url} />
               </div>
@@ -91,6 +100,11 @@ export default function ShortCut() {
           );
         })}
       </div>
+      <TempDrawer
+        isOpen={isOpen}
+        toggleDrawer={handleRank}
+      >
+      </TempDrawer>
     </section>
   );
 }

@@ -1,7 +1,10 @@
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { searchByKeyword } from "../../respository/search";
+import replace from "../../assets/icons/restaurant.svg";
 
 /**
  * 전체 검색
@@ -9,14 +12,23 @@ import { Swiper, SwiperSlide } from "swiper/react";
  */
 export default function SearhTotal({ search }) {
   const navigate = useNavigate();
-  const [region, setRegion] = useState([]); //지역
-  const [diner, setDiner] = useState([]); // 레스토랑
-  const [keywords, setKeywords] = useState(
-    JSON.parse(sessionStorage.getItem("keywords")) || []
-  );
-  const [input, setInput] = useState("");
-  var cityCount,
-    hotCount = 0;
+  const [keywords, setKeywords] = useState(JSON.parse(sessionStorage.getItem("keywords")) || []); // 최근 검색어
+  
+  const { data : searchResult, isLoading } = useQuery({ queryKey : [search], queryFn : searchByKeyword}); // 레스토랑
+  console.log(search,searchResult);
+  let restaurants = searchResult?.restaurantSummaryDTOList;
+  let region = [];  // 지역 정보
+  for (let key in searchResult) {
+    if(key == 'city' && searchResult[key] != null) {
+      region.push([searchResult[key], searchResult['cityRestaurantCount']]);
+    } 
+    if(key == 'hotPlace' && searchResult[key] != null) {
+      // [ToDo] hotPlace가 복수개면 로직 수정해야할듯
+      region.push([searchResult[key], searchResult['hotPlaceRestaurantCount']]);
+    }
+  }
+  // console.log('searchResult : ', searchResult, 'restaurants:', restaurants, 'search:',search, 'keywords:',keywords);
+
 
   // funtion : 식당 이동
   const handleMovePage = (e) => {
@@ -26,26 +38,27 @@ export default function SearhTotal({ search }) {
 
   // function : 지역 검색
   const handleSearch = (e) => {
-    console.log(e.currentTarget);
-    navigate();
+    // 선택한 지역으로 검색!
+    navigate(`/search/list`); 
     // 선택해야 최근 검색어로 저장
     handleAddKeyword(e.currentTarget.id);
   };
 
   // function : 최근 검색어 추가
   const handleAddKeyword = (text) => {
-    console.log(text);
+    let isAdd = true;
     const newText = {
       id: Date.now(),
       text: text,
     };
-    setKeywords([newText, ...keywords]);
+    // 최근 검색어 리스트에 이미 있으면 넣지 않는다.
+    for(let v of keywords) {if(text==v.text){isAdd = false;return;}}
+    if(isAdd) setKeywords([newText, ...keywords]);
   };
 
   // function : 최근 검색어 삭제창 노출
   const handleDeleteAlert = (e) => {
     var recent = e.currentTarget.nextSibling.classList;
-    console.log(e.currentTarget);
     recent.forEach((item) => {
       if (item == "show") {
         recent.remove("show");
@@ -61,40 +74,30 @@ export default function SearhTotal({ search }) {
     setKeywords([]);
   };
 
+  //
+  const handleImg =(e) => {
+    console.log(e.target.src);
+    e.target.src = replace;
+  }
+
   useEffect(() => {
-    // 1. 지역, 레스토랑 저장
-    var arr1 = ["city", "hotPlace"];
-    var arr2 = [];
-    Object.entries(search).map((item, idx) => {
-      if (arr1.indexOf(item[0]) > -1 && item[1] != null) {
-        var data = {};
-        data[item[0]] = item[1];
-        arr2.push(data);
-      }
-
-      if (item[0] == "restaurantSummaryDTOList") {
-        setDiner(item[1]);
-      }
-
-      if (item[0] == "input") {
-        setInput(item[1]);
-      }
-    });
-    setRegion(arr2);
-    console.log(region, diner, input);
-
-    // 2. 최근 검색어 저장
+    // 최근 검색어 저장
     // arr타입을 string 형태로 바꾸기 위해 json.stringfy 사용
     sessionStorage.setItem("keywords", JSON.stringify(keywords));
+    console.log(!search);
+    // if(!search) {
+      restaurants = [];
+    // }
   }, [search, keywords]);
 
   return (
+    // <></>
     <ContentMain>
       <hr className="seperator" />
       <section>
         <div className="mt-[18]">
-          {/* 검색 전 : 최근검색 */}
-          {region.length < 1 && input.length < 1 ? (
+          {/* 검색 전 : 최근검색 = 검색 결과 없으면 */}
+          {region?.length < 1 && keywords.length > 0 && (
             <div className="container gutter-sm">
               <div className="recent-input-header flex justify-between">
                 <h3 className="title">최근 검색어</h3>
@@ -113,7 +116,6 @@ export default function SearhTotal({ search }) {
                   // className="swiper-wrapper"
                 >
                   {keywords.map((item, index) => {
-                    console.log(item);
                     return (
                       <SwiperSlide
                         key={index}
@@ -126,13 +128,12 @@ export default function SearhTotal({ search }) {
                 </Swiper>
               </div>
             </div>
-          ) : (
-            ""
           )}
           {/* 검색후 : 결과 O */}
           <div>
             {/* 1.지역 */}
-            {region.length > 0 ? (
+            {region?.length > 0 && (
+              <>
               <section className="pt-[10px]">
                 <div className="container gutter-sm">
                   <div className="form-block">
@@ -141,55 +142,47 @@ export default function SearhTotal({ search }) {
                     </div>
                     <div className="form-block-body">
                       {region.map((item, idx) => {
-                        if (
-                          (Object.keys(item) == "city" &&
-                            Object.values(item) != "") ||
-                          (Object.keys(item) == "hotPlace" &&
-                            Object.values(item) != "")
-                        ) {
-                          // console.log(item);
-                          return (
-                            <div
-                              className="searched-keyword-left-item"
-                              key={idx}
-                              id={Object.values(item)}
-                              onClick={handleSearch}
-                            >
-                              <i className="icon"></i>
-                              <span>{Object.values(item)}</span>
-                              {/* <small>{cityCount}, {hotCount}</small> */}
-                            </div>
-                          );
-                        }
+                        if(!item) return;
+                        return (
+                          <div
+                            className="searched-keyword-left-item"
+                            key={idx}
+                            id={item[0]}
+                            onClick={handleSearch}
+                          >
+                            <i className="icon"></i>
+                            <span>{item[0]}</span>
+                            <small>{item[1]}</small>
+                          </div>
+                        );
                       })}
                     </div>
                   </div>
                 </div>
               </section>
-            ) : (
-              ""
+              <hr />
+              </>
             )}
             {/* 2. 식당 */}
-            {diner.length > 0 ? (
+            { restaurants?.length > 0 && 
               <>
-                <hr />
                 <div>
-                  <section className="pt-[10px]">
+                  <section className="pt-[10px] mb-[50px]">
                     <div className="container gutter-sm">
                       <div className="form-block">
                         <div className="form-block-header">
                           <h2>레스토랑</h2>
                         </div>
                         <div className="form-block-body">
-                          {diner.map((item, idx) => {
+                          { restaurants.map((item, idx) => {
                             return (
                               <div
                                 className="searched-keyword-left-item"
-                                key={item.restaurantId}
+                                key={idx}
                                 id={item.name}
                                 onClick={handleMovePage}
                               >
-                                <div className="tb">img</div>
+                                <div className="tb"><img className="img" src={item.imageUrl} onError={handleImg}></img></div>
                                 <div className="keyword">
                                   <h4 className="name">{item.name}</h4>
                                   <div className="location">
@@ -205,12 +198,10 @@ export default function SearhTotal({ search }) {
                   </section>
                 </div>
               </>
-            ) : (
-              ""
-            )}
+          }
           </div>
           {/* 검색후 : 결과 X */}
-          {input.length > 0 && region.length < 1 && diner.length < 1 ? (
+          {/* { input.length > 0 && region.length < 1 && restaurants ? (
             <div>
               <div className="search-result-nodata">
                 <div className="search-result-nodata-text">
@@ -221,7 +212,7 @@ export default function SearhTotal({ search }) {
             </div>
           ) : (
             ""
-          )}
+          )} */}
         </div>
       </section>
     </ContentMain>
