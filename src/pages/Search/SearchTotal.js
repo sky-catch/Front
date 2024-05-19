@@ -15,6 +15,7 @@ export default function SearhTotal({ search }) {
   const [keywords, setKeywords] = useState(JSON.parse(sessionStorage.getItem("keywords")) || []); // 최근 검색어
   
   const { data : searchResult, isLoading } = useQuery({ queryKey : [search], queryFn : searchByKeyword}); // 레스토랑
+  console.log(search,searchResult);
   let restaurants = searchResult?.restaurantSummaryDTOList;
   let region = [];  // 지역 정보
   for (let key in searchResult) {
@@ -83,6 +84,10 @@ export default function SearhTotal({ search }) {
     // 최근 검색어 저장
     // arr타입을 string 형태로 바꾸기 위해 json.stringfy 사용
     sessionStorage.setItem("keywords", JSON.stringify(keywords));
+    console.log(!search);
+    // if(!search) {
+      restaurants = [];
+    // }
   }, [search, keywords]);
 
   return (
