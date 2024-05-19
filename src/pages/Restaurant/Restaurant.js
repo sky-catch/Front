@@ -118,7 +118,7 @@ export default function Restaurant() {
         //TODO: 데이터 적용 완료
         setRestaurant(res.data);
         if (!res.data) return;
-        console.log("res.data.restaurantId", res.data.restaurantId);
+        // console.log("res.data.restaurantId", res.data.restaurantId);
         const info = {
           restaurantId: res.data.restaurantId,
           numberOfPeople: 2,

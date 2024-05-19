@@ -100,6 +100,7 @@ export default function RestaurantInfo() {
   const inputRef = useRef([]);
   const { mutate: updateRestaurant } = UpdateRestaurantRes();
   const [photoToAddList, setPhotoToAddList] = useState([]);
+  const [isphoto, isSetPhoto] = useState([]);
   const ITEM_HEIGHT = 40;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
@@ -153,6 +154,8 @@ export default function RestaurantInfo() {
       setRestaurant(true);
       if (prevUser.images) {
         console.log(prevUser.images);
+        isSetPhoto(prevUser.images);
+        // setPhotoToAddList(prevUser.images);
         // setPhotoToAddList(prevUser.images);
       }
     }
@@ -695,6 +698,7 @@ export default function RestaurantInfo() {
               </span>
               <FileUpLoad
                 photoToAddList={photoToAddList}
+                isphoto={isphoto}
                 setPhotoToAddList={setPhotoToAddList}
               ></FileUpLoad>
             </div>

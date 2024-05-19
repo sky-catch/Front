@@ -89,9 +89,6 @@ export const PostChatRoomItem = () => {
 
 //채팅방 목록 보기
 export const GetChatRoomListRes = async () => {
-  // const token = sessionStorage.getItem("token");
-  // const token = `eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTQwMzA2ODksImV4cCI6MTcxNDExNzA4OX0.cnzXk6pEiaCqvbww_tjq-JjUGE_MW84lqij7y44lZyyjkUhyUFf61ZwIxSzYYjgpaj_NmtwA6kvYPUuKsauc-A`;
-
   try {
     const result = await apiClient.get(`/chat/roomList`, {
       headers: {

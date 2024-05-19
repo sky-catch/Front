@@ -705,6 +705,11 @@ video {
   margin-bottom: 30px;
 }
 
+.my-\[5px\] {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 .my-\[8px\] {
   margin-top: 8px;
   margin-bottom: 8px;
@@ -952,6 +957,10 @@ video {
   height: 18px;
 }
 
+.h-\[220px\] {
+  height: 220px;
+}
+
 .h-\[30px\] {
   height: 30px;
 }
@@ -1018,6 +1027,10 @@ video {
 
 .max-h-\[120px\] {
   max-height: 120px;
+}
+
+.min-h-\[120px\] {
+  min-height: 120px;
 }
 
 .min-h-\[180px\] {
@@ -1210,6 +1223,10 @@ video {
   column-gap: 5px;
 }
 
+.gap-x-\[7px\] {
+  column-gap: 7px;
+}
+
 .gap-y-2 {
   row-gap: 0.5rem;
 }
@@ -1268,10 +1285,6 @@ video {
 
 .rounded-\[10px\] {
   border-radius: 10px;
-}
-
-.rounded-\[12px\] {
-  border-radius: 12px;
 }
 
 .rounded-\[50\%\] {
@@ -2564,9 +2577,11 @@ header {
   background-image: url("./assets/icons/icon-addition.png");
 }
 
-.icon.delect-icon {
+.photoBoxDelete {
   /* width: 35px; */
   position: absolute;
+  width: 20px;
+  height: 20px;
   right: 5px;
   top: 5px;
   transform: rotate(45deg);

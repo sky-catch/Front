@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaStar } from "react-icons/fa";
+import Drawer from "react-modern-drawer";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -18,16 +19,22 @@ import {
 
 function MyPage() {
   const navigate = useNavigate();
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [user, setUser] = useRecoilState(LoginState);
   const [restaurant, setRestaurant] = useRecoilState(RestaurantState);
-
   const [following, setFollowing] = useState(0);
+  const textInput = useRef();
+  const photoInput = useRef();
   const [follower, setFollower] = useState(0);
+  const [isScore, setIsScore] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
   const [isOwner, setIsOwner] = useState(false);
   const [isRestaurant, setIsRestaurant] = useState(false);
-  const [owner, setOwner] = useState([]);
+  const [isUserInfo, setIsUserInfo] = useState([]);
+  const [photoToAddList, setPhotoToAddList] = useState([]);
+  const [photoToAddList2, setPhotoToAddList2] = useState([]);
+  const [isSelectInfo, setIsSelectInfo] = useState([]);
   const [isSave, setIsSave] =
     useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
 
@@ -36,14 +43,89 @@ function MyPage() {
     navigate("/my/myProfileInfo");
   };
 
-  /* Function : 식당 정보 관리 */
+  useEffect(() => {
+    console.log("photoToAddList", photoToAddList);
+  }, [photoToAddList]);
 
-  // 사장 생성
+  const toggleDrawerReview = (e, info) => {
+    setIsReviewOpen((prevState) => !prevState);
+    if (isReviewOpen) {
+      setIsScore(0);
+      document.querySelector(`.star span`).style.width = `0%`;
+      textInput.current.value = "";
+      setPhotoToAddList([]);
+    } else {
+      setIsScore(info.rate);
+      document.querySelector(`.star span`).style.width = `${
+        info.rate * 2 * 10
+      }%`;
+      textInput.current.value = info.comment;
+      console.log(info);
+      setIsSelectInfo(info.images);
+    }
+  };
+
+  const handleClick = () => {
+    if (photoToAddList.length >= 5) {
+      alert("최대 5장만 가능합니다.");
+      return;
+    }
+    photoInput.current.click();
+  };
+
+  const handlePhoto = (e) => {
+    const temp = [];
+    const photoToAdd = e.target.files;
+    for (let i = 0; i < photoToAdd.length; i++) {
+      temp.push({ file: photoToAdd[i] });
+    }
+    console.log("photoToAdd", temp.concat(photoToAddList));
+    setPhotoToAddList(temp.concat(photoToAddList));
+  };
+
+  const photoToAddPreview = () => {
+    if (!isReviewOpen) return;
+    if (photoToAddList.length > 5) {
+      alert("최대 5장만 가능합니다.");
+      photoToAddList.length = 5;
+    }
+    return photoToAddList.map((photo) => {
+      let photoUrl = URL.createObjectURL(photo.file);
+      return (
+        <div className="photoBox" key={photoUrl}>
+          <div
+            className="photoBoxDelete icon delect-icon"
+            onClick={() => onRemoveToAdd(photo.file.name)}
+          />
+          <img
+            className="photoPreview size-[100%]"
+            src={photoUrl}
+            alt="preview"
+          />
+        </div>
+      );
+    });
+  };
+
+  const drawStar = (e) => {
+    document.querySelector(`.star span`).style.width = `${
+      e.target.value * 10 * 2
+    }%`;
+    setIsScore(e.target.value);
+  };
+
+  const onRemoveToAdd = (deleteName) => {
+    setPhotoToAddList(
+      photoToAddList.filter((photo) => photo.file.name !== deleteName)
+    );
+  };
+  const onRemove = (deleteName) => {
+    setIsSelectInfo(isSelectInfo.filter((photo) => photo.path !== deleteName));
+  };
   const createOwner = () => {
     navigate(`/owner`);
   };
 
-  /* Tap 선택 */
   const menuClick = (e, index) => {
     if (index === 0) {
       setIsSelect(true);
@@ -54,27 +136,17 @@ function MyPage() {
     }
   };
 
-  /* Function : 식당 정보 */
-  const getMyShop = () => {
-    getMyRestaurant().then((res) => {
-      console.log(res);
-    });
-  };
-
   useEffect(() => {
-    console.log("안녕");
     getUserInfo()
       .then((res) => {
-        console.log("res", res);
+        setIsUserInfo(res.data);
         setIsOwner(res.data.owner);
       })
       .catch((err) => {
         console.log("err", err);
       });
-    // getUserShop();
   }, []);
 
-  // 내 식당 관리 페이지
   const {
     data: getRestaurantItem,
     isLoading,
@@ -84,17 +156,13 @@ function MyPage() {
     queryFn: () => {
       return getMyRestaurant()
         .then((res) => {
-          console.log("res", res);
-          // if (res === undefined) {
-          //   throw new Error("Data is undefined");
-          // }
           return res;
         })
         .catch((err) => {
           console.log("err1", err.response);
         });
     },
-    // enabled: isOwner,
+    enabled: isOwner,
   });
 
   const { data: getOwnerItem } = useQuery({
@@ -112,45 +180,57 @@ function MyPage() {
           throw err;
         });
     },
-    // enabled: isOwner,
+    enabled: isOwner,
   });
 
   useEffect(() => {
     if (getOwnerItem && getOwnerItem.ownerId !== null) {
       setIsOwner(true);
-      getSavedShop();
       if (isOwner) {
-        setUser((prevUser) => ({
-          ...getOwnerItem,
-        }));
+        setUser((prevUser) => ({ ...getOwnerItem }));
       }
       if (getRestaurantItem) {
-        console.log("정보가 있을때");
         setIsRestaurant(true);
-
-        setRestaurant((prevUser) => ({
-          ...getRestaurantItem,
-        }));
+        setRestaurant((prevUser) => ({ ...getRestaurantItem }));
       }
     }
   }, [getRestaurantItem, isOwner]);
 
-  /* Function : 식당 정보 관리 */
   const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
-  };
-
-  /* Function : 로그인 유저 회원정보 조회 */
-  const getSavedShop = () => {
-    getUserInfo().then((res) => {
-      console.log(res.data);
-    });
   };
 
   const createRestaurant = () => {
     navigate(`/my/myshop/edit/:add`);
   };
 
+  const rateBox = (count) => {
+    const element = [];
+    for (let index = 0; index < count; index++) {
+      element.push(<span key={index}>★</span>);
+    }
+    for (let index = 0; index < 5 - count; index++) {
+      element.push(<span key={5 - index}>☆</span>);
+    }
+    return element;
+  };
+
+  const reviewSend = () => {
+    console.log("isScore", isScore);
+    console.log("textInput", textInput);
+    const photoUploaderContent = document.querySelector(
+      ".photoUploaderContent"
+    );
+    if (photoUploaderContent) {
+      const imgElements = photoUploaderContent.querySelectorAll("img");
+      const imgCount = imgElements.length;
+      console.log(`Number of img elements: ${imgCount}`);
+    } else {
+      console.log(
+        "The element with class 'photoUploaderContent' was not found."
+      );
+    }
+  };
   return (
     <MainContents className="main">
       {/* 프로필정보 */}
@@ -158,11 +238,18 @@ function MyPage() {
         <section className="container gutter-sm">
           <div className="mypage-profile flex items-start mb-[16px]">
             <div className="profile-pic mr-[12px]">
-              <div className="img"></div>
+              {isUserInfo && isUserInfo.profileImageUrl ? (
+                <img
+                  className="img"
+                  src={`${isUserInfo.profileImageUrl}`}
+                ></img>
+              ) : (
+                <div className="img"></div>
+              )}
             </div>
             <div className="mypage-profile-meta">
-              <div className="userInfo flex">
-                <h4 className="name">{user.nickname}</h4>
+              <div className="userInfo flex items-center">
+                <h4 className="name">{isUserInfo && isUserInfo.nickname}</h4>
                 {isOwner ? (
                   <div className="isOwner flex">
                     <FaStar color="#ff3d00"></FaStar>
@@ -228,7 +315,7 @@ function MyPage() {
         </div>
         {/* 탭 */}
         <div>
-          <ul className="tab-menu sticky top-[47px] mb-[10px] bg-white">
+          <ul className="tab-menu sticky top-[0px] mb-[10px] bg-white">
             <li
               className={`w-[50%] leading-[48px] text-center ${
                 isSelect ? " active" : ""
@@ -250,18 +337,6 @@ function MyPage() {
           </ul>
           {isSave ? (
             <div className="collection">
-              {/* <section className="section pt-[20px]">
-                <div className="container gutter-sm">
-                  <div className="section-header justify-between">
-                    <h3 className="section-title">
-                      컬렉션<span className="count">0</span>
-                    </h3>
-                  </div>
-                  <button className="btn btn-lg btn-outline full-width margin-custom">
-                    <span className="add">새 컬렉션 만들기</span>
-                  </button>
-                </div>
-              </section> */}
               <section className="section pt-[20px]">
                 <div className="container gutter-sm">
                   <div className="__d-flex">
@@ -282,18 +357,193 @@ function MyPage() {
               </section>
             </div>
           ) : (
-            <div className="review"></div>
+            <div className="review container">
+              {isUserInfo && isUserInfo.reviews.length > 0 ? (
+                isUserInfo.reviews.map((info, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className=" py-[20px] px-[16px] bg-white rounded-[10px] shadow-lg min-h-[120px] relative mb-[15px]"
+                    >
+                      <div className="">
+                        <div className="flex flex-col w-[100%] gap-y-[7px]">
+                          <div className="flex justify-between">
+                            <span className="text-[16px] font-bold">
+                              식당이름
+                            </span>
+                            <div className="flex justify-end gap-x-[7px]">
+                              <span
+                                className="text-[#666] text-[12px] float-right rounded-full py-[3px] px-[8px] border border-[#d5d5d5]"
+                                onClick={(e) => {
+                                  toggleDrawerReview(e, info);
+                                }}
+                              >
+                                수정
+                              </span>
+                              <span className="text-[#666] text-[12px] float-right rounded-full py-[3px] px-[8px] border border-[#d5d5d5]">
+                                삭제
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex justify-between">
+                            <div className=" text-[#ff3d00]">
+                              {rateBox(info.rate)}
+                            </div>
+                            <span className="text-[#666] text-[12px] item self-end">
+                              {info.createdDate.split("T")[0]}
+                            </span>
+                          </div>
+                          <span className="text-[14px] my-[5px]">
+                            {info.comment}
+                          </span>
+                          <div className=" grid grid-cols-4 justify-center">
+                            {info.images &&
+                              info.images.map((item) => {
+                                return (
+                                  <img
+                                    className=""
+                                    key={item.reviewImageId}
+                                    src={`${item.path}`}
+                                  />
+                                );
+                              })}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className=" w-[100%] h-[220px] flex-col gap-y-[20px] flex items-center justify-center ">
+                  <img
+                    className=" size-[70px]"
+                    src={require("../../assets/icons/empty.png")}
+                  />
+                  <span className=" text-[#47566A] text-[16px] text-bold ">
+                    현재 리뷰 없습니다.
+                  </span>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </section>
+      {/* 리뷰 슬라이드 */}
+      <Drawer
+        open={isReviewOpen}
+        onClose={toggleDrawerReview}
+        direction="right"
+        className="drawer-box right"
+        size="100%"
+      >
+        <div className="container">
+          <div className="header-left items-center flex gap-[12px] h-[47px]">
+            <a
+              className="header-close-black h-[47px] leading-[47px] z-50"
+              onClick={toggleDrawerReview}
+            ></a>
+            <a className="text-xl h-[47px] leading-[47px] font-bold block absolute left-0 right-0 text-center">
+              리뷰 쓰기
+            </a>
+          </div>
+          <div className="h-[calc(100vh-47px-47px)] overflow-y-auto pb-[15px]">
+            <div className="">
+              <div className="star-wrap text-center py-[5px] border-y border-[#d5d5d5]">
+                <span className="star">
+                  ★★★★★
+                  <span>★★★★★</span>
+                  <input
+                    type="range"
+                    onInput={drawStar}
+                    value={isScore}
+                    step="1"
+                    min="0"
+                    max="5"
+                  />
+                </span>
+              </div>
+            </div>
+            <div className=" my-[15px]">
+              <textarea
+                name="review"
+                ref={textInput}
+                className="form-input block w-[100%] p-[8px] border border-[#d5d5d5] rounded-md"
+                rows={7}
+                minLength={10}
+                placeholder={"리뷰 최소 10자 이상 작성해주세요."}
+                onChange={onchange}
+              ></textarea>
+            </div>
+
+            <div className="">
+              <span className="text-center text-[12px] block mb-[15px]">
+                사진은 최대 5장까지 가능합니다.
+              </span>
+              <div className="photoUploaderContent">
+                <div className="photoBox addPhoto">
+                  <button
+                    className="icon add-icon"
+                    onClick={handleClick}
+                  ></button>
+
+                  <PictureFilled onClick={handleClick} />
+                  <input
+                    type="file"
+                    accept="image/jpg, image/jpeg, image/png"
+                    multiple
+                    ref={photoInput}
+                    onChange={(e) => handlePhoto(e)}
+                    style={{ display: "none" }}
+                  />
+                </div>
+                {photoToAddPreview()}
+                {isSelectInfo &&
+                  isSelectInfo.map((image) => {
+                    console.log("image", image);
+                    return (
+                      <div className="photoBox" key={image.reviewImageId}>
+                        <div
+                          className="photoBoxDelete icon delete-icon"
+                          onClick={() => onRemove(image.path)}
+                        />
+                        <img
+                          className="photoPreview size-[100%]"
+                          src={image.path}
+                          alt="preview"
+                        />
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+          </div>
+          <ReviewSendBtn onClick={reviewSend}>리뷰 입력 완료</ReviewSendBtn>
+        </div>
+      </Drawer>
     </MainContents>
   );
 }
 
 export default MyPage;
+const PictureFilled = styled.div`
+  width: 100px;
+  height: 100px;
+  background-color: #eee;
+`;
+const ReviewSendBtn = styled.button`
+  border-radius: 6px;
+  line-height: 47px;
+  text-align: center;
+  font-size: 14px;
+  width: 100%;
+  background-color: #ff3d00;
+  color: #fff;
+  /* margin-top: 0.75rem; */
+`;
 const MainContents = styled.div`
   padding-bottom: 48px;
   box-sizing: border-box;
+  overflow: auto;
   height: calc(100vh - 47px);
 
   /* 개인프로필 */
@@ -302,6 +552,7 @@ const MainContents = styled.div`
     background-size: 100%;
     width: 80px;
     height: 80px;
+    border-radius: 100%;
     box-sizing: border-box;
   }
   /* 개인정보 */

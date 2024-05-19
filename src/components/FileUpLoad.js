@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import styled from "styled-components";
-const FileUpLoad = ({ setPhotoToAddList, photoToAddList }) => {
+const FileUpLoad = ({ setPhotoToAddList, photoToAddList, isphoto }) => {
   const photoInput = useRef();
 
   const handlePhoto = (e) => {
@@ -30,11 +30,30 @@ const FileUpLoad = ({ setPhotoToAddList, photoToAddList }) => {
       photoToAddList.filter((photo) => photo.file.name != deleteName)
     );
   };
-
+  const photoToAdd = () => {
+    return isphoto.map((photo) => {
+      let photoUrl = photo.path;
+      if (photoToAddList.length + isphoto.length > 10) {
+        alert("최대 10장만 가능합니다.");
+        return;
+        // (photoToAddList.length + isphoto.length) = 10;
+      }
+      return (
+        <div className="photoBox" key={photoUrl}>
+          <div
+            className="photoBoxDelete icon delect-icon"
+            onClick={() => onRemoveToAdd(photo.file.name)}
+          />
+          <img className="photoPreview size-[100%]" src={photoUrl} />
+        </div>
+      );
+    });
+  };
   const photoToAddPreview = () => {
-    if (photoToAddList.length > 10) {
+    if (photoToAddList.length + isphoto.length > 10) {
       alert("최대 10장만 가능합니다.");
-      photoToAddList.length = 10;
+      return;
+      // (photoToAddList.length + isphoto.length) = 10;
     }
 
     return photoToAddList.map((photo) => {
@@ -67,6 +86,7 @@ const FileUpLoad = ({ setPhotoToAddList, photoToAddList }) => {
         />
       </div>
       {photoToAddPreview()}
+      {/* {photoToAdd()} */}
     </div>
   );
 };
