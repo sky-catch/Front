@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import "react-modern-drawer/dist/index.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -19,13 +20,27 @@ import { getRestaurant, saveRestaurant } from "../../respository/restaurant";
 import RestaurantInfor from "./RestaurantInfor";
 
 /**
- * 식당
+ * 식당 상세 정보 페이지
  *
  * @author jimin
  */
 
 export default function Restaurant() {
-  const [restaurant, setRestaurant] = useState();
+  const { state } = useLocation(); 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // 식당 개별 정보 조희
+  const { data : restaurant, isLoading } = useQuery({ queryKey : [state], queryFn : getRestaurant}); /* 식당 정보 */
+  const shopId = restaurant?.restaurantId;
+  const { data : availTimes } = useQuery({ queryKey : [{
+    restaurantId : shopId,
+    numberOfPeople : 2,
+    searchDate : "2024-05-18",
+    visitTime : "18:00"
+  }], queryFn : checkReservationTimes, enabled : !!shopId });
+  const timeSlots = availTimes? availTimes['timeSlots'] : null;  /* 예약 가능한 시간 */
+
   const [openBottom, setOpenBottom] = React.useState(false);
   const openDrawerBottom = () => setOpenBottom(true);
   const closeDrawerBottom = () => setOpenBottom(false);
@@ -45,7 +60,6 @@ export default function Restaurant() {
     people: 2,
   });
 
-  const { state } = useLocation();
   const [isContent, setIsContent] = useState("home");
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,6 +70,8 @@ export default function Restaurant() {
     useState(0); /* 현재 해당 식당을 보고 있는 사람들 수 */
   const [timeSlots, setTimeSlots] =
     useState(); /* 해당 식당의 예약 가능한 시간 */
+
+
 
   const toggleDrawer = (e) => {
     if (e.target.className.indexOf("closeSaveModal") != -1) {
@@ -111,6 +127,7 @@ export default function Restaurant() {
     }
   };
 
+
   /* Function : 식당 정보 조회 */
   const setRestaurantInfo = (name) => {
     getRestaurant(name)
@@ -133,6 +150,7 @@ export default function Restaurant() {
         console.log(err);
       });
   };
+
 
   /* Function : 식당 저장 */
   const saveMyRestaurant = (e) => {
@@ -159,6 +177,7 @@ export default function Restaurant() {
     setIsOpenLo((prevState) => !prevState);
   };
 
+
   useEffect(() => {
     if (!restaurant) {
       setRestaurantInfo(state);
@@ -168,6 +187,9 @@ export default function Restaurant() {
 
   const week = ["일", "월", "화", "수", "목", "금", "토", "일"];
 
+
+
+  if(isLoading) return<div>isLoading...</div>;
   return (
     <main className="pb-[74px]">
       {/* 1. 식당 이미지 */}
@@ -196,32 +218,23 @@ export default function Restaurant() {
             })
           )}
         </Swiper>
-
         <div className="restaurant-img-detail">
           <span>{watch}명이 보는중!</span>
-          <div>{restaurant && `${imgIndex}/${restaurant.images.length}`}</div>
+          <div>{`${imgIndex}/${restaurant.images.length}`}</div>
         </div>
       </Section>
       {/* 2. 식당 이름 및 메인 정보 */}
-      {restaurant && (
-        <Section>
-          <div className="container gutter-sm pt-[24px] pb-[24px]">
-            <div className="restaurant-summary">
-              <span>{restaurant.category}</span>
-              <h2>{restaurant.name}</h2>
-              <div className="flex align-center">
-                <StarsComponent
-                  startAvg={restaurant.reviewAvg}
-                ></StarsComponent>
-              </div>
+      <Section>
+        <div className="container gutter-sm pt-[24px] pb-[24px]">
+          <div className="restaurant-summary">
+            <span>{restaurant.category}</span>
+            <h2>{restaurant.name}</h2>
+            <div className="flex align-center">
+              <StarsComponent
+                startAvg={restaurant.reviewAvg}
+              ></StarsComponent>
             </div>
-            <div className="restaurant-detail">
-              <p>{restaurant.content}</p>
-              <div className="lunchDinner">
-                <span className="detail lunch">저녁 동일가 1-3만원</span>
-                <span className="detail dinner">저녁 동일가 1-3만원</span>
-              </div>
-            </div>
+
             <div className="menu">
               <a className="call" href={`tel:${restaurant.phone}`}>
                 전화
@@ -237,45 +250,54 @@ export default function Restaurant() {
               >
                 매장정보
               </a>
+          </div>
+          <div className="restaurant-detail">
+            <p>{restaurant.content}</p>
+            <div className="lunchDinner">
+              <span className="detail lunch">저녁 동일가 1-3만원</span>
+              <span className="detail dinner">저녁 동일가 1-3만원</span>
             </div>
           </div>
-        </Section>
-      )}
+          <div className="menu">
+            <a className="call" href={`tel:${restaurant.phone}`}>
+              전화
+            </a>
+            <a className="location" onClick={onHandleLocation}>위치</a>
+            <a
+              className="building"
+              onClick={() => {
+                onReserveInfor();
+              }}>
+              매장정보
+            </a>
+          </div>
+        </div>
+      </Section>
       <Seperator></Seperator>
       {/* 3. 예약 일시 */}
-      <div>
-        <ul className="tab-menu sticky top-[47px]  bg-white">
-          <li
-            className={`w-[50%] leading-[48px] text-center ${
-              isSelect ? " active" : ""
-            }`}
-            onClick={(e) => menuClick(e, 0)}
-          >
-            예약
-          </li>
-          <li
-            className={`w-[50%] leading-[48px] text-center ${
-              isSelect ? "" : "active"
-            }`}
-            onClick={(e) => {
-              menuClick(e, 1);
-            }}
-          >
-            웨이팅
-          </li>
-        </ul>
-        {isReserve ? (
-          <ReserveSection>
-            <div className="container gutter-sm">
-              <div className="section-header">
-                <h3>예약 일시</h3>
+      <section className="section">
+        <div className="reserve">
+          <div className="container gutter-sm">
+            <div className="section-header">
+              <h3>예약 일시</h3>
+            </div>
+            <div className="section-body">
+              <div className="mb-[8px]" onClick={openDrawerBottom}>
+                <a
+                  href={`#`}
+                  className="btn btn-lg btn-outline btn-cta full-width arrowdown">
+                  <span>
+                    <span className="label calendar"> 오늘 ({week[new Date().getDay()]}) / 2 명</span>
+                  </span>
+                </a>
               </div>
-              <div className="section-body">
-                <div className="mb-[8px]" onClick={openDrawerBottom}>
-                  <a
-                    href={`#`}
-                    className="btn btn-lg btn-outline btn-cta full-width arrowdown"
+              { timeSlots && timeSlots.length > 0 ?
+              <>
+                <div className="section-time-slot mb-[24px]">
+                  <Swiper
+                    className="timetable-list-sm"
                   >
+
                     <span>
                       <span className="label calendar">
                         {" "}
@@ -313,33 +335,133 @@ export default function Restaurant() {
                     <p className="time-slot-unavailable">예약 시간 나열!</p>
                   </div>
                 )}
+
+                    { timeSlots.map((item,index)=> {
+                      const hour = item.time.slice(0,2);
+                      const min = item.time.slice(2,5);
+                        return(<SwiperSlide key={index} onClick={(e)=>onReserveCalendar(item.time,e)}>
+                        <button className="timetable-list-item">
+                          <span className="time">{hour%12>0 ? `오후 ${hour%12}` : `오전 ${hour}`}{min}</span>
+                        </button>
+                        </SwiperSlide>)
+                    })}
+                  </Swiper>
+                </div>
+                <div className="btn-centered">
+                    <a className="btn btn-rounded btn-outline-red btn-outline-red-rounded">
+                      <span className="label arrow">예약가능 날짜 찾기</span>
+                    </a>
+                </div>
+                </>
+              : 
+              <div className="time-slot-unavailable-box">
+                <p className="time-slot-unavailable">예약 시간 나열!</p>
+
               </div>
+              }
             </div>
-          </ReserveSection>
-        ) : (
-          ""
-          // <WaitingSection></WaitingSection>
-        )}
-      </div>
+          </div>
+        </div>
+      </section>
       <Seperator></Seperator>
       {/* 4. 탭 */}
       <RestaurantTap restaurantInfo={restaurant}></RestaurantTap>
-
+      { restaurant.notifications[0] && <section className="section">
+        <div className="noti">
+            <div className="container gutter-sm">
+              <div className="section-header mb-[30px]">
+                <h3>레스토랑 공지</h3>
+                <div className="utils">
+                  <a className="btn-all">전체보기</a>
+                </div>
+              </div>
+              <div className="section-body">
+                <div className="v-scroll">
+                  <div className="v-scroll-inner">
+                    <div className="restaurant-notice">
+                      <article className="restaurant-notice-item">
+                        <div className="notice-content flex">
+                          <div className="pic"><div className="img"></div></div>
+                          <div className="desc">
+                            <p>{restaurant.notifications[0].content}</p>
+                            <a className="_more"><span>더보기</span></a>
+                          </div>
+                        </div>
+                      </article>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </section>}
+      <Seperator></Seperator>
       {/* 5. 편의시설 */}
+      <section className="section">
+        <div className="facilities">
+          <div className="container gutter-sm">
+            <div className="section-header mb-[30px]">
+              <h3>편의시설</h3>
+            </div>
+            <div className="section-body">
+              <div className="restaurant-features mb-[20px]">
+                {restaurant.facilities.map((item,idx)=>(
+                  <span className="feature-item" key={idx}>
+                    <img src={item.path}></img>
+                    <span className="label">{item.name}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* 6. 메뉴 */}
       {/* 7. 사진 */}
       {/* 8. 추천 리뷰 */}
+      <Seperator></Seperator>
+      <section className="section">
+        <div className="cmmt">
+          <div className="container gutter-sm">
+            <div className="section-header mb-[30px]">
+              <h3>추천 리뷰</h3>
+              <div className="utils">
+                <a className="btn-all">전체보기</a>
+              </div>
+            </div>
+            <div className="section-body">
+              <div className="rating-summary">
+                <div className="rating">
+                  <span className="star">{restaurant.reviewAvg}</span>
+                  <span className="count">{`(${restaurant.reviewCount})`}</span>
+                </div>
+              </div>
+              <div className="review-post-list mb-[25px]">
+                <div className="v-scroll">
+                  <div className="v-scroll-inner">
+                    <div className="review-post-list">
+                      {restaurant.reviewComments}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+      </section>
       {/* 9. 비슷한 레스토랑 추천 */}
       {/* 10. 매장 위치 */}
       {/* 11. 상세정보 */}
       {/* 12. 이 주변 예약이 많은 레스토랑 */}
       {/* 예약 슬라이드 페이지 */}
       <BottomBtn>
+
         <div
           className={`savebtn ${
             restaurant && restaurant.saved ? "active" : ""
           }`}
         >
+
           <button onClick={saveMyRestaurant}>저장</button>
           <span>{restaurant ? restaurant.savedCount : 0}</span>
         </div>
@@ -586,21 +708,3 @@ const BottomBtn = styled.aside`
     color: #ffffff;
   }
 `;
-const ReserveSection = styled.section`
-  padding: 24px 0 30px 0;
-  .section-header {
-    padding-bottom: 12px;
-    margin-bottom: 0px;
-  }
-  .section-header h3 {
-    font-weight: 700;
-    font-size: 20px;
-    align-items: center;
-    display: flex;
-    letter-spacing: 0;
-    min-width: 1px;
-  }
-  .section-body {
-  }
-`;
-// const WaitingSection = styled.section``;

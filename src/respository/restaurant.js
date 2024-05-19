@@ -13,7 +13,7 @@ const token = sessionStorage.getItem("token");
 /* 식당 생성 */
 export const createRestaurant = async (data) => {
   try {
-    const result = await apiClient.post("/restaurants", data, {
+   const result = await apiClient.post("/restaurants", data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -51,17 +51,20 @@ export const UpdateRestaurantRes = () => {
 };
 
 /* 식당 개별 조회 */
-export const getRestaurant = async (name) => {
-  console.log("name", name);
+
+export const getRestaurant = async ({queryKey}) => {
+
   try {
+    const [name] = queryKey;
     const res = await apiClient.get(`/restaurants/${name}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    return res;
+    return res.data;
   } catch (err) {
     console.log("Error >>", err);
+    throw new Error("Failed to fetch data");
   }
 };
 
