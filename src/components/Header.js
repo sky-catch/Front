@@ -79,7 +79,7 @@ const Header = ({ setSearch, updateSearch }) => {
         );
       case "/ct/shop":
         return (
-          <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px]">
+          <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] ">
             <div className="header-left items-center flex gap-[12px]">
               <a className="back header-icon" onClick={onClickBack}></a>
               <a className="tohome header-icon">홈</a>
@@ -322,7 +322,7 @@ const Header = ({ setSearch, updateSearch }) => {
       default:
         /* 레스토랑 상세 정보 */
         if (location.indexOf("/ct/shop") != -1) {
-          if (location.indexOf("/reviewList") != -1) {
+          if (location.indexOf("/reviewList") != -1 || location.indexOf("/menuList") != -1 || location.indexOf("/photoList") != -1) {
             return (
               <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] bg-white">
                 <div className="header-left items-center flex gap-[12px]">
@@ -338,7 +338,7 @@ const Header = ({ setSearch, updateSearch }) => {
             );
           } else {
             return (
-              <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px]">
+              <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] bg-gradient">
                 <div className="header-left items-center flex gap-[12px]">
                   <a className="back-w header-icon" onClick={onClickBack}>
                     뒤로

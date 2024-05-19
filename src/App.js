@@ -23,6 +23,8 @@ import ReviewList from "./pages/Restaurant/ReviewList.js";
 import Search from "./pages/Search/Search.js";
 import SearchList from "./pages/Search/SearchList.js";
 import SearchTotal from "./pages/Search/SearchTotal.js";
+import { MenuList } from "./pages/Restaurant/MenuList.js";
+import { PhotoList } from "./pages/Restaurant/PhotoList.js";
 
 function App() {
   const [search, setSearch] = useState();
@@ -32,7 +34,7 @@ function App() {
 
   sessionStorage.setItem(
     "token",
-    'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNjA1Njk2MSwiZXhwIjoxNzE2MTQzMzYxfQ.Ng0WlXA0ff8wIz1VflVdR3iWD7bwXDDIo6V70ZePSr-62B5_R890soa9xLTYjQN_mTdbWp09wselm0ImNix8Jg'
+    'eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNjEzODM5OCwiZXhwIjoxNzE2MjI0Nzk4fQ.7WiAe5ijqgibDNoluN2tt1kaJ1XksZM_n_BA4Db4kYvun-fC8LjCBxt-q8Kw3lVFHVgNG-dhpOOfVwJ0uptoXQ'
   );
   sessionStorage.setItem(
     "data",
@@ -85,6 +87,14 @@ function App() {
           <Route
             path="/ct/shop/:restaurantName/reviewList"
             element={<ReviewList />}
+          />
+          <Route
+            path="/ct/shop/:restaurantName/menuList"
+            element={<MenuList />}
+          />
+          <Route
+            path="/ct/shop/:restaurantName/photoList"
+            element={<PhotoList />}
           />
           <Route path="/ct/shop/reservation/form" element={<ReserveForm />} />
           <Route path="/ct/my" element={<RestaurantSetting />} />

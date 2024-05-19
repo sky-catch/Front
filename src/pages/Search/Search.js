@@ -7,7 +7,6 @@ import calendar from "../../assets/icons/calendar.svg";
 import search_g from "../../assets/icons/search-gray.svg";
 import FilterDrawer from "../../components/Modal/FilterDrawer.js";
 import Restaurants_sm from "../../components/Restaurants-sm.js";
-// import { searchByFilter } from "../../respository/search.js";
 import CalendarComponent from "../../components/CalendarComponent";
 
 /**
@@ -19,7 +18,12 @@ export default function Search() {
   const [isFilter, setIsFilter] = useState(false);  // 필터패널 open 여부 (false : 닫음, true : 열림)
   const [isOpen, setIsOpen] = useState(false);    // 캘린더 패널 open 여부 (false : 닫음, true : 열림)
   const week = ["일", "월", "화", "수", "목", "금", "토"];
-  const [date, setDate] = useState(new Date()); // 오늘 날짜
+  
+  const today = new Date();
+  const [date, setDate] = useState(today.getHours() >= 19 ? new Date(today.setDate(today.getDate()+1)) : today); // 예약 날짜
+  const dateStr = `${ String(date.getMonth() + 1).padStart(2, "0") }.${ String(date.getDate()).padStart(2, "0") }(${ week[date.getDay()] })`;
+  console.log(dateStr);
+
   const [minNum, setMinNum] = useState(2); // 최소 인원
   const [time, setTime] = useState("19"); // 기본 시간
   const [filterInfo, setFilterInfo] = useState();
@@ -51,13 +55,13 @@ export default function Search() {
   const toggleDrawer = (e) => {
     setIsOpen((prevState) => !prevState);
   }
-  console.log('time:',time);
+  
   /* 필터 검색하기 */
   const handleSearch = (e) => {
     const cost = filterInfo?.cost;
     const cityList = filterInfo?.cities;
     const hotPl = filterInfo?.cities?.city;
-    console.log(filterInfo);
+    // console.log(filterInfo);
     const formatDate =
       date.getFullYear() +
       "-" +
@@ -78,10 +82,6 @@ export default function Search() {
     };
     
     navigate(`/search/list?`, {state : params});
-    // searchByFilter(params)
-    //   .then((res)=>{
-    //     console.log(res.data);
-    //   });
   };
 
   /* 캘린더 다이얼로그 열기 */
@@ -108,13 +108,7 @@ export default function Search() {
           <div className="datetime-selector" onClick={handleCalendarDialog}>
             <a>
               <span>
-                {String(date.getMonth() + 1).padStart(2, "0") +
-                  "." +
-                  String(date.getDate()).padStart(2, "0") +
-                  "(" +
-                  week[date.getDay()] +
-                  ")"}
-                / {minNum}명 / {time > 12 ? '오후 '+ time%12 + ':00' : time + ':00'}
+                {dateStr} / {minNum}명 / {time > 12 ? '오후 '+ time%12 + ':00' : time + ':00'}
               </span>
             </a>
           </div>
@@ -196,9 +190,9 @@ export default function Search() {
                           className="swiper-slide-chip mr-[8px]"
                           key={index}
                         >
-                          <button type="button" className="slide-button">
-                            <span>{item.title}</span>
-                          </button>
+                          <div className="slide-button">
+                            <a href="#"><span>{item.title}</span></a>
+                          </div>
                         </SwiperSlide>
                       );
                     })}

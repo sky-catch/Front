@@ -1830,6 +1830,24 @@ video {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
+* {
+  -webkit-font-smoothing : antialiased;
+  letter-spacing : -.05em;
+}
+
+div, h3 {
+  margin : 0;
+  padding : 0;
+  border : 0;
+  font-size : 100%;
+  vertical-align : baseline;
+}
+
+h3 {
+  word-break : break-word;
+  line-height : normal;
+}
+
 input {
   outline: none;
   box-shadow: none;
@@ -1969,6 +1987,10 @@ header {
 }
 
 /* header */
+
+.bg-gradient {
+  background: linear-gradient(180deg, rgba(0, 0, 0, .3) 0%, rgba(0, 0, 0, .15) 37.5%, rgba(0, 0, 0, 0) 100%);
+}
 
 .header-wrapper {
   background: #fff;
@@ -2175,11 +2197,11 @@ header {
   margin-bottom: 15px;
 }
 
-.section-header > h3 {
+/* .section-header > h3 {
   width: 78%;
   letter-spacing: -0.5px;
   font-size: 20px;
-}
+} */
 
 .section-header > p {
   color: rgb(98, 98, 98);
@@ -3715,7 +3737,7 @@ textarea.form-input {
   margin-top : 16px;
 }
 
-.drawer-box .drawer-box-body .kakao-address {
+.kakao-address {
   width : 100%;
   height : 240px;
 }
@@ -3888,8 +3910,19 @@ span {
   padding-left: 16px;
 }
 
-.slide-button {
+[type="button"].slide-button {
   border: 1px solid #d5d5d5;
+  box-sizing: border-box;
+  border-radius: 18px;
+  display: flex;
+  height: 36px;
+  align-items: center;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
+.slide-button > a {
+  border: 1px solid #ff3d00;
   box-sizing: border-box;
   border-radius: 18px;
   display: flex;
@@ -3965,6 +3998,7 @@ span {
 }
 
 .slide-image-wrapper {
+  position : relative;
   cursor : grab;
 }
 
@@ -3974,12 +4008,18 @@ span {
 }
 
 .slide-none {
-  height : 250px !important;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: gray;
   color: #ffffff;
+  height : 100%;
+  aspect-ratio: 375 / 220;
+}
+
+.slide-image-item .shopImg {
+  object-fit : cover;
+  aspect-ratio: 375 / 220;
 }
 
 .userInfo {
@@ -4151,3 +4191,27 @@ span {
   margin-bottom : 50px !important;
 }
 
+.section-body .details .addr {
+  padding: 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-body .details .addr .btn-copy {
+  font-weight: 500;
+  font-size: 12px;
+  text-decoration: underline;
+  color: #666;
+  line-height: 16px;
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.section-body .details .addr .btn-copy::before {
+  content: "";
+  background: url('../src/assets/icons/copy.svg') 50% 50% no-repeat;
+  background-size: contain;
+  width: 18px;
+  height: 18px;
+  margin-right: 2px;
+}
