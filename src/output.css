@@ -3962,7 +3962,8 @@ span {
   padding-left: 16px;
 }
 
-[type="button"].slide-button {
+[type="button"].slide-button,
+.calendar-btn {
   border: 1px solid #d5d5d5;
   box-sizing: border-box;
   border-radius: 18px;
@@ -4050,6 +4051,7 @@ span {
 }
 
 .slide-image-wrapper {
+  position : relative;
   cursor : grab;
 }
 
@@ -4148,6 +4150,18 @@ span {
   cursor: pointer;
 }
 
+/* review */
+
+.review-rating-summary {
+}
+
+.text-hidden {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
 .restaurant-notice .restaurant-notice-item .notice-content .pic {
   width: 32px;
   min-width: 32px;
@@ -4206,14 +4220,6 @@ span {
   color: #666;
 }
 
-
-.text-hidden {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
-}
-
 .rating-summary .rating {
   display: flex;
   margin-bottom: 8px;
@@ -4246,7 +4252,6 @@ span {
   color: #aaa;
 }
 
-
 .mb-\[50px\] {
   margin-bottom : 50px !important;
 }
@@ -4275,4 +4280,3 @@ span {
   height: 18px;
   margin-right: 2px;
 }
-

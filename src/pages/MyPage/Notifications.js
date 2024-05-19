@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { RestaurantState } from "../../States/LoginState";
 import { CreateNotificatRes } from "../../respository/restaurant";
 import { getMyRestaurant } from "../../respository/userInfo";
+
 const Notifications = () => {
   const restaurant = useRecoilValue(RestaurantState);
   // const [isNotificat, setIsNotificat] = useState([]);
