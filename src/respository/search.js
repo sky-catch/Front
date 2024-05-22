@@ -5,16 +5,27 @@ import apiClient from "../apis/ApiClient";
  * 
  * @author jimin
  */
+
+const token = sessionStorage.getItem("token");
 /* 식당 필터 검색 */
 export const searchByFilter = async({queryKey}) => {
     try{
-        const [params] = queryKey;
-        console.log('text',params);
-        const result = await apiClient.get(`/restaurants/search`, params, JSON.stringify(params), {
+        const [info] = queryKey;
+        //쿼리스트링으로 보내야한다.
+        
+        const params = new URLSearchParams();
+        Object.entries(info).forEach(([key,value])=> {
+            params.append(key,value);
+        })
+        console.log('text',params.toString(), info);
+
+        const result = await apiClient.get(`/restaurants/search${params.toString()}`, {params : info},{
             headers : {
-                "Content-Type" : `application/json`
+                "Content-Type" : `application/json`,
+                Authorization: `Bearer ${token}`,
             }
         });
+        console.log(result.data);
         return result.data;
     } catch(err) {
         console.log("Error >>", err);
@@ -27,7 +38,7 @@ export const searchByKeyword = async({queryKey}) => {
         if(keyword?.length < 2) return [];  // 2글자 이상만 검색 가능
         const result = await apiClient.get(`/restaurants/search/${keyword}`, {
             headers : {
-
+                Authorization: `Bearer ${token}`,
             }
         })
         return result.data;

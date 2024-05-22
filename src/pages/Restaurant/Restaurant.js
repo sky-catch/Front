@@ -32,7 +32,7 @@ export default function Restaurant() {
   const [save, setSave] = useState(0);
 
   // 식당 개별 정보 조희
-  const { data : restaurant, isLoading } = useQuery({ queryKey : [state], queryFn : getRestaurant, staleTime : 1000 * 60 * 5}); /* 식당 정보 */
+  const { data : restaurant, isLoading } = useQuery({ queryKey : [state], queryFn : getRestaurant}); /* 식당 정보 */
   const shopId = restaurant?.restaurantId;
   const { data : availTimes } = useQuery({ queryKey : [{
     restaurantId : shopId,
@@ -215,12 +215,10 @@ export default function Restaurant() {
       {/* 1. 식당 이미지 */}
       <Section>
         <Swiper className="slide-image-wrapper" onSlideChange={onChangeSlide}>
-          {restaurant && restaurant.images.length < 1 ? (
+          { restaurant?.images?.length < 1 ? (
             <SwiperSlide className="slide-none">이미지가 없습니다.</SwiperSlide>
           ) : (
-            // ''
-            restaurant &&
-            restaurant.images.map((item, index) => {
+            restaurant?.images?.map((item, index) => {
               return (
                 <SwiperSlide
                   key={index}
@@ -240,7 +238,7 @@ export default function Restaurant() {
         </Swiper>
         <div className="restaurant-img-detail">
           <span>{watch}명이 보는중!</span>
-          <div>{`${restaurant.images.length>0 ? imgIndex : 0}/${restaurant.images?.length}`}</div>
+          <div>{`${restaurant?.images?.length>0 ? imgIndex : 0}/${restaurant?.images?.length}`}</div>
         </div>
       </Section>
       {/* 2. 식당 이름 및 메인 정보 */}
@@ -303,6 +301,7 @@ export default function Restaurant() {
                           className="timetable-list-sm"
                         >
                           { timeSlots.map((item,index)=> {
+                            console.log(item);
                             const hour = item.time.slice(0,2);
                             const min = item.time.slice(2,5);
                               return(<SwiperSlide key={index} onClick={(e)=>onReserveCalendar(item.time,e)}>
@@ -326,7 +325,7 @@ export default function Restaurant() {
       <Seperator></Seperator>
       {/* 4. 탭 */}
       <RestaurantTap restaurant={restaurant}></RestaurantTap>
-      {restaurant.notifications[0] && (
+      {restaurant?.notifications?.length > 0 && (
         <section className="section">
           <div className="noti">
             <div className="container gutter-sm">

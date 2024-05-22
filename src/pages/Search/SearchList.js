@@ -76,7 +76,7 @@ export default function SearchList (params) {
                         <div className="filter-icon">
                         <button
                             className={`design_system ${
-                                state?.koreanCity.length > 0 || (state?.maxPrice > 0 || state?.minPrice > 0) ? "active" : ""
+                                state?.koreanCity?.length > 0 || (state?.maxPrice > 0 || state?.minPrice > 0) ? "active" : ""
                               }`}
                             onClick={toggleFilterDrawer}
                         >
@@ -92,7 +92,7 @@ export default function SearchList (params) {
                                 stroke="currentColor"
                                 strokeWidth="1.5"
                             ></path>
-                             <span className={`filters ${ state?.koreanCity.length > 0 || (state?.maxPrice > 0 || state?.minPrice > 0)  ? "active" : "" }`}>
+                             <span className={`filters ${ state?.koreanCity?.length > 0 || (state?.maxPrice > 0 || state?.minPrice > 0)  ? "active" : "" }`}>
                                 {1}</span>
                             </svg>
                         </button>
@@ -109,7 +109,7 @@ export default function SearchList (params) {
                                     id={index}
                                 >
                                     <button type="button" className={`slide-button
-                                         ${ state?.koreanCity.length > 0 && index==0
+                                         ${ state?.koreanCity?.length > 0 && index==0
                                             || ( (state?.maxPrice > 0 || state?.minPrice > 0) && index==1) ? 'active' : ''}
                                     `} onClick={toggleFilterDrawer}>
                                     <span>{item.title}</span>
