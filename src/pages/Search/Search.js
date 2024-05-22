@@ -10,7 +10,7 @@ import Restaurants_sm from "../../components/Restaurants-sm.js";
 import CalendarComponent from "../../components/CalendarComponent";
 
 /**
- * 검색하기 화면
+ * 검색하기 (필터) 화면
  * @author jimin
  */
 export default function Search() {

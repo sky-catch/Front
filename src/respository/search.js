@@ -8,9 +8,9 @@ import apiClient from "../apis/ApiClient";
 
 const token = sessionStorage.getItem("token");
 /* 식당 필터 검색 */
-export const searchByFilter = async({queryKey}) => {
+export const searchByFilter = async(search) => {
     try{
-        const [info] = queryKey;
+        const [info] = search;
         //쿼리스트링으로 보내야한다.
         
         const params = new URLSearchParams();
@@ -32,9 +32,10 @@ export const searchByFilter = async({queryKey}) => {
     }
 }
 /* 식당 요약 검색 */
-export const searchByKeyword = async({queryKey}) => {
+export const searchByKeyword = async(params) => {
     try{
-        const [keyword] = queryKey;
+        const keyword = params;
+        // console.log(keyword);
         if(keyword?.length < 2) return [];  // 2글자 이상만 검색 가능
         const result = await apiClient.get(`/restaurants/search/${keyword}`, {
             headers : {

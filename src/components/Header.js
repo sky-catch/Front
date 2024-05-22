@@ -31,7 +31,7 @@ const Header = ({ setSearch, updateSearch }) => {
       alert("변경한 내용이 저장되지 않습니다.");
     }
     window.history.back();
-    setSearchRes({});
+    setInputTxt('');
   };
 
   const onEditRestaurant = () => {
@@ -104,38 +104,9 @@ const Header = ({ setSearch, updateSearch }) => {
           </div>
         );
       case "/search/total":
-        // let data = {
-        //   city: null,
-        //   cityRestaurantCount: 0,
-        //   hotPlace: null,
-        //   hotPlaceRestaurantCount: 0,
-        //   category: null,
-        //   categoryRestaurantCount: 0,
-        //   restaurantSummaryDTOList: [],
-        // };
         const handleSearch = (e) => {
           var text = e.target.value;
           setInputTxt(text);
-        // console.log(text);
-        //   if (e.target.value.length >= 2) {
-        //     text = e.target.value;
-        //     searchByKeyword(text).then((res) => {
-        //       data = res.data;
-        //       console.log('data', data);
-        //       //검색어 추가
-        //       data.input = e.target.value;
-        //       // 검색 결과가 아무것도 없으면 searchRes 는 ''
-        //       // 검색 결과가 있으면 searchRes는 res.data
-        //       if (res.data.city == "" && res.data.hotPlace == "") {
-        //         setSearchRes({});
-        //       } else {
-        //         setSearchRes(data);
-        //       }
-        //     });
-        //   } else {
-        //     data.input = e.target.value;
-        //     setSearchRes(data);
-        //   }
         };
 
         return (
