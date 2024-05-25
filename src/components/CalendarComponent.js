@@ -26,12 +26,19 @@ function SetDateYMD(isDate) {
     String(isDate.getDate()).padStart(2, "0")
   );
 }
+
+/**
+ * 캘린더 Drawer
+ * 
+ * @author soyeon
+ */
 const CalendarComponent = ({
   isOpen,
-  toggleDrawer,
-  setReserveInfo,
   restaurant,
+  setReserveInfo,
+  toggleDrawer,
   timeSlots,
+  isSearch  //필터검색 여부 (true/false)
 }) => {
   const location = useLocation();
   const [date, setDate] = useState(new Date());
@@ -123,7 +130,7 @@ const CalendarComponent = ({
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  console.log("error", error);
+  // console.log("error", error);
   return (
     <div>
       <Drawer
@@ -164,8 +171,8 @@ const CalendarComponent = ({
           className=" pl-[20px] py-[10px]"
           spaceBetween={0}
           slidesPerView={6}
-          onSlideChange={() => console.log("slide change")}
-          onSwiper={(swiper) => console.log(swiper)}
+          // onSlideChange={() => console.log("slide change")}
+          // onSwiper={(swiper) => console.log(swiper)}
         >
           {
             people.map((item, index) => {
@@ -206,8 +213,8 @@ const CalendarComponent = ({
             className=" pl-[20px] py-[15px]"
             spaceBetween={7}
             slidesPerView={4}
-            onSlideChange={() => console.log("slide change")}
-            onSwiper={(swiper) => console.log(swiper)}
+            // onSlideChange={() => console.log("slide change")}
+            // onSwiper={(swiper) => console.log(swiper)}
           >
             {timeSlots &&
               timeSlots.map((item, index) => {

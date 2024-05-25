@@ -9,11 +9,12 @@ const apiClient = axios.create({
     "Content-Type": "application/json",
   },
 });
+
 export const urlToFile = async (url, fileName = "default-filename") => {
   const response = await fetch(url);
   const blob = await response.blob();
   const file = new File([blob], fileName, { type: blob.type });
-  console.log("file", file);
+  // console.log("file", file);
   return file;
 };
 

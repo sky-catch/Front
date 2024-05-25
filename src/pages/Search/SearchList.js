@@ -10,10 +10,15 @@ import { searchByFilter } from "../../respository/search.js";
  * 검색 결과
  * @returns 
  */
-export default function SearchList (params) {
+export default function SearchList () {
     const navigate = useNavigate();
     const {state} = useLocation();
-    const {data: searchList} = useQuery({queryKey : [state], queryFn : searchByFilter, enabled:!!state});
+    
+    const {data: searchList} = useQuery({
+        queryKey : [ 'filter', state], 
+        queryFn : ()=>searchByFilter(state),
+        enabled:!!state 
+    });
     let restaurantList = searchList?.getRestaurantSearchListRes; // 레스토랑 리스트
     let filter = searchList?.searchFilter; // 검색 결과 필터 정보
     console.log('state:', state);

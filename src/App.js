@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import Header from "./components/Header.js";
@@ -25,31 +25,27 @@ import SearchList from "./pages/Search/SearchList.js";
 import SearchTotal from "./pages/Search/SearchTotal.js";
 import { MenuList } from "./pages/Restaurant/MenuList.js";
 import { PhotoList } from "./pages/Restaurant/PhotoList.js";
+import { getTestLogin } from "./respository/userInfo.js";
 
 function App() {
   const [search, setSearch] = useState();
   const updateSearch = (param) => { setSearch(param);};
-
-  /* 카카오 로그인 구현 시 뜨는 에러로 인해 현재 sessionStorage에 임시저장하여 기능 구현중 */
-
-
-  sessionStorage.setItem(
-    "token",
-    "yJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6ImZyb250QGZyb250LmNvbSIsImlzT3duZXIiOnRydWUsImlhdCI6MTcxNjM2MjE0MSwiZXhwIjoxNzE2NDQ4NTQxfQ.cEqDjXcwltZBM1O_SGvogRDEMgFMVdKJbl2OsWxMOx3mrtzWF5zufuo1kuOWFFZaPIuvpnNTIcUOxuG2wPyUFg"
-  );
-
-  sessionStorage.setItem(
-    "data",
-    JSON.stringify({
-      id: 7,
-      nickname: "front",
-      profileImageUrl: "front",
-      email: "front@front.com",
-      name: "front_name",
-      status: "ACTIVE",
-      owner: true,
-    })
-  );
+  
+  function handleScroll() {
+    console.log('test');
+    // if(window.scrollY >= 50) {
+    //   setIsWhite(true);
+    //   console.log(isWhite);
+    // } else {
+    //   setIsWhite(false);
+    // }
+  }
+  // 테스트 로그인 로직 (수정가능)
+  useEffect(()=>{
+    getTestLogin();
+    window.addEventListener('scroll', handleScroll);
+    // console.log('test');
+  },[])
 
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {

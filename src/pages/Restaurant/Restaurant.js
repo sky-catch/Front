@@ -41,16 +41,14 @@ export default function Restaurant() {
     visitTime : "18:00"
   }], queryFn : checkReservationTimes, enabled : !!shopId });
   const timeSlots = availTimes? availTimes['timeSlots'] : null;  /* 예약 가능한 시간 */
-  console.log(restaurant);
+  // console.log(restaurant);
 
   const queryClient = useQueryClient();
   const deleteSave = useMutation({mutationFn : useDeleteRestaurant, onSuccess : ()=>{
-      // console.log('success'), 
       queryClient.invalidateQueries({queryKey : [state]})
     }});
   const saveSave = useMutation({mutationFn : useSaveRestaurant, onSuccess : ()=>{
-    // console.log('success'), 
-    queryClient.invalidateQueries({queryKey : [state]})
+      queryClient.invalidateQueries({queryKey : [state]})
   }});
   
   const [openBottom, setOpenBottom] = React.useState(false);
@@ -59,8 +57,7 @@ export default function Restaurant() {
   const [isInforOpen, setIsInforOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false); /* 예약하기 모달창 오픈 */
   const [isSave, setIsSave] = useState(false); /* 저장하기 모달창 오픈 */
-  const [isConfirmOpen, setIsConfirmOpen] =
-    useState(false); /* 예약 컨펌 모달창 오픈 */
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false); /* 예약 컨펌 모달창 오픈 */
   const [isOpenLo, setIsOpenLo] = useState(false); /* 위치 정보 모달창 오픈 */
   const [isSelect, setIsSelect] = useState(true);
 
@@ -74,12 +71,8 @@ export default function Restaurant() {
 
   const [isContent, setIsContent] = useState("home");
 
-  const [imgIndex, setImgIndex] =
-    useState(1); /* 이미지 슬라이드 현재 보고있는 이미지번호 */
-  const [watch, setWatch] =
-    useState(0); /* 현재 해당 식당을 보고 있는 사람들 수 */
-  // const [timeSlots, setTimeSlots] =
-  //   useState(); /* 해당 식당의 예약 가능한 시간 */
+  const [imgIndex, setImgIndex] = useState(1); /* 이미지 슬라이드 현재 보고있는 이미지번호 */
+  const [watch, setWatch] = useState(0); /* 현재 해당 식당을 보고 있는 사람들 수 */
 
   const toggleDrawer = (e) => {
     if (e.target.className.indexOf("closeSaveModal") != -1) {
@@ -163,29 +156,9 @@ export default function Restaurant() {
     const restaurantId = restaurant.restaurantId;
 
     if(restaurant.saved) {
-      // deleteRestaurant(restaurantId)
-      // .then((res)=> {
-      //   console.log(res);
-      //   setSave(1);
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      // });
       deleteSave.mutate({id : restaurantId});
-      // console.log(deleteDate);
     } else {
-
       saveSave.mutate({id : restaurantId});
-      // console.log(saveDate);
-      // .then((res) => {
-      //   console.log(res);
-      //   setSave(0);
-      //   /* 저장 완료 모달창 노출 */
-      //   toggleSavedDrawer();
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      // });
     };
   }
 
@@ -301,7 +274,7 @@ export default function Restaurant() {
                           className="timetable-list-sm"
                         >
                           { timeSlots.map((item,index)=> {
-                            console.log(item);
+                            // console.log(item);
                             const hour = item.time.slice(0,2);
                             const min = item.time.slice(2,5);
                               return(<SwiperSlide key={index} onClick={(e)=>onReserveCalendar(item.time,e)}>
@@ -381,48 +354,8 @@ export default function Restaurant() {
           </div>
         </div>
       </section>}
-      {/* 6. 메뉴 */}
-      {/* 7. 사진 */}
-      {/* 8. 추천 리뷰 */}
       <Seperator></Seperator>
-      {/* <section className="section">
-        <div className="cmmt">
-          <div className="container gutter-sm">
-            <div className="section-header mb-[30px]">
-              <h3>추천 리뷰</h3>
-              <div className="utils">
-                <a className="btn-all">전체보기</a>
-              </div>
-            </div>
-            <div className="section-body">
-              <div className="rating-summary">
-                <div className="rating">
-                  <span className="star">{restaurant.reviewAvg}</span>
-                  <span className="count">{`(${restaurant.reviewCount})`}</span>
-                </div>
-              </div>
-              <div className="review-post-list mb-[25px]">
-                <div className="v-scroll">
-                  <div className="v-scroll-inner">
-                    <div className="review-post-list flex">
-                      {restaurant.reviewComments.map((item,idx)=> (
-                        <a className="review-post-list-item" key={idx}>
-                          <div className="tb">
-                            <div className="img"></div>
-                          </div>
-                          <div className="detail">
-                            <div className="post-meta"></div>
-                            <div className="comment-area"></div>
-                          </div>
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-      </section> */}
+      {/* 6. 매장위치 */}
       <section className="section">
         <div className="cmmt">
           <div className="container gutter-sm">
@@ -446,9 +379,30 @@ export default function Restaurant() {
           </div>
         </div>
       </section>
-      {/* 9. 비슷한 레스토랑 추천 */}
-      {/* 10. 매장 위치 */}
-      {/* 11. 상세정보 */}
+      {/* 07. 상세정보 */}
+      <section className="section">
+        <div className="cmmt">
+            <div className="container gutter-sm">
+              <div className="section-header mb-[30px]">
+                <h3>상세 위치</h3>
+              </div>
+              <div className="section-body">
+                <div className="details">
+                  <div className="map">
+                    <MapComponent info={restaurant}></MapComponent>
+                  </div>
+                  <div className="addr">
+                    <a className="btn-copy">주소 복사</a>
+                    <p>{restaurant?.detailAddress}</p>
+                  </div>
+                </div>
+                <div className="btn-centered">
+
+                </div>
+              </div>
+            </div>
+          </div>
+      </section>
       {/* 12. 이 주변 예약이 많은 레스토랑 */}
       {/* 예약 슬라이드 페이지 */}
       <BottomBtn>

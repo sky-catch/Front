@@ -11,7 +11,7 @@ export default function RestaurantTap({restaurant}) {
     const [reviewCount, setReviewCount] = useState(0);
 
     const restaurantName= restaurant ? restaurant.name : "";
-    console.log('restaurantName',restaurant);
+    // console.log('restaurantName',restaurant);
 
     const contentClick = (e, index) => {
         if(index === 0) {

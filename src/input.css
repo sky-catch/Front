@@ -489,6 +489,42 @@ header {
   top: 8px;
   right: 0;
 }
+.restaurant-list .restaurant-list-item .detail .meta {
+  display : flex;
+  align-items: baseline;
+  line-height: 14px;
+}
+.restaurant-list .restaurant-list-item .detail .meta .star {
+  display: block;
+  padding-left: 18px;
+  position: relative;
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 6px;
+}
+.restaurant-list .restaurant-list-item .detail .meta .star::before {
+  background: url("/src/assets/icons/star-yellow.svg") 0% 50% no-repeat;
+  background-size: contain;
+  width: 16px;
+  height: 16px;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.restaurant-list .restaurant-list-item .detail .meta .tags {
+  overflow: hidden;
+  display: block;
+  max-width: 135px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #666;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .btn-bookmark {
   display: block;
   width: 30px;

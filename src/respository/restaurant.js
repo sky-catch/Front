@@ -105,7 +105,7 @@ export const useDeleteRestaurant = async({id}) => {
   console.log("restaurantId :", id, "token : ", token);
   const restaurantId = id;
   try {
-    const res = await apiClient.delete(`/savedRestaurant/${restaurantId}`, restaurantId, {
+    const res = await apiClient.delete(`/savedRestaurant/${restaurantId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

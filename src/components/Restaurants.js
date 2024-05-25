@@ -3,38 +3,38 @@ import { useNavigate } from "react-router-dom";
 const restaurants = [
   {
     id: 8,
-    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    name: "식당 생성 테스트2",
-    meta: {
-      star: 4.2,
-      tags: "돼지고기구이 * 석촌",
-    },
-  },
-  {
-    id: 1,
-    img: "https://image.toast.com/aaaaaqx/catchtable/shopinfo/s4bykFRYK9M267n2BIZXZjg/4bykfryk9m267n2bizxzjg_236815131963864.jpg?small400",
+    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/sJgrr78E9EtvtvALfRjk_DQ/cacc203c048044ef97f078e072df2d68?small400",
     name: "스시미루",
     meta: {
-      star: 4.2,
-      tags: "스시, 초밥 * 제주 서귀포",
+      star: 2,
+      tags: "스시오마카세",
     },
   },
   {
-    id: 2,
+    id: 13,
+    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/s7aORNMXw9Kwl_pshlxb01w/de140f38874149c2a8a9c02d4ec859b2?small400",
+    name: "한국식당",
+    meta: {
+      star: 3,
+      tags: "한식",
+    },
+  },
+  {
+    id: 14,
     img: "https://image.toast.com/aaaaaqx/catchtable/shopinfo/sFua-ZnyjLzjJjVMIJpjfCQ/fua-znyjlzjjjvmijpjfcq_2362215281096963.jpg?small400",
-    name: "ㅇㅇ식당",
+    name: "한국 식당",
     meta: {
-      star: 4.2,
-      tags: "일식 * 광주",
+      star: 3,
+      tags: "와인",
     },
   },
   {
-    id: 3,
+    id: 21,
     img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    name: "ㅁㅁ오마카세",
+    name: "서울가야밀면",
     meta: {
-      star: 4.2,
-      tags: "돼지고기구이 * 석촌",
+      star: 0,
+      tags: "한식",
     },
   },
 ];
@@ -42,9 +42,12 @@ const restaurants = [
 const Restaurants = () => {
   const navigate = useNavigate();
   const onDetail = ({ name, id }) => {
-    console.log("name : ", name);
     navigate(`/ct/shop/${name}`, { state: name });
   };
+
+  const saveRestaurant = (e) => {
+    
+  }
 
   return (
     <div className="restaurant-list">
@@ -64,7 +67,7 @@ const Restaurants = () => {
                 <h3 className="name">{item.name}</h3>
                 <div className="meta">
                   <span className="star">{item.meta.star}</span>
-                  <span className="tags">{item.meta.tags}</span>
+                  <span className="tags" onClick={saveRestaurant}>{item.meta.tags}</span>
                 </div>
               </a>
             </div>

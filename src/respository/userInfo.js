@@ -26,11 +26,47 @@ export const getLogin = async (code) => {
   }
 };
 
+// 로그인 사용자 테스트용
+export const getTestLogin = async () => {
+  try {
+    let id = 9;
+    const result = await apiClient.get(`/oauth/jwt/test/owner/${id}`, {
+      headers : {}
+    });
+    
+    if( result.data ) {
+      console.log('로그인 토근 get');
+      sessionStorage.setItem('token', result.data.accessToken.value);
+      sessionStorage.setItem('data', JSON.stringify(result.data.usersDTO))
+    } else {
+      console.log('로그인 토근 get 실패');
+    }
+    
+  }catch (err) {
+    console.log("Error >>", err);
+    throw err;
+  }
+}
+
 // 마이페이지 회원 정보 조회
 export const getUserInfo = async () => {
-  const token = sessionStorage.getItem("token");
   try {
     const result = await apiClient.get(`/member/myMain`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return result;
+  } catch (err) {
+    console.log("Error >>", err);
+  }
+};
+
+// 마이페이지 회원 정보 수정
+export const updateUserInfo = async (param) => {
+  const updateInfo = param;
+  try {
+    const result = await apiClient.patch(`/member/profile`, updateInfo, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

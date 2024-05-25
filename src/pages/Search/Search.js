@@ -19,15 +19,29 @@ export default function Search() {
   const [isOpen, setIsOpen] = useState(false);    // 캘린더 패널 open 여부 (false : 닫음, true : 열림)
   const week = ["일", "월", "화", "수", "목", "금", "토"];
   
+  // * 기본 검색 날짜는 '금일 오후 7시', 만일 시간이 넘은 경우 '내일 오후 7시'로 세팅
   const today = new Date();
-  const [date, setDate] = useState(today.getHours() >= 19 ? new Date(today.setDate(today.getDate()+1)) : today); // 예약 날짜
-  const dateStr = `${ String(date.getMonth() + 1).padStart(2, "0") }.${ String(date.getDate()).padStart(2, "0") }(${ week[date.getDay()] })`;
-  console.log(dateStr);
+  const tomorrow = new Date(today.setDate(today.getDate()+1));
+  const [date, setDate] = useState(today.getHours() >= 19 ? tomorrow : today); // 예약 날짜
+  const dateStr = `${ String(date.getMonth() + 1).padStart(2, "0") }.${ String(date.getDate()).padStart(2, "0") }(${ week[date.getDay()] })`; // 예약날짜 노출문구
+  const [time, setTime] = useState(19); // 기본 시간 (오후 7시)
 
+  // * 기본 검색 인원은 2명
   const [minNum, setMinNum] = useState(2); // 최소 인원
-  const [time, setTime] = useState("19"); // 기본 시간
-  const [filterInfo, setFilterInfo] = useState();
-  // const [reserveInfo, setReserveInfo] = useState(); // 예약 정보 (기본 : 오늘 오후7시 / 설정 시 설정 날짜)
+  
+  // * 검색 필터 정보
+  const [filterInfo, setFilterInfo] = useState({
+      date : `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`,
+      time : `${time}:00`,
+      personCount : minNum,
+      koreanCity : '',
+      hotPlace: '',
+      category: '',
+      minPrice: 0,
+      maxPrice: 0,
+      // orderType: '',
+  });
+  
   const menuItems = [{
       id: 1,
       title: "지역",
@@ -58,30 +72,30 @@ export default function Search() {
   
   /* 필터 검색하기 */
   const handleSearch = (e) => {
-    const cost = filterInfo?.cost;
-    const cityList = filterInfo?.cities;
-    const hotPl = filterInfo?.cities?.city;
+    // const cost = filterInfo?.cost;
+    // const cityList = filterInfo?.cities;
+    // const hotPl = filterInfo?.cities?.city;
     // console.log(filterInfo);
-    const formatDate =
-      date.getFullYear() +
-      "-" +
-      String(date.getMonth() + 1).padStart(2, "0") +
-      "-" +
-      String(date.getDate()).padStart(2, "0");
+    // const formatDate =
+    //   date.getFullYear() +
+    //   "-" +
+    //   String(date.getMonth() + 1).padStart(2, "0") +
+    //   "-" +
+    //   String(date.getDate()).padStart(2, "0");
 
-    const params = {
-      date: formatDate,
-      time: `${time}:00`,
-      personCount: minNum,
-      koreanCity: JSON.stringify(cityList),
-      hotPlace:  hotPl,
-      category: "",
-      minPrice: cost ? cost.min : 0,
-      maxPrice: cost ? cost.max : 0,
-      orderType: "기본순",
-    };
-    
-    navigate(`/search/list?`, {state : params});
+    // const params = {
+    //   date: formatDate,
+    //   time: `${time}:00`,
+    //   personCount: minNum,
+    //   koreanCity: JSON.stringify(cityList),
+    //   hotPlace:  hotPl,
+    //   category: "",
+    //   minPrice: 0,
+    //   maxPrice: 0,
+    //   orderType: "기본순",
+    // };
+    // console.log('params', params);
+    navigate(`/search/list?`, {state : filterInfo});
   };
 
   /* 캘린더 다이얼로그 열기 */
@@ -146,8 +160,7 @@ export default function Search() {
                       <SwiperSlide
                         className={`swiper-slide-chip mr-[8px]`}
                         key={index}
-                        id={index}
-                      >
+                        id={index} >
                         <button type="button" className={`slide-button
                           ${filterInfo && (( filterInfo.cities && filterInfo.cities.address.length > 0 && index==0 )
                             || (filterInfo.cost && index==1)) ? 'active' : ''}
@@ -224,11 +237,12 @@ export default function Search() {
           // 날짜랑 인원수 state 저장하기
           let date = params.date;
           let people = params.people;
-
+          console.log(date);
           setDate(date);
           setMinNum(people);
         }}
         toggleDrawer={toggleDrawer}
+        isSearch={true}
       ></CalendarComponent>
 
     </div>

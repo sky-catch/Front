@@ -8,18 +8,19 @@ import apiClient from "../apis/ApiClient";
 
 const token = sessionStorage.getItem("token");
 /* 식당 필터 검색 */
-export const searchByFilter = async(search) => {
+export const searchByFilter = async(params) => {
     try{
-        const [info] = search;
+        // const [info] = params;
         //쿼리스트링으로 보내야한다.
+        console.log(params);
         
-        const params = new URLSearchParams();
-        Object.entries(info).forEach(([key,value])=> {
-            params.append(key,value);
+        const data = new URLSearchParams();
+        Object.entries(params).forEach(([key,value])=> {
+            data.append(key,value);
         })
-        console.log('text',params.toString(), info);
+        console.log('text',data.toString(), data);
 
-        const result = await apiClient.get(`/restaurants/search${params.toString()}`, {params : info},{
+        const result = await apiClient.get(`/restaurants/search?${data.toString()}`, {
             headers : {
                 "Content-Type" : `application/json`,
                 Authorization: `Bearer ${token}`,
@@ -29,13 +30,14 @@ export const searchByFilter = async(search) => {
         return result.data;
     } catch(err) {
         console.log("Error >>", err);
+        throw new Error("Failed to fetch data");
     }
 }
 /* 식당 요약 검색 */
 export const searchByKeyword = async(params) => {
     try{
         const keyword = params;
-        // console.log(keyword);
+        
         if(keyword?.length < 2) return [];  // 2글자 이상만 검색 가능
         const result = await apiClient.get(`/restaurants/search/${keyword}`, {
             headers : {

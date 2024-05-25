@@ -173,47 +173,6 @@ export default function Home() {
         <section>
           광고 배너
         </section>
-        {/* 음식 종류별 BEST */}
-        <section className='section pb-[45px]'>
-          <div className="px-[20px]">
-            <div className="section-header">
-              <h3 className="font-bold">음식종류별 BEST</h3>
-            </div>
-            <div className="section-body">
-              <div className="v-scroll">
-                <div className='v-scroll-inner'>
-                  <BestFoodList/>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        {/* 가격대별 BEST */}
-        <section className='section pb-[45px]'>
-          <div className="px-[20px]">
-            <div className="section-header">
-              <h3 className="font-bold">가격대별 BEST</h3>
-            </div>
-            <div className="section-body">
-              
-            </div>
-          </div>
-        </section>
-        <section>
-          상황별, 주제별 BEST
-        </section>
-        <section>
-          내일 예약 가능한 레스토랑
-        </section>
-        <section>
-          브랜드관
-        </section>
-        <section>
-          다이닝 매거진
-        </section>
-        <section>
-          푸터
-        </section>
       </main>
 
       <ModalDrawer

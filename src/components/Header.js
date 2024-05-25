@@ -15,6 +15,7 @@ const Header = ({ setSearch, updateSearch }) => {
   const state = useLocation().state;
   const navigate = new useNavigate();
   const searchInput = useRef();
+  let [isWhite, setIsWhite] = useState(false);
 
   useEffect(() => {
     setSearch(inputTxt);
@@ -53,6 +54,7 @@ const Header = ({ setSearch, updateSearch }) => {
   const onNotifications = () => {
     navigate("/my/myshop/notifications");
   };
+
   const headerContent = () => {
     switch (location) {
       case "/":
@@ -314,7 +316,7 @@ const Header = ({ setSearch, updateSearch }) => {
             );
           } else {
             return (
-              <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] bg-gradient">
+              <div className={`header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] ${isWhite ? 'bg-white' : 'bg-gradient'}`}>
                 <div className="header-left items-center flex gap-[12px]">
                   <a className="back-w header-icon" onClick={onClickBack}>
                     뒤로
