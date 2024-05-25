@@ -56,7 +56,7 @@ export const getUserInfo = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return result;
+    return result.data;
   } catch (err) {
     console.log("Error >>", err);
   }
@@ -64,11 +64,13 @@ export const getUserInfo = async () => {
 
 // 마이페이지 회원 정보 수정
 export const updateUserInfo = async (param) => {
+  console.log('param',param);
   const updateInfo = param;
   try {
     const result = await apiClient.patch(`/member/profile`, updateInfo, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
       },
     });
     return result;

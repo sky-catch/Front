@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { LoginState } from "../../States/LoginState";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateUserInfo } from "../../respository/userInfo"
 
 /**
  * 프로필 입력 화면
@@ -10,7 +12,13 @@ import { LoginState } from "../../States/LoginState";
 export default function MyProfileInfo() {
   const [user, setUser] = useRecoilState(LoginState);
   const [introduceLength, setIntroduceLength] = useState(0);
-  const [imgFile, setImgFile] = useState("");
+  const [imgFile, setImgFile] = useState(user.profileImageUrl);
+  const [name, setName] = useState("");
+  const queryClient = useQueryClient();
+
+  const editUserInfo = useMutation({mutationFn : updateUserInfo, onSuccess : () => {
+    queryClient.invalidateQueries({queryKey : [user]})
+  }})
 
   /* Function : 자기 소개 개수 */
   const handleChange = (e) => {
@@ -28,13 +36,28 @@ export default function MyProfileInfo() {
       .setAttribute("value", user.introduce);
   };
 
-  /* Funtion */
+  /* Funtion : 프로필 수정 */
   const editMyImg = (e) => {
     const {files} = e.target;
     const uploadFile = files[0];
     const reader = new FileReader();
-    reader.readAsDataURLs(uploadFile);
+    reader.readAsDataURL(uploadFile);
     reader.onloadend = () => {setImgFile(reader.result)};
+  }
+
+  /* Funtion : 닉네임 수정 */
+  const updateNickname = (e) => {
+    console.log(e.target.value);
+    setName(e.target.value);
+  }
+
+  /* Function */
+  const updateUser = (e) => {
+    console.log('name:',name,'imgFile',imgFile);
+    editUserInfo.mutate({ 
+      updateMemberReq : { nickname : name },
+      file : imgFile
+    });
   }
 
   /* Function : 닉네임 세팅 */
@@ -68,6 +91,7 @@ export default function MyProfileInfo() {
                   className="form-input"
                   placeholder="닉네임을 입력해주세요."
                   name="displayName"
+                  onChange={updateNickname}
                 ></input>
               </div>
               <div>
@@ -95,7 +119,7 @@ export default function MyProfileInfo() {
         <div className="space-60"></div>
       </MainContents>
       <div className="sticky-bottom-btns">
-        <button className="btn btn-lg btn-red">저장</button>
+        <button className="btn btn-lg btn-red" onClick={updateUser}>저장</button>
       </div>
     </>
   );

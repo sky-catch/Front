@@ -14,7 +14,6 @@ import {
 
 /**
  * 마이페이지
- * @author jimin
  */
 
 function MyPage() {
@@ -22,6 +21,7 @@ function MyPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [user, setUser] = useRecoilState(LoginState);
+  
   const [restaurant, setRestaurant] = useRecoilState(RestaurantState);
   const [following, setFollowing] = useState(0);
   const textInput = useRef();
@@ -29,14 +29,13 @@ function MyPage() {
   const [follower, setFollower] = useState(0);
   const [isScore, setIsScore] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
-  const [isOwner, setIsOwner] = useState(false);
+  
   const [isRestaurant, setIsRestaurant] = useState(false);
-  const [isUserInfo, setIsUserInfo] = useState([]);
+  // const [isUserInfo, setIsUserInfo] = useState([]);
   const [photoToAddList, setPhotoToAddList] = useState([]);
   const [photoToAddList2, setPhotoToAddList2] = useState([]);
   const [isSelectInfo, setIsSelectInfo] = useState([]);
-  const [isSave, setIsSave] =
-    useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
+  const [isSave, setIsSave] = useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
 
   /* Function : 프로필 수정 */
   const updateUserInfo = () => {
@@ -136,16 +135,8 @@ function MyPage() {
     }
   };
 
-  useEffect(() => {
-    getUserInfo()
-      .then((res) => {
-        setIsUserInfo(res.data);
-        setIsOwner(res.data.owner);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
-  }, []);
+  const {data : isUserInfo} = useQuery({queryKey : [], queryFn : getUserInfo});
+  const [isOwner, setIsOwner] = useState(isUserInfo ? isUserInfo.owner : false);
 
   const {
     data: getRestaurantItem,
@@ -194,7 +185,14 @@ function MyPage() {
         setRestaurant((prevUser) => ({ ...getRestaurantItem }));
       }
     }
-  }, [getRestaurantItem, isOwner]);
+
+    // 이미지 정보 설정
+    setUser((prevUser) => ({
+      ...prevUser,
+      profileImageUrl : isUserInfo?.profileImageUrl
+    }))
+   
+  }, [getRestaurantItem, isOwner, isUserInfo]);
 
   const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
