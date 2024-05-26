@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import moment from "moment";
+import "moment/locale/ko";
 import { useEffect, useRef, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import Drawer from "react-modern-drawer";
@@ -232,12 +234,14 @@ function MyPage() {
     }
   };
   const reviewDelect = (e, info) => {
-    console.log(info);
     DeleteReviewItem(info.reviewId);
-
-    // setIsSelect(false);
-    // setIsSave(false);
   };
+
+  const onDetail = ({ restaurantName, id }) => {
+    console.log("name : ", restaurantName);
+    navigate(`/ct/shop/${restaurantName}`, { state: restaurantName });
+  };
+
   return (
     <MainContents className="main">
       {/* 프로필정보 */}
@@ -367,7 +371,6 @@ function MyPage() {
             <div className="review container">
               {isUserInfo && isUserInfo.reviews.length > 0 ? (
                 isUserInfo.reviews.map((info, index) => {
-                  console.log(info);
                   return (
                     <div
                       key={index}
@@ -376,7 +379,10 @@ function MyPage() {
                       <div className="">
                         <div className="flex flex-col w-[100%] gap-y-[7px]">
                           <div className="flex justify-between">
-                            <span className="text-[16px] font-bold">
+                            <span
+                              className="text-[16px] font-bold"
+                              // onClick={() => onDetail(info)}
+                            >
                               {info.restaurantName}
                             </span>
                             <div className="flex justify-end gap-x-[7px]">
@@ -430,13 +436,21 @@ function MyPage() {
                               })}
                           </div>
                           {isUserInfo.comments.map((item) => {
+                            console.log(item);
                             return info.reviewId === item.reviewId &&
                               item.ownerId !== 0 ? (
                               <div
                                 key={item.reviewId}
                                 className=" flex flex-col gap-y-[10px]"
                               >
-                                <span className=" font-bold">사장님</span>
+                                <div className="">
+                                  <span className=" font-bold">사장님</span>
+                                  <span className=" text-[12px] ml-[7px]">
+                                    {moment(item.updatedDate)
+                                      .endOf("day")
+                                      .fromNow()}
+                                  </span>
+                                </div>
                                 <div className="p-[7px] w-auto rounded-lg bg-[#f4f4f4] text-[#2c2c2c] text-[14px] min-h-[80px] ">
                                   {item.content}
                                 </div>

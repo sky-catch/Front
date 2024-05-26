@@ -851,6 +851,10 @@ video {
   margin-top: 80px;
 }
 
+.ml-\[5px\] {
+  margin-left: 5px;
+}
+
 .box-border {
   box-sizing: border-box;
 }
@@ -1677,6 +1681,14 @@ video {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-\[8px\] {
+  font-size: 8px;
+}
+
+.text-\[10px\] {
+  font-size: 10px;
 }
 
 .font-bold {

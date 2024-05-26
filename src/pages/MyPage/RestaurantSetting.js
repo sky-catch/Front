@@ -90,7 +90,7 @@ export default function Restaurantsetting() {
     //   });
   };
   useEffect(() => {
-    // console.log("reservationItems", reservationItems.list.length);
+    // console.log("moment", moment().startOf("day").fromNow());
   }, []);
 
   //댓글 수정
@@ -397,10 +397,10 @@ const MainContents = styled.div`
 `;
 const Btn = styled.button`
   border-radius: 6px;
-  line-height: 26px;
+  line-height: 16px;
   text-align: center;
-  padding: 0 10px;
-  font-size: 14px;
+  padding: 3px 8px;
+  font-size: 12px;
   /* width: 100%; */
   /* margin-top: 0.75rem; */
   background-color: #ff3d00;
@@ -408,7 +408,7 @@ const Btn = styled.button`
   ${(prop) =>
     prop.colorEven
       ? " background-color: #ff3d00; color: #fff;"
-      : "color: #666; background-color: #f4f4f4;"}
+      : "color: #666; background-color: #fff;"}
 `;
 const CancelBtn = styled.button`
   border-radius: 6px;
