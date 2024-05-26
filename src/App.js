@@ -34,20 +34,7 @@ function App() {
 
   // sessionStorage.setItem(
   //   "token",
-  //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpc093bmVyIjpmYWxzZSwiaWF0IjoxNzE2NjkzOTA0LCJleHAiOjE3MTY3ODAzMDR9.SLBpFRgjquyMfpt5M9yb7y2spp4szEFzkLEMUhjT0S7O5rcbCLbb_22dCTnee2TCmlIpckdAFmeFbcxEyszUOw"
-  // );
-
-  // sessionStorage.setItem(
-  //   "data",
-  //   JSON.stringify({
-  //     id: 7,
-  //     nickname: "front",
-  //     profileImageUrl: "front",
-  //     email: "front@front.com",
-  //     name: "front_name",
-  //     status: "ACTIVE",
-  //     owner: true,
-  //   })
+  //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN1cGVyc3V0ZTE0MkBnbWFpbC5jb20iLCJpc093bmVyIjp0cnVlLCJpYXQiOjE3MTY3MDQwODUsImV4cCI6MTcxNjc5MDQ4NX0.TAE7u_bCLsgavvYf9hD2GJnwM78M3TpifZM-sYh3XkmHsyogP8WtdINV0GOl1zpEUakU-HROZ_zuJsQp4R4l-w"
   // );
 
   const location = useLocation();

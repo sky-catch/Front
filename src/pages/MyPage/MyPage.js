@@ -365,9 +365,9 @@ function MyPage() {
             </div>
           ) : (
             <div className="review container">
-              {console.log(isUserInfo)}
               {isUserInfo && isUserInfo.reviews.length > 0 ? (
                 isUserInfo.reviews.map((info, index) => {
+                  console.log(info);
                   return (
                     <div
                       key={index}
@@ -388,14 +388,22 @@ function MyPage() {
                               >
                                 수정
                               </span>
-                              <span
-                                className="text-[#666] text-[12px] float-right rounded-full py-[3px] px-[8px] border border-[#d5d5d5]"
-                                onClick={(e) => {
-                                  reviewDelect(e, info);
-                                }}
-                              >
-                                삭제
-                              </span>
+                              {isUserInfo.comments.map((item, index) => {
+                                return info.reviewId === item.reviewId &&
+                                  item.ownerId === 0 ? (
+                                  <span
+                                    key={index}
+                                    className="text-[#666] text-[12px] float-right rounded-full py-[3px] px-[8px] border border-[#d5d5d5]"
+                                    onClick={(e) => {
+                                      reviewDelect(e, info);
+                                    }}
+                                  >
+                                    삭제
+                                  </span>
+                                ) : (
+                                  ""
+                                );
+                              })}
                             </div>
                           </div>
                           <div className="flex justify-between">
@@ -421,6 +429,22 @@ function MyPage() {
                                 );
                               })}
                           </div>
+                          {isUserInfo.comments.map((item) => {
+                            return info.reviewId === item.reviewId &&
+                              item.ownerId !== 0 ? (
+                              <div
+                                key={item.reviewId}
+                                className=" flex flex-col gap-y-[10px]"
+                              >
+                                <span className=" font-bold">사장님</span>
+                                <div className="p-[7px] w-auto rounded-lg bg-[#f4f4f4] text-[#2c2c2c] text-[14px] min-h-[80px] ">
+                                  {item.content}
+                                </div>
+                              </div>
+                            ) : (
+                              ""
+                            );
+                          })}
                         </div>
                       </div>
                     </div>
