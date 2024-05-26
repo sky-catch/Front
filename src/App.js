@@ -32,10 +32,9 @@ function App() {
 
   /* 카카오 로그인 구현 시 뜨는 에러로 인해 현재 sessionStorage에 임시저장하여 기능 구현중 */
 
-
   // sessionStorage.setItem(
   //   "token",
-  //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTYwMzA0MTMsImV4cCI6MTcxNjExNjgxM30.gr2jxE3Uiu_-kaN-tRczyta2Ji-IFtXQuUrUaEZq_TYYMZ8u8JXqhfCcWqCMyKL0VmAxBWpKof9n-wFE4MehVQ"
+  //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpc093bmVyIjpmYWxzZSwiaWF0IjoxNzE2NjkzOTA0LCJleHAiOjE3MTY3ODAzMDR9.SLBpFRgjquyMfpt5M9yb7y2spp4szEFzkLEMUhjT0S7O5rcbCLbb_22dCTnee2TCmlIpckdAFmeFbcxEyszUOw"
   // );
 
   // sessionStorage.setItem(
@@ -50,7 +49,6 @@ function App() {
   //     owner: true,
   //   })
   // );
-
 
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {

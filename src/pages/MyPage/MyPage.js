@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { LoginState, RestaurantState } from "../../States/LoginState";
+import { DeleteReview } from "../../respository/reservation";
 import {
   getMyRestaurant,
   getOwner,
@@ -21,6 +22,7 @@ function MyPage() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
+  const { mutate: DeleteReviewItem } = DeleteReview();
   const [user, setUser] = useRecoilState(LoginState);
   const [restaurant, setRestaurant] = useRecoilState(RestaurantState);
   const [following, setFollowing] = useState(0);
@@ -216,8 +218,6 @@ function MyPage() {
   };
 
   const reviewSend = () => {
-    console.log("isScore", isScore);
-    console.log("textInput", textInput);
     const photoUploaderContent = document.querySelector(
       ".photoUploaderContent"
     );
@@ -230,6 +230,13 @@ function MyPage() {
         "The element with class 'photoUploaderContent' was not found."
       );
     }
+  };
+  const reviewDelect = (e, info) => {
+    console.log(info);
+    DeleteReviewItem(info.reviewId);
+
+    // setIsSelect(false);
+    // setIsSave(false);
   };
   return (
     <MainContents className="main">
@@ -358,6 +365,7 @@ function MyPage() {
             </div>
           ) : (
             <div className="review container">
+              {console.log(isUserInfo)}
               {isUserInfo && isUserInfo.reviews.length > 0 ? (
                 isUserInfo.reviews.map((info, index) => {
                   return (
@@ -369,7 +377,7 @@ function MyPage() {
                         <div className="flex flex-col w-[100%] gap-y-[7px]">
                           <div className="flex justify-between">
                             <span className="text-[16px] font-bold">
-                              식당이름
+                              {info.restaurantName}
                             </span>
                             <div className="flex justify-end gap-x-[7px]">
                               <span
@@ -380,7 +388,12 @@ function MyPage() {
                               >
                                 수정
                               </span>
-                              <span className="text-[#666] text-[12px] float-right rounded-full py-[3px] px-[8px] border border-[#d5d5d5]">
+                              <span
+                                className="text-[#666] text-[12px] float-right rounded-full py-[3px] px-[8px] border border-[#d5d5d5]"
+                                onClick={(e) => {
+                                  reviewDelect(e, info);
+                                }}
+                              >
                                 삭제
                               </span>
                             </div>
@@ -396,12 +409,12 @@ function MyPage() {
                           <span className="text-[14px] my-[5px]">
                             {info.comment}
                           </span>
-                          <div className=" grid grid-cols-4 justify-center">
+                          <div className=" grid grid-cols-4 justify-center gap-[10px]">
                             {info.images &&
                               info.images.map((item) => {
                                 return (
                                   <img
-                                    className=""
+                                    className="rounded-[6px]"
                                     key={item.reviewImageId}
                                     src={`${item.path}`}
                                   />

@@ -12,7 +12,8 @@ const FormData = require("form-data");
 /* 예약 가능한 시간 조회 */
 const token = sessionStorage.getItem("token");
 
-export const checkReservationTimes = async ({queryKey}) => {
+export const checkReservationTimes = async ({ queryKey }) => {
+  console.log("queryKey", queryKey);
   const [isdata] = queryKey;
   if (isdata.numberOfPeople === 0) return;
   const result = await axios.post(
@@ -171,7 +172,6 @@ export const CancelReservation = () => {
 };
 
 // 리뷰 생성
-
 const createReviewItem = async ({ createReviewReq, files }) => {
   const formData = new FormData();
 
@@ -202,6 +202,35 @@ export const CreateReview = () => {
       console.log("createPost success", data);
       alert("리뷰 작성이 완료됐습니다.");
       window.location.href = "/mydining/my";
+    },
+    onError: (error) => {
+      console.log("createPost error", error);
+    },
+  });
+};
+
+const deleteReviewItem = async (id) => {
+  const response = await axios.delete(
+    `http://15.164.89.177:8080/review/${id}`,
+
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response.data;
+};
+
+export const DeleteReview = () => {
+  return useMutation({
+    mutationKey: ["deleteReviewItem"],
+    mutationFn: deleteReviewItem,
+    onSuccess: (data) => {
+      console.log("createPost success", data);
+      alert("리뷰 삭제가 완료됐습니다.");
+      window.location.reload();
     },
     onError: (error) => {
       console.log("createPost error", error);

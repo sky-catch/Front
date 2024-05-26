@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import React, { useEffect, useState } from "react";
 import "react-modern-drawer/dist/index.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -26,20 +26,31 @@ import RestaurantInfor from "./RestaurantInfor";
  */
 
 export default function Restaurant() {
-  const { state } = useLocation(); 
+  const { state } = useLocation();
   const navigate = useNavigate();
   const location = useLocation();
 
   // 식당 개별 정보 조희
-  const { data : restaurant, isLoading } = useQuery({ queryKey : [state], queryFn : getRestaurant}); /* 식당 정보 */
+  const { data: restaurant, isLoading } = useQuery({
+    queryKey: [state],
+    queryFn: getRestaurant,
+  }); /* 식당 정보 */
   const shopId = restaurant?.restaurantId;
-  const { data : availTimes } = useQuery({ queryKey : [{
-    restaurantId : shopId,
-    numberOfPeople : 2,
-    searchDate : "2024-05-18",
-    visitTime : "18:00"
-  }], queryFn : checkReservationTimes, enabled : !!shopId });
-  const timeSlots = availTimes? availTimes['timeSlots'] : null;  /* 예약 가능한 시간 */
+  const { data: availTimes } = useQuery({
+    queryKey: [
+      {
+        restaurantId: shopId,
+        numberOfPeople: 2,
+        searchDate: "2024-05-18",
+        visitTime: "18:00",
+      },
+    ],
+    queryFn: checkReservationTimes,
+    enabled: !!shopId,
+  });
+  const timeSlots = availTimes
+    ? availTimes["timeSlots"]
+    : null; /* 예약 가능한 시간 */
 
   const [openBottom, setOpenBottom] = React.useState(false);
   const openDrawerBottom = () => setOpenBottom(true);
@@ -61,17 +72,13 @@ export default function Restaurant() {
   });
 
   const [isContent, setIsContent] = useState("home");
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const [imgIndex, setImgIndex] =
     useState(1); /* 이미지 슬라이드 현재 보고있는 이미지번호 */
   const [watch, setWatch] =
     useState(0); /* 현재 해당 식당을 보고 있는 사람들 수 */
-  const [timeSlots, setTimeSlots] =
-    useState(); /* 해당 식당의 예약 가능한 시간 */
-
-
+  // const [timeSlots, setTimeSlots] =
+  //   useState(); /* 해당 식당의 예약 가능한 시간 */
 
   const toggleDrawer = (e) => {
     if (e.target.className.indexOf("closeSaveModal") != -1) {
@@ -127,13 +134,12 @@ export default function Restaurant() {
     }
   };
 
-
   /* Function : 식당 정보 조회 */
   const setRestaurantInfo = (name) => {
     getRestaurant(name)
       .then((res) => {
         //TODO: 데이터 적용 완료
-        setRestaurant(res.data);
+        // setRestaurant(res.data);
         if (!res.data) return;
         // console.log("res.data.restaurantId", res.data.restaurantId);
         const info = {
@@ -143,14 +149,13 @@ export default function Restaurant() {
           visitTime: "14:26:00",
         };
         checkReservationTimes(info).then((result) => {
-          setTimeSlots(result.data.timeSlots);
+          // setTimeSlots(result.data.timeSlots);
         });
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
 
   /* Function : 식당 저장 */
   const saveMyRestaurant = (e) => {
@@ -177,7 +182,6 @@ export default function Restaurant() {
     setIsOpenLo((prevState) => !prevState);
   };
 
-
   useEffect(() => {
     if (!restaurant) {
       setRestaurantInfo(state);
@@ -187,9 +191,7 @@ export default function Restaurant() {
 
   const week = ["일", "월", "화", "수", "목", "금", "토", "일"];
 
-
-
-  if(isLoading) return<div>isLoading...</div>;
+  if (isLoading) return <div>isLoading...</div>;
   return (
     <main className="pb-[74px]">
       {/* 1. 식당 이미지 */}
@@ -230,11 +232,16 @@ export default function Restaurant() {
             <span>{restaurant.category}</span>
             <h2>{restaurant.name}</h2>
             <div className="flex align-center">
-              <StarsComponent
-                startAvg={restaurant.reviewAvg}
-              ></StarsComponent>
+              <StarsComponent startAvg={restaurant.reviewAvg}></StarsComponent>
             </div>
 
+            <div className="restaurant-detail">
+              <p>{restaurant.content}</p>
+              <div className="lunchDinner">
+                <span className="detail lunch">저녁 동일가 1-3만원</span>
+                <span className="detail dinner">저녁 동일가 1-3만원</span>
+              </div>
+            </div>
             <div className="menu">
               <a className="call" href={`tel:${restaurant.phone}`}>
                 전화
@@ -250,26 +257,7 @@ export default function Restaurant() {
               >
                 매장정보
               </a>
-          </div>
-          <div className="restaurant-detail">
-            <p>{restaurant.content}</p>
-            <div className="lunchDinner">
-              <span className="detail lunch">저녁 동일가 1-3만원</span>
-              <span className="detail dinner">저녁 동일가 1-3만원</span>
             </div>
-          </div>
-          <div className="menu">
-            <a className="call" href={`tel:${restaurant.phone}`}>
-              전화
-            </a>
-            <a className="location" onClick={onHandleLocation}>위치</a>
-            <a
-              className="building"
-              onClick={() => {
-                onReserveInfor();
-              }}>
-              매장정보
-            </a>
           </div>
         </div>
       </Section>
@@ -285,27 +273,16 @@ export default function Restaurant() {
               <div className="mb-[8px]" onClick={openDrawerBottom}>
                 <a
                   href={`#`}
-                  className="btn btn-lg btn-outline btn-cta full-width arrowdown">
+                  className="btn btn-lg btn-outline btn-cta full-width arrowdown"
+                >
                   <span>
-                    <span className="label calendar"> 오늘 ({week[new Date().getDay()]}) / 2 명</span>
+                    <span className="label calendar">
+                      {" "}
+                      오늘 ({week[new Date().getDay()]}) / 2 명
+                    </span>
                   </span>
                 </a>
-              </div>
-              { timeSlots && timeSlots.length > 0 ?
-              <>
-                <div className="section-time-slot mb-[24px]">
-                  <Swiper
-                    className="timetable-list-sm"
-                  >
 
-                    <span>
-                      <span className="label calendar">
-                        {" "}
-                        오늘 ({week[new Date().getDay()]}) / 2 명
-                      </span>
-                    </span>
-                  </a>
-                </div>
                 {timeSlots && timeSlots.length > 0 ? (
                   <>
                     <div className="section-time-slot mb-[24px]">
@@ -335,30 +312,7 @@ export default function Restaurant() {
                     <p className="time-slot-unavailable">예약 시간 나열!</p>
                   </div>
                 )}
-
-                    { timeSlots.map((item,index)=> {
-                      const hour = item.time.slice(0,2);
-                      const min = item.time.slice(2,5);
-                        return(<SwiperSlide key={index} onClick={(e)=>onReserveCalendar(item.time,e)}>
-                        <button className="timetable-list-item">
-                          <span className="time">{hour%12>0 ? `오후 ${hour%12}` : `오전 ${hour}`}{min}</span>
-                        </button>
-                        </SwiperSlide>)
-                    })}
-                  </Swiper>
-                </div>
-                <div className="btn-centered">
-                    <a className="btn btn-rounded btn-outline-red btn-outline-red-rounded">
-                      <span className="label arrow">예약가능 날짜 찾기</span>
-                    </a>
-                </div>
-                </>
-              : 
-              <div className="time-slot-unavailable-box">
-                <p className="time-slot-unavailable">예약 시간 나열!</p>
-
               </div>
-              }
             </div>
           </div>
         </div>
@@ -366,8 +320,9 @@ export default function Restaurant() {
       <Seperator></Seperator>
       {/* 4. 탭 */}
       <RestaurantTap restaurantInfo={restaurant}></RestaurantTap>
-      { restaurant.notifications[0] && <section className="section">
-        <div className="noti">
+      {restaurant.notifications[0] && (
+        <section className="section">
+          <div className="noti">
             <div className="container gutter-sm">
               <div className="section-header mb-[30px]">
                 <h3>레스토랑 공지</h3>
@@ -381,10 +336,14 @@ export default function Restaurant() {
                     <div className="restaurant-notice">
                       <article className="restaurant-notice-item">
                         <div className="notice-content flex">
-                          <div className="pic"><div className="img"></div></div>
+                          <div className="pic">
+                            <div className="img"></div>
+                          </div>
                           <div className="desc">
                             <p>{restaurant.notifications[0].content}</p>
-                            <a className="_more"><span>더보기</span></a>
+                            <a className="_more">
+                              <span>더보기</span>
+                            </a>
                           </div>
                         </div>
                       </article>
@@ -393,8 +352,9 @@ export default function Restaurant() {
                 </div>
               </div>
             </div>
-        </div>
-      </section>}
+          </div>
+        </section>
+      )}
       <Seperator></Seperator>
       {/* 5. 편의시설 */}
       <section className="section">
@@ -405,7 +365,7 @@ export default function Restaurant() {
             </div>
             <div className="section-body">
               <div className="restaurant-features mb-[20px]">
-                {restaurant.facilities.map((item,idx)=>(
+                {restaurant.facilities.map((item, idx) => (
                   <span className="feature-item" key={idx}>
                     <img src={item.path}></img>
                     <span className="label">{item.name}</span>
@@ -447,7 +407,7 @@ export default function Restaurant() {
               </div>
             </div>
           </div>
-          </div>
+        </div>
       </section>
       {/* 9. 비슷한 레스토랑 추천 */}
       {/* 10. 매장 위치 */}
@@ -455,13 +415,11 @@ export default function Restaurant() {
       {/* 12. 이 주변 예약이 많은 레스토랑 */}
       {/* 예약 슬라이드 페이지 */}
       <BottomBtn>
-
         <div
           className={`savebtn ${
             restaurant && restaurant.saved ? "active" : ""
           }`}
         >
-
           <button onClick={saveMyRestaurant}>저장</button>
           <span>{restaurant ? restaurant.savedCount : 0}</span>
         </div>

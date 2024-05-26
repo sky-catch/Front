@@ -263,7 +263,6 @@ export default function Restaurantsetting() {
                         })}
                       </div>
                     )}
-
                     {item.commentContent !== null && (
                       <div className=" flex justify-between items-start mb-[12px]">
                         <div className="size-[50px] rounded-full overflow-hidden bg-slate-400">
