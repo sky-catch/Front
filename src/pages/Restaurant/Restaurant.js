@@ -1,6 +1,6 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import "react-modern-drawer/dist/index.css";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import "swiper/css";
@@ -10,15 +10,19 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import dinner_dark from "../../assets/icons/time-dinner-dark.svg";
 import lunch_dark from "../../assets/icons/time-lunch-dark.svg";
 import CalendarComponent from "../../components/CalendarComponent";
+import { MapComponent } from "../../components/MapComponent.js";
 import ConfirmReserve from "../../components/Modal/ConfirmReserve.js";
 import { LocationDrawer } from "../../components/Modal/Location.js";
 import RestaurantTap from "../../components/RestaurantTap.js";
 import SaveConfirmComponent from "../../components/SaveConfirmComponent.js";
 import StarsComponent from "../../components/StarsComponent.js";
-import { getRestaurant, useSaveRestaurant, useDeleteRestaurant } from "../../respository/restaurant";
-import RestaurantInfor from "./RestaurantInfor";
-import { MapComponent } from "../../components/MapComponent.js";
 import { checkReservationTimes } from "../../respository/reservation.js";
+import {
+  getRestaurant,
+  useDeleteRestaurant,
+  useSaveRestaurant,
+} from "../../respository/restaurant";
+import RestaurantInfor from "./RestaurantInfor";
 
 /**
  * 식당 상세 정보 페이지
@@ -34,27 +38,45 @@ export default function Restaurant() {
 
   // 식당 개별 정보 조희
 
-  const { data : restaurant, isLoading } = useQuery({ queryKey : [state], queryFn : getRestaurant, staleTime : 1000 * 60 * 5}); /* 식당 정보 */
+  const { data: restaurant, isLoading } = useQuery({
+    queryKey: [state],
+    queryFn: getRestaurant,
+    staleTime: 1000 * 60 * 5,
+  }); /* 식당 정보 */
   const shopId = restaurant?.restaurantId;
-  const { data : availTimes } = useQuery({ queryKey : [{
-    restaurantId : shopId,
-    numberOfPeople : 2,
-    searchDate : "2024-05-18",
-    visitTime : "18:00"
-  }], queryFn : checkReservationTimes, enabled : !!shopId });
-  const timeSlots = availTimes? availTimes['timeSlots'] : null;  /* 예약 가능한 시간 */
+  const { data: availTimes } = useQuery({
+    queryKey: [
+      {
+        restaurantId: shopId,
+        numberOfPeople: 2,
+        searchDate: "2024-05-18",
+        visitTime: "18:00",
+      },
+    ],
+    queryFn: checkReservationTimes,
+    enabled: !!shopId,
+  });
+  const timeSlots = availTimes
+    ? availTimes["timeSlots"]
+    : null; /* 예약 가능한 시간 */
   console.log(restaurant);
 
   const queryClient = useQueryClient();
-  const deleteSave = useMutation({mutationFn : useDeleteRestaurant, onSuccess : ()=>{
-      // console.log('success'), 
-      queryClient.invalidateQueries({queryKey : [state]})
-    }});
-  const saveSave = useMutation({mutationFn : useSaveRestaurant, onSuccess : ()=>{
-    // console.log('success'), 
-    queryClient.invalidateQueries({queryKey : [state]})
-  }});
-  
+  const deleteSave = useMutation({
+    mutationFn: useDeleteRestaurant,
+    onSuccess: () => {
+      // console.log('success'),
+      queryClient.invalidateQueries({ queryKey: [state] });
+    },
+  });
+  const saveSave = useMutation({
+    mutationFn: useSaveRestaurant,
+    onSuccess: () => {
+      // console.log('success'),
+      queryClient.invalidateQueries({ queryKey: [state] });
+    },
+  });
+
   const [openBottom, setOpenBottom] = React.useState(false);
   const openDrawerBottom = () => setOpenBottom(true);
   const closeDrawerBottom = () => setOpenBottom(false);
@@ -164,7 +186,7 @@ export default function Restaurant() {
   const useSaveMyRestaurant = (e) => {
     const restaurantId = restaurant.restaurantId;
 
-    if(restaurant.saved) {
+    if (restaurant.saved) {
       // deleteRestaurant(restaurantId)
       // .then((res)=> {
       //   console.log(res);
@@ -173,11 +195,10 @@ export default function Restaurant() {
       // .catch((err) => {
       //   console.log(err);
       // });
-      deleteSave.mutate({id : restaurantId});
+      deleteSave.mutate({ id: restaurantId });
       // console.log(deleteDate);
     } else {
-
-      saveSave.mutate({id : restaurantId});
+      saveSave.mutate({ id: restaurantId });
       // console.log(saveDate);
       // .then((res) => {
       //   console.log(res);
@@ -188,8 +209,8 @@ export default function Restaurant() {
       // .catch((err) => {
       //   console.log(err);
       // });
-    };
-  }
+    }
+  };
 
   /**
    * Function 슬라이드 넘기는 이벤트 : 슬라이드 변경 시마다 imgIndex 상태 변경
@@ -242,7 +263,9 @@ export default function Restaurant() {
         </Swiper>
         <div className="restaurant-img-detail">
           <span>{watch}명이 보는중!</span>
-          <div>{`${restaurant.images.length>0 ? imgIndex : 0}/${restaurant.images?.length}`}</div>
+          <div>{`${restaurant.images.length > 0 ? imgIndex : 0}/${
+            restaurant.images?.length
+          }`}</div>
         </div>
       </Section>
       {/* 2. 식당 이름 및 메인 정보 */}
@@ -288,39 +311,43 @@ export default function Restaurant() {
           <div className="container gutter-sm">
             <div className="section-header">
               <h3>예약 일시</h3>
-
-                    { timeSlots && timeSlots.length > 0 ?
-                    <>
-                      <div className="section-time-slot mb-[24px]">
-                        <Swiper
-                          className="timetable-list-sm"
-                        >
-                          { timeSlots.map((item,index)=> {
-                            const hour = item.time.slice(0,2);
-                            const min = item.time.slice(2,5);
-                              return(<SwiperSlide key={index} onClick={(e)=>onReserveCalendar(item.time,e)}>
-                              <button className="timetable-list-item">
-                                <span className="time">{hour%12>0 ? `오후 ${hour%12}` : `오전 ${hour}`}{min}</span>
-                              </button>
-                              </SwiperSlide>)
-                          })}
-                        </Swiper>
-                      </div>
-                      </>
-              : 
-              <div className="time-slot-unavailable-box">
-                <p className="time-slot-unavailable">예약 시간 나열!</p>
-
-              </div>
+              {timeSlots && timeSlots.length > 0 ? (
+                <>
+                  <div className="section-time-slot mb-[24px]">
+                    <Swiper className="timetable-list-sm">
+                      {timeSlots.map((item, index) => {
+                        const hour = item.time.slice(0, 2);
+                        const min = item.time.slice(2, 5);
+                        return (
+                          <SwiperSlide
+                            key={index}
+                            onClick={(e) => onReserveCalendar(item.time, e)}
+                          >
+                            <button className="timetable-list-item">
+                              <span className="time">
+                                {hour % 12 > 0
+                                  ? `오후 ${hour % 12}`
+                                  : `오전 ${hour}`}
+                                {min}
+                              </span>
+                            </button>
+                          </SwiperSlide>
+                        );
+                      })}
+                    </Swiper>
+                  </div>
+                </>
+              ) : (
+                <div className="time-slot-unavailable-box">
+                  <p className="time-slot-unavailable">예약 시간 나열!</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </section>
       <Seperator></Seperator>
       {/* 4. 탭 */}
-
-  
-
       <RestaurantTap restaurant={restaurant}></RestaurantTap>
 
       {restaurant.notifications[0] && (
@@ -360,68 +387,32 @@ export default function Restaurant() {
       )}
       <Seperator></Seperator>
       {/* 5. 편의시설 */}
-      { restaurant?.facilities && <section className="section">
-        <div className="facilities">
-          <div className="container gutter-sm">
-            <div className="section-header mb-[30px]">
-              <h3>편의시설</h3>
-            </div>
-            <div className="section-body">
-              <div className="restaurant-features mb-[20px]">
-                {restaurant.facilities.map((item, idx) => (
-                  <span className="feature-item" key={idx}>
-                    <img src={item.path}></img>
-                    <span className="label">{item.name}</span>
-                  </span>
-                ))}
+      {restaurant?.facilities && (
+        <section className="section">
+          <div className="facilities">
+            <div className="container gutter-sm">
+              <div className="section-header mb-[30px]">
+                <h3>편의시설</h3>
+              </div>
+              <div className="section-body">
+                <div className="restaurant-features mb-[20px]">
+                  {restaurant.facilities.map((item, idx) => (
+                    <span className="feature-item" key={idx}>
+                      <img src={item.path}></img>
+                      <span className="label">{item.name}</span>
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>}
+        </section>
+      )}
       {/* 6. 메뉴 */}
       {/* 7. 사진 */}
       {/* 8. 추천 리뷰 */}
       <Seperator></Seperator>
-      {/* <section className="section">
-        <div className="cmmt">
-          <div className="container gutter-sm">
-            <div className="section-header mb-[30px]">
-              <h3>추천 리뷰</h3>
-              <div className="utils">
-                <a className="btn-all">전체보기</a>
-              </div>
-            </div>
-            <div className="section-body">
-              <div className="rating-summary">
-                <div className="rating">
-                  <span className="star">{restaurant.reviewAvg}</span>
-                  <span className="count">{`(${restaurant.reviewCount})`}</span>
-                </div>
-              </div>
-              <div className="review-post-list mb-[25px]">
-                <div className="v-scroll">
-                  <div className="v-scroll-inner">
-                    <div className="review-post-list flex">
-                      {restaurant.reviewComments.map((item,idx)=> (
-                        <a className="review-post-list-item" key={idx}>
-                          <div className="tb">
-                            <div className="img"></div>
-                          </div>
-                          <div className="detail">
-                            <div className="post-meta"></div>
-                            <div className="comment-area"></div>
-                          </div>
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
-      </section> */}
       <section className="section">
         <div className="cmmt">
           <div className="container gutter-sm">
@@ -438,12 +429,9 @@ export default function Restaurant() {
                   <p>{restaurant?.detailAddress}</p>
                 </div>
               </div>
-              <div className="btn-centered">
-
-              </div>
+              <div className="btn-centered"></div>
             </div>
           </div>
-
         </div>
       </section>
       {/* 9. 비슷한 레스토랑 추천 */}
@@ -457,7 +445,6 @@ export default function Restaurant() {
             restaurant && restaurant.saved ? "active" : ""
           }`}
         >
-
           <button onClick={useSaveMyRestaurant}>저장</button>
 
           <span>{restaurant ? restaurant.savedCount : 0}</span>

@@ -17,24 +17,26 @@ import Notifications from "./pages/MyPage/Notifications.js";
 import Owner from "./pages/MyPage/Owner.js";
 import RestaurantInfo from "./pages/MyPage/RestaurantInfo.js";
 import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
+import { MenuList } from "./pages/Restaurant/MenuList.js";
+import { PhotoList } from "./pages/Restaurant/PhotoList.js";
 import ReserveForm from "./pages/Restaurant/ReserveForm.js";
 import Restaurant from "./pages/Restaurant/Restaurant.js";
 import ReviewList from "./pages/Restaurant/ReviewList.js";
 import Search from "./pages/Search/Search.js";
 import SearchList from "./pages/Search/SearchList.js";
 import SearchTotal from "./pages/Search/SearchTotal.js";
-import { MenuList } from "./pages/Restaurant/MenuList.js";
-import { PhotoList } from "./pages/Restaurant/PhotoList.js";
 
 function App() {
   const [search, setSearch] = useState();
-  const updateSearch = (param) => { setSearch(param);};
+  const updateSearch = (param) => {
+    setSearch(param);
+  };
 
   /* 카카오 로그인 구현 시 뜨는 에러로 인해 현재 sessionStorage에 임시저장하여 기능 구현중 */
 
   // sessionStorage.setItem(
   //   "token",
-  //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN1cGVyc3V0ZTE0MkBnbWFpbC5jb20iLCJpc093bmVyIjp0cnVlLCJpYXQiOjE3MTY3MDQwODUsImV4cCI6MTcxNjc5MDQ4NX0.TAE7u_bCLsgavvYf9hD2GJnwM78M3TpifZM-sYh3XkmHsyogP8WtdINV0GOl1zpEUakU-HROZ_zuJsQp4R4l-w"
+  //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6Imhlc2pzNUBuYXZlci5jb20iLCJpc093bmVyIjpmYWxzZSwiaWF0IjoxNzE2Nzk0MjQ0LCJleHAiOjE3MTY4ODA2NDR9.DdPInGz0oun09qbZDjojv1WosorbAXJOz21uN1s8e0CWWHekTl8EcavjB3dlBrU-Q9CPQhK1lEEH8KpL8JTT0w"
   // );
 
   const location = useLocation();
