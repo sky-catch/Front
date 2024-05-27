@@ -3,7 +3,6 @@ import "rc-slider/assets/index.css";
 import { useEffect, useRef, useState } from "react";
 import Drawer from "react-modern-drawer";
 import { Swiper, SwiperSlide } from "swiper/react";
-// import 'rc-slider/assets/i'
 
 /**
  * 검색 필터 Drawer
@@ -40,11 +39,14 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
     { name: "전북" },
   ];
   const addressItems = [
-    [
+    [ //핫플
       "서울 전체", "강남/역삼/선릉", "강남구청", "건대/군자/구의", "금호/옥수/신당", "명동/을지로/충무로", "방이", "북촌/삼청", "삼성/대치", "상수/합정/망원", "서울역/회현", "서초/방배", "서촌", 
       "성수/서울숲", "신사/논현", "신촌/홍대/서교", "압구정/청담", "양재/도곡", "연남", "영등포/여의도", "용산/삼각지", 
     ],
-    [ '서울 전체', '강남', '서초', '잠실/송파/강동', '영등포/여의도/강서', '건대/성수/왕십리','종로/중구', '홍대/합정/마포', '용산/이태원/한남', '성북/노원/중랑', '구로/관악동작' ],
+    [ //서울
+      "서울 전체", "강남/역삼/선릉", "강남구청", "건대/군자/구의", "금호/옥수/신당", "명동/을지로/충무로", "방이", "북촌/삼청", "삼성/대치", "상수/합정/망원", "서울역/회현", "서초/방배", "서촌", 
+      "성수/서울숲", "신사/논현", "신촌/홍대/서교", "압구정/청담", "양재/도곡", "연남", "영등포/여의도", "용산/삼각지", 
+    ],
     [],
     [],
     [],
@@ -98,7 +100,6 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
     //서울 전체인 경우
     const list = placeRef.current;
     if (recentText == "서울 전체") {
-      console.log('recent : ', recent, 'recentText:', recentText, recent.length);
       if (recent.length < 2) {
         list.map((item) => {
           const arr1 = item.classList;
@@ -206,7 +207,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
   /* function : 가격 설정 */
   const handleChange = (props) => {
     const [min, max] = props;
-    
+    if(max<1) return;
     setCost({
       min: min,
       max: max,
@@ -222,7 +223,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
     handleChange([min, max]);
   };
   useEffect(()=>{
-    console.log(cost,Value);
+    // console.log(cost,Value);
   },[cost,Value])
   useEffect(() => {
     console.log(cities);
@@ -336,7 +337,6 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
                       marks={{ 0: "0원", 20: "20만원", 40: "40만원 이상" }}
                       onChange={handleChange}
                       value={Value}
-                      // ref={sliderRef}
                     />
                   </div>
                   <div className="slider-help">

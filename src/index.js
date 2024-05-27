@@ -6,7 +6,13 @@ import App from "./App";
 import "./output.css";
 import { RecoilRoot } from "recoil";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions : {
+    queries : {
+      staleTime : 1000 * 20,
+    }
+  }
+});
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <QueryClientProvider client={queryClient}>

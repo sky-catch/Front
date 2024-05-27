@@ -35,13 +35,12 @@ export default function ReviewList() {
             // 각 점수별로 카운트한 정보를 담기
             setCounts(countList);
         }
-        // console.log(counts);
         // console.log(restaurant);
     },[restaurant, countList])
 
     return(
         <Main className="main">
-            <RestaurantTap restaurantInfo={restaurant}></RestaurantTap>
+            <RestaurantTap restaurant={restaurant}></RestaurantTap>
             <section className="section mb-[16px]">
                 <div className="container gutter-sm">
                     <div className="review-rating-summary review-rating-summary-splitview flex mt-[24px]">

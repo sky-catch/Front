@@ -10,7 +10,7 @@ import comment_new from "../../assets/icons/comment-new.webp";
 export default function ReviewItem({info}) {
     const [reviewEach, setReviewEach] = useState();
     const [commentDate, setCommentDate] = useState();
-
+    console.log(reviewEach);
     useEffect(()=>{
         const reviewDate = new Date(info.reviewCreatedDate);
         const cdate = reviewDate.getFullYear()+"-"+ ( "0"+(reviewDate.getMonth()+1) ).slice(-2) + "-" + ( "0"+reviewDate.getDate()).slice(-2);
@@ -34,20 +34,20 @@ export default function ReviewItem({info}) {
                     </div>
                 </div>
                 <div className="__body">
-                    <div>
+                    { reviewEach?.images.length >0 && <div>
                         <div className="v-scroll">
                             <div className="v-scroll-inner">
                                 <div className="__photos">
-                                    { reviewEach ? reviewEach.images.map((item, index)=> (
+                                    {reviewEach.images.map((item, index)=> (
                                         <div className="mr-[10px] swiper-slide" key={index}>
                                             <img src={item.path}></img>
                                         </div>
-                                    )) : (<></>)}
+                                    ))}
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="__review-post"><p>{reviewEach?reviewEach.commentContent:""}</p></div>
+                    </div>}
+                    <div className="__review-post"><p>{reviewEach?reviewEach.reviewContent:""}</p></div>
                     <div className="__d-flex __v-center justify-between">
                         <div className="__post-meta mb-[24px] flex">
                             <span className="__like flex items-center">0</span>
