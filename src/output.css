@@ -1085,6 +1085,14 @@ video {
   width: 50%;
 }
 
+.w-\[63px\] {
+  width: 63px;
+}
+
+.w-\[65px\] {
+  width: 65px;
+}
+
 .w-\[calc\(100\%-47px\)\] {
   width: calc(100% - 47px);
 }
@@ -1491,6 +1499,11 @@ video {
   padding-right: 16px;
 }
 
+.px-\[1px\] {
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
 .px-\[20px\] {
   padding-left: 20px;
   padding-right: 20px;
@@ -1499,11 +1512,6 @@ video {
 .px-\[30px\] {
   padding-left: 30px;
   padding-right: 30px;
-}
-
-.px-\[5px\] {
-  padding-left: 5px;
-  padding-right: 5px;
 }
 
 .px-\[7px\] {
@@ -1531,9 +1539,19 @@ video {
   padding-bottom: 15px;
 }
 
+.py-\[1px\] {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+
 .py-\[20px\] {
   padding-top: 20px;
   padding-bottom: 20px;
+}
+
+.py-\[2px\] {
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 .py-\[3px\] {
@@ -1635,6 +1653,10 @@ video {
 
 .text-center {
   text-align: center;
+}
+
+.text-justify {
+  text-align: justify;
 }
 
 .text-\[12px\] {
@@ -2092,6 +2114,16 @@ header {
   text-indent: -999em;
 }
 
+.text-justify {
+  text-align: justify;
+}
+
+.text-justify:after {
+  content: "";
+  display: inline-block;
+  width: 100%;
+}
+
 .myArea span {
   padding: 0 8px 0 4px;
   font-weight: 700;
@@ -2166,7 +2198,10 @@ header {
 
 /* section */
 
-.reserve, .noti, .facilities, .cmmt {
+.reserve,
+.noti,
+.facilities,
+.cmmt {
   padding: 24px 0 30px 0;
 }
 
@@ -2788,10 +2823,11 @@ header {
 .btn-md.btn-cta > span .label.calendar,
 .btn-lg.btn-cta > span .label.calendar {
   padding-left: 29px;
-  font-size : 14px;
+  font-size: 14px;
 }
 
-.btn-md.btn-cta>span .label, .btn-lg.btn-cta>span .label {
+.btn-md.btn-cta > span .label,
+.btn-lg.btn-cta > span .label {
   margin-right: 7px;
   display: block;
   position: relative;
@@ -3843,9 +3879,9 @@ textarea.form-input {
 }
 
 .restaurant-detail > p {
-  font-weight : 400;
-  font-size : 16px;
-  line-height : 150%;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
 }
 
 .restaurant-list .restaurant-list-item .detail .name {
@@ -4249,7 +4285,7 @@ span {
 .restaurant-notice .restaurant-notice-item .notice-content .desc p {
   font-size: 14px;
   line-height: 160%;
-  letter-spacing: -.02em;
+  letter-spacing: -0.02em;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -4296,6 +4332,7 @@ span {
   margin-left: 5px;
   color: #aaa;
 }
+
 
 .mb-\[50px\] {
   margin-bottom : 50px !important;
@@ -4456,3 +4493,4 @@ span {
   background-color: #ff3d00;
   color: #ffffff;
 }
+

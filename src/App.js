@@ -17,19 +17,21 @@ import Notifications from "./pages/MyPage/Notifications.js";
 import Owner from "./pages/MyPage/Owner.js";
 import RestaurantInfo from "./pages/MyPage/RestaurantInfo.js";
 import RestaurantSetting from "./pages/MyPage/RestaurantSetting.js";
+import { MenuList } from "./pages/Restaurant/MenuList.js";
+import { PhotoList } from "./pages/Restaurant/PhotoList.js";
 import ReserveForm from "./pages/Restaurant/ReserveForm.js";
 import Restaurant from "./pages/Restaurant/Restaurant.js";
 import ReviewList from "./pages/Restaurant/ReviewList.js";
 import Search from "./pages/Search/Search.js";
 import SearchList from "./pages/Search/SearchList.js";
 import SearchTotal from "./pages/Search/SearchTotal.js";
-import { MenuList } from "./pages/Restaurant/MenuList.js";
-import { PhotoList } from "./pages/Restaurant/PhotoList.js";
 import { getTestLogin } from "./respository/userInfo.js";
 
 function App() {
   const [search, setSearch] = useState();
-  const updateSearch = (param) => { setSearch(param);};
+  const updateSearch = (param) => {
+    setSearch(param);
+  };
 
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {

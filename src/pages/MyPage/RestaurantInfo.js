@@ -89,11 +89,11 @@ export default function RestaurantInfo() {
   const { text } = useParams();
   const userInfo = useRecoilValue(RestaurantState);
   const { mutate: deleteOwner } = DeleteOwnerReq();
+
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedFacilities, setSelectedFacilities] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [restaurant, setRestaurant] = useState(false);
-
   const [location, setLocation] = useState({ lat: 0, lng: 0 });
   const [isNumber, setIsNumber] = useState("");
   const theme = useTheme();
@@ -132,10 +132,10 @@ export default function RestaurantInfo() {
     } else {
       // 식당 정보 있을때
       const prevUser = userInfo;
-
+      console.log(prevUser);
       setUser(prevUser);
-      if (prevUser.days.days) {
-        const foundDay = dataChage(prevUser.days.days, days, "ko");
+      if (prevUser.holidays.days) {
+        const foundDay = dataChage(prevUser.holidays.days, days, "ko");
         setSelectedDays(foundDay);
       }
 
@@ -221,7 +221,7 @@ export default function RestaurantInfo() {
       lng: Number(location.lng),
       lunchPrice: lunchPrice ? lunchPrice : 0,
       dinnerPrice: dinnerPrice ? dinnerPrice : 0,
-      days: {
+      holidays: {
         days: dataChage(selectedDays, days, "en"),
       },
       reservationBeginDate: reservationBeginDate,
@@ -229,23 +229,16 @@ export default function RestaurantInfo() {
       facilities: dataChage(selectedFacilities, facilites, "en"),
     };
 
-    // console.log("name", name);
     console.log("location", location);
-    // console.log("selectedCategory", selectedCategory);
-    // console.log("phone", phone.length < 12);
-    // console.log("tablePersonMax", tablePersonMax);
-    // console.log("tablePersonMin", tablePersonMin);
-    // console.log("openTime", openTime);
-    // console.log("lastOrderTime", lastOrderTime);
-    // console.log("address", address);
-    // console.log("detailAddress", detailAddress);
-    // console.log("reservationBeginDate", reservationBeginDate);
-    // console.log("reservationEndDate", reservationEndDate);
+
     /* 모두 필수 : 하나라도 입력하지 않은 경우 알림창 */
+    console.log("photoToAddList", photoToAddList);
+    // return;
     if (
       !name ||
       !selectedCategory ||
       phone.length < 12 ||
+      photoToAddList.length < 1 ||
       !tablePersonMax ||
       !tablePersonMin ||
       !openTime ||
@@ -261,12 +254,9 @@ export default function RestaurantInfo() {
     }
 
     //식당 추가
-
     if (text.indexOf("add") > 0) {
       // 식당 정보 없을때
       console.log("식당 정보 없을때");
-      console.log("식당 정보 없을때", info);
-
       createRestaurant(info)
         .then((res) => {
           window.location.href = "/account";
@@ -275,19 +265,8 @@ export default function RestaurantInfo() {
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      //식당 정보 있을때
-      console.log("식당 정보 있을때", info);
 
-      updateRestaurant(info);
-    }
-
-    //사진 추가
-    if (text.indexOf("add") === -1) {
-      // if (photoToAddList.length === 0) {
-      //   alert("식당 정보를 모두 입력해주세요");
-      //   return;
-      // }
+      // 사진 보내기
       const restaurantItem = {
         addRestaurantImagesReq: {
           restaurantImageTypes: testFile(photoToAddList),
@@ -295,8 +274,12 @@ export default function RestaurantInfo() {
         files: photoToAddList,
         restaurantId: userInfo.restaurantId,
       };
-      console.log("photoToAddList", photoToAddList);
+
       createImages(restaurantItem);
+    } else {
+      //식당 정보 있을때
+
+      updateRestaurant(info);
     }
   };
 
@@ -311,33 +294,26 @@ export default function RestaurantInfo() {
       });
   };
 
-  const inputNumber = (e) => {
-    let value = e.target.value;
-    const inputValue = value.replace(/\D/g, "");
-    const formattedValue = inputValue.replace(
-      /^\d{2,3}-\d{4}-\d{4}$/,
-      (match, p1, p2, p3) => {
-        let result = "";
-        if (p1) result += p1;
-        if (p2) result += "-" + p2;
-        if (p3) result += "-" + p3;
-        return result;
-      }
-    );
-    setIsNumber(formattedValue);
-  };
+  // const inputNumber = (e) => {
+  //   let value = e.target.value;
+  //   const inputValue = value.replace(/\D/g, "");
+  //   const formattedValue = inputValue.replace(
+  //     /^\d{2,3}-\d{4}-\d{4}$/,
+  //     (match, p1, p2, p3) => {
+  //       let result = "";
+  //       if (p1) result += p1;
+  //       if (p2) result += "-" + p2;
+  //       if (p3) result += "-" + p3;
+  //       return result;
+  //     }
+  //   );
+  //   setIsNumber(formattedValue);
+  // };
 
   // 식당 삭제
   const deleteRestaurant = (ownerId) => {
-    console.log(ownerId);
-    // const owner = user.ownerId;
     deleteOwner(ownerId);
   };
-
-  useEffect(() => {
-    // console.log("photoToAddList", photoToAddList[0].file);
-    // console.log("photoToAddList", photoToAddList.file);
-  }, [photoToAddList]);
 
   return (
     <MainContents className="main">
@@ -592,7 +568,7 @@ export default function RestaurantInfo() {
           </div>
           <div className="form-block mb-[20px]">
             <div className="mb-[6px]">
-              <label className="color-gray text-[12px]">운영 날짜</label>
+              <label className="color-gray text-[12px]">쉬는날</label>
             </div>
             <FormControl sx={{ width: 100 + "%" }}>
               <Select
@@ -686,23 +662,21 @@ export default function RestaurantInfo() {
               </Select>
             </FormControl>
           </div>
-          {text.indexOf("add") === -1 && (
-            <div className="form-block mb-[20px]">
-              <div className="mb-[6px]">
-                <Serious className="color-gray text-[12px]">
-                  식당 이미지
-                </Serious>
-              </div>
-              <span className="text-center text-[12px] block mb-[15px]">
-                최대 10장 가능합니다. 마지막 이미지가 메인 입니다.
-              </span>
-              <FileUpLoad
-                photoToAddList={photoToAddList}
-                isphoto={isphoto}
-                setPhotoToAddList={setPhotoToAddList}
-              ></FileUpLoad>
+          {/* {text.indexOf("add") === -1 && ( */}
+          <div className="form-block mb-[20px]">
+            <div className="mb-[6px]">
+              <Serious className="color-gray text-[12px]">식당 이미지</Serious>
             </div>
-          )}
+            <span className="text-center text-[12px] block mb-[15px]">
+              최대 10장 가능합니다. 마지막 이미지가 메인 입니다.
+            </span>
+            <FileUpLoad
+              photoToAddList={photoToAddList}
+              isphoto={isphoto}
+              setPhotoToAddList={setPhotoToAddList}
+            ></FileUpLoad>
+          </div>
+          {/* )} */}
         </div>
       </div>
       {restaurant ? (
