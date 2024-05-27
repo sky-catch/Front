@@ -1,23 +1,29 @@
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { searchByKeyword } from "../../respository/search";
 import replace from "../../assets/icons/restaurant.svg";
+import Restaurants_sm from "../../components/Restaurants-sm";
 
 /**
- * 전체 검색
+ * 검색어 검색화면 - 목록
  * @author jimin
  */
 export default function SearhTotal({ search }) {
   const navigate = useNavigate();
   const [keywords, setKeywords] = useState(JSON.parse(sessionStorage.getItem("keywords")) || []); // 최근 검색어
+  let restaurantList = [];  // 식당 목록 기본 초기화
+  let region = [];  // 지역 정보 기본 초기화
   
-  const { data : searchResult, isLoading } = useQuery({ queryKey : [search], queryFn : searchByKeyword}); // 레스토랑
-  console.log(search,searchResult);
-  let restaurants = searchResult?.restaurantSummaryDTOList;
-  let region = [];  // 지역 정보
+  const { data : searchResult, isLoading } = useQuery({ 
+    queryKey : ['search', search], 
+    queryFn : ()=>searchByKeyword(search)
+  }); // 식당
+  restaurantList = searchResult?.restaurantSummaryDTOList;  // 식당 목록 세팅
+  
+  //지역 목록 세팅
   for (let key in searchResult) {
     if(key == 'city' && searchResult[key] != null) {
       region.push([searchResult[key], searchResult['cityRestaurantCount']]);
@@ -27,7 +33,6 @@ export default function SearhTotal({ search }) {
       region.push([searchResult[key], searchResult['hotPlaceRestaurantCount']]);
     }
   }
-  // console.log('searchResult : ', searchResult, 'restaurants:', restaurants, 'search:',search, 'keywords:',keywords);
 
 
   // funtion : 식당 이동
@@ -39,7 +44,19 @@ export default function SearhTotal({ search }) {
   // function : 지역 검색
   const handleSearch = (e) => {
     // 선택한 지역으로 검색!
-    navigate(`/search/list`); 
+    const date = new Date();
+    const filter = {
+      date : `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`,
+      time : `07:00`,
+      personCount : 2,
+      koreanCity : e.currentTarget.id,
+      hotPlace: '',
+      category: '한식',
+      minPrice: 0,
+      maxPrice: 0,
+      orderType: '기본순',
+  };
+    navigate(`/search/list`, {state : filter }); 
     // 선택해야 최근 검색어로 저장
     handleAddKeyword(e.currentTarget.id);
   };
@@ -84,21 +101,17 @@ export default function SearhTotal({ search }) {
     // 최근 검색어 저장
     // arr타입을 string 형태로 바꾸기 위해 json.stringfy 사용
     sessionStorage.setItem("keywords", JSON.stringify(keywords));
-    console.log(!search);
-    // if(!search) {
-      restaurants = [];
-    // }
+    restaurantList = []; //초기화
   }, [search, keywords]);
 
   return (
-    // <></>
-    <ContentMain>
+    <main className="main">
       <hr className="seperator" />
       <section>
         <div className="mt-[18]">
-          {/* 검색 전 : 최근검색 = 검색 결과 없으면 */}
-          {region?.length < 1 && keywords.length > 0 && (
-            <div className="container gutter-sm">
+          {/* 디폴트 : 검색어 입력 전 */}
+          {/* 키워드 데이터가 있으면 노출한다. */}
+          { !search && keywords.length > 0 && <div className="container gutter-sm">
               <div className="recent-input-header flex justify-between">
                 <h3 className="title">최근 검색어</h3>
                 <div className="dots">
@@ -112,9 +125,7 @@ export default function SearhTotal({ search }) {
               </div>
               <div className="recent-input-body">
                 <Swiper
-                  slidesPerView={"auto"}
-                  // className="swiper-wrapper"
-                >
+                  slidesPerView={"auto"}>
                   {keywords.map((item, index) => {
                     return (
                       <SwiperSlide
@@ -127,9 +138,36 @@ export default function SearhTotal({ search }) {
                   })}
                 </Swiper>
               </div>
+          </div>}
+          {/* 검색 후 : 결과가 없다면 X */}
+          { search && restaurantList?.length < 1 && (
+            <div>
+              <div>
+                <div className="search-result-nodata">
+                  <div className="search-result-nodata-text">
+                    <span>앗! 검색결과가 없어요.</span>
+                    원하는 매장이 없다면 캐치테이블에 제안해주세요.
+                  </div>
+                </div>
+              </div>
+              <hr className="seperator"></hr>
             </div>
           )}
-          {/* 검색후 : 결과 O */}
+          { (!search || restaurantList?.length < 1 ) && <div className="container gutter-sm mt-[24px]">
+            <div>
+              <div className="section-header mb-[16px]">
+                <h3 className="color-gray">어떤 레스토랑을 찾으세요?</h3>
+              </div>
+              <div className="section-body mb-[24px]">
+                <div className="v-scroll">
+                  <div className="v-scroll-inner">
+                    <Restaurants_sm />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>}
+          {/* 검색 후 : 결과가 있다면 O */}
           <div>
             {/* 1.지역 */}
             {region?.length > 0 && (
@@ -164,7 +202,7 @@ export default function SearhTotal({ search }) {
               </>
             )}
             {/* 2. 식당 */}
-            { restaurants?.length > 0 && 
+            { restaurantList?.length > 0 && 
               <>
                 <div>
                   <section className="pt-[10px] mb-[50px]">
@@ -174,7 +212,7 @@ export default function SearhTotal({ search }) {
                           <h2>레스토랑</h2>
                         </div>
                         <div className="form-block-body">
-                          { restaurants.map((item, idx) => {
+                          { restaurantList.map((item, idx) => {
                             return (
                               <div
                                 className="searched-keyword-left-item"
@@ -200,25 +238,8 @@ export default function SearhTotal({ search }) {
               </>
           }
           </div>
-          {/* 검색후 : 결과 X */}
-          {/* { input.length > 0 && region.length < 1 && restaurants ? (
-            <div>
-              <div className="search-result-nodata">
-                <div className="search-result-nodata-text">
-                  <span>앗! 검색결과가 없어요.</span>
-                  원하는 매장이 없다면 캐치테이블에 제안해주세요.
-                </div>
-              </div>
-            </div>
-          ) : (
-            ""
-          )} */}
         </div>
       </section>
-    </ContentMain>
+    </main>
   );
 }
-
-const ContentMain = styled.main`
-  margin-top: 47px;
-`;

@@ -10,11 +10,12 @@ export const LoginState = atom({
   key: "LoginState",
   effects_UNSTABLE: [persistAtom],
   default: {
-    id: "",
+    id: "", 
     nickname: "",
     introduce: "",
     isOwner: false,
-    isSaved: false,
+    isSaved: false, 
+    saveRestaurants : [],
     shop: {
       name: "",
       category: "",

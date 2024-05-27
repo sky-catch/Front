@@ -10,7 +10,7 @@ import Restaurants_sm from "../../components/Restaurants-sm.js";
 import CalendarComponent from "../../components/CalendarComponent";
 
 /**
- * 검색하기 화면
+ * 검색하기 (필터) 화면
  * @author jimin
  */
 export default function Search() {
@@ -19,15 +19,30 @@ export default function Search() {
   const [isOpen, setIsOpen] = useState(false);    // 캘린더 패널 open 여부 (false : 닫음, true : 열림)
   const week = ["일", "월", "화", "수", "목", "금", "토"];
   
+  // * 기본 검색 날짜는 '금일 오후 7시', 만일 시간이 넘은 경우 '내일 오후 7시'로 세팅
   const today = new Date();
-  const [date, setDate] = useState(today.getHours() >= 19 ? new Date(today.setDate(today.getDate()+1)) : today); // 예약 날짜
-  const dateStr = `${ String(date.getMonth() + 1).padStart(2, "0") }.${ String(date.getDate()).padStart(2, "0") }(${ week[date.getDay()] })`;
-  console.log(dateStr);
+  const tomorrow = new Date(new Date().setDate(today.getDate()+1));
+  const [date, setDate] = useState(today.getHours() >= 19 ? tomorrow : today); // 예약 날짜
+  const dateStr = `${ String(date.getMonth() + 1).padStart(2, "0") }.${ String(date.getDate()).padStart(2, "0") }(${ week[date.getDay()] })`; // 예약날짜 노출문구
+  const [time, setTime] = useState(19); // 기본 시간 (오후 7시)
 
+  // * 기본 검색 인원은 2명
   const [minNum, setMinNum] = useState(2); // 최소 인원
-  const [time, setTime] = useState("19"); // 기본 시간
-  const [filterInfo, setFilterInfo] = useState();
-  // const [reserveInfo, setReserveInfo] = useState(); // 예약 정보 (기본 : 오늘 오후7시 / 설정 시 설정 날짜)
+  
+  // * 검색 필터 정보
+  const [filterInfo, setFilterInfo] = useState({
+      date : `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`,
+      time : `${time}:00`,
+      personCount : minNum,
+      koreanCity : '',
+      hotPlace: '',
+      category: '한식',
+      minPrice: 0,
+      maxPrice: 0,
+      orderType: '기본순',
+  });
+  const [filterCnt, setFilterCnt] = useState(0);
+  
   const menuItems = [{
       id: 1,
       title: "지역",
@@ -58,30 +73,7 @@ export default function Search() {
   
   /* 필터 검색하기 */
   const handleSearch = (e) => {
-    const cost = filterInfo?.cost;
-    const cityList = filterInfo?.cities;
-    const hotPl = filterInfo?.cities?.city;
-    // console.log(filterInfo);
-    const formatDate =
-      date.getFullYear() +
-      "-" +
-      String(date.getMonth() + 1).padStart(2, "0") +
-      "-" +
-      String(date.getDate()).padStart(2, "0");
-
-    const params = {
-      date: formatDate,
-      time: `${time}:00`,
-      personCount: minNum,
-      koreanCity: JSON.stringify(cityList),
-      hotPlace:  hotPl,
-      category: "",
-      minPrice: cost ? cost.min : 0,
-      maxPrice: cost ? cost.max : 0,
-      orderType: "기본순",
-    };
-    
-    navigate(`/search/list?`, {state : params});
+    navigate(`/search/list?`, {state : filterInfo});
   };
 
   /* 캘린더 다이얼로그 열기 */
@@ -91,6 +83,10 @@ export default function Search() {
 
   useEffect(() => {
     console.log(filterInfo);
+    let count = 0;
+    if( filterInfo?.koreanCity?.length > 0) count +=1;
+    if(filterInfo?.maxPrice !=0 || filterInfo?.minPrice != 0 ) count+=1;
+    setFilterCnt(count);
   }, [filterInfo]);
 
   return (
@@ -115,9 +111,7 @@ export default function Search() {
           <div className="chip-filter">
             <div className="filter-icon">
               <button
-                className={`design_system ${
-                  filterInfo?.cities?.address.length > 0 || (filterInfo?.cost && Object.values(filterInfo.cost).length > 0) ? "active" : ""
-                }`}
+                className={`design_system ${ filterCnt > 0 ? "active" : "" }`}
                 onClick={toggleFilterDrawer}
               >
                 <svg
@@ -133,8 +127,8 @@ export default function Search() {
                     strokeWidth="1.5"
                   ></path>
                 </svg>
-                <span className={`filters ${ filterInfo?.cities?.address.length > 0 || (filterInfo?.cost && Object.values(filterInfo.cost).length > 0)  ? "active" : "" }`}>
-                  {filterInfo?Object.values(filterInfo).length:''}</span>
+                <span className={`filters ${ filterCnt >0  ? "active" : "" }`}>
+                  {filterCnt}</span>
               </button>
             </div>
             <span className="seperator-vt"></span>
@@ -146,13 +140,12 @@ export default function Search() {
                       <SwiperSlide
                         className={`swiper-slide-chip mr-[8px]`}
                         key={index}
-                        id={index}
-                      >
+                        id={index} >
                         <button type="button" className={`slide-button
-                          ${filterInfo && (( filterInfo.cities && filterInfo.cities.address.length > 0 && index==0 )
-                            || (filterInfo.cost && index==1)) ? 'active' : ''}
+                          ${ (filterInfo?.koreanCity?.length >0 && index==0 )
+                            || ((filterInfo?.maxPrice>0 || filterInfo?.minPrice>0 )&& index ==1)? 'active' : ''}
                         `} onClick={toggleFilterDrawer}>
-                          <span>{filterInfo?.cities && index==0 ? filterInfo.cities.address : item.title}</span>
+                          <span>{item.title}</span>
                         </button>
                       </SwiperSlide>
                     );
@@ -205,7 +198,7 @@ export default function Search() {
         </section>
       </main>
       <div className="sticky-bottom-btns upper">
-        <button className="btn btn-lg btn-red" onClick={handleSearch}>
+        <button className="btn btn-lg btn-red " onClick={handleSearch}>
           검색
         </button>
       </div>
@@ -224,11 +217,11 @@ export default function Search() {
           // 날짜랑 인원수 state 저장하기
           let date = params.date;
           let people = params.people;
-
           setDate(date);
           setMinNum(people);
         }}
         toggleDrawer={toggleDrawer}
+        isSearch={true}
       ></CalendarComponent>
 
     </div>

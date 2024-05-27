@@ -9,7 +9,7 @@ export const MapComponent = ({info}) => {
     useEffect(()=>{
         const lat = info ? info.lat : 0;
         const lng = info ? info.lng : 0;
-        console.log(info);
+        // console.log(info);
         var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
         var options = { //지도를 생성할 때 필요한 기본 옵션
             center: new kakao.maps.LatLng(lat, lng), //지도의 중심좌표.

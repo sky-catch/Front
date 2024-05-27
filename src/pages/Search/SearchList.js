@@ -10,15 +10,12 @@ import { searchByFilter } from "../../respository/search.js";
  * 검색 결과
  * @returns 
  */
-export default function SearchList (params) {
+export default function SearchList () {
     const navigate = useNavigate();
     const {state} = useLocation();
-    const {data: searchList} = useQuery({queryKey : [state], queryFn : searchByFilter, enabled:!!state});
+    const {data: searchList} = useQuery({queryKey : [ 'filter', state], queryFn : ()=>searchByFilter(state), enabled:!!state });
     let restaurantList = searchList?.getRestaurantSearchListRes; // 레스토랑 리스트
     let filter = searchList?.searchFilter; // 검색 결과 필터 정보
-    console.log('state:', state);
-    console.log(searchList);
-    
     const [isFilter, setIsFilter] = useState(false);  // 필터패널 open 여부 (false : 닫음, true : 열림)
 
     const menuItems = [{
@@ -49,7 +46,7 @@ export default function SearchList (params) {
         if(!state) return;
         // setRestaurantList(state.getRestaurantSearchListRes);
         // setFilter(state.searchFilter);
-        console.log(restaurantList,filter);
+        console.log(searchList);
     },[state])
 
     const week = ["일", "월", "화", "수", "목", "금", "토"];
@@ -76,7 +73,7 @@ export default function SearchList (params) {
                         <div className="filter-icon">
                         <button
                             className={`design_system ${
-                                state?.koreanCity.length > 0 || (state?.maxPrice > 0 || state?.minPrice > 0) ? "active" : ""
+                                state?.koreanCity?.length > 0 || (state?.maxPrice > 0 || state?.minPrice > 0) ? "active" : ""
                               }`}
                             onClick={toggleFilterDrawer}
                         >
@@ -92,7 +89,7 @@ export default function SearchList (params) {
                                 stroke="currentColor"
                                 strokeWidth="1.5"
                             ></path>
-                             <span className={`filters ${ state?.koreanCity.length > 0 || (state?.maxPrice > 0 || state?.minPrice > 0)  ? "active" : "" }`}>
+                             <span className={`filters ${ state?.koreanCity?.length > 0 || (state?.maxPrice > 0 || state?.minPrice > 0)  ? "active" : "" }`}>
                                 {1}</span>
                             </svg>
                         </button>
@@ -109,7 +106,7 @@ export default function SearchList (params) {
                                     id={index}
                                 >
                                     <button type="button" className={`slide-button
-                                         ${ state?.koreanCity.length > 0 && index==0
+                                         ${ state?.koreanCity?.length > 0 && index==0
                                             || ( (state?.maxPrice > 0 || state?.minPrice > 0) && index==1) ? 'active' : ''}
                                     `} onClick={toggleFilterDrawer}>
                                     <span>{item.title}</span>
@@ -182,6 +179,7 @@ export default function SearchList (params) {
             setFilterInfo={()=>{
 
             }}
+            searchFilter={searchList?.searchFilter}
             ></FilterDrawer>
         </main>
     )

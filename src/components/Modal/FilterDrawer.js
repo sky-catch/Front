@@ -8,7 +8,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
  * 검색 필터 Drawer
  * @returns
  */
-const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
+const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilter }) => {
   const regionBox = useRef(null);
   const costBox = useRef(null);
   const placeRef = useRef([]);
@@ -68,12 +68,12 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
     { name: "10만원 이하", min: 0, max: 10 },
     { name: "10만원대", min: 10, max: 20 },
     { name: "20만원대", min: 20, max: 30 },
-    { name: "30만원대", min: 30, max: 40 },
+  { name: "30만원대", min: 30, max: 40 },
     { name: "40만원대 이상", min: 40, max: 40 },
   ];
   const [selected, setSelected] = useState([]);
   const [cost, setCost] = useState(); /* rc-slider 값 */
-  const [Value, setValue] = useState([0,40]);
+  const [Value, setValue] = useState([searchFilter?.minPrice || 0, searchFilter?.maxPrice || 40]);
 
   /* tap 클릭이벤트 */
   const contentClick = (e, index) => {
@@ -105,6 +105,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
           const arr1 = item.classList;
           arr1.add("active");
         });
+        setCities([...addressItems[0].filter(item=>item!=="서울 전체")])
       } else {
         list.map((item) => {
           const arr1 = item.classList;
@@ -131,27 +132,14 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
 
   /* function : 검색적용 */
   const handleSearch = (e) => {
-    console.log(cityItems[isSelect].name, cities,cost);
-    if(cities.length > 0 ) {
-      setFilterInfo((prevFilterInfo)=> ({
-        ...prevFilterInfo,
-        cities: {
-          city: cityItems[isSelect].name,
-          address: cities,
-        }
-      }));
-    } else {
-      setFilterInfo();
-    }
-    if (cost) {
-      setFilterInfo((prevFilterInfo)=> ({
-        ...prevFilterInfo,
-        'cost' : cost
-      }));
-    } else {
-      setCost();
-    }
-
+    setFilterInfo((prevState)=> ({
+      ...prevState, 
+      hotPlace : cities?.length > 0 ? cities : '',
+      koreanCity : cities?.length > 0 ? cityItems[isSelect].name == "핫플" ? "서울" : cityItems[isSelect].name : '',
+      minPrice : Number(cost.min),
+      maxPrice : Number(cost.max)
+    }));
+    
     toggleFilterDrawer(e);
   };
 
@@ -170,12 +158,17 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
       }
     });
     
+    let now = e.currentTarget.parentNode.id;
     if(cityselected) {
-      setCities([]);
+      let newData = cities.filter(item=>item!==now);
+      setCities(newData);
+    //   setCities([]);
       const list = placeRef.current;
       list.map((item) => {
         const arr1 = item.classList;
-        arr1.remove("active");
+        if(item.firstChild.innerText === now) {
+          arr1.remove("active");
+        }
       });
     } else if (costselected) {
       setCost();
@@ -222,12 +215,11 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
 
     handleChange([min, max]);
   };
+
   useEffect(()=>{
-    // console.log(cost,Value);
-  },[cost,Value])
-  useEffect(() => {
-    console.log(cities);
-  }, [cities]);
+    if(searchFilter?.hotPlace) setCities((searchFilter.hotPlace.split(',')));
+    else if(searchFilter?.maxPrice >0 || searchFilter?.minPrice >0) setCost({min : searchFilter.minPrice, max : searchFilter.maxPrice});
+  },[searchFilter])
 
   return (
     <div className="filter-drawer">
@@ -244,9 +236,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
               <div className="swiper-wrapper box-content custom-tap">
                 <SwiperSlide className="w-fit">
                   <li
-                    className={`flex justify-start
-                                        ${isContent == 1 ? "selected-tap" : ""}
-                                        `}
+                    className={`flex justify-start ${isContent == 1 ? "selected-tap" : ""}`}
                     onClick={(e) => contentClick(e, 0)}
                   >
                     지역
@@ -254,9 +244,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
                 </SwiperSlide>
                 <SwiperSlide className="w-fit">
                   <li
-                    className={`flex justify-start
-                                        ${isContent == 2 ? "selected-tap" : ""}
-                                        `}
+                    className={`flex justify-start${isContent == 2 ? "selected-tap" : ""}`}
                     onClick={(e) => contentClick(e, 1)}
                   >
                     가격
@@ -285,7 +273,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
                           key={index}
                           className={`${isSelect == index ? "active" : ""}`}
                           onClick={(e) => buttonClick(e, index)}
-                        >
+                          id={item}>
                           {item.name}
                         </button>
                       );
@@ -298,11 +286,9 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
                     return (
                       <button
                         type="button"
-                        className="hotplace-item"
+                        className={`hotplace-item ${cities.includes(item) ? 'active' : ''}`}
                         key={index}
-                        onClick={(e) => {
-                          onSelectCity(e, item);
-                        }}
+                        onClick={(e) => {onSelectCity(e, item);}}
                         ref={(el) => (placeRef.current[index] = el)}
                       >
                         <span>{item}</span>
@@ -376,9 +362,9 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
                     <div className="items">
                       {cities.map((item,index)=>{
                         return(
-                          <button className="item-btn font-md">
+                          <button className="item-btn font-md" id={item} key={index}>
                             <span>{item}</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none" class="design_system_1mb4yfk4 design_system_1mb4yfk5 city" onClick={handleReset}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none" className="design_system_1mb4yfk4 design_system_1mb4yfk5 city" onClick={handleReset}>
                               <path d="M9 1L1 9" stroke="currentColor" strokeWidth="0.75" strokeMiterlimit="10"></path>
                               <path d="M1 1L9 9" stroke="currentColor" strokeWidth="0.75" strokeMiterlimit="10"></path>
                             </svg>
@@ -387,7 +373,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo }) => {
                       })}
                       { 
                         (cost && (cost.min || cost.max)) ? <button className="item-btn font-md"><span>{cost.min}원 ~ {cost.max}만원</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none" class="design_system_1mb4yfk4 design_system_1mb4yfk5 cost" onClick={handleReset}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none" className="design_system_1mb4yfk4 design_system_1mb4yfk5 cost" onClick={handleReset}>
                           <path d="M9 1L1 9" stroke="currentColor" strokeWidth="0.75" strokeMiterlimit="10"></path>
                           <path d="M1 1L9 9" stroke="currentColor" strokeWidth="0.75" strokeMiterlimit="10"></path>
                         </svg>

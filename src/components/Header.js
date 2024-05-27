@@ -15,6 +15,7 @@ const Header = ({ setSearch, updateSearch }) => {
   const state = useLocation().state;
   const navigate = new useNavigate();
   const searchInput = useRef();
+  let [isWhite, setIsWhite] = useState(false);
 
   useEffect(() => {
     setSearch(inputTxt);
@@ -26,12 +27,24 @@ const Header = ({ setSearch, updateSearch }) => {
     }
   }, [location, inputTxt]);
 
+  const handleScroll =()=> {
+    console.log('scrolling');
+    if(window.scrollY >= 50) {
+      setIsWhite(true);
+    } else {
+      setIsWhite(false);
+    }
+  }
+  useEffect(()=> {
+    window.addEventListener('scroll',handleScroll)
+  },[])
+
   const onClickBack = () => {
     if (location === "/my/myshop/edit") {
       alert("변경한 내용이 저장되지 않습니다.");
     }
     window.history.back();
-    setSearchRes({});
+    setInputTxt('');
   };
 
   const onEditRestaurant = () => {
@@ -53,6 +66,7 @@ const Header = ({ setSearch, updateSearch }) => {
   const onNotifications = () => {
     navigate("/my/myshop/notifications");
   };
+
   const headerContent = () => {
     switch (location) {
       case "/":
@@ -104,38 +118,9 @@ const Header = ({ setSearch, updateSearch }) => {
           </div>
         );
       case "/search/total":
-        // let data = {
-        //   city: null,
-        //   cityRestaurantCount: 0,
-        //   hotPlace: null,
-        //   hotPlaceRestaurantCount: 0,
-        //   category: null,
-        //   categoryRestaurantCount: 0,
-        //   restaurantSummaryDTOList: [],
-        // };
         const handleSearch = (e) => {
           var text = e.target.value;
           setInputTxt(text);
-        // console.log(text);
-        //   if (e.target.value.length >= 2) {
-        //     text = e.target.value;
-        //     searchByKeyword(text).then((res) => {
-        //       data = res.data;
-        //       console.log('data', data);
-        //       //검색어 추가
-        //       data.input = e.target.value;
-        //       // 검색 결과가 아무것도 없으면 searchRes 는 ''
-        //       // 검색 결과가 있으면 searchRes는 res.data
-        //       if (res.data.city == "" && res.data.hotPlace == "") {
-        //         setSearchRes({});
-        //       } else {
-        //         setSearchRes(data);
-        //       }
-        //     });
-        //   } else {
-        //     data.input = e.target.value;
-        //     setSearchRes(data);
-        //   }
         };
 
         return (
@@ -343,13 +328,13 @@ const Header = ({ setSearch, updateSearch }) => {
             );
           } else {
             return (
-              <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] bg-gradient">
+              <div className={`header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] ${isWhite ? 'bg-white' : 'bg-gradient'}`}>
                 <div className="header-left items-center flex gap-[12px]">
-                  <a className="back-w header-icon" onClick={onClickBack}>
+                  <a className={`${ isWhite ? 'back-b' : 'back-w'} header-icon`} onClick={onClickBack}>
                     뒤로
                   </a>
                   <a
-                    className="tohome header-icon"
+                    className={`${ isWhite ? 'tohome-b' : 'tohome'} header-icon` }
                     onClick={(e) => onClickMove("home", e)}
                   >
                     홈
@@ -357,7 +342,7 @@ const Header = ({ setSearch, updateSearch }) => {
                 </div>
                 <div className="header-right flex gap-[12px]">
                   {/* <button className="bookmark header-icon">저장</button> */}
-                  <a className="share header-icon">공유</a>
+                  <a className={`${isWhite ? 'share-b':'share'} header-icon`}>공유</a>
                 </div>
               </div>
             );
