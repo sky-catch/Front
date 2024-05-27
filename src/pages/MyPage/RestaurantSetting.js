@@ -90,6 +90,8 @@ export default function Restaurantsetting() {
     //   });
   };
   useEffect(() => {
+    console.log("user", user);
+    console.log("reservationItems", reservationItems);
     // console.log("moment", moment().startOf("day").fromNow());
   }, []);
 
