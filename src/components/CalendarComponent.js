@@ -88,6 +88,7 @@ const CalendarComponent = ({
   };
 
   useEffect(() => {
+    console.log("isData", isData);
     if (isOpen && !isLoading) {
       if (isData.visitTime > restaurant.lastOrderTime) {
         setIsData({ ...isData, visitTime: restaurant.lastOrderTime });
@@ -123,7 +124,7 @@ const CalendarComponent = ({
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  console.log("error", error);
+
   return (
     <div>
       <Drawer

@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import moment from "moment";
+import "moment/locale/ko";
 import { useEffect, useRef, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import Drawer from "react-modern-drawer";
@@ -6,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { LoginState, RestaurantState } from "../../States/LoginState";
+import { DeleteReview } from "../../respository/reservation";
 import {
   getMyRestaurant,
   getOwner,
@@ -21,6 +24,7 @@ function MyPage() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
+  const { mutate: DeleteReviewItem } = DeleteReview();
   const [user, setUser] = useRecoilState(LoginState);
   const [restaurant, setRestaurant] = useRecoilState(RestaurantState);
   const [following, setFollowing] = useState(0);
@@ -33,7 +37,6 @@ function MyPage() {
   const [isRestaurant, setIsRestaurant] = useState(false);
   const [isUserInfo, setIsUserInfo] = useState([]);
   const [photoToAddList, setPhotoToAddList] = useState([]);
-  const [photoToAddList2, setPhotoToAddList2] = useState([]);
   const [isSelectInfo, setIsSelectInfo] = useState([]);
   const [isSave, setIsSave] =
     useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
@@ -44,8 +47,28 @@ function MyPage() {
   };
 
   useEffect(() => {
-    console.log("photoToAddList", photoToAddList);
-  }, [photoToAddList]);
+    if (!isReviewOpen) return;
+    if (!isSelectInfo) return;
+
+    console.log("isReviewOpen", isReviewOpen);
+    console.log("isSelectInfo", isSelectInfo[0].path);
+
+    const fetchFile = async () => {
+      try {
+        const response = await fetch(isSelectInfo[0].path);
+        const blob = await response.blob();
+        const file = new File([blob], isSelectInfo[0].path, {
+          type: blob.type,
+        });
+        console.log("file", file);
+        // setFile(file);
+      } catch (error) {
+        console.error("Error fetching and converting file: ", error);
+      }
+    };
+
+    fetchFile();
+  }, [isReviewOpen, isSelectInfo]);
 
   const toggleDrawerReview = (e, info) => {
     setIsReviewOpen((prevState) => !prevState);
@@ -60,7 +83,7 @@ function MyPage() {
         info.rate * 2 * 10
       }%`;
       textInput.current.value = info.comment;
-      console.log(info);
+      console.log("info", info);
       setIsSelectInfo(info.images);
     }
   };
@@ -216,8 +239,6 @@ function MyPage() {
   };
 
   const reviewSend = () => {
-    console.log("isScore", isScore);
-    console.log("textInput", textInput);
     const photoUploaderContent = document.querySelector(
       ".photoUploaderContent"
     );
@@ -231,6 +252,15 @@ function MyPage() {
       );
     }
   };
+  const reviewDelect = (e, info) => {
+    DeleteReviewItem(info.reviewId);
+  };
+
+  const onDetail = ({ restaurantName, id }) => {
+    console.log("name : ", restaurantName);
+    navigate(`/ct/shop/${restaurantName}`, { state: restaurantName });
+  };
+
   return (
     <MainContents className="main">
       {/* 프로필정보 */}
@@ -368,21 +398,37 @@ function MyPage() {
                       <div className="">
                         <div className="flex flex-col w-[100%] gap-y-[7px]">
                           <div className="flex justify-between">
-                            <span className="text-[16px] font-bold">
-                              식당이름
+                            <span
+                              className="text-[16px] font-bold"
+                              // onClick={() => onDetail(info)}
+                            >
+                              {info.restaurantName}
                             </span>
                             <div className="flex justify-end gap-x-[7px]">
                               <span
-                                className="text-[#666] text-[12px] float-right rounded-full py-[3px] px-[8px] border border-[#d5d5d5]"
+                                className="w-[63px] text-center text-[#666] text-[12px] float-right rounded-full py-[2px] px-[1px] border border-[#d5d5d5]"
                                 onClick={(e) => {
                                   toggleDrawerReview(e, info);
                                 }}
                               >
                                 수정
                               </span>
-                              <span className="text-[#666] text-[12px] float-right rounded-full py-[3px] px-[8px] border border-[#d5d5d5]">
-                                삭제
-                              </span>
+                              {isUserInfo.comments.map((item, index) => {
+                                return info.reviewId === item.reviewId &&
+                                  item.ownerId === 0 ? (
+                                  <span
+                                    key={index}
+                                    className="w-[63px] text-center text-[#666] text-[12px] float-right rounded-full py-[1px] px-[8px] border border-[#d5d5d5]"
+                                    onClick={(e) => {
+                                      reviewDelect(e, info);
+                                    }}
+                                  >
+                                    삭제
+                                  </span>
+                                ) : (
+                                  ""
+                                );
+                              })}
                             </div>
                           </div>
                           <div className="flex justify-between">
@@ -396,18 +442,41 @@ function MyPage() {
                           <span className="text-[14px] my-[5px]">
                             {info.comment}
                           </span>
-                          <div className=" grid grid-cols-4 justify-center">
+                          <div className=" grid grid-cols-4 justify-center gap-[10px]">
                             {info.images &&
                               info.images.map((item) => {
                                 return (
                                   <img
-                                    className=""
+                                    className="rounded-[6px]"
                                     key={item.reviewImageId}
                                     src={`${item.path}`}
                                   />
                                 );
                               })}
                           </div>
+                          {isUserInfo.comments.map((item) => {
+                            return info.reviewId === item.reviewId &&
+                              item.ownerId !== 0 ? (
+                              <div
+                                key={item.reviewId}
+                                className=" flex flex-col gap-y-[10px]"
+                              >
+                                <div className="">
+                                  <span className=" font-bold">사장님</span>
+                                  <span className=" text-[12px] ml-[7px]">
+                                    {moment(item.updatedDate)
+                                      .endOf("day")
+                                      .fromNow()}
+                                  </span>
+                                </div>
+                                <div className="p-[7px] w-auto rounded-lg bg-[#f4f4f4] text-[#2c2c2c] text-[14px] min-h-[80px] ">
+                                  {item.content}
+                                </div>
+                              </div>
+                            ) : (
+                              ""
+                            );
+                          })}
                         </div>
                       </div>
                     </div>

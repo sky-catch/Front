@@ -90,7 +90,7 @@ export default function Restaurantsetting() {
     //   });
   };
   useEffect(() => {
-    // console.log("reservationItems", reservationItems.list.length);
+    // console.log("moment", moment().startOf("day").fromNow());
   }, []);
 
   //댓글 수정
@@ -172,7 +172,7 @@ export default function Restaurantsetting() {
                   >
                     <div className="self-end">
                       <span
-                        className={`text-[12px] px-[5px] py-[3px]w-fit rounded-full border border-[#d5d5d5] `}
+                        className={`text-center text-[#666] text-[12px] float-right rounded-full py-[2px] px-[8px] border border-[#d5d5d5]`}
                       >
                         {item.status === "CANCEL"
                           ? "방문 취소"
@@ -182,7 +182,7 @@ export default function Restaurantsetting() {
                       </span>
                     </div>
                     <span className="text-[14px] text-[#2c2c2c]">
-                      예약자 :
+                      <em className="">예약자 : </em>
                       <em className="">
                         {item.memberName.replace(
                           item.memberName.slice(1, item.memberName.length - 1),
@@ -190,14 +190,19 @@ export default function Restaurantsetting() {
                         )}
                       </em>
                     </span>
+                    {item.memo !== null && (
+                      <span className="text-[14px] text-[#2c2c2c]">
+                        <em className="">메모 : </em>
+                        <em className="">{item.memo}</em>
+                      </span>
+                    )}
+
                     <span className="text-[14px] text-[#2c2c2c]">
-                      메모 : <em className="">{item.memo}</em>
+                      <em className="">예약 날짜 : </em>
+                      <em className="">{item.time.split("T")[0]}</em>
                     </span>
                     <span className="text-[14px] text-[#2c2c2c]">
-                      예약 날짜 :<em className="">{item.time.split("T")[0]}</em>
-                    </span>
-                    <span className="text-[14px] text-[#2c2c2c]">
-                      예약 시간 :{" "}
+                      <em className="">예약 시간 : </em>{" "}
                       <em className="">
                         {item.time.split("T")[1].slice(0, 5)}
                       </em>
@@ -263,7 +268,6 @@ export default function Restaurantsetting() {
                         })}
                       </div>
                     )}
-
                     {item.commentContent !== null && (
                       <div className=" flex justify-between items-start mb-[12px]">
                         <div className="size-[50px] rounded-full overflow-hidden bg-slate-400">
@@ -398,10 +402,10 @@ const MainContents = styled.div`
 `;
 const Btn = styled.button`
   border-radius: 6px;
-  line-height: 26px;
+  line-height: 16px;
   text-align: center;
-  padding: 0 10px;
-  font-size: 14px;
+  padding: 3px 8px;
+  font-size: 12px;
   /* width: 100%; */
   /* margin-top: 0.75rem; */
   background-color: #ff3d00;
@@ -409,7 +413,7 @@ const Btn = styled.button`
   ${(prop) =>
     prop.colorEven
       ? " background-color: #ff3d00; color: #fff;"
-      : "color: #666; background-color: #f4f4f4;"}
+      : "color: #666; background-color: #fff;"}
 `;
 const CancelBtn = styled.button`
   border-radius: 6px;

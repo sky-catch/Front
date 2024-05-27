@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "react-modern-drawer/dist/index.css";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -32,6 +33,7 @@ export default function Restaurant() {
   const [save, setSave] = useState(0);
 
   // 식당 개별 정보 조희
+
   const { data : restaurant, isLoading } = useQuery({ queryKey : [state], queryFn : getRestaurant, staleTime : 1000 * 60 * 5}); /* 식당 정보 */
   const shopId = restaurant?.restaurantId;
   const { data : availTimes } = useQuery({ queryKey : [{
@@ -286,16 +288,7 @@ export default function Restaurant() {
           <div className="container gutter-sm">
             <div className="section-header">
               <h3>예약 일시</h3>
-                    </div>
-                    <div className="section-body">
-                    <div className="mb-[8px]">
-                        <a
-                        className="btn btn-lg btn-outline btn-cta full-width arrowdown">
-                        <span>
-                          <span className="label calendar"> 오늘 ({week[new Date().getDay()]}) / 2 명</span>
-                        </span>
-                      </a>
-                    </div>
+
                     { timeSlots && timeSlots.length > 0 ?
                     <>
                       <div className="section-time-slot mb-[24px]">
@@ -317,15 +310,19 @@ export default function Restaurant() {
               : 
               <div className="time-slot-unavailable-box">
                 <p className="time-slot-unavailable">예약 시간 나열!</p>
+
               </div>
-              }
             </div>
           </div>
         </div>
       </section>
       <Seperator></Seperator>
       {/* 4. 탭 */}
+
+  
+
       <RestaurantTap restaurant={restaurant}></RestaurantTap>
+
       {restaurant.notifications[0] && (
         <section className="section">
           <div className="noti">
@@ -423,6 +420,7 @@ export default function Restaurant() {
               </div>
             </div>
           </div>
+
       </section> */}
       <section className="section">
         <div className="cmmt">
@@ -445,6 +443,7 @@ export default function Restaurant() {
               </div>
             </div>
           </div>
+
         </div>
       </section>
       {/* 9. 비슷한 레스토랑 추천 */}
@@ -458,7 +457,9 @@ export default function Restaurant() {
             restaurant && restaurant.saved ? "active" : ""
           }`}
         >
+
           <button onClick={useSaveMyRestaurant}>저장</button>
+
           <span>{restaurant ? restaurant.savedCount : 0}</span>
         </div>
         <button className="reservebtn" onClick={onReserveCalendar}>

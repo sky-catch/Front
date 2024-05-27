@@ -91,7 +91,7 @@ export const RestaurantState = atom({
         path: "",
       },
     ],
-    days: {
+    holidays: {
       days: [],
     },
     reviewComments: [],
