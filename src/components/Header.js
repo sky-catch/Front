@@ -27,6 +27,18 @@ const Header = ({ setSearch, updateSearch }) => {
     }
   }, [location, inputTxt]);
 
+  const handleScroll =()=> {
+    console.log('scrolling');
+    if(window.scrollY >= 50) {
+      setIsWhite(true);
+    } else {
+      setIsWhite(false);
+    }
+  }
+  useEffect(()=> {
+    window.addEventListener('scroll',handleScroll)
+  },[])
+
   const onClickBack = () => {
     if (location === "/my/myshop/edit") {
       alert("변경한 내용이 저장되지 않습니다.");
@@ -318,11 +330,11 @@ const Header = ({ setSearch, updateSearch }) => {
             return (
               <div className={`header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] ${isWhite ? 'bg-white' : 'bg-gradient'}`}>
                 <div className="header-left items-center flex gap-[12px]">
-                  <a className="back-w header-icon" onClick={onClickBack}>
+                  <a className={`${ isWhite ? 'back-b' : 'back-w'} header-icon`} onClick={onClickBack}>
                     뒤로
                   </a>
                   <a
-                    className="tohome header-icon"
+                    className={`${ isWhite ? 'tohome-b' : 'tohome'} header-icon` }
                     onClick={(e) => onClickMove("home", e)}
                   >
                     홈
@@ -330,7 +342,7 @@ const Header = ({ setSearch, updateSearch }) => {
                 </div>
                 <div className="header-right flex gap-[12px]">
                   {/* <button className="bookmark header-icon">저장</button> */}
-                  <a className="share header-icon">공유</a>
+                  <a className={`${isWhite ? 'share-b':'share'} header-icon`}>공유</a>
                 </div>
               </div>
             );

@@ -44,7 +44,19 @@ export default function SearhTotal({ search }) {
   // function : 지역 검색
   const handleSearch = (e) => {
     // 선택한 지역으로 검색!
-    navigate(`/search/list`); 
+    const date = new Date();
+    const filter = {
+      date : `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`,
+      time : `07:00`,
+      personCount : 2,
+      koreanCity : e.currentTarget.id,
+      hotPlace: '',
+      category: '한식',
+      minPrice: 0,
+      maxPrice: 0,
+      orderType: '기본순',
+  };
+    navigate(`/search/list`, {state : filter }); 
     // 선택해야 최근 검색어로 저장
     handleAddKeyword(e.currentTarget.id);
   };
@@ -89,11 +101,7 @@ export default function SearhTotal({ search }) {
     // 최근 검색어 저장
     // arr타입을 string 형태로 바꾸기 위해 json.stringfy 사용
     sessionStorage.setItem("keywords", JSON.stringify(keywords));
-    console.log(!search);
-    // if(!search) {
     restaurantList = []; //초기화
-    console.log('keywords',keywords);
-    // }
   }, [search, keywords]);
 
   return (

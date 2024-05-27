@@ -86,7 +86,6 @@ export const GetReservationRes = async (visitStatus) => {
 
 /* 식당 저장 */
 export const useSaveRestaurant = async ({id}) => {
-  console.log("restaurantId :", id, "token : ", token);
   const restaurantId = id;
   try {
     const res = await apiClient.post(`/savedRestaurant/${restaurantId}`, restaurantId, {
@@ -102,7 +101,6 @@ export const useSaveRestaurant = async ({id}) => {
 
 /* 식당 삭제 */
 export const useDeleteRestaurant = async({id}) => {
-  console.log("restaurantId :", id, "token : ", token);
   const restaurantId = id;
   try {
     const res = await apiClient.delete(`/savedRestaurant/${restaurantId}`, {

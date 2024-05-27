@@ -199,8 +199,6 @@ function MyPage() {
       isOwner : isUserInfo?.owner,
       saveRestaurants : isUserInfo?.savedRestaurants
     }))
-    console.log('user',user);
-    console.log('isUserInfo',isUserInfo);
 
   },[isUserInfo]);
 
@@ -246,21 +244,17 @@ function MyPage() {
         <section className="container gutter-sm">
           <div className="mypage-profile flex items-start mb-[16px]">
             <div className="profile-pic mr-[12px]">
-              {user?.profileImageUrl && (
                 <img
                   className="img"
                   src={`${user?.profileImageUrl}`}
                 ></img>
-              )}
             </div>
             <div className="mypage-profile-meta">
               <div className="userInfo flex items-center">
                 <h4 className="name">{user?.nickname}</h4>
-                { user?.isOwner && (
                   <div className="isOwner flex">
                     <FaStar color="#ff3d00"></FaStar>
                   </div>
-                )}
               </div>
               <div className="meta">
                 <dl className="flex gap-5">

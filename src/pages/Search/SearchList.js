@@ -13,17 +13,9 @@ import { searchByFilter } from "../../respository/search.js";
 export default function SearchList () {
     const navigate = useNavigate();
     const {state} = useLocation();
-    
-    const {data: searchList} = useQuery({
-        queryKey : [ 'filter', state], 
-        queryFn : ()=>searchByFilter(state),
-        enabled:!!state 
-    });
+    const {data: searchList} = useQuery({queryKey : [ 'filter', state], queryFn : ()=>searchByFilter(state), enabled:!!state });
     let restaurantList = searchList?.getRestaurantSearchListRes; // 레스토랑 리스트
     let filter = searchList?.searchFilter; // 검색 결과 필터 정보
-    console.log('state:', state);
-    console.log(searchList);
-    
     const [isFilter, setIsFilter] = useState(false);  // 필터패널 open 여부 (false : 닫음, true : 열림)
 
     const menuItems = [{
@@ -54,7 +46,7 @@ export default function SearchList () {
         if(!state) return;
         // setRestaurantList(state.getRestaurantSearchListRes);
         // setFilter(state.searchFilter);
-        console.log(restaurantList,filter);
+        console.log(searchList);
     },[state])
 
     const week = ["일", "월", "화", "수", "목", "금", "토"];
@@ -187,6 +179,7 @@ export default function SearchList () {
             setFilterInfo={()=>{
 
             }}
+            searchFilter={searchList?.searchFilter}
             ></FilterDrawer>
         </main>
     )

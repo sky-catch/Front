@@ -21,7 +21,7 @@ export default function Search() {
   
   // * 기본 검색 날짜는 '금일 오후 7시', 만일 시간이 넘은 경우 '내일 오후 7시'로 세팅
   const today = new Date();
-  const tomorrow = new Date(today.setDate(today.getDate()+1));
+  const tomorrow = new Date(new Date().setDate(today.getDate()+1));
   const [date, setDate] = useState(today.getHours() >= 19 ? tomorrow : today); // 예약 날짜
   const dateStr = `${ String(date.getMonth() + 1).padStart(2, "0") }.${ String(date.getDate()).padStart(2, "0") }(${ week[date.getDay()] })`; // 예약날짜 노출문구
   const [time, setTime] = useState(19); // 기본 시간 (오후 7시)
@@ -36,11 +36,12 @@ export default function Search() {
       personCount : minNum,
       koreanCity : '',
       hotPlace: '',
-      category: '',
+      category: '한식',
       minPrice: 0,
       maxPrice: 0,
-      // orderType: '',
+      orderType: '기본순',
   });
+  const [filterCnt, setFilterCnt] = useState(0);
   
   const menuItems = [{
       id: 1,
@@ -72,29 +73,6 @@ export default function Search() {
   
   /* 필터 검색하기 */
   const handleSearch = (e) => {
-    // const cost = filterInfo?.cost;
-    // const cityList = filterInfo?.cities;
-    // const hotPl = filterInfo?.cities?.city;
-    // console.log(filterInfo);
-    // const formatDate =
-    //   date.getFullYear() +
-    //   "-" +
-    //   String(date.getMonth() + 1).padStart(2, "0") +
-    //   "-" +
-    //   String(date.getDate()).padStart(2, "0");
-
-    // const params = {
-    //   date: formatDate,
-    //   time: `${time}:00`,
-    //   personCount: minNum,
-    //   koreanCity: JSON.stringify(cityList),
-    //   hotPlace:  hotPl,
-    //   category: "",
-    //   minPrice: 0,
-    //   maxPrice: 0,
-    //   orderType: "기본순",
-    // };
-    // console.log('params', params);
     navigate(`/search/list?`, {state : filterInfo});
   };
 
@@ -105,6 +83,10 @@ export default function Search() {
 
   useEffect(() => {
     console.log(filterInfo);
+    let count = 0;
+    if( filterInfo?.koreanCity?.length > 0) count +=1;
+    if(filterInfo?.maxPrice !=0 || filterInfo?.minPrice != 0 ) count+=1;
+    setFilterCnt(count);
   }, [filterInfo]);
 
   return (
@@ -129,9 +111,7 @@ export default function Search() {
           <div className="chip-filter">
             <div className="filter-icon">
               <button
-                className={`design_system ${
-                  filterInfo?.cities?.address.length > 0 || (filterInfo?.cost && Object.values(filterInfo.cost).length > 0) ? "active" : ""
-                }`}
+                className={`design_system ${ filterCnt > 0 ? "active" : "" }`}
                 onClick={toggleFilterDrawer}
               >
                 <svg
@@ -147,8 +127,8 @@ export default function Search() {
                     strokeWidth="1.5"
                   ></path>
                 </svg>
-                <span className={`filters ${ filterInfo?.cities?.address.length > 0 || (filterInfo?.cost && Object.values(filterInfo.cost).length > 0)  ? "active" : "" }`}>
-                  {filterInfo?Object.values(filterInfo).length:''}</span>
+                <span className={`filters ${ filterCnt >0  ? "active" : "" }`}>
+                  {filterCnt}</span>
               </button>
             </div>
             <span className="seperator-vt"></span>
@@ -162,10 +142,10 @@ export default function Search() {
                         key={index}
                         id={index} >
                         <button type="button" className={`slide-button
-                          ${filterInfo && (( filterInfo.cities && filterInfo.cities.address.length > 0 && index==0 )
-                            || (filterInfo.cost && index==1)) ? 'active' : ''}
+                          ${ (filterInfo?.koreanCity?.length >0 && index==0 )
+                            || ((filterInfo?.maxPrice>0 || filterInfo?.minPrice>0 )&& index ==1)? 'active' : ''}
                         `} onClick={toggleFilterDrawer}>
-                          <span>{filterInfo?.cities && index==0 ? filterInfo.cities.address : item.title}</span>
+                          <span>{item.title}</span>
                         </button>
                       </SwiperSlide>
                     );
@@ -218,7 +198,7 @@ export default function Search() {
         </section>
       </main>
       <div className="sticky-bottom-btns upper">
-        <button className="btn btn-lg btn-red" onClick={handleSearch}>
+        <button className="btn btn-lg btn-red " onClick={handleSearch}>
           검색
         </button>
       </div>
@@ -237,7 +217,6 @@ export default function Search() {
           // 날짜랑 인원수 state 저장하기
           let date = params.date;
           let people = params.people;
-          console.log(date);
           setDate(date);
           setMinNum(people);
         }}

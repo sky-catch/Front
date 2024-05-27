@@ -29,20 +29,6 @@ export default function RestaurantTap({restaurant}) {
         }
     }
 
-    /* 홈으로 이동 */
-    // const goToHome = (e) => {
-    //     contentClick(e, 0);
-    //     const restaurantName= restaurant ? restaurant.name : "";
-    //     navigate(`/ct/shop/${restaurantName}`, {state : restaurantName});
-    // }
-    
-    /* 리뷰 페이지로 이동 */
-    // const goToReview = (e) => {
-    //     contentClick(e, 3);
-    //     const restaurantName= restaurant ? restaurant.name : "";
-    //     navigate(`/ct/shop/${restaurantName}/reviewList`, {state : JSON.stringify(restaurant)});
-    // }
-
     useEffect(()=> {
         // console.log('tap',restaurant);
         if (location.pathname.indexOf("/reviewList") != -1) {

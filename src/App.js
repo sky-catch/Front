@@ -30,22 +30,6 @@ import { getTestLogin } from "./respository/userInfo.js";
 function App() {
   const [search, setSearch] = useState();
   const updateSearch = (param) => { setSearch(param);};
-  
-  function handleScroll() {
-    console.log('test');
-    // if(window.scrollY >= 50) {
-    //   setIsWhite(true);
-    //   console.log(isWhite);
-    // } else {
-    //   setIsWhite(false);
-    // }
-  }
-  // 테스트 로그인 로직 (수정가능)
-  useEffect(()=>{
-    getTestLogin();
-    window.addEventListener('scroll', handleScroll);
-    // console.log('test');
-  },[])
 
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
@@ -78,9 +62,6 @@ function App() {
             element={<KakoRedirectPage />}
           />
           <Route path="/emptySlotGuide" element={<EmptySlotGuide />}></Route>
-          {/* 네비바 변경 페이지 */}
-          {/* <Route path="/ct" element={<RestaurantWrapper />} > */}
-          {/* <Route path={`/ct/shop/`} element={<Restaurant />} /> */}
           <Route path="/ct/shop/:restaurantName" element={<Restaurant />} />
           <Route
             path="/ct/shop/:restaurantName/reviewList"

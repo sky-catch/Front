@@ -34,21 +34,24 @@ export default function Restaurant() {
   // 식당 개별 정보 조희
   const { data : restaurant, isLoading } = useQuery({ queryKey : [state], queryFn : getRestaurant}); /* 식당 정보 */
   const shopId = restaurant?.restaurantId;
+  
+  // * 기본 검색 날짜는 '금일 오후 7시', 만일 시간이 넘은 경우 '내일 오후 7시'로 세팅
+  const today = new Date();
+  const tomorrow = new Date(new Date().setDate(today.getDate()+1));
+  const [date, setDate] = useState(today.getHours() >= 19 ? tomorrow : today); // 예약 날짜
+  const dateStr = `${String(date.getFullYear())}-${ String(date.getMonth() + 1).padStart(2, "0") }-${ String(date.getDate()).padStart(2, "0") }`; // 예약날짜 노출문구
+  // console.log(dateStr);
   const { data : availTimes } = useQuery({ queryKey : [{
     restaurantId : shopId,
     numberOfPeople : 2,
-    searchDate : "2024-05-18",
+    searchDate : dateStr,
     visitTime : "18:00"
   }], queryFn : checkReservationTimes, enabled : !!shopId });
   const timeSlots = availTimes? availTimes['timeSlots'] : null;  /* 예약 가능한 시간 */
 
   const queryClient = useQueryClient();
-  const deleteSave = useMutation({mutationFn : useDeleteRestaurant, onSuccess : ()=>{
-      queryClient.invalidateQueries({queryKey : [state]})
-    }});
-  const saveSave = useMutation({mutationFn : useSaveRestaurant, onSuccess : ()=>{
-      queryClient.invalidateQueries({queryKey : [state]})
-  }});
+  const deleteSave = useMutation({mutationFn : useDeleteRestaurant, onSuccess : ()=>{queryClient.invalidateQueries({queryKey : [state]})}});
+  const saveSave = useMutation({mutationFn : useSaveRestaurant, onSuccess : ()=>{queryClient.invalidateQueries({queryKey : [state]})}});
   
   const [openBottom, setOpenBottom] = React.useState(false);
   const openDrawerBottom = () => setOpenBottom(true);
@@ -69,7 +72,6 @@ export default function Restaurant() {
   });
 
   const [isContent, setIsContent] = useState("home");
-
   const [imgIndex, setImgIndex] = useState(1); /* 이미지 슬라이드 현재 보고있는 이미지번호 */
   const [watch, setWatch] = useState(0); /* 현재 해당 식당을 보고 있는 사람들 수 */
 
@@ -127,29 +129,6 @@ export default function Restaurant() {
     }
   };
 
-  /* Function : 식당 정보 조회 */
-  const setRestaurantInfo = (name) => {
-    getRestaurant(name)
-      .then((res) => {
-        //TODO: 데이터 적용 완료
-        // setRestaurant(res.data);
-        if (!res.data) return;
-        // console.log("res.data.restaurantId", res.data.restaurantId);
-        const info = {
-          restaurantId: res.data.restaurantId,
-          numberOfPeople: 2,
-          searchDate: "2024-05-15",
-          visitTime: "14:26:00",
-        };
-        checkReservationTimes(info).then((result) => {
-          // setTimeSlots(result.data.timeSlots);
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   /* Function : 식당 저장 */
   const useSaveMyRestaurant = (e) => {
     const restaurantId = restaurant.restaurantId;
@@ -171,13 +150,6 @@ export default function Restaurant() {
   const onHandleLocation = (e) => {
     setIsOpenLo((prevState) => !prevState);
   };
-
-  useEffect(() => {
-    if (!restaurant) {
-      setRestaurantInfo(state);
-      // console.log(state, restaurant, reserveInfo);
-    }
-  }, [restaurant, timeSlots, reserveInfo]);
 
   const week = ["일", "월", "화", "수", "목", "금", "토", "일"];
 
@@ -285,11 +257,11 @@ export default function Restaurant() {
                         </Swiper>
                       </div>
                       </>
-              : 
-              <div className="time-slot-unavailable-box">
-                <p className="time-slot-unavailable">예약 시간 나열!</p>
-              </div>
-              }
+                      : 
+                      <div className="time-slot-unavailable-box">
+                        <p className="time-slot-unavailable">예약 가능한 시간대가 없습니다.</p>
+                      </div>
+                      }
             </div>
           </div>
         </div>
@@ -379,25 +351,39 @@ export default function Restaurant() {
         </div>
       </section>
       {/* 07. 상세정보 */}
+      <Seperator></Seperator>
       <section className="section">
         <div className="cmmt">
             <div className="container gutter-sm">
               <div className="section-header mb-[30px]">
-                <h3>상세 위치</h3>
+                <h3>상세 정보</h3>
               </div>
               <div className="section-body">
-                <div className="details">
-                  <div className="map">
-                    <MapComponent info={restaurant}></MapComponent>
-                  </div>
-                  <div className="addr">
-                    <a className="btn-copy">주소 복사</a>
-                    <p>{restaurant?.detailAddress}</p>
-                  </div>
-                </div>
-                <div className="btn-centered">
-
-                </div>
+              <div className="py-[10px]">
+              <span className="text-[16px] font-semibold mb-[5px] block">
+                매장소개
+              </span>
+              <span className="text-[14px] text-[#515151]">
+                {restaurant.content}
+              </span>
+            </div>
+              <div className="py-[10px]">
+                <span className="text-[16px] font-semibold mb-[5px] block">
+                  영업시간
+                </span>
+                <span className="text-[14px] text-[#515151]">
+                  월 ~ 금 :{" "}
+                  {restaurant.openTime.slice(0, 5) +
+                    " ~ " +
+                    restaurant.closeTime.slice(0, 5)}
+                  (Last Order : {restaurant.lastOrderTime.slice(0, 5)}) <br />
+                  주말 :{" "}
+                  {restaurant.openTime.slice(0, 5) +
+                    " ~ " +
+                    restaurant.closeTime.slice(0, 5)}
+                  (Last Order : {restaurant.lastOrderTime.slice(0, 5)})
+                </span>
+              </div>
               </div>
             </div>
           </div>
@@ -413,7 +399,7 @@ export default function Restaurant() {
           <button onClick={useSaveMyRestaurant}>저장</button>
           <span>{restaurant ? restaurant.savedCount : 0}</span>
         </div>
-        <button className="reservebtn" onClick={onReserveCalendar}>
+        <button className={`reservebtn ${timeSlots?.length < 1 ? 'unAble' : ''}`} disabled={`${timeSlots?.length <1 ? 'disabled' : ''}`} onClick={onReserveCalendar}>
           <div>예약하기</div>
         </button>
       </BottomBtn>
@@ -636,23 +622,5 @@ const BottomBtn = styled.aside`
   }
   .savebtn > span {
     color: #666;
-  }
-  .reservebtn {
-    display: block;
-    position: relative;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 480px;
-  }
-  .reservebtn > div {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 52px;
-    border-radius: 4px;
-    box-sizing: border-box;
-    background-color: #ff3d00;
-    color: #ffffff;
   }
 `;

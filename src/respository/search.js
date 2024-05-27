@@ -10,15 +10,15 @@ const token = sessionStorage.getItem("token");
 /* 식당 필터 검색 */
 export const searchByFilter = async(params) => {
     try{
-        // const [info] = params;
         //쿼리스트링으로 보내야한다.
-        console.log(params);
-        
         const data = new URLSearchParams();
         Object.entries(params).forEach(([key,value])=> {
-            data.append(key,value);
+            if(key == 'hotPlace' || key == 'koreanCity') {
+                if(value) data.append(key,value);
+            }else {
+                data.append(key,value);
+            }
         })
-        console.log('text',data.toString(), data);
 
         const result = await apiClient.get(`/restaurants/search?${data.toString()}`, {
             headers : {

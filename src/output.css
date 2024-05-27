@@ -3339,7 +3339,7 @@ header .keyword-search .btn-delete {
 }
 
 .searched-keyword-left-item .tb .img {
-  width: 48px;
+  /* width: 48px; */
   height: 64px;
   border-radius: 6px;
   background: 50% 50% no-repeat;
@@ -3347,7 +3347,7 @@ header .keyword-search .btn-delete {
   background-size: cover;
   object-fit: cover;
   overflow : hidden;
-  border : transparent;
+  /* border : transparent; */
 }
 
 .searched-keyword-left-item .tb .img[src='']{
@@ -3903,6 +3903,11 @@ span {
   background-size: 24px 24px;
 }
 
+.header-tp-wrapper .header-left .tohome-b {
+  background: url("../src/assets/icons/home.svg") 50% 50% no-repeat;
+  background-size: 24px 24px;
+}
+
 .header-tp-wrapper .header-right .bookmark {
   background: url("../src/assets/icons/bookmark-w.svg") 50% 50% no-repeat;
   background-size: 24px 24px;
@@ -3910,6 +3915,11 @@ span {
 
 .header-tp-wrapper .header-right .share {
   background: url("../src/assets/icons/share-w.svg") 50% 50% no-repeat;
+  background-size: 24px 24px;
+}
+
+.header-tp-wrapper .header-right .share-b {
+  background: url("../src/assets/icons/share.svg") 50% 50% no-repeat;
   background-size: 24px 24px;
 }
 
@@ -4412,4 +4422,37 @@ span {
   margin-left: 5px;
   color: #999;
   font-weight: 400;
+}
+
+.time-slot-unavailable {
+  display : flex;
+  justify-content : center;
+  padding : 1.5em 0;
+  font-size : 12px;
+  background : #f1f1f1;
+}
+
+.reservebtn.unAble > div {
+  background-color: #f1f1f1;
+  color: #ffffff;
+}
+
+.reservebtn {
+  display: block;
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 480px;
+}
+
+.reservebtn > div {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #ff3d00;
+  color: #ffffff;
 }
