@@ -172,7 +172,7 @@ export default function Restaurantsetting() {
                   >
                     <div className="self-end">
                       <span
-                        className={`text-[12px] px-[5px] py-[3px]w-fit rounded-full border border-[#d5d5d5] `}
+                        className={`text-center text-[#666] text-[12px] float-right rounded-full py-[2px] px-[8px] border border-[#d5d5d5]`}
                       >
                         {item.status === "CANCEL"
                           ? "방문 취소"
@@ -182,7 +182,7 @@ export default function Restaurantsetting() {
                       </span>
                     </div>
                     <span className="text-[14px] text-[#2c2c2c]">
-                      예약자 :
+                      <em className="">예약자 : </em>
                       <em className="">
                         {item.memberName.replace(
                           item.memberName.slice(1, item.memberName.length - 1),
@@ -190,14 +190,19 @@ export default function Restaurantsetting() {
                         )}
                       </em>
                     </span>
+                    {item.memo !== null && (
+                      <span className="text-[14px] text-[#2c2c2c]">
+                        <em className="">메모 : </em>
+                        <em className="">{item.memo}</em>
+                      </span>
+                    )}
+
                     <span className="text-[14px] text-[#2c2c2c]">
-                      메모 : <em className="">{item.memo}</em>
+                      <em className="">예약 날짜 : </em>
+                      <em className="">{item.time.split("T")[0]}</em>
                     </span>
                     <span className="text-[14px] text-[#2c2c2c]">
-                      예약 날짜 :<em className="">{item.time.split("T")[0]}</em>
-                    </span>
-                    <span className="text-[14px] text-[#2c2c2c]">
-                      예약 시간 :{" "}
+                      <em className="">예약 시간 : </em>{" "}
                       <em className="">
                         {item.time.split("T")[1].slice(0, 5)}
                       </em>

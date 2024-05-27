@@ -37,7 +37,6 @@ function MyPage() {
   const [isRestaurant, setIsRestaurant] = useState(false);
   const [isUserInfo, setIsUserInfo] = useState([]);
   const [photoToAddList, setPhotoToAddList] = useState([]);
-  const [photoToAddList2, setPhotoToAddList2] = useState([]);
   const [isSelectInfo, setIsSelectInfo] = useState([]);
   const [isSave, setIsSave] =
     useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
@@ -48,8 +47,28 @@ function MyPage() {
   };
 
   useEffect(() => {
-    console.log("photoToAddList", photoToAddList);
-  }, [photoToAddList]);
+    if (!isReviewOpen) return;
+    if (!isSelectInfo) return;
+
+    console.log("isReviewOpen", isReviewOpen);
+    console.log("isSelectInfo", isSelectInfo[0].path);
+
+    const fetchFile = async () => {
+      try {
+        const response = await fetch(isSelectInfo[0].path);
+        const blob = await response.blob();
+        const file = new File([blob], isSelectInfo[0].path, {
+          type: blob.type,
+        });
+        console.log("file", file);
+        // setFile(file);
+      } catch (error) {
+        console.error("Error fetching and converting file: ", error);
+      }
+    };
+
+    fetchFile();
+  }, [isReviewOpen, isSelectInfo]);
 
   const toggleDrawerReview = (e, info) => {
     setIsReviewOpen((prevState) => !prevState);
@@ -64,7 +83,7 @@ function MyPage() {
         info.rate * 2 * 10
       }%`;
       textInput.current.value = info.comment;
-      console.log(info);
+      console.log("info", info);
       setIsSelectInfo(info.images);
     }
   };
@@ -387,7 +406,7 @@ function MyPage() {
                             </span>
                             <div className="flex justify-end gap-x-[7px]">
                               <span
-                                className="text-[#666] text-[12px] float-right rounded-full py-[3px] px-[8px] border border-[#d5d5d5]"
+                                className="w-[63px] text-center text-[#666] text-[12px] float-right rounded-full py-[2px] px-[1px] border border-[#d5d5d5]"
                                 onClick={(e) => {
                                   toggleDrawerReview(e, info);
                                 }}
@@ -399,7 +418,7 @@ function MyPage() {
                                   item.ownerId === 0 ? (
                                   <span
                                     key={index}
-                                    className="text-[#666] text-[12px] float-right rounded-full py-[3px] px-[8px] border border-[#d5d5d5]"
+                                    className="w-[63px] text-center text-[#666] text-[12px] float-right rounded-full py-[1px] px-[8px] border border-[#d5d5d5]"
                                     onClick={(e) => {
                                       reviewDelect(e, info);
                                     }}
@@ -436,7 +455,6 @@ function MyPage() {
                               })}
                           </div>
                           {isUserInfo.comments.map((item) => {
-                            console.log(item);
                             return info.reviewId === item.reviewId &&
                               item.ownerId !== 0 ? (
                               <div
