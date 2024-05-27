@@ -361,8 +361,7 @@ export default function Restaurant() {
               </div>
             </div>
           </div>
-        </div>
-      </section>}
+      </section>)}
       <Seperator></Seperator>
       {/* 6. 매장위치 */}
       <section className="section">
