@@ -267,37 +267,6 @@ export default function Restaurant() {
                         <p className="time-slot-unavailable">예약 가능한 시간대가 없습니다.</p>
                       </div>
                       }
-              {timeSlots && timeSlots.length > 0 ? (
-                <>
-                  <div className="section-time-slot mb-[24px]">
-                    <Swiper className="timetable-list-sm">
-                      {timeSlots.map((item, index) => {
-                        const hour = item.time.slice(0, 2);
-                        const min = item.time.slice(2, 5);
-                        return (
-                          <SwiperSlide
-                            key={index}
-                            onClick={(e) => onReserveCalendar(item.time, e)}
-                          >
-                            <button className="timetable-list-item">
-                              <span className="time">
-                                {hour % 12 > 0
-                                  ? `오후 ${hour % 12}`
-                                  : `오전 ${hour}`}
-                                {min}
-                              </span>
-                            </button>
-                          </SwiperSlide>
-                        );
-                      })}
-                    </Swiper>
-                  </div>
-                </>
-              ) : (
-                <div className="time-slot-unavailable-box">
-                  <p className="time-slot-unavailable">예약 시간 나열!</p>
-                </div>
-              )}
             </div>
           </div>
         </div>

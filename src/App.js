@@ -33,6 +33,10 @@ function App() {
     setSearch(param);
   };
 
+  useEffect(()=>{
+    getTestLogin();
+  },[])
+
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;
