@@ -13,7 +13,7 @@ const token = sessionStorage.getItem("token");
 /* 식당 생성 */
 export const createRestaurant = async (data) => {
   try {
-   const result = await apiClient.post("/restaurants", data, {
+    const result = await apiClient.post("/restaurants", data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -52,11 +52,10 @@ export const UpdateRestaurantRes = () => {
 
 /* 식당 개별 조회 */
 
-export const getRestaurant = async ({queryKey}) => {
-
+export const getRestaurant = async (name) => {
+  // console.log("name", queryKey);
   try {
-    const [name] = queryKey;
-    console.log(name);
+    // const [name] = queryKey;
     const res = await apiClient.get(`/restaurants/${name}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -85,14 +84,18 @@ export const GetReservationRes = async (visitStatus) => {
 };
 
 /* 식당 저장 */
-export const useSaveRestaurant = async ({id}) => {
+export const useSaveRestaurant = async ({ id }) => {
   const restaurantId = id;
   try {
-    const res = await apiClient.post(`/savedRestaurant/${restaurantId}`, restaurantId, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await apiClient.post(
+      `/savedRestaurant/${restaurantId}`,
+      restaurantId,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return res;
   } catch (err) {
     console.log("Error >>", err);
@@ -100,7 +103,7 @@ export const useSaveRestaurant = async ({id}) => {
 };
 
 /* 식당 삭제 */
-export const useDeleteRestaurant = async({id}) => {
+export const useDeleteRestaurant = async ({ id }) => {
   const restaurantId = id;
   try {
     const res = await apiClient.delete(`/savedRestaurant/${restaurantId}`, {
@@ -112,7 +115,7 @@ export const useDeleteRestaurant = async({id}) => {
   } catch (err) {
     console.log("Error >>", err);
   }
-}
+};
 
 // 식당 공지 사항 추가
 const createNotificat = async ({ restaurantId, restaurantItem }) => {

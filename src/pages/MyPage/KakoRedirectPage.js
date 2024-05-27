@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/Loading.js";
 import { getLogin } from "../../respository/userInfo.js";
 export default function KakoRedirectPage() {
   const PARAMS = new URL(document.location).searchParams;
@@ -24,5 +25,5 @@ export default function KakoRedirectPage() {
       });
   }, [KAKAO_CODE]);
 
-  return <div> Loading...</div>;
+  return <Loading></Loading>;
 }

@@ -182,6 +182,7 @@ const createReviewItem = async ({ createReviewReq, files }) => {
   for (let index = 0; index < files.length; index++) {
     await formData.append("files", files[index].file);
   }
+
   const response = await axios.post(
     `http://15.164.89.177:8080/review`,
     formData,

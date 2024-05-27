@@ -1,13 +1,11 @@
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-// import io from "socket.io";
-// import io from "socket.io-client";
 import { io } from "socket.io-client";
 import styled from "styled-components";
-import { getRestaurant } from "../../respository/restaurant";
-// import quer
+import Loading from "../../components/Loading";
 import { getChatRoom } from "../../respository/reservation";
+import { getRestaurant } from "../../respository/restaurant";
 
 const ChatRoom = () => {
   // const message = useRef();
@@ -65,6 +63,7 @@ const ChatRoom = () => {
   } = useQuery({
     queryKey: ["chatRoomList", 1],
     queryFn: () => {
+      console.log("chatRoomId", chatRoomId);
       return getChatRoom(chatRoomId)
         .then((res) => {
           return res;
@@ -87,7 +86,10 @@ const ChatRoom = () => {
   });
 
   if (!chatRoomList || !restaurant) return;
-
+  if (restaurantLoding || roomLoding) {
+    return <Loading></Loading>;
+  }
+  console.log("restaurant", restaurant);
   return (
     <ChatBox>
       <div className=" min-h-[40px] container border-solid  leading-[40px] border-b-[#d4d4d4] border-b-[1px]">
@@ -96,11 +98,11 @@ const ChatRoom = () => {
       <div className="w-[calc(100vw-40px)] px-[7px] py-[4px] top-[50px] bg-white rounded-lg absolute left-0 right-0 mx-[auto] shadow-md">
         <span className="text-[12px] text-center">
           영업 시간 :
-          {String(restaurant.data.openTime).slice(0, 5) +
+          {String(restaurant.openTime).slice(0, 5) +
             " ~ " +
-            String(restaurant.data.closeTime).slice(0, 5) +
+            String(restaurant.closeTime).slice(0, 5) +
             " (LastOrder : " +
-            String(restaurant.data.lastOrderTime).slice(0, 5) +
+            String(restaurant.lastOrderTime).slice(0, 5) +
             ")"}
         </span>
       </div>

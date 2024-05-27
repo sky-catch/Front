@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "react-modern-drawer/dist/index.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -10,6 +10,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import dinner_dark from "../../assets/icons/time-dinner-dark.svg";
 import lunch_dark from "../../assets/icons/time-lunch-dark.svg";
 import CalendarComponent from "../../components/CalendarComponent";
+import Loading from "../../components/Loading";
 import { MapComponent } from "../../components/MapComponent.js";
 import ConfirmReserve from "../../components/Modal/ConfirmReserve.js";
 import { LocationDrawer } from "../../components/Modal/Location.js";
@@ -37,34 +38,58 @@ export default function Restaurant() {
   const [save, setSave] = useState(0);
 
   // 식당 개별 정보 조희
-  const { data : restaurant, isLoading } = useQuery({ queryKey : [state], queryFn : getRestaurant}); /* 식당 정보 */
+  const { data: restaurant, isLoading } = useQuery({
+    queryKey: [state],
+    queryFn: getRestaurant,
+  }); /* 식당 정보 */
   const shopId = restaurant?.restaurantId;
-  
+
   // * 기본 검색 날짜는 '금일 오후 7시', 만일 시간이 넘은 경우 '내일 오후 7시'로 세팅
   const today = new Date();
-  const tomorrow = new Date(new Date().setDate(today.getDate()+1));
+  const tomorrow = new Date(new Date().setDate(today.getDate() + 1));
   const [date, setDate] = useState(today.getHours() >= 19 ? tomorrow : today); // 예약 날짜
-  const dateStr = `${String(date.getFullYear())}-${ String(date.getMonth() + 1).padStart(2, "0") }-${ String(date.getDate()).padStart(2, "0") }`; // 예약날짜 노출문구
+  const dateStr = `${String(date.getFullYear())}-${String(
+    date.getMonth() + 1
+  ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`; // 예약날짜 노출문구
   // console.log(dateStr);
-  const { data : availTimes } = useQuery({ queryKey : [{
-    restaurantId : shopId,
-    numberOfPeople : 2,
-    searchDate : dateStr,
-    visitTime : "18:00"
-  }], queryFn : checkReservationTimes, enabled : !!shopId });
-  const timeSlots = availTimes? availTimes['timeSlots'] : null;  /* 예약 가능한 시간 */
+  const { data: availTimes } = useQuery({
+    queryKey: [
+      {
+        restaurantId: shopId,
+        numberOfPeople: 2,
+        searchDate: dateStr,
+        visitTime: "18:00",
+      },
+    ],
+    queryFn: checkReservationTimes,
+    enabled: !!shopId,
+  });
+  const timeSlots = availTimes
+    ? availTimes["timeSlots"]
+    : null; /* 예약 가능한 시간 */
 
   const queryClient = useQueryClient();
-  const deleteSave = useMutation({mutationFn : useDeleteRestaurant, onSuccess : ()=>{queryClient.invalidateQueries({queryKey : [state]})}});
-  const saveSave = useMutation({mutationFn : useSaveRestaurant, onSuccess : ()=>{queryClient.invalidateQueries({queryKey : [state]})}});
-  
+  const deleteSave = useMutation({
+    mutationFn: useDeleteRestaurant,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [state] });
+    },
+  });
+  const saveSave = useMutation({
+    mutationFn: useSaveRestaurant,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [state] });
+    },
+  });
+
   const [openBottom, setOpenBottom] = React.useState(false);
   const openDrawerBottom = () => setOpenBottom(true);
   const closeDrawerBottom = () => setOpenBottom(false);
   const [isInforOpen, setIsInforOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false); /* 예약하기 모달창 오픈 */
   const [isSave, setIsSave] = useState(false); /* 저장하기 모달창 오픈 */
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false); /* 예약 컨펌 모달창 오픈 */
+  const [isConfirmOpen, setIsConfirmOpen] =
+    useState(false); /* 예약 컨펌 모달창 오픈 */
   const [isOpenLo, setIsOpenLo] = useState(false); /* 위치 정보 모달창 오픈 */
   const [isSelect, setIsSelect] = useState(true);
 
@@ -77,8 +102,10 @@ export default function Restaurant() {
   });
 
   const [isContent, setIsContent] = useState("home");
-  const [imgIndex, setImgIndex] = useState(1); /* 이미지 슬라이드 현재 보고있는 이미지번호 */
-  const [watch, setWatch] = useState(0); /* 현재 해당 식당을 보고 있는 사람들 수 */
+  const [imgIndex, setImgIndex] =
+    useState(1); /* 이미지 슬라이드 현재 보고있는 이미지번호 */
+  const [watch, setWatch] =
+    useState(0); /* 현재 해당 식당을 보고 있는 사람들 수 */
 
   const toggleDrawer = (e) => {
     if (e.target.className.indexOf("closeSaveModal") != -1) {
@@ -138,12 +165,12 @@ export default function Restaurant() {
   const useSaveMyRestaurant = (e) => {
     const restaurantId = restaurant.restaurantId;
 
-    if(restaurant.saved) {
-      deleteSave.mutate({id : restaurantId});
+    if (restaurant.saved) {
+      deleteSave.mutate({ id: restaurantId });
     } else {
-      saveSave.mutate({id : restaurantId});
-    };
-  }
+      saveSave.mutate({ id: restaurantId });
+    }
+  };
 
   /**
    * Function 슬라이드 넘기는 이벤트 : 슬라이드 변경 시마다 imgIndex 상태 변경
@@ -158,13 +185,13 @@ export default function Restaurant() {
 
   const week = ["일", "월", "화", "수", "목", "금", "토", "일"];
 
-  if (isLoading) return <div>isLoading...</div>;
+  if (isLoading) return <Loading></Loading>;
   return (
     <main className="pb-[74px]">
       {/* 1. 식당 이미지 */}
       <Section>
         <Swiper className="slide-image-wrapper" onSlideChange={onChangeSlide}>
-          { restaurant?.images?.length < 1 ? (
+          {restaurant?.images?.length < 1 ? (
             <SwiperSlide className="slide-none">이미지가 없습니다.</SwiperSlide>
           ) : (
             restaurant?.images?.map((item, index) => {
@@ -187,7 +214,9 @@ export default function Restaurant() {
         </Swiper>
         <div className="restaurant-img-detail">
           <span>{watch}명이 보는중!</span>
-          <div>{`${restaurant?.images?.length>0 ? imgIndex : 0}/${restaurant?.images?.length}`}</div>
+          <div>{`${restaurant?.images?.length > 0 ? imgIndex : 0}/${
+            restaurant?.images?.length
+          }`}</div>
         </div>
       </Section>
       {/* 2. 식당 이름 및 메인 정보 */}
@@ -233,40 +262,52 @@ export default function Restaurant() {
           <div className="container gutter-sm">
             <div className="section-header">
               <h3>예약 일시</h3>
-                    </div>
-                    <div className="section-body">
-                    <div className="mb-[8px]">
-                        <a
-                        className="btn btn-lg btn-outline btn-cta full-width arrowdown">
-                        <span>
-                          <span className="label calendar"> 오늘 ({week[new Date().getDay()]}) / 2 명</span>
-                        </span>
-                      </a>
-                    </div>
-                    { timeSlots && timeSlots.length > 0 ?
-                    <>
-                      <div className="section-time-slot mb-[24px]">
-                        <Swiper
-                          className="timetable-list-sm"
-                        >
-                          { timeSlots.map((item,index)=> {
-                            // console.log(item);
-                            const hour = item.time.slice(0,2);
-                            const min = item.time.slice(2,5);
-                              return(<SwiperSlide key={index} onClick={(e)=>onReserveCalendar(item.time,e)}>
-                              <button className="timetable-list-item">
-                                <span className="time">{hour%12>0 ? `오후 ${hour%12}` : `오전 ${hour}`}{min}</span>
-                              </button>
-                              </SwiperSlide>)
-                          })}
-                        </Swiper>
-                      </div>
-                      </>
-                      : 
-                      <div className="time-slot-unavailable-box">
-                        <p className="time-slot-unavailable">예약 가능한 시간대가 없습니다.</p>
-                      </div>
-                      }
+            </div>
+            <div className="section-body">
+              <div className="mb-[8px]">
+                <a className="btn btn-lg btn-outline btn-cta full-width arrowdown">
+                  <span>
+                    <span className="label calendar">
+                      {" "}
+                      오늘 ({week[new Date().getDay()]}) / 2 명
+                    </span>
+                  </span>
+                </a>
+              </div>
+              {timeSlots && timeSlots.length > 0 ? (
+                <>
+                  <div className="section-time-slot mb-[24px]">
+                    <Swiper className="timetable-list-sm">
+                      {timeSlots.map((item, index) => {
+                        // console.log(item);
+                        const hour = item.time.slice(0, 2);
+                        const min = item.time.slice(2, 5);
+                        return (
+                          <SwiperSlide
+                            key={index}
+                            onClick={(e) => onReserveCalendar(item.time, e)}
+                          >
+                            <button className="timetable-list-item">
+                              <span className="time">
+                                {hour % 12 > 0
+                                  ? `오후 ${hour % 12}`
+                                  : `오전 ${hour}`}
+                                {min}
+                              </span>
+                            </button>
+                          </SwiperSlide>
+                        );
+                      })}
+                    </Swiper>
+                  </div>
+                </>
+              ) : (
+                <div className="time-slot-unavailable-box">
+                  <p className="time-slot-unavailable">
+                    예약 가능한 시간대가 없습니다.
+                  </p>
+                </div>
+              )}
               {timeSlots && timeSlots.length > 0 ? (
                 <>
                   <div className="section-time-slot mb-[24px]">
@@ -361,7 +402,8 @@ export default function Restaurant() {
               </div>
             </div>
           </div>
-      </section>)}
+        </section>
+      )}
       <Seperator></Seperator>
       {/* 6. 매장위치 */}
       <section className="section">
@@ -389,19 +431,19 @@ export default function Restaurant() {
       <Seperator></Seperator>
       <section className="section">
         <div className="cmmt">
-            <div className="container gutter-sm">
-              <div className="section-header mb-[30px]">
-                <h3>상세 정보</h3>
-              </div>
-              <div className="section-body">
-              <div className="py-[10px]">
-              <span className="text-[16px] font-semibold mb-[5px] block">
-                매장소개
-              </span>
-              <span className="text-[14px] text-[#515151]">
-                {restaurant.content}
-              </span>
+          <div className="container gutter-sm">
+            <div className="section-header mb-[30px]">
+              <h3>상세 정보</h3>
             </div>
+            <div className="section-body">
+              <div className="py-[10px]">
+                <span className="text-[16px] font-semibold mb-[5px] block">
+                  매장소개
+                </span>
+                <span className="text-[14px] text-[#515151]">
+                  {restaurant.content}
+                </span>
+              </div>
               <div className="py-[10px]">
                 <span className="text-[16px] font-semibold mb-[5px] block">
                   영업시간
@@ -419,9 +461,9 @@ export default function Restaurant() {
                   (Last Order : {restaurant.lastOrderTime.slice(0, 5)})
                 </span>
               </div>
-              </div>
             </div>
           </div>
+        </div>
       </section>
       {/* 12. 이 주변 예약이 많은 레스토랑 */}
       {/* 예약 슬라이드 페이지 */}
@@ -435,7 +477,11 @@ export default function Restaurant() {
 
           <span>{restaurant ? restaurant.savedCount : 0}</span>
         </div>
-        <button className={`reservebtn ${timeSlots?.length < 1 ? 'unAble' : ''}`} disabled={`${timeSlots?.length <1 ? 'disabled' : ''}`} onClick={onReserveCalendar}>
+        <button
+          className={`reservebtn ${timeSlots?.length < 1 ? "unAble" : ""}`}
+          disabled={`${timeSlots?.length < 1 ? "disabled" : ""}`}
+          onClick={onReserveCalendar}
+        >
           <div>예약하기</div>
         </button>
       </BottomBtn>

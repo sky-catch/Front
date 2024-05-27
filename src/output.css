@@ -668,6 +668,14 @@ video {
   z-index: 50;
 }
 
+.-z-50 {
+  z-index: -50;
+}
+
+.z-\[999\] {
+  z-index: 999;
+}
+
 .col-span-2 {
   grid-column: span 2 / span 2;
 }
@@ -898,6 +906,11 @@ video {
   height: 32px;
 }
 
+.size-\[40px\] {
+  width: 40px;
+  height: 40px;
+}
+
 .size-\[47px\] {
   width: 47px;
   height: 47px;
@@ -931,6 +944,21 @@ video {
 .size-\[70px\] {
   width: 70px;
   height: 70px;
+}
+
+.size-\[150px\] {
+  width: 150px;
+  height: 150px;
+}
+
+.size-\[120px\] {
+  width: 120px;
+  height: 120px;
+}
+
+.size-\[130px\] {
+  width: 130px;
+  height: 130px;
 }
 
 .h-12 {
@@ -1029,6 +1057,10 @@ video {
   height: 100%;
 }
 
+.h-dvh {
+  height: 100dvh;
+}
+
 .max-h-\[120px\] {
   max-height: 120px;
 }
@@ -1089,10 +1121,6 @@ video {
   width: 63px;
 }
 
-.w-\[65px\] {
-  width: 65px;
-}
-
 .w-\[calc\(100\%-47px\)\] {
   width: calc(100% - 47px);
 }
@@ -1123,6 +1151,10 @@ video {
   width: 100%;
 }
 
+.w-dvw {
+  width: 100dvw;
+}
+
 .min-w-\[70px\] {
   min-width: 70px;
 }
@@ -1141,6 +1173,16 @@ video {
 
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
 
 .cursor-pointer {
@@ -1465,12 +1507,28 @@ video {
   background-image: url('./assets/icons/close.svg');
 }
 
+.bg-loadingIcon {
+  background-image: url('./assets/icons/Loading.svg');
+}
+
 .bg-main {
   background-image: url('./assets/icons/logo.png');
 }
 
+.bg-cover {
+  background-size: cover;
+}
+
 .bg-\[30px\] {
   background-position: 30px;
+}
+
+.bg-\[120px\] {
+  background-position: 120px;
+}
+
+.bg-center {
+  background-position: center;
 }
 
 .bg-no-repeat {
@@ -1653,10 +1711,6 @@ video {
 
 .text-center {
   text-align: center;
-}
-
-.text-justify {
-  text-align: justify;
 }
 
 .text-\[12px\] {
@@ -4332,7 +4386,6 @@ span {
   margin-left: 5px;
   color: #aaa;
 }
-
 
 .mb-\[50px\] {
   margin-bottom : 50px !important;

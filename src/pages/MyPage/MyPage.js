@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { LoginState, RestaurantState } from "../../States/LoginState";
+import Loading from "../../components/Loading";
 import { DeleteReview } from "../../respository/reservation";
 import {
   getMyRestaurant,
@@ -31,15 +32,16 @@ function MyPage() {
   const photoInput = useRef();
   const [isScore, setIsScore] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
-
   const [isRestaurant, setIsRestaurant] = useState(false);
-
   const [photoToAddList, setPhotoToAddList] = useState([]);
   const [isSelectInfo, setIsSelectInfo] = useState([]);
   const [isSave, setIsSave] =
     useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
 
-  const { data: isUserInfo } = useQuery({ queryKey: [], queryFn: getUserInfo });
+  const { data: isUserInfo, isLoading: userLoading } = useQuery({
+    queryKey: [],
+    queryFn: getUserInfo,
+  });
   const [isOwner, setIsOwner] = useState(isUserInfo ? isUserInfo.owner : false);
   const [following, setFollowing] = useState(0); //isUserInfo 팔로잉,팔로워 수 리턴받아야함.(TODO)
   const [follower, setFollower] = useState(0); // 동일
@@ -207,7 +209,7 @@ function MyPage() {
 
   useEffect(() => {
     // 이미지 정보 설정
-
+    console.log("isUserInfo", isUserInfo);
     setUser((prevUser) => ({
       ...prevUser,
       profileImageUrl: isUserInfo?.profileImageUrl,
@@ -257,7 +259,9 @@ function MyPage() {
     console.log("name : ", restaurantName);
     navigate(`/ct/shop/${restaurantName}`, { state: restaurantName });
   };
-
+  if (userLoading) {
+    return <Loading></Loading>;
+  }
   return (
     <MainContents className="main">
       {/* 프로필정보 */}

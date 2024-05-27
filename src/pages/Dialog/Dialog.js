@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import DialogComponent from "../../components/DialogComponent";
+import Loading from "../../components/Loading";
 import { GetChatRoomListRes } from "../../respository/reservation";
 import Carousel from "../Home/Carousel";
-
 function Dialog() {
   const [isLogin, SetIsLogin] = useState(false);
   const [filterText, setFilterText] = useState("");
@@ -66,7 +66,7 @@ function Dialog() {
   }
 
   if (isLoading) {
-    return <div>로딩....</div>;
+    return <Loading></Loading>;
   }
 
   if (error) {
