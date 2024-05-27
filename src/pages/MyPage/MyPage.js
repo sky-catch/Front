@@ -367,9 +367,9 @@ function MyPage() {
                   </div>
                   <div className="section-body pb-32">
                     <div className="saved-restaurant-list">
-                      {user?.saveRestaurants?.map((idx, index) => {
-                        return (
-                          <div className="saved-restaurant-list-item">
+                      { user?.saveRestaurants?.map((item,index)=>{
+                        return(
+                          <div className="saved-restaurant-list-item" key={index}>
                             <div className="restaurant-info">
                               <a className="tb">
                                 <div className="img"></div>

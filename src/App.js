@@ -31,23 +31,11 @@ function App() {
   const updateSearch = (param) => {
     setSearch(param);
   };
-  // sessionStorage.setItem(
-  //   "token",
-  //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN5a29yQGtha2FvLmNvbSIsImlzT3duZXIiOmZhbHNlLCJpYXQiOjE3MTY4MDA0MzksImV4cCI6MTcxNjg4NjgzOX0.4QqSjkfmuCAFVMZ9ZPv6MEthq1cTYFCVsBR3wQAZ4Ft_gAWp2KtHIjUPtRwHYy-cqCL7GoXv2SVxoSMhpXAMFg"
-  // );
-  // sessionStorage.setItem(
-  //   "data",
-  //   JSON.stringify({
-  //     email: "sykor@kakao.com",
-  //     id: 6,
-  //     name: "조소연",
-  //     nickname: "조소연",
-  //     owner: true,
-  //     profileImageUrl:
-  //       "http://k.kakaocdn.net/dn/2afaP/btsE5DK6vhb/Gl1oZJKX0wN2tVbjpVeBLk/img_640x640.jpg",
-  //     status: "ACTIVE",
-  //   })
-  // );
+
+  useEffect(()=>{
+    getTestLogin();
+  },[])
+  
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;
