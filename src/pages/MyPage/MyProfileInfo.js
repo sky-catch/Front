@@ -54,8 +54,9 @@ export default function MyProfileInfo() {
   /* Function */
   const updateUser = (e) => {
     console.log('name:',name,'imgFile',imgFile);
+    const obj = {nickname : name};
     editUserInfo.mutate({ 
-      updateMemberReq : { nickname : name },
+      updateMemberReq : obj ,
       file : imgFile
     });
   }

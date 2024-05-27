@@ -41,7 +41,6 @@ export default function Restaurant() {
     visitTime : "18:00"
   }], queryFn : checkReservationTimes, enabled : !!shopId });
   const timeSlots = availTimes? availTimes['timeSlots'] : null;  /* 예약 가능한 시간 */
-  // console.log(restaurant);
 
   const queryClient = useQueryClient();
   const deleteSave = useMutation({mutationFn : useDeleteRestaurant, onSuccess : ()=>{

@@ -23,19 +23,22 @@ function MyPage() {
   const [user, setUser] = useRecoilState(LoginState);
   
   const [restaurant, setRestaurant] = useRecoilState(RestaurantState);
-  const [following, setFollowing] = useState(0);
   const textInput = useRef();
   const photoInput = useRef();
-  const [follower, setFollower] = useState(0);
   const [isScore, setIsScore] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
   
   const [isRestaurant, setIsRestaurant] = useState(false);
-  // const [isUserInfo, setIsUserInfo] = useState([]);
+  
   const [photoToAddList, setPhotoToAddList] = useState([]);
   const [photoToAddList2, setPhotoToAddList2] = useState([]);
   const [isSelectInfo, setIsSelectInfo] = useState([]);
   const [isSave, setIsSave] = useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
+  
+  const {data : isUserInfo} = useQuery({queryKey : [], queryFn : getUserInfo}); 
+  const [isOwner, setIsOwner] = useState(isUserInfo ? isUserInfo.owner : false);
+  const [following, setFollowing] = useState(0); //isUserInfo 팔로잉,팔로워 수 리턴받아야함.(TODO)
+  const [follower, setFollower] = useState(0);  // 동일
 
   /* Function : 프로필 수정 */
   const updateUserInfo = () => {
@@ -135,8 +138,7 @@ function MyPage() {
     }
   };
 
-  const {data : isUserInfo} = useQuery({queryKey : [], queryFn : getUserInfo});
-  const [isOwner, setIsOwner] = useState(isUserInfo ? isUserInfo.owner : false);
+  
 
   const {
     data: getRestaurantItem,
@@ -185,14 +187,22 @@ function MyPage() {
         setRestaurant((prevUser) => ({ ...getRestaurantItem }));
       }
     }
-
+    
+  }, [getRestaurantItem, isOwner]);
+  
+  useEffect(()=> {
+    
     // 이미지 정보 설정
     setUser((prevUser) => ({
       ...prevUser,
-      profileImageUrl : isUserInfo?.profileImageUrl
+      profileImageUrl : isUserInfo?.profileImageUrl,
+      isOwner : isUserInfo?.owner,
+      saveRestaurants : isUserInfo?.savedRestaurants
     }))
-   
-  }, [getRestaurantItem, isOwner, isUserInfo]);
+    console.log('user',user);
+    console.log('isUserInfo',isUserInfo);
+
+  },[isUserInfo]);
 
   const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
@@ -236,24 +246,20 @@ function MyPage() {
         <section className="container gutter-sm">
           <div className="mypage-profile flex items-start mb-[16px]">
             <div className="profile-pic mr-[12px]">
-              {isUserInfo && isUserInfo.profileImageUrl ? (
+              {user?.profileImageUrl && (
                 <img
                   className="img"
-                  src={`${isUserInfo.profileImageUrl}`}
+                  src={`${user?.profileImageUrl}`}
                 ></img>
-              ) : (
-                <div className="img"></div>
               )}
             </div>
             <div className="mypage-profile-meta">
               <div className="userInfo flex items-center">
-                <h4 className="name">{isUserInfo && isUserInfo.nickname}</h4>
-                {isOwner ? (
+                <h4 className="name">{user?.nickname}</h4>
+                { user?.isOwner && (
                   <div className="isOwner flex">
                     <FaStar color="#ff3d00"></FaStar>
                   </div>
-                ) : (
-                  ""
                 )}
               </div>
               <div className="meta">
@@ -333,23 +339,40 @@ function MyPage() {
               리뷰
             </li>
           </ul>
-          {isSave ? (
+          { isSave ? (
             <div className="collection">
               <section className="section pt-[20px]">
                 <div className="container gutter-sm">
                   <div className="__d-flex">
                     <div className="section-header justify-between full-width">
                       <h3 className="section-title flex">
-                        저장한 레스토랑<span className="count">0</span>
+                        저장한 레스토랑<span className="count">{user?.saveRestaurants?.length}</span>
                       </h3>
-                      <div className="__d-flex __v-center font-12">
-                        전체보기
-                        <img src="https://app.catchtable.co.kr/public/img/icons/arrow-right-20.svg" />
-                      </div>
                     </div>
                   </div>
                   <div className="section-body pb-32">
-                    <div className="saved-restaurant-list"></div>
+                    <div className="saved-restaurant-list">
+                      { user?.saveRestaurants?.map((idx,index)=>{
+                        return(
+                          <div className="saved-restaurant-list-item">
+                            <div className="restaurant-info">
+                              <a className="tb"><div className="img"></div></a>
+                              <a className="detail">
+                                <h4 className="name">레스토랑 이름</h4>
+                                <p className="excerpt">레스토랑 소개</p>
+                                <div className="restaurant-meta">
+                                  <div className="rating">
+                                    <span className="star">별점</span>
+                                    <span className="count">리뷰수</span>
+                                  </div>
+                                </div>
+                              </a>
+                              <a className="btn-bookmark active"></a>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
                   </div>
                 </div>
               </section>

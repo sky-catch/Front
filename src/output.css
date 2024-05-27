@@ -739,10 +739,6 @@ video {
   margin-bottom: 24px;
 }
 
-.mb-\[25px\] {
-  margin-bottom: 25px;
-}
-
 .mb-\[30px\] {
   margin-bottom: 30px;
 }
@@ -4318,4 +4314,102 @@ span {
   width: 18px;
   height: 18px;
   margin-right: 2px;
+}
+
+.saved-restaurant-list-item .restaurant-info {
+  display : flex;
+  margin-bottom : 16px;
+  position : relative;
+}
+
+.saved-restaurant-list-item .restaurant-info .tb .img {
+  position : relative;
+  overflow : hidden;
+  width : 78px;
+  height : 104px;
+  vorder-radius : 4px;
+  background : 50% 50% no-repeat;
+  background-size : cover;
+  object-fit : cover;
+  box-sizing : border-box;
+  border : 1px solid #f1f1f1;
+}
+
+.saved-restaurant-list-item .restaurant-info .tb {
+  margin-top: 2px;
+  overflow: hidden;
+  margin-right: 15px;
+}
+
+.saved-restaurant-list-item .restaurant-info .detail{
+  flex : 1;
+  min-width : 1px;
+}
+
+.saved-restaurant-list-item .restaurant-info .detail .name{
+  font-size : 20px;
+  margin-bottom : 3px;
+  font-weight : 700;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+.saved-restaurant-list-item .restaurant-info .detail .excerpt{
+  font-size: 11px;
+  line-height: 15px;
+  color: #000;
+  margin-bottom: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.saved-restaurant-list-item .restaurant-info .btn-bookmark {
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
+.btn-bookmark.active {
+  background-image: url("../src/assets/icons/bookmarked.svg");
+}
+
+.restaurant-meta {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.restaurant-meta .rating {
+  display : flex;
+  align-items : baseline;
+  margin-bottom : 5px;
+}
+
+.restaurant-meta .rating .star {
+  font-size: 14px;
+  position: relative;
+  padding-left: 18px;
+  display: inline-block;
+  vertical-align: middle;
+  font-weight: 700;
+}
+
+.restaurant-meta .rating .star::before {
+  background: url("../src/assets/icons/star-yellow.svg") 0% 50% no-repeat;
+  background-size: contain;
+  width: 14px;
+  height: 14px;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.restaurant-meta .rating .count {
+  vertical-align: middle;
+  font-size: 12px;
+  margin-left: 5px;
+  color: #999;
+  font-weight: 400;
 }
