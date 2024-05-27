@@ -21,27 +21,28 @@ import {
 
 function MyPage() {
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
+
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const { mutate: DeleteReviewItem } = DeleteReview();
   const [user, setUser] = useRecoilState(LoginState);
-  
+
   const [restaurant, setRestaurant] = useRecoilState(RestaurantState);
   const textInput = useRef();
   const photoInput = useRef();
   const [isScore, setIsScore] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
-  
+
   const [isRestaurant, setIsRestaurant] = useState(false);
-  
+
   const [photoToAddList, setPhotoToAddList] = useState([]);
   const [isSelectInfo, setIsSelectInfo] = useState([]);
-  const [isSave, setIsSave] = useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
-  
-  const {data : isUserInfo} = useQuery({queryKey : [], queryFn : getUserInfo}); 
+  const [isSave, setIsSave] =
+    useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
+
+  const { data: isUserInfo } = useQuery({ queryKey: [], queryFn: getUserInfo });
   const [isOwner, setIsOwner] = useState(isUserInfo ? isUserInfo.owner : false);
   const [following, setFollowing] = useState(0); //isUserInfo 팔로잉,팔로워 수 리턴받아야함.(TODO)
-  const [follower, setFollower] = useState(0);  // 동일
+  const [follower, setFollower] = useState(0); // 동일
 
   /* Function : 프로필 수정 */
   const updateUserInfo = () => {
@@ -161,8 +162,6 @@ function MyPage() {
     }
   };
 
-  
-
   const {
     data: getRestaurantItem,
     isLoading,
@@ -178,7 +177,7 @@ function MyPage() {
           console.log("err1", err.response);
         });
     },
-    enabled: isOwner,
+    enabled: isUserInfo?.owner,
   });
 
   const { data: getOwnerItem } = useQuery({
@@ -196,34 +195,26 @@ function MyPage() {
           throw err;
         });
     },
-    enabled: isOwner,
+    enabled: isUserInfo?.owner,
   });
 
   useEffect(() => {
-    if (getOwnerItem && getOwnerItem.ownerId !== null) {
-      setIsOwner(true);
-      if (isOwner) {
-        setUser((prevUser) => ({ ...getOwnerItem }));
-      }
-      if (getRestaurantItem) {
-        setIsRestaurant(true);
-        setRestaurant((prevUser) => ({ ...getRestaurantItem }));
-      }
+    if (isUserInfo?.owner && getRestaurantItem) {
+      setIsRestaurant(true);
+      setRestaurant((prevUser) => ({ ...getRestaurantItem }));
     }
-    
-  }, [getRestaurantItem, isOwner]);
-  
-  useEffect(()=> {
-    
+  }, [getRestaurantItem]);
+
+  useEffect(() => {
     // 이미지 정보 설정
+
     setUser((prevUser) => ({
       ...prevUser,
-      profileImageUrl : isUserInfo?.profileImageUrl,
-      isOwner : isUserInfo?.owner,
-      saveRestaurants : isUserInfo?.savedRestaurants
-    }))
-
-  },[isUserInfo]);
+      profileImageUrl: isUserInfo?.profileImageUrl,
+      isOwner: isUserInfo?.owner,
+      saveRestaurants: isUserInfo?.savedRestaurants,
+    }));
+  }, [isUserInfo]);
 
   const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
@@ -274,17 +265,14 @@ function MyPage() {
         <section className="container gutter-sm">
           <div className="mypage-profile flex items-start mb-[16px]">
             <div className="profile-pic mr-[12px]">
-                <img
-                  className="img"
-                  src={`${user?.profileImageUrl}`}
-                ></img>
+              <img className="img" src={`${user?.profileImageUrl}`}></img>
             </div>
             <div className="mypage-profile-meta">
               <div className="userInfo flex items-center">
                 <h4 className="name">{user?.nickname}</h4>
-                  <div className="isOwner flex">
-                    <FaStar color="#ff3d00"></FaStar>
-                  </div>
+                <div className="isOwner flex">
+                  <FaStar color="#ff3d00"></FaStar>
+                </div>
               </div>
               <div className="meta">
                 <dl className="flex gap-5">
@@ -310,7 +298,7 @@ function MyPage() {
             <button
               className="btn btn-md btn-outline btn-rounded mt-18"
               onClick={
-                isOwner
+                user?.isOwner
                   ? isRestaurant
                     ? manageRestaurant
                     : createRestaurant
@@ -318,7 +306,7 @@ function MyPage() {
               }
             >
               <span className="label">
-                {isOwner
+                {user?.isOwner
                   ? isRestaurant
                     ? "내 식당 관리"
                     : "내 식당 등록"
@@ -363,14 +351,17 @@ function MyPage() {
               리뷰
             </li>
           </ul>
-          { isSave ? (
+          {isSave ? (
             <div className="collection">
               <section className="section pt-[20px]">
                 <div className="container gutter-sm">
                   <div className="__d-flex">
                     <div className="section-header justify-between full-width">
                       <h3 className="section-title flex">
-                        저장한 레스토랑<span className="count">{user?.saveRestaurants?.length}</span>
+                        저장한 레스토랑
+                        <span className="count">
+                          {user?.saveRestaurants?.length}
+                        </span>
                       </h3>
                     </div>
                   </div>
@@ -380,7 +371,9 @@ function MyPage() {
                         return(
                           <div className="saved-restaurant-list-item" key={index}>
                             <div className="restaurant-info">
-                              <a className="tb"><div className="img"></div></a>
+                              <a className="tb">
+                                <div className="img"></div>
+                              </a>
                               <a className="detail">
                                 <h4 className="name">레스토랑 이름</h4>
                                 <p className="excerpt">레스토랑 소개</p>
@@ -394,7 +387,7 @@ function MyPage() {
                               <a className="btn-bookmark active"></a>
                             </div>
                           </div>
-                        )
+                        );
                       })}
                     </div>
                   </div>

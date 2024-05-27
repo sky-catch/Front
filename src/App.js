@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import Header from "./components/Header.js";
@@ -25,7 +25,6 @@ import ReviewList from "./pages/Restaurant/ReviewList.js";
 import Search from "./pages/Search/Search.js";
 import SearchList from "./pages/Search/SearchList.js";
 import SearchTotal from "./pages/Search/SearchTotal.js";
-import { getTestLogin } from "./respository/userInfo.js";
 
 function App() {
   const [search, setSearch] = useState();
@@ -36,7 +35,7 @@ function App() {
   useEffect(()=>{
     getTestLogin();
   },[])
-
+  
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;

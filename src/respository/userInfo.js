@@ -31,22 +31,21 @@ export const getTestLogin = async () => {
   try {
     let id = 9;
     const result = await apiClient.get(`/oauth/jwt/test/owner/${id}`, {
-      headers : {}
+      headers: {},
     });
-    
-    if( result.data ) {
-      console.log('로그인 토근 get');
-      sessionStorage.setItem('token', result.data.accessToken.value);
-      sessionStorage.setItem('data', JSON.stringify(result.data.usersDTO))
+
+    if (result.data) {
+      console.log("로그인 토근 get");
+      sessionStorage.setItem("token", result.data.accessToken.value);
+      sessionStorage.setItem("data", JSON.stringify(result.data.usersDTO));
     } else {
-      console.log('로그인 토근 get 실패');
+      console.log("로그인 토근 get 실패");
     }
-    
-  }catch (err) {
+  } catch (err) {
     console.log("Error >>", err);
     throw err;
   }
-}
+};
 
 // 마이페이지 회원 정보 조회
 export const getUserInfo = async () => {
@@ -63,24 +62,23 @@ export const getUserInfo = async () => {
 };
 
 // 마이페이지 회원 정보 수정
-export const updateUserInfo = async ({updateMemberReq, file}) => {
-  
+export const updateUserInfo = async ({ updateMemberReq, file }) => {
   // 폼데이터 객체 생성
   const formData = new FormData();
   // file 추가
-  formData.append('file', file);
+  formData.append("file", file);
   // 객체를 JSON 타입으로 변환하여 Blob 객체 생성 (Json 데이터와 이미지 파일을 함께 전송)
-  const blob = new Blob([JSON.stringify(updateMemberReq)],{
-    type : 'application/json',
+  const blob = new Blob([JSON.stringify(updateMemberReq)], {
+    type: "application/json",
   });
-  formData.append('updateMemberReq', blob);
+  formData.append("updateMemberReq", blob);
   console.log(formData);
 
   try {
     const result = await apiClient.patch(`/member/profile`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data'
+        "Content-Type": "multipart/form-data",
       },
     });
     return result;

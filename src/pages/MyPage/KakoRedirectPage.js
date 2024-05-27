@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLogin } from "../../respository/userInfo.js";
 export default function KakoRedirectPage() {
@@ -16,7 +16,7 @@ export default function KakoRedirectPage() {
         const { accessToken } = res.data;
         navigate("/");
         sessionStorage.clear();
-        sessionStorage.setItem("data", JSON.stringify(res.data));
+        sessionStorage.setItem("data", JSON.stringify(res.data.usersDTO));
         sessionStorage.setItem("token", accessToken.value);
       })
       .catch((err) => {
