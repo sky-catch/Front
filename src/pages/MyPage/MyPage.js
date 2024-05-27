@@ -274,17 +274,6 @@ function MyPage() {
                   <FaStar color="#ff3d00"></FaStar>
                 </div>
               </div>
-              <div className="meta">
-                <dl className="flex gap-5">
-                  <dt>팔로잉</dt>
-                  <dd>{following}</dd>
-                </dl>
-                <span>|</span>
-                <dl className="flex gap-5">
-                  <dt>팔로워</dt>
-                  <dd>{follower}</dd>
-                </dl>
-              </div>
               <div className="social"></div>
             </div>
           </div>

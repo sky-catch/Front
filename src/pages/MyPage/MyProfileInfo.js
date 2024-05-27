@@ -4,6 +4,9 @@ import styled from "styled-components";
 import { LoginState } from "../../States/LoginState";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUserInfo } from "../../respository/userInfo"
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import apiClient from "../../apis/ApiClient";
 
 /**
  * 프로필 입력 화면
@@ -13,11 +16,13 @@ export default function MyProfileInfo() {
   const [user, setUser] = useRecoilState(LoginState);
   const [introduceLength, setIntroduceLength] = useState(0);
   const [imgFile, setImgFile] = useState(user.profileImageUrl);
-  const [name, setName] = useState("");
+  const [imgPreview, setImgPreview] = useState(user.profileImageUrl);
+  const [name, setName] = useState(user.nickname);
   const queryClient = useQueryClient();
 
   const editUserInfo = useMutation({mutationFn : updateUserInfo, onSuccess : () => {
     queryClient.invalidateQueries({queryKey : [user]})
+    notify('프로필 저장되었습니다!')
   }})
 
   /* Function : 자기 소개 개수 */
@@ -30,7 +35,7 @@ export default function MyProfileInfo() {
   const setUserInfo = () => {
     document
       .getElementsByName("displayName")[0]
-      .setAttribute("value", user.nickname);
+      .setAttribute("value", name);
     document
       .getElementsByName("introduce")[0]
       .setAttribute("value", user.introduce);
@@ -38,34 +43,61 @@ export default function MyProfileInfo() {
 
   /* Funtion : 프로필 수정 */
   const editMyImg = (e) => {
-    const {files} = e.target;
-    const uploadFile = files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(uploadFile);
-    reader.onloadend = () => {setImgFile(reader.result)};
+    const file = e.target.files[0];
+    let objectUrl = URL.createObjectURL(file);
+    setImgPreview(objectUrl);
+    setImgFile(file);
   }
 
   /* Funtion : 닉네임 수정 */
   const updateNickname = (e) => {
-    console.log(e.target.value);
     setName(e.target.value);
+  }
+
+  const convertURLtoFile = async (imageURL) => {
+    const response = await fetch(imageURL, {headers : {"Access-Control-Allow-Origin": "*"}});
+    const blob = await response.blob();
+    const ext = imgFile.split(".").pop();
+    const filename = imgFile.split("/").pop();
+    const metadata = {type : `image/${ext}`};
+    const file = new File([blob],filename, metadata)
+    console.log(file);
+    return file;
   }
 
   /* Function */
   const updateUser = (e) => {
-    console.log('name:',name,'imgFile',imgFile);
+    console.log('name:',name,'imgFile',typeof imgFile === 'string');
     const obj = {nickname : name};
-    editUserInfo.mutate({ 
-      updateMemberReq : obj ,
-      file : imgFile
-    });
+
+    // 기존 이미지 URL 기반 File 객체로 변경
+    let file;
+    if(typeof imgFile === 'string' ) {
+      (convertURLtoFile(imgFile)).then((res)=> {
+        setImgFile(file);
+        editUserInfo.mutate({ 
+          updateMemberReq : obj ,
+          file : imgFile
+        });
+      })
+    } else {
+      editUserInfo.mutate({ 
+        updateMemberReq : obj ,
+        file : imgFile
+      });
+    }
+  }
+
+  const notify = (txt) => {
+    toast(txt);
   }
 
   /* Function : 닉네임 세팅 */
   useEffect(() => {
     setUserInfo();
-    console.log(user);
-  }, [user]);
+    console.log(imgFile);
+    console.log(name);
+  }, [user,imgFile]);
 
   return (
     <>
@@ -75,7 +107,7 @@ export default function MyProfileInfo() {
             <div className="profile-pic-editor">
               <div className="pic">
                 <div className="img">
-                  <img src={ imgFile ? imgFile : `https://app.catchtable.co.kr/public/img/noimg/profile_default_v2.png`}/>
+                  <img src={ imgPreview ? imgPreview : `https://app.catchtable.co.kr/public/img/noimg/profile_default_v2.png`}/>
                 </div>
               </div>
               <input type="file" accept="image/*" className="btn-edit" onChange={editMyImg} />
@@ -122,6 +154,11 @@ export default function MyProfileInfo() {
       <div className="sticky-bottom-btns">
         <button className="btn btn-lg btn-red" onClick={updateUser}>저장</button>
       </div>
+      <ToastContainer
+          position="bottom-center"
+          theme="dark"
+          autoClose={5000}
+        />
     </>
   );
 }
