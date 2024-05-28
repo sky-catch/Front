@@ -52,14 +52,10 @@ const Navbar = () => {
   const [user, setUser] = useRecoilState(LoginState);
 
   useEffect(() => {
-    console.log(`${location}`);
-
     // recoil 및 user 세팅
     const obj = JSON.parse(sessionStorage.getItem("data"));
 
     if (!obj) return;
-
-    console.log(obj);
     setUser((prevUser) => ({
       ...prevUser,
       id: obj.id,
