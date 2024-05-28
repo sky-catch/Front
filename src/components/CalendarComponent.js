@@ -61,6 +61,7 @@ const CalendarComponent = ({
   const visitTimeHours = String(new Date().getHours()).padStart(2, "0");
   const visitTimeMinutes = String(new Date().getMinutes()).padStart(2, "0");
 
+  // 식당 휴일 리스트
   const WEEK = ['SUNDAY','MONDAY','TUESDAY','WENDESDAY','THURSDAY','FRIDAY','SATURDAY'];
   const [holidays, setHolidays] = useState(restaurant?.holidays?.days);
   let holidaysList = [];
@@ -168,7 +169,7 @@ const CalendarComponent = ({
               setActiveStartDate(activeStartDate)
             }
             minDate={new Date()}
-            tileDisabled={({activeStartDate, date, view})=> holidaysList.includes(date.getDay())}
+            tileDisabled={({activeStartDate, date, view})=> holidaysList.includes(date.getDay())} // 휴일 선택 불가
           />
         </StyledCalendarWrapper>
         {/* 인원 수 */}
