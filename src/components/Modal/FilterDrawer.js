@@ -136,8 +136,8 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
       ...prevState, 
       hotPlace : cities?.length > 0 ? cities : '',
       koreanCity : cities?.length > 0 ? cityItems[isSelect].name == "핫플" ? "서울" : cityItems[isSelect].name : '',
-      minPrice : Number(cost.min),
-      maxPrice : Number(cost.max)
+      minPrice : cost ? Number(cost?.min) : 0,
+      maxPrice : cost ? Number(cost?.max) : 0
     }));
     
     toggleFilterDrawer(e);

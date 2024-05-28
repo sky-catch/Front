@@ -63,6 +63,7 @@ export const getUserInfo = async () => {
 
 // 마이페이지 회원 정보 수정
 export const updateUserInfo = async ({ updateMemberReq, file }) => {
+  // console.log(updateMemberReq,file);
   // 폼데이터 객체 생성
   const formData = new FormData();
   // file 추가
@@ -72,15 +73,15 @@ export const updateUserInfo = async ({ updateMemberReq, file }) => {
     type: "application/json",
   });
   formData.append("updateMemberReq", blob);
-  console.log(formData);
 
   try {
     const result = await apiClient.patch(`/member/profile`, formData, {
       headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
+        Authorization : `Bearer ${token}`,
+        "Content-Type" : "multipart/form-data",
       },
     });
+    console.log(result);
     return result;
   } catch (err) {
     console.log("Error >>", err);

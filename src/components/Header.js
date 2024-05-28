@@ -294,12 +294,12 @@ const Header = ({ setSearch, updateSearch }) => {
                   <path
                     d="M20 4L4 20"
                     stroke="#222222"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                   ></path>
                   <path
                     d="M4 4L20 20"
                     stroke="#222222"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                   ></path>
                 </svg>
               </button>

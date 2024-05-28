@@ -274,17 +274,6 @@ function MyPage() {
                   <FaStar color="#ff3d00"></FaStar>
                 </div>
               </div>
-              <div className="meta">
-                <dl className="flex gap-5">
-                  <dt>팔로잉</dt>
-                  <dd>{following}</dd>
-                </dl>
-                <span>|</span>
-                <dl className="flex gap-5">
-                  <dt>팔로워</dt>
-                  <dd>{follower}</dd>
-                </dl>
-              </div>
               <div className="social"></div>
             </div>
           </div>
@@ -375,12 +364,12 @@ function MyPage() {
                                 <div className="img"></div>
                               </a>
                               <a className="detail">
-                                <h4 className="name">레스토랑 이름</h4>
-                                <p className="excerpt">레스토랑 소개</p>
+                                <h4 className="name">{item.name || '식당 이름'}</h4>
+                                <p className="excerpt">{item.content || '식당 소개'}</p>
                                 <div className="restaurant-meta">
                                   <div className="rating">
-                                    <span className="star">별점</span>
-                                    <span className="count">리뷰수</span>
+                                    <span className="star">{item.reviewAvg || '식당 별점'}</span>
+                                    <span className="count">{item.reviewCount || '식당 리뷰수'}</span>
                                   </div>
                                 </div>
                               </a>
@@ -408,7 +397,6 @@ function MyPage() {
                           <div className="flex justify-between">
                             <span
                               className="text-[16px] font-bold"
-                              // onClick={() => onDetail(info)}
                             >
                               {info.restaurantName}
                             </span>

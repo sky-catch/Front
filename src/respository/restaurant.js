@@ -56,7 +56,6 @@ export const getRestaurant = async ({queryKey}) => {
 
   try {
     const [name] = queryKey;
-    console.log(name);
     const res = await apiClient.get(`/restaurants/${name}`, {
       headers: {
         Authorization: `Bearer ${token}`,

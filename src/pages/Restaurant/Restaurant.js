@@ -26,8 +26,6 @@ import RestaurantInfor from "./RestaurantInfor";
 
 /**
  * 식당 상세 정보 페이지
- *
- * @author jimin
  */
 
 export default function Restaurant() {
@@ -39,13 +37,13 @@ export default function Restaurant() {
   // 식당 개별 정보 조희
   const { data : restaurant, isLoading } = useQuery({ queryKey : [state], queryFn : getRestaurant}); /* 식당 정보 */
   const shopId = restaurant?.restaurantId;
+  console.log(restaurant);
   
   // * 기본 검색 날짜는 '금일 오후 7시', 만일 시간이 넘은 경우 '내일 오후 7시'로 세팅
   const today = new Date();
   const tomorrow = new Date(new Date().setDate(today.getDate()+1));
   const [date, setDate] = useState(today.getHours() >= 19 ? tomorrow : today); // 예약 날짜
   const dateStr = `${String(date.getFullYear())}-${ String(date.getMonth() + 1).padStart(2, "0") }-${ String(date.getDate()).padStart(2, "0") }`; // 예약날짜 노출문구
-  // console.log(dateStr);
   const { data : availTimes } = useQuery({ queryKey : [{
     restaurantId : shopId,
     numberOfPeople : 2,
@@ -239,7 +237,7 @@ export default function Restaurant() {
                         <a
                         className="btn btn-lg btn-outline btn-cta full-width arrowdown">
                         <span>
-                          <span className="label calendar"> 오늘 ({week[new Date().getDay()]}) / 2 명</span>
+                          <span className="label calendar"> {date.getDate()==new Date().getDate() ? '오늘' : '내일'} ({week[date.getDay()]}) / 2 명</span>
                         </span>
                       </a>
                     </div>
