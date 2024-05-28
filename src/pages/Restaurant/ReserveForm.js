@@ -50,12 +50,7 @@ export default function ReserveForm() {
           console.log("success", rsp);
           const params = {
             imp_uid: rsp.imp_uid,
-            // reservation_id : 1
           };
-          // requestPayment(params)
-          //     .then((res)=> {
-          //         console.log(res);
-          //     })
         } else {
           console.log("fail");
         }
@@ -85,22 +80,19 @@ export default function ReserveForm() {
 
   /* Function : 예약하기 */
   const requestReserve = (e) => {
-    // const restaurandId = restaurantId;
     console.log(restaurantId, detail, deposit);
     const year = detail.date.getFullYear();
     const month = String(detail.date.getMonth() + 1).padStart(2, "0");
     const date = String(detail.date.getDate()).padStart(2, "0");
-    // const hour = String(detail.date.getHours()).padStart(2,'0');
-    // const min = String(detail.date.getMinutes()).padStart(2,'0');
 
     const info = {
       visitDateTime:
-        year + "-" + month + "-" + date + " " + "18" + ":" + "00:00",
+        year + "-" + month + "-" + date + " " + detail.time + ":00",
       numberOfPeople: detail.people,
       memo: memo,
       amountToPay: deposit,
     };
-    console.log(info);
+    
     // 1. 예약 생성하기
     createReservation(restaurantId, info)
       .then((res) => {
@@ -115,10 +107,8 @@ export default function ReserveForm() {
 
   /* Function : 식당 예약 메모 저장 */
   const handleMemo = (e) => {
-    // console.log(e.target.value);
     if (!e.target.value) return;
     setMemo(e.target.value);
-    // console.log(memo);
   };
 
   /* 결제에 필요 */
@@ -162,10 +152,6 @@ export default function ReserveForm() {
       setIsReserveAble(false);
     }
   }, [isContinue]);
-
-  useEffect(() => {
-    console.log(state);
-  }, []);
 
   const week = ["일", "월", "화", "수", "목", "금", "토"];
   return (

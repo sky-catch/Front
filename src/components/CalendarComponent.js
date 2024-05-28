@@ -65,7 +65,7 @@ const CalendarComponent = ({
   const WEEK = ['SUNDAY','MONDAY','TUESDAY','WENDESDAY','THURSDAY','FRIDAY','SATURDAY'];
   const [holidays, setHolidays] = useState(restaurant?.holidays?.days);
   let holidaysList = [];
-  holidays.forEach((item,index)=>(holidaysList.push(WEEK.indexOf(item))));
+  holidays?.forEach((item,index)=>(holidaysList.push(WEEK.indexOf(item))));
 
   /* 방문확인 모달추가 */
   const handleReserve = (e) => {
@@ -74,7 +74,7 @@ const CalendarComponent = ({
 
   let [isData, setIsData] = useState({
     restaurantId: Number(new URLSearchParams(location.search).get("id")),
-    numberOfPeople: 0,
+    numberOfPeople: 2,
     searchDate: SetDateYMD(date),
     visitTime: visitTimeHours + ":" + visitTimeMinutes + ":" + "00",
   });
@@ -101,7 +101,6 @@ const CalendarComponent = ({
   };
 
   useEffect(() => {
-    console.log("isData", isData);
     if (isOpen && !isLoading) {
       if (isData.visitTime > restaurant.lastOrderTime) {
         setIsData({ ...isData, visitTime: restaurant.lastOrderTime });
@@ -188,7 +187,7 @@ const CalendarComponent = ({
                       setIsData({ ...isData, numberOfPeople: item });
                     }}
                     className={`block size-[48px] rounded-[50%] text-center leading-[48px] font-light text-[14px] ${
-                      item === isData.numberOfPeople
+                      Number(item) === isData.numberOfPeople
                         ? `bg-[#ff3d00] text-[#fff]`
                         : `text-[#aaa] border-[1px] border-[#aaa]`
                     }`}

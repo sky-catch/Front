@@ -116,10 +116,7 @@ export const createReservation = async (restaurantId, restaurantValue) => {
   }
 
   try {
-    const result = await apiClient.post(
-      `/reservations/${restaurantId}`,
-      JSON.stringify(restaurantValue),
-      {
+    const result = await apiClient.post(`/reservations/${restaurantId}`, JSON.stringify(restaurantValue),{
         headers: {
           Authorization: `Bearer ${token}`,
         },

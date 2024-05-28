@@ -37,6 +37,7 @@ export default function Restaurant() {
   // 식당 개별 정보 조희
   const { data : restaurant, isLoading } = useQuery({ queryKey : [state], queryFn : getRestaurant}); /* 식당 정보 */
   const shopId = restaurant?.restaurantId;
+  console.log(restaurant);
   
   // * 기본 검색 날짜는 '금일 오후 7시', 만일 시간이 넘은 경우 '내일 오후 7시'로 세팅
   const today = new Date();

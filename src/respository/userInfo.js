@@ -63,7 +63,7 @@ export const getUserInfo = async () => {
 
 // 마이페이지 회원 정보 수정
 export const updateUserInfo = async ({ updateMemberReq, file }) => {
-  console.log(updateMemberReq,file);
+  // console.log(updateMemberReq,file);
   // 폼데이터 객체 생성
   const formData = new FormData();
   // file 추가
