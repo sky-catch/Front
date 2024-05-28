@@ -22,7 +22,7 @@ export default function MyProfileInfo() {
 
   const editUserInfo = useMutation({mutationFn : updateUserInfo, onSuccess : () => {
     queryClient.invalidateQueries({queryKey : [user]})
-    notify('프로필 저장되었습니다!')
+    notify('프로필이 저장되었습니다!')
   }})
 
   /* Function : 자기 소개 개수 */
@@ -54,6 +54,7 @@ export default function MyProfileInfo() {
     setName(e.target.value);
   }
 
+  /* Function : 이미지 URL File객체로 변환 */
   const convertURLtoFile = async (imageURL) => {
     const response = await fetch(imageURL, {headers : {"Access-Control-Allow-Origin": "*"}});
     const blob = await response.blob();
@@ -61,7 +62,7 @@ export default function MyProfileInfo() {
     const filename = imgFile.split("/").pop();
     const metadata = {type : `image/${ext}`};
     const file = new File([blob],filename, metadata)
-    console.log(file);
+    
     return file;
   }
 
@@ -71,21 +72,10 @@ export default function MyProfileInfo() {
     const obj = {nickname : name};
 
     // 기존 이미지 URL 기반 File 객체로 변경
-    let file;
-    if(typeof imgFile === 'string' ) {
-      (convertURLtoFile(imgFile)).then((res)=> {
-        setImgFile(file);
-        editUserInfo.mutate({ 
-          updateMemberReq : obj ,
-          file : imgFile
-        });
-      })
-    } else {
-      editUserInfo.mutate({ 
-        updateMemberReq : obj ,
-        file : imgFile
-      });
-    }
+    editUserInfo.mutate({ 
+      updateMemberReq : obj ,
+      file : imgFile
+    });
   }
 
   const notify = (txt) => {
@@ -95,9 +85,17 @@ export default function MyProfileInfo() {
   /* Function : 닉네임 세팅 */
   useEffect(() => {
     setUserInfo();
-    console.log(imgFile);
-    console.log(name);
-  }, [user,imgFile]);
+  }, [user]);
+
+  /* Function : 이미지 파일 세팅 */
+  useEffect(()=> {
+    if(typeof imgFile === 'string' ) {
+      convertURLtoFile(imgFile).then((res)=>{
+        setImgFile(res);
+        console.log(res);
+      })
+    }
+  },[imgFile])
 
   return (
     <>
@@ -175,8 +173,6 @@ const MainContents = styled.main`
     width: 96px;
   }
   .profile-pic-editor .pic .img {
-    // background: url("https://app.catchtable.co.kr/public/img/noimg/profile_default_v2.png"})
-    //   50% 50% no-repeat;
     background-size: cover;
     width: 96px;
     height: 96px;
