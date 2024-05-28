@@ -1,7 +1,7 @@
-import { QueryClient, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 import styled from "styled-components";
 import Loading from "../../components/Loading";
 import { getChatRoom } from "../../respository/reservation";
@@ -13,49 +13,71 @@ const ChatRoom = () => {
   const [isMessage, setIsMessage] = useState("");
   // 웹 소켓 연결 이벤트
   // : "ws://15.164.89.177:8080/chat";
-
   let name = new URLSearchParams(location.search).get("name");
   let roomId = new URLSearchParams(location.search).get("id");
 
   const chatRoomId = roomId;
   const memberChat = true;
   const token = sessionStorage.getItem("token");
-  // const socket = io("http://localhost:3000", {
-  // const socket = io(`${window.location.origin}`, {
-  const socket = io("http://15.164.89.177:8080/chat", {
-    reconnection: true,
-    reconnectionAttempts: 5,
-    extraHeaders: {
-      Authorization: `Bearer ${token}`, // 여기서 token은 획득한 인증 토큰입니다.
-      chatRoomId: String(chatRoomId),
-      memberchat: String(memberChat),
-    },
-  });
+  const socket = new WebSocket("ws://15.164.89.177:8080/chat");
+  console.log("chatRoomId", chatRoomId);
+  // 연결이 열리면 실행될 콜백 함수를 설정합니다
+  // const socket = io("http://15.164.89.177:8080", {
+  //   path: "/chat",
+  //   reconnection: true,
+  //   reconnectionAttempts: 5,
+  //   extraHeaders: {
+  //     Authorization: `Bearer ${token}`,
+  //     chatRoomId: chatRoomId,
+  //     memberChat: memberChat,
+  //   },
+  // });
 
-  socket.on("connect", () => {
-    console.log("Connected to server");
-  });
-
-  socket.on("disconnect", () => {
-    console.log("Disconnected from server");
-  });
-
-  socket.on("message", (message) => {
-    console.log("Received message:", message);
-    // 여기에서 메시지를 처리하거나 상태를 업데이트할 수 있습니다.
-  });
-
-  const sendMessage = (e) => {
-    e.preventDefault(); // 폼 제출 이벤트 기본 동작 방지
-    if (!isMessage.trim()) {
-      return;
-    }
-    socket.emit("message", isMessage);
-
-    // 메시지 입력 상태 초기화
-    setIsMessage("");
+  socket.onopen = () => {
+    console.log("WebSocket 연결이 열렸습니다.");
+    // 헤더 추가
+    socket.send(
+      JSON.stringify({
+        type: "Authorization",
+        Authorization: `Bearer ${token}`,
+        chatRoomId: `${String(chatRoomId)}`,
+        memberChat: `${String(memberChat)}`,
+      })
+    );
   };
-  const queryClient = new QueryClient();
+
+  // const socket = io("http://15.164.89.177:8080", {
+  //   path: "/chat",
+  //   reconnection: true,
+  //   reconnectionAttempts: 5,
+  //   extraHeaders: {
+  //     Authorization: `Bearer ${token}`,
+  //     chatRoomId: chatRoomId, // 예시로 고정된 값, 필요 시 URL에서 가져올 수 있습니다.
+  //     memberChat: memberChat,
+  //   },
+  // });
+
+  // socket.on("connect", () => {
+  //   console.log("Connected to server");
+  // });
+
+  // socket.on("disconnect", () => {
+  //   console.log("Disconnected from server");
+  // });
+
+  // socket.on("message", (message) => {
+  //   console.log("Received message:", message);
+  // });
+
+  // const sendMessage = (e) => {
+  //   e.preventDefault(); // 폼 제출 이벤트 기본 동작 방지
+  //   if (!isMessage.trim()) {
+  //     return;
+  //   }
+  //   socket.emit("message", isMessage); // 이미 연결된 소켓을 사용하여 메시지 전송
+  //   setIsMessage(""); // 메시지 입력 상태 초기화
+  // };
+
   const {
     data: chatRoomList,
     isLoding: roomLoding,
@@ -161,7 +183,7 @@ const ChatRoom = () => {
             />
             <button
               className="size-[47px] block text-[#fff]"
-              onClick={sendMessage}
+              // onClick={sendMessage}
             >
               전송
             </button>

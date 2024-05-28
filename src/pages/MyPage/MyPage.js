@@ -52,6 +52,7 @@ function MyPage() {
   };
 
   useEffect(() => {
+    // console.log("user", user?.nickname);
     if (!isReviewOpen) return;
     if (!isSelectInfo) return;
 
@@ -88,7 +89,7 @@ function MyPage() {
         info.rate * 2 * 10
       }%`;
       textInput.current.value = info.comment;
-      console.log("info", info);
+
       setIsSelectInfo(info.images);
     }
   };
@@ -373,7 +374,10 @@ function MyPage() {
                     <div className="saved-restaurant-list">
                       {user?.saveRestaurants?.map((idx, index) => {
                         return (
-                          <div className="saved-restaurant-list-item">
+                          <div
+                            className="saved-restaurant-list-item"
+                            key={idx.restaurantId}
+                          >
                             <div className="restaurant-info">
                               <a className="tb">
                                 <div className="img"></div>
