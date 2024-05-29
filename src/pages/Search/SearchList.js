@@ -17,6 +17,8 @@ export default function SearchList () {
     let restaurantList = searchList?.getRestaurantSearchListRes; // 레스토랑 리스트
     let filter = searchList?.searchFilter; // 검색 결과 필터 정보
     const [isFilter, setIsFilter] = useState(false);  // 필터패널 open 여부 (false : 닫음, true : 열림)
+    const isFilterOn = (filter?.hotPlace || filter?.koreanCity) || (state?.maxPrice > 0 || state?.minPrice > 0) ;
+    console.log(searchList)
 
     const menuItems = [{
         id: 1,
@@ -32,7 +34,6 @@ export default function SearchList () {
     }
     /* Function : 레스토랑 클릭 */
     const onClickRestaurant =(param)=> {
-        console.log(param);
         let name = param.name;
         navigate(`/ct/shop/${name}`, { state: name });
     }
@@ -46,7 +47,6 @@ export default function SearchList () {
         if(!state) return;
         // setRestaurantList(state.getRestaurantSearchListRes);
         // setFilter(state.searchFilter);
-        console.log(searchList);
     },[state])
 
     const week = ["일", "월", "화", "수", "목", "금", "토"];
@@ -73,7 +73,7 @@ export default function SearchList () {
                         <div className="filter-icon">
                         <button
                             className={`design_system ${
-                                state?.koreanCity?.length > 0 || (state?.maxPrice > 0 || state?.minPrice > 0) ? "active" : ""
+                                isFilterOn? "active" : ""
                               }`}
                             onClick={toggleFilterDrawer}
                         >
@@ -89,7 +89,7 @@ export default function SearchList () {
                                 stroke="currentColor"
                                 strokeWidth="1.5"
                             ></path>
-                             <span className={`filters ${ state?.koreanCity?.length > 0 || (state?.maxPrice > 0 || state?.minPrice > 0)  ? "active" : "" }`}>
+                             <span className={`filters ${ isFilterOn ? "active" : "" }`}>
                                 {1}</span>
                             </svg>
                         </button>
@@ -106,7 +106,7 @@ export default function SearchList () {
                                     id={index}
                                 >
                                     <button type="button" className={`slide-button
-                                         ${ state?.koreanCity?.length > 0 && index==0
+                                         ${ (filter?.hotPlace || filter?.koreanCity) && index==0
                                             || ( (state?.maxPrice > 0 || state?.minPrice > 0) && index==1) ? 'active' : ''}
                                     `} onClick={toggleFilterDrawer}>
                                     <span>{item.title}</span>
@@ -134,7 +134,6 @@ export default function SearchList () {
                                     {   
                                     restaurantList && restaurantList.length > 0 ?
                                     restaurantList.map((item,index)=> {
-                                        // let imgLink = `background-image:url("${item.imageUrl}")\;]`;
                                         return(
                                             <div key={index} className="search-list-item"
                                                 onClick={()=>onClickRestaurant(item)}

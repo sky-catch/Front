@@ -14,6 +14,7 @@ import {
   getOwner,
   getUserInfo,
 } from "../../respository/userInfo";
+import defaultImage from "../../assets/icons/default.png"
 
 /**
  * 마이페이지
@@ -258,6 +259,11 @@ function MyPage() {
     navigate(`/ct/shop/${restaurantName}`, { state: restaurantName });
   };
 
+  // 이미지 없는 경우, default 이미지 노출
+  const onErrorImg = (e) => {
+    e.target.src = defaultImage;
+  }
+
   return (
     <MainContents className="main">
       {/* 프로필정보 */}
@@ -265,7 +271,7 @@ function MyPage() {
         <section className="container gutter-sm">
           <div className="mypage-profile flex items-start mb-[16px]">
             <div className="profile-pic mr-[12px]">
-              <img className="img" src={`${user?.profileImageUrl}`}></img>
+              <img className="img" src={`${user?.profileImageUrl}`} alt={defaultImage}></img>
             </div>
             <div className="mypage-profile-meta">
               <div className="userInfo flex items-center">
@@ -361,14 +367,14 @@ function MyPage() {
                           <div className="saved-restaurant-list-item" key={index}>
                             <div className="restaurant-info">
                               <a className="tb">
-                                <div className="img"></div>
+                                <div className="img"><img src={`${item.imageUrl}`} onError={onErrorImg}/></div>
                               </a>
                               <a className="detail">
-                                <h4 className="name">{item.name || '식당 이름'}</h4>
+                                <h4 className="name">{item.savedRestaurantName || '식당 이름'}</h4>
                                 <p className="excerpt">{item.content || '식당 소개'}</p>
                                 <div className="restaurant-meta">
                                   <div className="rating">
-                                    <span className="star">{item.reviewAvg || '식당 별점'}</span>
+                                    <span className="star">{item.rate || '식당 별점'}</span>
                                     <span className="count">{item.reviewCount || '식당 리뷰수'}</span>
                                   </div>
                                 </div>
