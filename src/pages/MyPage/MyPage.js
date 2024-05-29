@@ -8,8 +8,9 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { LoginState, RestaurantState } from "../../States/LoginState";
+import { convertURLtoFile } from "../../apis/ApiClient";
 import Loading from "../../components/Loading";
-import { DeleteReview } from "../../respository/reservation";
+import { DeleteReview, UpdateReview } from "../../respository/reservation";
 import {
   getMyRestaurant,
   getOwner,
@@ -29,17 +30,18 @@ function MyPage() {
 
   const [restaurant, setRestaurant] = useRecoilState(RestaurantState);
   const textInput = useRef();
+  const { mutate: review } = UpdateReview();
   const photoInput = useRef();
-  const [isScore, setIsScore] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
   const [isRestaurant, setIsRestaurant] = useState(false);
   const [photoToAddList, setPhotoToAddList] = useState([]);
   const [isSelectInfo, setIsSelectInfo] = useState([]);
+  const [isSelectItem, setSelectItem] = useState({ score: 0, reviewId: 0 });
   const [isSave, setIsSave] =
     useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
 
   const { data: isUserInfo, isLoading: userLoading } = useQuery({
-    queryKey: [],
+    queryKey: ["getUserInfo"],
     queryFn: getUserInfo,
   });
   const [isOwner, setIsOwner] = useState(isUserInfo ? isUserInfo.owner : false);
@@ -52,44 +54,35 @@ function MyPage() {
   };
 
   useEffect(() => {
-    // console.log("user", user?.nickname);
     if (!isReviewOpen) return;
     if (!isSelectInfo) return;
-
-    console.log("isReviewOpen", isReviewOpen);
-    console.log("isSelectInfo", isSelectInfo[0].path);
-
-    const fetchFile = async () => {
-      try {
-        const response = await fetch(isSelectInfo[0].path);
-        const blob = await response.blob();
-        const file = new File([blob], isSelectInfo[0].path, {
-          type: blob.type,
+    isSelectInfo.forEach((item) => {
+      const test = convertURLtoFile(item.path);
+      test
+        .then((file) => {
+          setPhotoToAddList((prevList) => [...prevList, { file }]);
+          // console.log("res", file);
+        })
+        .catch((err) => {
+          console.log("err", err);
         });
-        console.log("file", file);
-        // setFile(file);
-      } catch (error) {
-        console.error("Error fetching and converting file: ", error);
-      }
-    };
-
-    fetchFile();
+    });
+    // fetchFile();
   }, [isReviewOpen, isSelectInfo]);
 
   const toggleDrawerReview = (e, info) => {
     setIsReviewOpen((prevState) => !prevState);
     if (isReviewOpen) {
-      setIsScore(0);
+      setSelectItem({ score: 0, reviewId: 0 });
       document.querySelector(`.star span`).style.width = `0%`;
       textInput.current.value = "";
       setPhotoToAddList([]);
     } else {
-      setIsScore(info.rate);
+      setSelectItem({ score: info.rate, reviewId: info.reviewId });
       document.querySelector(`.star span`).style.width = `${
         info.rate * 2 * 10
       }%`;
       textInput.current.value = info.comment;
-
       setIsSelectInfo(info.images);
     }
   };
@@ -106,9 +99,10 @@ function MyPage() {
     const temp = [];
     const photoToAdd = e.target.files;
     for (let i = 0; i < photoToAdd.length; i++) {
+      console.log(photoToAdd[i]);
       temp.push({ file: photoToAdd[i] });
     }
-    console.log("photoToAdd", temp.concat(photoToAddList));
+
     setPhotoToAddList(temp.concat(photoToAddList));
   };
 
@@ -118,8 +112,13 @@ function MyPage() {
       alert("최대 5장만 가능합니다.");
       photoToAddList.length = 5;
     }
+    console.log("photoToAddList", photoToAddList);
     return photoToAddList.map((photo) => {
       let photoUrl = URL.createObjectURL(photo.file);
+      if (photo.file.name.indexOf("https://skyware") === 0) {
+        photoUrl = photo.file.name;
+      }
+
       return (
         <div className="photoBox" key={photoUrl}>
           <div
@@ -140,7 +139,8 @@ function MyPage() {
     document.querySelector(`.star span`).style.width = `${
       e.target.value * 10 * 2
     }%`;
-    setIsScore(e.target.value);
+
+    setSelectItem((prevState) => ({ ...prevState, score: e.target.value }));
   };
 
   const onRemoveToAdd = (deleteName) => {
@@ -149,7 +149,9 @@ function MyPage() {
     );
   };
   const onRemove = (deleteName) => {
-    setIsSelectInfo(isSelectInfo.filter((photo) => photo.path !== deleteName));
+    // setIsSelectInfo(
+    //   isSelectInfo.images.filter((photo) => photo.path !== deleteName)
+    // );
   };
   const createOwner = () => {
     navigate(`/owner`);
@@ -174,10 +176,12 @@ function MyPage() {
     queryFn: () => {
       return getMyRestaurant()
         .then((res) => {
+          console.log(res);
           return res;
         })
         .catch((err) => {
           console.log("err1", err.response);
+          throw err;
         });
     },
     enabled: isUserInfo?.owner,
@@ -239,19 +243,19 @@ function MyPage() {
   };
 
   const reviewSend = () => {
-    const photoUploaderContent = document.querySelector(
-      ".photoUploaderContent"
-    );
-    if (photoUploaderContent) {
-      const imgElements = photoUploaderContent.querySelectorAll("img");
-      const imgCount = imgElements.length;
-      console.log(`Number of img elements: ${imgCount}`);
-    } else {
-      console.log(
-        "The element with class 'photoUploaderContent' was not found."
-      );
-    }
+    const reviewItem = {
+      updateReviewReq: {
+        reviewId: Number(isSelectItem.reviewId),
+        rate: Number(isSelectItem.score),
+        comment: textInput.current.value,
+      },
+      files: photoToAddList,
+    };
+    console.log("안녕", reviewItem);
+
+    review(reviewItem);
   };
+
   const reviewDelect = (e, info) => {
     DeleteReviewItem(info.reviewId);
   };
@@ -274,7 +278,7 @@ function MyPage() {
             </div>
             <div className="mypage-profile-meta">
               <div className="userInfo flex items-center">
-                <h4 className="name">{user?.nickname}</h4>
+                <h4 className="name">{isUserInfo?.nickname}</h4>
                 <div className="isOwner flex">
                   <FaStar color="#ff3d00"></FaStar>
                 </div>
@@ -429,6 +433,7 @@ function MyPage() {
                               >
                                 수정
                               </span>
+
                               {isUserInfo.comments.map((item, index) => {
                                 return info.reviewId === item.reviewId &&
                                   item.ownerId === 0 ? (
@@ -540,7 +545,7 @@ function MyPage() {
                   <input
                     type="range"
                     onInput={drawStar}
-                    value={isScore}
+                    value={isSelectItem.score}
                     step="1"
                     min="0"
                     max="5"
@@ -582,23 +587,6 @@ function MyPage() {
                   />
                 </div>
                 {photoToAddPreview()}
-                {isSelectInfo &&
-                  isSelectInfo.map((image) => {
-                    console.log("image", image);
-                    return (
-                      <div className="photoBox" key={image.reviewImageId}>
-                        <div
-                          className="photoBoxDelete icon delete-icon"
-                          onClick={() => onRemove(image.path)}
-                        />
-                        <img
-                          className="photoPreview size-[100%]"
-                          src={image.path}
-                          alt="preview"
-                        />
-                      </div>
-                    );
-                  })}
               </div>
             </div>
           </div>

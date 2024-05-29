@@ -209,7 +209,46 @@ export const CreateReview = () => {
     },
   });
 };
+// 리뷰 수정
+const updateReviewItem = async ({ updateReviewReq, files }) => {
+  const formData = new FormData();
 
+  const createReviewString = JSON.stringify(updateReviewReq);
+  const blob = new Blob([createReviewString], { type: "application/json" });
+  await formData.append("updateReviewReq", blob);
+
+  for (let index = 0; index < files.length; index++) {
+    await formData.append("files", files[index].file);
+  }
+
+  const response = await axios.put(
+    `http://15.164.89.177:8080/review`,
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response.data;
+};
+
+export const UpdateReview = () => {
+  return useMutation({
+    mutationKey: ["updateReviewItem"],
+    mutationFn: updateReviewItem,
+    onSuccess: () => {
+      alert("리뷰 수정 완료됐습니다.");
+      window.location.reload();
+      // window.location.href = "/mydining/my";
+    },
+    onError: (error) => {
+      console.log("createPost error", error);
+    },
+  });
+};
+// 리뷰 삭제
 const deleteReviewItem = async (id) => {
   const response = await axios.delete(
     `http://15.164.89.177:8080/review/${id}`,

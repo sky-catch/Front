@@ -1,6 +1,7 @@
 const http = require("http");
 const express = require("express");
 const socketIo = require("socket.io");
+const fetch = require("node-fetch");
 
 const app = express();
 const server = http.createServer(app);
@@ -14,6 +15,21 @@ const io = socketIo(server, {
 
 // 정적 파일 서빙
 app.use(express.static("public"));
+
+// 프록시 엔드포인트 추가
+app.get("/proxy", async (req, res) => {
+  const url = req.query.url;
+  console.log("url", url);
+  try {
+    const response = await fetch(url);
+    const buffer = await response.buffer();
+    res.set("Content-Type", response.headers.get("content-type"));
+    res.send(buffer);
+  } catch (error) {
+    console.error("Error fetching the URL:", error);
+    res.status(500).send("Error fetching the URL");
+  }
+});
 
 // Socket.IO 설정
 io.on("connection", (socket) => {
@@ -30,6 +46,7 @@ io.on("connection", (socket) => {
   });
 });
 
+// 포트 설정
 const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-// import { io } from "socket.io-client";
 import styled from "styled-components";
 import Loading from "../../components/Loading";
 import { getChatRoom } from "../../respository/reservation";
@@ -19,56 +18,67 @@ const ChatRoom = () => {
   const chatRoomId = roomId;
   const memberChat = true;
   const token = sessionStorage.getItem("token");
-  const socket = new WebSocket("ws://15.164.89.177:8080/chat");
-  console.log("chatRoomId", chatRoomId);
+
   // 연결이 열리면 실행될 콜백 함수를 설정합니다
-  // const socket = io("http://15.164.89.177:8080", {
-  //   path: "/chat",
-  //   reconnection: true,
-  //   reconnectionAttempts: 5,
-  //   extraHeaders: {
-  //     Authorization: `Bearer ${token}`,
-  //     chatRoomId: chatRoomId,
-  //     memberChat: memberChat,
-  //   },
-  // });
 
-  socket.onopen = () => {
-    console.log("WebSocket 연결이 열렸습니다.");
-    // 헤더 추가
-    socket.send(
-      JSON.stringify({
-        type: "Authorization",
+  useEffect(() => {
+    fetch("http://15.164.89.177:8080/chat", {
+      method: "GET",
+      headers: {
         Authorization: `Bearer ${token}`,
-        chatRoomId: `${String(chatRoomId)}`,
-        memberChat: `${String(memberChat)}`,
+        chatRoomId: chatRoomId,
+        memberChat: memberChat.toString(),
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("HTTP 요청에 실패했습니다.");
+        }
+        // HTTP 요청이 성공하면 웹 소켓 연결을 설정합니다.
+        const socket = new WebSocket("ws://15.164.89.177:8080/chat");
+        console.log("socket", socket);
+        // 웹 소켓 이벤트를 처리합니다.
+        socket.onopen = () => {
+          console.log("WebSocket 연결이 열렸습니다.");
+
+          // 연결이 열리면 인증 정보를 보냅니다.
+          socket.send(
+            JSON.stringify({
+              type: "authorization",
+              token: `Bearer ${token}`,
+              chatRoomId: chatRoomId,
+              memberChat: memberChat,
+            })
+          );
+        };
+
+        socket.onmessage = (event) => {
+          console.log("서버로부터 메시지를 수신했습니다:", event.data);
+          // 메시지를 수신하면 상태를 업데이트합니다.
+          // setMessages(prevMessages => [...prevMessages, event.data]);
+        };
+
+        socket.onclose = () => {
+          console.log("WebSocket 연결이 닫혔습니다.");
+        };
+
+        socket.onerror = (error) => {
+          console.error("WebSocket 에러:", error);
+          console.error(
+            "Error details:",
+            JSON.stringify(error, Object.getOwnPropertyNames(error))
+          );
+        };
+
+        // 컴포넌트가 언마운트될 때 WebSocket 연결을 닫습니다.
+        return () => {
+          // socket.close();
+        };
       })
-    );
-  };
-
-  // const socket = io("http://15.164.89.177:8080", {
-  //   path: "/chat",
-  //   reconnection: true,
-  //   reconnectionAttempts: 5,
-  //   extraHeaders: {
-  //     Authorization: `Bearer ${token}`,
-  //     chatRoomId: chatRoomId, // 예시로 고정된 값, 필요 시 URL에서 가져올 수 있습니다.
-  //     memberChat: memberChat,
-  //   },
-  // });
-
-  // socket.on("connect", () => {
-  //   console.log("Connected to server");
-  // });
-
-  // socket.on("disconnect", () => {
-  //   console.log("Disconnected from server");
-  // });
-
-  // socket.on("message", (message) => {
-  //   console.log("Received message:", message);
-  // });
-
+      .catch((error) => {
+        console.error("HTTP 요청 에러:", error);
+      });
+  }, []);
   // const sendMessage = (e) => {
   //   e.preventDefault(); // 폼 제출 이벤트 기본 동작 방지
   //   if (!isMessage.trim()) {

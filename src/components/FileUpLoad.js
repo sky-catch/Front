@@ -74,7 +74,6 @@ const FileUpLoad = ({ setPhotoToAddList, photoToAddList, isphoto }) => {
     <div className="photoUploaderContent">
       <div className="photoBox addPhoto">
         <button className="icon add-icon" onClick={handleClick}></button>
-
         <PictureFilled onClick={handleClick} />
         <input
           type="file"
