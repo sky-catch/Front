@@ -15,13 +15,15 @@ export default function SearhTotal({ search }) {
   const navigate = useNavigate();
   const [keywords, setKeywords] = useState(JSON.parse(sessionStorage.getItem("keywords")) || []); // 최근 검색어
   let restaurantList = [];  // 식당 목록 기본 초기화
-  let region = [];  // 지역 정보 기본 초기화
+  let region = [];  // 도시 정보 기본 초기화
+  let place = []; //  상세지역 정보 기본 초기화
   
   const { data : searchResult, isLoading } = useQuery({ 
     queryKey : ['search', search], 
     queryFn : ()=>searchByKeyword(search)
   }); // 식당
   restaurantList = searchResult?.restaurantSummaryDTOList;  // 식당 목록 세팅
+  console.log(searchResult);
   
   //지역 목록 세팅
   for (let key in searchResult) {
@@ -30,9 +32,11 @@ export default function SearhTotal({ search }) {
     } 
     if(key == 'hotPlace' && searchResult[key] != null) {
       // [ToDo] hotPlace가 복수개면 로직 수정해야할듯
-      region.push([searchResult[key], searchResult['hotPlaceRestaurantCount']]);
+      place.push([searchResult[key], searchResult['hotPlaceRestaurantCount']]);
     }
   }
+  let allRegion = [...region, ...place];
+  // console.log('allRegion',allRegion);
 
 
   // funtion : 식당 이동
@@ -45,12 +49,17 @@ export default function SearhTotal({ search }) {
   const handleSearch = (e) => {
     // 선택한 지역으로 검색!
     const date = new Date();
+    let id = e.currentTarget.id;
+    let [city, place] = '';
+    if (id.indexOf('koreanCity') > -1) city = id.split(' ')[1];
+    else place = id.split(' ')[1];
+    // console.log(city, place);
     const filter = {
       date : `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`,
       time : `07:00`,
       personCount : 2,
-      koreanCity : e.currentTarget.id,
-      hotPlace: '',
+      koreanCity : city,
+      hotPlace: place,
       category: '한식',
       minPrice: 0,
       maxPrice: 0,
@@ -140,7 +149,7 @@ export default function SearhTotal({ search }) {
               </div>
           </div>}
           {/* 검색 후 : 결과가 없다면 X */}
-          { search && restaurantList?.length < 1 && (
+          { search && ( restaurantList?.length < 1 || allRegion?.length < 1) && (
             <div>
               <div>
                 <div className="search-result-nodata">
@@ -153,7 +162,7 @@ export default function SearhTotal({ search }) {
               <hr className="seperator"></hr>
             </div>
           )}
-          { (!search || restaurantList?.length < 1 ) && <div className="container gutter-sm mt-[24px]">
+          { (!search || restaurantList?.length < 1 && allRegion?.length < 1 ) && <div className="container gutter-sm mt-[24px]">
             <div>
               <div className="section-header mb-[16px]">
                 <h3 className="color-gray">어떤 레스토랑을 찾으세요?</h3>
@@ -170,7 +179,7 @@ export default function SearhTotal({ search }) {
           {/* 검색 후 : 결과가 있다면 O */}
           <div>
             {/* 1.지역 */}
-            {region?.length > 0 && (
+            {allRegion?.length > 0 && (
               <>
               <section className="pt-[10px]">
                 <div className="container gutter-sm">
@@ -185,7 +194,22 @@ export default function SearhTotal({ search }) {
                           <div
                             className="searched-keyword-left-item"
                             key={idx}
-                            id={item[0]}
+                            id={`koreanCity ${item[0]}`}
+                            onClick={handleSearch}
+                          >
+                            <i className="icon"></i>
+                            <span>{item[0]}</span>
+                            <small>{item[1]}</small>
+                          </div>
+                        );
+                      })}
+                      {place.map((item, idx) => {
+                        if(!item) return;
+                        return (
+                          <div
+                            className="searched-keyword-left-item"
+                            key={idx}
+                            id={`hotplace ${item[0]}`}
                             onClick={handleSearch}
                           >
                             <i className="icon"></i>

@@ -24,12 +24,12 @@ export default function Search() {
   const tomorrow = new Date(new Date().setDate(today.getDate()+1));
   const [date, setDate] = useState(today.getHours() >= 19 ? tomorrow : today); // 예약 날짜
   const dateStr = `${ String(date.getMonth() + 1).padStart(2, "0") }.${ String(date.getDate()).padStart(2, "0") }(${ week[date.getDay()] })`; // 예약날짜 노출문구
-  const [time, setTime] = useState(19); // 기본 시간 (오후 7시)
+  const [time, setTime] = useState(date.getHours()+1); // 기본 시간 : 현재 시간보다+1
 
   // * 기본 검색 인원은 2명
   const [minNum, setMinNum] = useState(2); // 최소 인원
   
-  // * 검색 필터 정보
+  // * 기본 검색 필터 정보
   const [filterInfo, setFilterInfo] = useState({
       date : `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`,
       time : `${time}:00`,
@@ -82,11 +82,11 @@ export default function Search() {
   }
 
   useEffect(() => {
-    console.log(filterInfo);
     let count = 0;
     if( filterInfo?.koreanCity?.length > 0) count +=1;
     if(filterInfo?.maxPrice !=0 || filterInfo?.minPrice != 0 ) count+=1;
     setFilterCnt(count);
+    console.log(filterInfo);
   }, [filterInfo]);
 
   return (

@@ -19,14 +19,12 @@ export const searchByFilter = async(params) => {
                 data.append(key,value);
             }
         })
-
         const result = await apiClient.get(`/restaurants/search?${data.toString()}`, {
             headers : {
                 "Content-Type" : `application/json`,
                 Authorization: `Bearer ${token}`,
             }
         });
-        console.log(result.data);
         return result.data;
     } catch(err) {
         console.log("Error >>", err);
