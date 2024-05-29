@@ -9,7 +9,7 @@ import Restaurants_sm from "../../components/Restaurants-sm";
 
 /**
  * 검색어 검색화면 - 목록
- * @author jimin
+ * 
  */
 export default function SearhTotal({ search }) {
   const navigate = useNavigate();
@@ -149,7 +149,7 @@ export default function SearhTotal({ search }) {
               </div>
           </div>}
           {/* 검색 후 : 결과가 없다면 X */}
-          { search && ( restaurantList?.length < 1 || allRegion?.length < 1) && (
+          { search && ( restaurantList?.length < 1 && allRegion?.length < 1) && (
             <div>
               <div>
                 <div className="search-result-nodata">

@@ -1089,10 +1089,6 @@ video {
   width: 63px;
 }
 
-.w-\[65px\] {
-  width: 65px;
-}
-
 .w-\[calc\(100\%-47px\)\] {
   width: calc(100% - 47px);
 }
@@ -1201,10 +1197,6 @@ video {
 
 .justify-between {
   justify-content: space-between;
-}
-
-.gap-5 {
-  gap: 1.25rem;
 }
 
 .gap-\[10px\] {
@@ -1653,10 +1645,6 @@ video {
 
 .text-center {
   text-align: center;
-}
-
-.text-justify {
-  text-align: justify;
 }
 
 .text-\[12px\] {
@@ -4333,7 +4321,6 @@ span {
   color: #aaa;
 }
 
-
 .mb-\[50px\] {
   margin-bottom : 50px !important;
 }
@@ -4492,5 +4479,9 @@ span {
   box-sizing: border-box;
   background-color: #ff3d00;
   color: #ffffff;
+}
+
+.saved-restaurant-list-item .tb .img img {
+  height : 100%;
 }
 
