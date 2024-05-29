@@ -10,8 +10,8 @@ import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { RestaurantState } from "../../States/LoginState";
+import { urlToFile } from "../../apis/ApiClient";
 import { geocodeAddress } from "../../apis/geocodeAddress";
-import FileUpLoad from "../../components/FileUpLoad";
 import { CreateRestaurantImagesItem } from "../../respository/reservation";
 import {
   UpdateRestaurantRes,
@@ -89,8 +89,7 @@ export default function RestaurantInfo() {
   const { text } = useParams();
   const userInfo = useRecoilValue(RestaurantState);
   const { mutate: deleteOwner } = DeleteOwnerReq();
-
-  const [selectedDays, setSelectedDays] = useState([]);
+  const photoInput = useRef();
   const [selectedFacilities, setSelectedFacilities] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [restaurant, setRestaurant] = useState(false);
@@ -132,13 +131,7 @@ export default function RestaurantInfo() {
     } else {
       // 식당 정보 있을때
       const prevUser = userInfo;
-      console.log(prevUser);
       setUser(prevUser);
-      if (prevUser.holidays.days) {
-        const foundDay = dataChage(prevUser.holidays.days, days, "ko");
-        setSelectedDays(foundDay);
-      }
-
       if (prevUser.category) {
         setSelectedCategory(prevUser.category);
       }
@@ -149,28 +142,42 @@ export default function RestaurantInfo() {
         });
         setSelectedFacilities(facilities);
       }
-      console.log("prevUser", prevUser);
+
       setLocation({ lat: prevUser.lat, lng: prevUser.lng });
       setRestaurant(true);
+
       if (prevUser.images) {
-        console.log(prevUser.images);
-        isSetPhoto(prevUser.images);
-        // setPhotoToAddList(prevUser.images);
-        // setPhotoToAddList(prevUser.images);
+        prevUser.images.map((item) => {
+          isSetPhoto((prevList) => [...prevList, item]);
+        });
       }
     }
   }, []);
 
   /* Select 값 변경 Function */
-  const handleSelectDay = (event) => {
-    const selectedValue = event.target.value;
-    const selectedDay =
-      typeof selectedValue === "string"
-        ? selectedValue.split(",")
-        : selectedValue;
-
-    setSelectedDays(selectedDay);
-  };
+  useEffect(() => {
+    // console.log('isphoto',)
+    if (userInfo.images) {
+      const fetchAndConvertImages = async () => {
+        const promises = isphoto.map(async (item) => {
+          console.log("userInfo.images", item);
+          try {
+            const file = await urlToFile(item.path);
+            console.log("file", file);
+            return file;
+          } catch (err) {
+            console.error("Error converting URL to file:", err);
+            return null;
+          }
+        });
+        const files = await Promise.all(promises);
+        files.map((item) => {
+          setPhotoToAddList((prevList) => [...prevList, { file: item }]);
+        });
+      };
+      fetchAndConvertImages();
+    }
+  }, [isphoto]);
 
   const handleSelectFacility = (event) => {
     const selectedValue = event.target.value;
@@ -190,6 +197,7 @@ export default function RestaurantInfo() {
     const today = new Date();
     /* 값 설정 */
     const name = inputRef.current[0].value;
+
     const category = selectedCategory;
     const content = inputRef.current[2].value;
     const phone = inputRef.current[3].value;
@@ -221,9 +229,9 @@ export default function RestaurantInfo() {
       lng: Number(location.lng),
       lunchPrice: lunchPrice ? lunchPrice : 0,
       dinnerPrice: dinnerPrice ? dinnerPrice : 0,
-      holidays: {
-        days: dataChage(selectedDays, days, "en"),
-      },
+      // holidays: {
+      //   days: dataChage(selectedDays, days, "en"),
+      // },
       reservationBeginDate: reservationBeginDate,
       reservationEndDate: reservationEndDate,
       facilities: dataChage(selectedFacilities, facilites, "en"),
@@ -274,7 +282,6 @@ export default function RestaurantInfo() {
         files: photoToAddList,
         restaurantId: userInfo.restaurantId,
       };
-
       createImages(restaurantItem);
     } else {
       //식당 정보 있을때
@@ -294,27 +301,61 @@ export default function RestaurantInfo() {
       });
   };
 
-  // const inputNumber = (e) => {
-  //   let value = e.target.value;
-  //   const inputValue = value.replace(/\D/g, "");
-  //   const formattedValue = inputValue.replace(
-  //     /^\d{2,3}-\d{4}-\d{4}$/,
-  //     (match, p1, p2, p3) => {
-  //       let result = "";
-  //       if (p1) result += p1;
-  //       if (p2) result += "-" + p2;
-  //       if (p3) result += "-" + p3;
-  //       return result;
-  //     }
-  //   );
-  //   setIsNumber(formattedValue);
-  // };
-
   // 식당 삭제
   const deleteRestaurant = (ownerId) => {
     deleteOwner(ownerId);
   };
+  const handleClick = () => {
+    if (photoToAddList.length >= 10) {
+      alert("최대 10장만 가능합니다.");
+      return;
+    }
+    photoInput.current.click();
+  };
 
+  const handlePhoto = (e) => {
+    const temp = [];
+    const photoToAdd = e.target.files;
+    for (let i = 0; i < photoToAdd.length; i++) {
+      temp.push({ file: photoToAdd[i] });
+    }
+
+    setPhotoToAddList(temp.concat(photoToAddList));
+  };
+  const photoToAddPreview = () => {
+    if (photoToAddList.length === 0) return;
+    if (photoToAddList.length > 10) {
+      alert("최대 10장만 가능합니다.");
+      photoToAddList.length = 10;
+    }
+    console.log("photoToAddList", photoToAddList);
+
+    return photoToAddList.map((photo) => {
+      if (!photo.file) return;
+      let photoUrl = URL.createObjectURL(photo.file);
+      console.log(photoUrl);
+      return (
+        <div className="photoBox" key={photoUrl}>
+          <div
+            className="photoBoxDelete icon delect-icon"
+            onClick={() => onRemoveToAdd(photo.file.name)}
+          />
+          <img
+            className="photoPreview size-[100%]"
+            src={photoUrl}
+            alt="preview"
+          />
+          {URL.revokeObjectURL(photo.file)}
+        </div>
+      );
+    });
+  };
+
+  const onRemoveToAdd = (deleteName) => {
+    setPhotoToAddList(
+      photoToAddList.filter((photo) => photo.file.name !== deleteName)
+    );
+  };
   return (
     <MainContents className="main">
       <div className=" h-[100%] overflow-auto">
@@ -338,7 +379,6 @@ export default function RestaurantInfo() {
             </div>
             <Box sx={{ width: 100 + "%" }}>
               <FormControl fullWidth>
-                {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
                 <Select
                   id="demo-simple-select"
                   value={selectedCategory}
@@ -568,39 +608,6 @@ export default function RestaurantInfo() {
           </div>
           <div className="form-block mb-[20px]">
             <div className="mb-[6px]">
-              <label className="color-gray text-[12px]">쉬는날</label>
-            </div>
-            <FormControl sx={{ width: 100 + "%" }}>
-              <Select
-                id="demo-multiple-chip"
-                multiple
-                ref={(el) => (inputRef.current[13] = el)}
-                value={selectedDays}
-                onChange={handleSelectDay}
-                input={<OutlinedInput id="select-multiple-chip" />}
-                renderValue={(selected) => (
-                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                    {selected.map((value) => (
-                      <Chip key={value} label={value} />
-                    ))}
-                  </Box>
-                )}
-                MenuProps={MenuProps}
-              >
-                {daysOptions.map((name) => (
-                  <MenuItem
-                    key={name}
-                    value={name}
-                    style={getStyles(name, selectedDays, theme)}
-                  >
-                    {name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </div>
-          <div className="form-block mb-[20px]">
-            <div className="mb-[6px]">
               <Serious className="color-gray text-[12px]">
                 예약 오픈 일자
               </Serious>
@@ -632,7 +639,6 @@ export default function RestaurantInfo() {
             <div className="mb-[6px]">
               <label className="color-gray text-[12px]">편의 시설</label>
             </div>
-
             <FormControl sx={{ width: 100 + "%" }}>
               <Select
                 id="demo-multiple-chip"
@@ -662,7 +668,6 @@ export default function RestaurantInfo() {
               </Select>
             </FormControl>
           </div>
-          {/* {text.indexOf("add") === -1 && ( */}
           <div className="form-block mb-[20px]">
             <div className="mb-[6px]">
               <Serious className="color-gray text-[12px]">식당 이미지</Serious>
@@ -670,13 +675,31 @@ export default function RestaurantInfo() {
             <span className="text-center text-[12px] block mb-[15px]">
               최대 10장 가능합니다. 마지막 이미지가 메인 입니다.
             </span>
-            <FileUpLoad
+            <div className="photoUploaderContent">
+              <div className="photoBox addPhoto">
+                <button
+                  className="icon add-icon"
+                  onClick={handleClick}
+                ></button>
+
+                <PictureFilled onClick={handleClick} />
+                <input
+                  type="file"
+                  accept="image/jpg, image/jpeg, image/png"
+                  multiple
+                  ref={photoInput}
+                  onChange={(e) => handlePhoto(e)}
+                  style={{ display: "none" }}
+                />
+              </div>
+              {photoToAddList && photoToAddPreview()}
+            </div>
+            {/* <FileUpLoad
               photoToAddList={photoToAddList}
               isphoto={isphoto}
               setPhotoToAddList={setPhotoToAddList}
-            ></FileUpLoad>
+            ></FileUpLoad> */}
           </div>
-          {/* )} */}
         </div>
       </div>
       {restaurant ? (
@@ -728,9 +751,7 @@ const InfoBtn = styled.button`
   line-height: 48px;
   text-align: center;
   font-size: 16px;
-  /* width: 65%; */
   ${(props) => (props.even ? " width: 65%;" : " width: 100%;")}
-  /* margin-top: 0.75rem; */
   background-color: #ff3d00;
   color: #fff;
 `;

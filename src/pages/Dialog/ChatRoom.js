@@ -40,7 +40,6 @@ const ChatRoom = () => {
         // 웹 소켓 이벤트를 처리합니다.
         socket.onopen = () => {
           console.log("WebSocket 연결이 열렸습니다.");
-
           // 연결이 열리면 인증 정보를 보냅니다.
           socket.send(
             JSON.stringify({

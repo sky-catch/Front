@@ -587,6 +587,10 @@ video {
   visibility: visible;
 }
 
+.static {
+  position: static;
+}
+
 .fixed {
   position: fixed;
 }
@@ -652,6 +656,10 @@ video {
   top: 50px;
 }
 
+.top-\[5px\] {
+  top: 5px;
+}
+
 .z-0 {
   z-index: 0;
 }
@@ -668,8 +676,8 @@ video {
   z-index: 50;
 }
 
-.-z-50 {
-  z-index: -50;
+.z-\[9999\] {
+  z-index: 9999;
 }
 
 .z-\[999\] {
@@ -779,10 +787,6 @@ video {
   margin-left: 10px;
 }
 
-.ml-\[27px\] {
-  margin-left: 27px;
-}
-
 .ml-\[7px\] {
   margin-left: 7px;
 }
@@ -847,16 +851,8 @@ video {
   margin-top: 5px;
 }
 
-.mt-\[6px\] {
-  margin-top: 6px;
-}
-
 .mt-\[70px\] {
   margin-top: 70px;
-}
-
-.mt-\[80px\] {
-  margin-top: 80px;
 }
 
 .box-border {
@@ -896,6 +892,11 @@ video {
   height: 100%;
 }
 
+.size-\[130px\] {
+  width: 130px;
+  height: 130px;
+}
+
 .size-\[30px\] {
   width: 30px;
   height: 30px;
@@ -904,11 +905,6 @@ video {
 .size-\[32px\] {
   width: 32px;
   height: 32px;
-}
-
-.size-\[40px\] {
-  width: 40px;
-  height: 40px;
 }
 
 .size-\[47px\] {
@@ -936,6 +932,11 @@ video {
   height: 64px;
 }
 
+.size-\[68px\] {
+  width: 68px;
+  height: 68px;
+}
+
 .size-\[6px\] {
   width: 6px;
   height: 6px;
@@ -944,21 +945,6 @@ video {
 .size-\[70px\] {
   width: 70px;
   height: 70px;
-}
-
-.size-\[150px\] {
-  width: 150px;
-  height: 150px;
-}
-
-.size-\[120px\] {
-  width: 120px;
-  height: 120px;
-}
-
-.size-\[130px\] {
-  width: 130px;
-  height: 130px;
 }
 
 .h-12 {
@@ -975,10 +961,6 @@ video {
 
 .h-\[100vh\] {
   height: 100vh;
-}
-
-.h-\[16px\] {
-  height: 16px;
 }
 
 .h-\[180px\] {
@@ -1053,12 +1035,12 @@ video {
   height: auto;
 }
 
-.h-full {
-  height: 100%;
-}
-
 .h-dvh {
   height: 100dvh;
+}
+
+.h-full {
+  height: 100%;
 }
 
 .max-h-\[120px\] {
@@ -1087,10 +1069,6 @@ video {
 
 .w-\[128px\] {
   width: 128px;
-}
-
-.w-\[16px\] {
-  width: 16px;
 }
 
 .w-\[171px\] {
@@ -1141,6 +1119,10 @@ video {
   width: auto;
 }
 
+.w-dvw {
+  width: 100dvw;
+}
+
 .w-fit {
   width: -webkit-fit-content;
   width: -moz-fit-content;
@@ -1149,10 +1131,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-dvw {
-  width: 100dvw;
 }
 
 .min-w-\[70px\] {
@@ -1409,10 +1387,6 @@ video {
   border-bottom-width: 1px;
 }
 
-.border-t {
-  border-top-width: 1px;
-}
-
 .border-solid {
   border-style: solid;
 }
@@ -1461,11 +1435,6 @@ video {
   background-color: rgb(244 244 244 / var(--tw-bg-opacity));
 }
 
-.bg-\[\#f9f9f9\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(249 249 249 / var(--tw-bg-opacity));
-}
-
 .bg-\[\#ff3d00\] {
   --tw-bg-opacity: 1;
   background-color: rgb(255 61 0 / var(--tw-bg-opacity));
@@ -1495,10 +1464,6 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.bg-\[url\(\'\.\/assets\/icons\/alarm-normal\.svg\'\)\] {
-  background-image: url('./assets/icons/alarm-normal.svg');
-}
-
 .bg-\[url\(\'\.\/assets\/icons\/kakao_button\.svg\'\)\] {
   background-image: url('./assets/icons/kakao_button.svg');
 }
@@ -1523,20 +1488,12 @@ video {
   background-position: 30px;
 }
 
-.bg-\[120px\] {
-  background-position: 120px;
-}
-
 .bg-center {
   background-position: center;
 }
 
 .bg-no-repeat {
   background-repeat: no-repeat;
-}
-
-.p-\[30px\] {
-  padding: 30px;
 }
 
 .p-\[7px\] {
@@ -1867,11 +1824,6 @@ video {
 .text-\[\#c8c8c8\] {
   --tw-text-opacity: 1;
   color: rgb(200 200 200 / var(--tw-text-opacity));
-}
-
-.text-\[\#ccc\] {
-  --tw-text-opacity: 1;
-  color: rgb(204 204 204 / var(--tw-text-opacity));
 }
 
 .text-\[\#ff3d00\] {

@@ -2,7 +2,7 @@ const http = require("http");
 const express = require("express");
 const socketIo = require("socket.io");
 const fetch = require("node-fetch");
-
+const cors = require("cors");
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
@@ -15,22 +15,28 @@ const io = socketIo(server, {
 
 // 정적 파일 서빙
 app.use(express.static("public"));
-
+app.use(cors());
 // 프록시 엔드포인트 추가
+
 app.get("/proxy", async (req, res) => {
-  const url = req.query.url;
-  console.log("url", url);
+  const { url } = req.query;
+  if (!url) {
+    return res.status(400).send("URL parameter is required");
+  }
+
   try {
     const response = await fetch(url);
-    const buffer = await response.buffer();
-    res.set("Content-Type", response.headers.get("content-type"));
-    res.send(buffer);
+    if (!response.ok) {
+      throw new Error("Failed to fetch image");
+    }
+    const blob = await response.blob();
+    res.setHeader("Content-Type", "image/jpeg"); // Adjust content type as needed
+    res.send(blob);
   } catch (error) {
-    console.error("Error fetching the URL:", error);
-    res.status(500).send("Error fetching the URL");
+    console.error("Error fetching image:", error);
+    res.status(500).send("Error fetching image");
   }
 });
-
 // Socket.IO 설정
 io.on("connection", (socket) => {
   console.log("A user connected");

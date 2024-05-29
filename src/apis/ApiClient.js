@@ -10,21 +10,25 @@ const apiClient = axios.create({
   },
 });
 
-export const urlToFile = async (url, fileName = "default-filename") => {
-  const response = await fetch(url);
-  const blob = await response.blob();
-  const file = new File([blob], fileName, { type: blob.type });
-  return file;
-};
-export const convertURLtoFile = async (url) => {
+export const urlToFile = async (url) => {
   const proxyUrl = `http://localhost:3000/proxy?url=${encodeURIComponent(url)}`;
-  const response = await fetch(proxyUrl);
+  const response = await fetch(url);
   const data = await response.blob();
   const ext = url.split(".").pop();
   const filename = url.split("/").pop();
   const metadata = { type: `image/${ext}` };
-
-  return new File([data], url, metadata);
+  console.log("filename", filename);
+  return new File([data], filename, metadata);
+};
+export const convertURLtoFile = async (url) => {
+  const proxyUrl = `http://localhost:3000/proxy?url=${encodeURIComponent(url)}`;
+  const response = await fetch(url);
+  console.log("response", response);
+  const data = await response.blob();
+  const ext = url.split(".").pop();
+  const filename = url.split("/").pop();
+  const metadata = { type: `image/${ext}` };
+  return new File([data], filename, metadata);
 };
 
 export default apiClient;

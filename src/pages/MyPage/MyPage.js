@@ -52,22 +52,28 @@ function MyPage() {
   const updateUserInfo = () => {
     navigate("/my/myProfileInfo");
   };
-
   useEffect(() => {
     if (!isReviewOpen) return;
     if (!isSelectInfo) return;
-    isSelectInfo.forEach((item) => {
-      const test = convertURLtoFile(item.path);
-      test
-        .then((file) => {
-          setPhotoToAddList((prevList) => [...prevList, { file }]);
-          // console.log("res", file);
-        })
-        .catch((err) => {
-          console.log("err", err);
-        });
-    });
-    // fetchFile();
+    const fetchAndConvertImages = async () => {
+      const promises = isSelectInfo.map(async (item) => {
+        try {
+          const file = await convertURLtoFile(item.path);
+          console.log("file", file);
+          return file;
+        } catch (err) {
+          console.error("Error converting URL to file:", err);
+          return null;
+        }
+      });
+      const files = await Promise.all(promises);
+
+      files.map((item) => {
+        setPhotoToAddList((prevList) => [...prevList, { file: item }]);
+      });
+    };
+
+    fetchAndConvertImages();
   }, [isReviewOpen, isSelectInfo]);
 
   const toggleDrawerReview = (e, info) => {
@@ -99,7 +105,6 @@ function MyPage() {
     const temp = [];
     const photoToAdd = e.target.files;
     for (let i = 0; i < photoToAdd.length; i++) {
-      console.log(photoToAdd[i]);
       temp.push({ file: photoToAdd[i] });
     }
 
@@ -113,11 +118,9 @@ function MyPage() {
       photoToAddList.length = 5;
     }
     console.log("photoToAddList", photoToAddList);
+
     return photoToAddList.map((photo) => {
       let photoUrl = URL.createObjectURL(photo.file);
-      if (photo.file.name.indexOf("https://skyware") === 0) {
-        photoUrl = photo.file.name;
-      }
 
       return (
         <div className="photoBox" key={photoUrl}>
@@ -130,6 +133,7 @@ function MyPage() {
             src={photoUrl}
             alt="preview"
           />
+          {URL.revokeObjectURL(photo.file)}
         </div>
       );
     });
@@ -214,13 +218,13 @@ function MyPage() {
 
   useEffect(() => {
     // 이미지 정보 설정
-    console.log("isUserInfo", isUserInfo);
     setUser((prevUser) => ({
       ...prevUser,
       profileImageUrl: isUserInfo?.profileImageUrl,
       isOwner: isUserInfo?.owner,
       saveRestaurants: isUserInfo?.savedRestaurants,
     }));
+    console.log("isUserInfo", isUserInfo);
   }, [isUserInfo]);
 
   const manageRestaurant = () => {
@@ -252,7 +256,6 @@ function MyPage() {
       files: photoToAddList,
     };
     console.log("안녕", reviewItem);
-
     review(reviewItem);
   };
 
@@ -435,8 +438,9 @@ function MyPage() {
                               </span>
 
                               {isUserInfo.comments.map((item, index) => {
-                                return info.reviewId === item.reviewId &&
-                                  item.ownerId === 0 ? (
+                                console.log(info.reviewId);
+                                console.log(item.reviewId);
+                                return info.reviewId !== item.reviewId ? (
                                   <span
                                     key={index}
                                     className="w-[63px] text-center text-[#666] text-[12px] float-right rounded-full py-[1px] px-[8px] border border-[#d5d5d5]"
@@ -468,7 +472,7 @@ function MyPage() {
                               info.images.map((item) => {
                                 return (
                                   <img
-                                    className="rounded-[6px]"
+                                    className="rounded-[6px] size-[68px] border border-[#d5d5d5]"
                                     key={item.reviewImageId}
                                     src={`${item.path}`}
                                   />
