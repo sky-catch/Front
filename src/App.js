@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import Header from "./components/Header.js";
@@ -25,12 +25,14 @@ import ReviewList from "./pages/Restaurant/ReviewList.js";
 import Search from "./pages/Search/Search.js";
 import SearchList from "./pages/Search/SearchList.js";
 import SearchTotal from "./pages/Search/SearchTotal.js";
+import { getTestLogin } from "./respository/userInfo.js";
 
 function App() {
   const [search, setSearch] = useState();
   const updateSearch = (param) => {
     setSearch(param);
   };
+
   // sessionStorage.setItem(
   //   "token",
   //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN1cGVyc3V0ZTE0MkBnbWFpbC5jb20iLCJpc093bmVyIjpmYWxzZSwiaWF0IjoxNzE2OTg3MTQwLCJleHAiOjE3MTcwNzM1NDB9.PQYbcEv1_dzq8aE1Foi-xVTeFSI8dMc1yqXlFO35X3pgoRybuUEZoYaeO_Z1aUvGxBUJ8uk49U5d1bCo660ZvA"
@@ -49,6 +51,13 @@ function App() {
   //     status: "ACTIVE",
   //   })
   // );
+
+
+  useEffect(()=>{
+    getTestLogin();
+  },[])
+  
+
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;

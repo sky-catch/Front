@@ -16,7 +16,11 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
 
   const [isContent, setIsContent] = useState(1);
   const [isSelect, setIsSelect] = useState(0);
-  const [cities, setCities] = useState([]);
+  const [selectedCities, setSelectedCities] = useState(searchFilter?.hotPlace.split(',') || []);  //선택된 지역 필터
+  const [selectedCost, setSelectedCost] = useState({});
+  const [cities, setCities] = useState(); // 뉴 지역 필터
+  const [cost, setCost] = useState(); /* rc-slider 값 */
+  const [Value, setValue] = useState([searchFilter?.minPrice || 0, searchFilter?.maxPrice || 40]);
 
   const cityItems = [
     { name: "핫플" },
@@ -72,8 +76,8 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
     { name: "40만원대 이상", min: 40, max: 40 },
   ];
   const [selected, setSelected] = useState([]);
-  const [cost, setCost] = useState(); /* rc-slider 값 */
-  const [Value, setValue] = useState([searchFilter?.minPrice || 0, searchFilter?.maxPrice || 40]);
+  // console.log(searchFilter)
+
 
   /* tap 클릭이벤트 */
   const contentClick = (e, index) => {
@@ -93,7 +97,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
 
   /* function : 도시선택 */
   const onSelectCity = (e, newCity) => {
-    setCities([newCity, ...cities]);
+    setSelectedCities([newCity, ...selectedCities]);
 
     const recent = e.currentTarget.classList;
     const recentText = e.currentTarget.innerText;
@@ -105,13 +109,13 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
           const arr1 = item.classList;
           arr1.add("active");
         });
-        setCities([...addressItems[0].filter(item=>item!=="서울 전체")])
+        setSelectedCities([...addressItems[0].filter(item=>item!=="서울 전체")])
       } else {
         list.map((item) => {
           const arr1 = item.classList;
           arr1.remove("active");
         });
-        setCities([]);
+        setSelectedCities([]);
       }
     } else {
       // 각각인 경우
@@ -121,7 +125,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
         recent.forEach((item, idx) => {
           if (item == "active") {
             recent.remove("active");
-            setCities(cities.filter((word) => word !== newCity));
+            setSelectedCities(selectedCities.filter((word) => word !== newCity));
           } else {
             recent.add("active");
           }
@@ -132,12 +136,13 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
 
   /* function : 검색적용 */
   const handleSearch = (e) => {
+    setCities([...selectedCities]); // 필터 확정
     setFilterInfo((prevState)=> ({
       ...prevState, 
-      hotPlace : cities?.length > 0 ? cities : '',
-      koreanCity : cities?.length > 0 ? cityItems[isSelect].name == "핫플" ? "서울" : cityItems[isSelect].name : '',
-      minPrice : Number(cost.min),
-      maxPrice : Number(cost.max)
+      hotPlace : selectedCities?.length > 0 ? selectedCities : '',
+      koreanCity : selectedCities?.length > 0 ? cityItems[isSelect].name == "핫플" ? "서울" : cityItems[isSelect].name : '',
+      minPrice : cost ? Number(cost?.min) : 0,
+      maxPrice : cost ? Number(cost?.max) : 0
     }));
     
     toggleFilterDrawer(e);
@@ -160,16 +165,8 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
     
     let now = e.currentTarget.parentNode.id;
     if(cityselected) {
-      let newData = cities.filter(item=>item!==now);
-      setCities(newData);
-    //   setCities([]);
-      const list = placeRef.current;
-      list.map((item) => {
-        const arr1 = item.classList;
-        if(item.firstChild.innerText === now) {
-          arr1.remove("active");
-        }
-      });
+      let newData = selectedCities.filter(item=>item!==now);
+      setSelectedCities(newData);
     } else if (costselected) {
       setCost();
       setValue([0,40]);
@@ -217,9 +214,24 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
   };
 
   useEffect(()=>{
-    if(searchFilter?.hotPlace) setCities((searchFilter.hotPlace.split(',')));
-    else if(searchFilter?.maxPrice >0 || searchFilter?.minPrice >0) setCost({min : searchFilter.minPrice, max : searchFilter.maxPrice});
+    if(searchFilter?.hotPlace) { 
+      setCities((searchFilter.hotPlace.split(',')));
+    } else if(searchFilter?.maxPrice >0 || searchFilter?.minPrice >0) { 
+      setCost({min : searchFilter.minPrice, max : searchFilter.maxPrice});
+    }
   },[searchFilter])
+
+  useEffect(()=>{
+    // console.log('selected', selectedCities);
+    // console.log('cities', cities);
+
+    let placeList = Array.from(document.querySelectorAll('#hotplace-list-item'));
+      placeList.map(button=>{
+        if(cities?.includes(button.textContent)) {
+          button.classList.add('active')
+        }
+      });
+  },[selectedCities, cities])
 
   return (
     <div className="filter-drawer">
@@ -283,10 +295,12 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
                 </div>
                 <div className="flex hotplace-wrapper">
                   {addressItems[isSelect].map((item, index) => {
+                    // console.log(item, selectedCities?.includes(item))
                     return (
                       <button
                         type="button"
-                        className={`hotplace-item ${cities.includes(item) ? 'active' : ''}`}
+                        id="hotplace-list-item"
+                        className={`hotplace-item`}
                         key={index}
                         onClick={(e) => {onSelectCity(e, item);}}
                         ref={(el) => (placeRef.current[index] = el)}
@@ -345,7 +359,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
           </main>
           <footer className="fixed">
             <div className="gradient"></div>
-            { cities.length >0 || cost ? 
+            { selectedCities?.length >0 || cost ? 
             <div className="selected-itmes">
                     <div className="delete-button">
                       <button type="button" className="delete" onClick={handleResetAll}>
@@ -360,7 +374,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
                       </button>
                     </div>
                     <div className="items">
-                      {cities.map((item,index)=>{
+                      {selectedCities?.map((item,index)=>{
                         return(
                           <button className="item-btn font-md" id={item} key={index}>
                             <span>{item}</span>

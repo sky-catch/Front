@@ -16,6 +16,7 @@ import {
   getOwner,
   getUserInfo,
 } from "../../respository/userInfo";
+import defaultImage from "../../assets/icons/default.png"
 
 /**
  * 마이페이지
@@ -267,9 +268,18 @@ function MyPage() {
     console.log("name : ", restaurantName);
     navigate(`/ct/shop/${restaurantName}`, { state: restaurantName });
   };
+
   if (userLoading) {
     return <Loading></Loading>;
   }
+
+
+  // 이미지 없는 경우, default 이미지 노출
+  const onErrorImg = (e) => {
+    e.target.src = defaultImage;
+  }
+
+
   return (
     <MainContents className="main">
       {/* 프로필정보 */}
@@ -277,7 +287,7 @@ function MyPage() {
         <section className="container gutter-sm">
           <div className="mypage-profile flex items-start mb-[16px]">
             <div className="profile-pic mr-[12px]">
-              <img className="img" src={`${user?.profileImageUrl}`}></img>
+              <img className="img" src={`${user?.profileImageUrl}`} alt={defaultImage}></img>
             </div>
             <div className="mypage-profile-meta">
               <div className="userInfo flex items-center">
@@ -285,17 +295,6 @@ function MyPage() {
                 <div className="isOwner flex">
                   <FaStar color="#ff3d00"></FaStar>
                 </div>
-              </div>
-              <div className="meta">
-                <dl className="flex gap-5">
-                  <dt>팔로잉</dt>
-                  <dd>{following}</dd>
-                </dl>
-                <span>|</span>
-                <dl className="flex gap-5">
-                  <dt>팔로워</dt>
-                  <dd>{follower}</dd>
-                </dl>
               </div>
               <div className="social"></div>
             </div>
@@ -379,23 +378,22 @@ function MyPage() {
                   </div>
                   <div className="section-body pb-32">
                     <div className="saved-restaurant-list">
-                      {user?.saveRestaurants?.map((idx, index) => {
-                        return (
-                          <div
-                            className="saved-restaurant-list-item"
-                            key={idx.restaurantId}
-                          >
+
+                      { user?.saveRestaurants?.map((item,index)=>{
+                        return(
+                          <div className="saved-restaurant-list-item" key={index}>
+
                             <div className="restaurant-info">
                               <a className="tb">
-                                <div className="img"></div>
+                                <div className="img"><img src={`${item.imageUrl}`} onError={onErrorImg}/></div>
                               </a>
                               <a className="detail">
-                                <h4 className="name">레스토랑 이름</h4>
-                                <p className="excerpt">레스토랑 소개</p>
+                                <h4 className="name">{item.savedRestaurantName || '식당 이름'}</h4>
+                                <p className="excerpt">{item.content || '식당 소개'}</p>
                                 <div className="restaurant-meta">
                                   <div className="rating">
-                                    <span className="star">별점</span>
-                                    <span className="count">리뷰수</span>
+                                    <span className="star">{item.rate || '식당 별점'}</span>
+                                    <span className="count">{item.reviewCount || '식당 리뷰수'}</span>
                                   </div>
                                 </div>
                               </a>
@@ -423,7 +421,6 @@ function MyPage() {
                           <div className="flex justify-between">
                             <span
                               className="text-[16px] font-bold"
-                              // onClick={() => onDetail(info)}
                             >
                               {info.restaurantName}
                             </span>

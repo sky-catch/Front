@@ -1223,10 +1223,6 @@ video {
   justify-content: space-between;
 }
 
-.gap-5 {
-  gap: 1.25rem;
-}
-
 .gap-\[10px\] {
   gap: 10px;
 }
@@ -4497,5 +4493,9 @@ span {
   box-sizing: border-box;
   background-color: #ff3d00;
   color: #ffffff;
+}
+
+.saved-restaurant-list-item .tb .img img {
+  height : 100%;
 }
 

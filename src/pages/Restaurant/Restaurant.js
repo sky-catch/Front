@@ -27,8 +27,6 @@ import RestaurantInfor from "./RestaurantInfor";
 
 /**
  * 식당 상세 정보 페이지
- *
- * @author jimin
  */
 
 export default function Restaurant() {
@@ -48,25 +46,16 @@ export default function Restaurant() {
   const today = new Date();
   const tomorrow = new Date(new Date().setDate(today.getDate() + 1));
   const [date, setDate] = useState(today.getHours() >= 19 ? tomorrow : today); // 예약 날짜
-  const dateStr = `${String(date.getFullYear())}-${String(
-    date.getMonth() + 1
-  ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`; // 예약날짜 노출문구
-  // console.log(dateStr);
-  const { data: availTimes } = useQuery({
-    queryKey: [
-      {
-        restaurantId: shopId,
-        numberOfPeople: 2,
-        searchDate: dateStr,
-        visitTime: "18:00",
-      },
-    ],
-    queryFn: checkReservationTimes,
-    enabled: !!shopId,
-  });
-  const timeSlots = availTimes
-    ? availTimes["timeSlots"]
-    : null; /* 예약 가능한 시간 */
+
+  const dateStr = `${String(date.getFullYear())}-${ String(date.getMonth() + 1).padStart(2, "0") }-${ String(date.getDate()).padStart(2, "0") }`; // 예약날짜 노출문구
+  const { data : availTimes } = useQuery({ queryKey : [{
+    restaurantId : shopId,
+    numberOfPeople : 2,
+    searchDate : dateStr,
+    visitTime : "18:00"
+  }], queryFn : checkReservationTimes, enabled : !!shopId });
+  const timeSlots = availTimes? availTimes['timeSlots'] : null;  /* 예약 가능한 시간 */
+
 
   const queryClient = useQueryClient();
   const deleteSave = useMutation({
@@ -262,83 +251,42 @@ export default function Restaurant() {
           <div className="container gutter-sm">
             <div className="section-header">
               <h3>예약 일시</h3>
-            </div>
-            <div className="section-body">
-              <div className="mb-[8px]">
-                <a className="btn btn-lg btn-outline btn-cta full-width arrowdown">
-                  <span>
-                    <span className="label calendar">
-                      {" "}
-                      오늘 ({week[new Date().getDay()]}) / 2 명
-                    </span>
-                  </span>
-                </a>
-              </div>
-              {timeSlots && timeSlots.length > 0 ? (
-                <>
-                  <div className="section-time-slot mb-[24px]">
-                    <Swiper className="timetable-list-sm">
-                      {timeSlots.map((item, index) => {
-                        // console.log(item);
-                        const hour = item.time.slice(0, 2);
-                        const min = item.time.slice(2, 5);
-                        return (
-                          <SwiperSlide
-                            key={index}
-                            onClick={(e) => onReserveCalendar(item.time, e)}
-                          >
-                            <button className="timetable-list-item">
-                              <span className="time">
-                                {hour % 12 > 0
-                                  ? `오후 ${hour % 12}`
-                                  : `오전 ${hour}`}
-                                {min}
-                              </span>
-                            </button>
-                          </SwiperSlide>
-                        );
-                      })}
-                    </Swiper>
-                  </div>
-                </>
-              ) : (
-                <div className="time-slot-unavailable-box">
-                  <p className="time-slot-unavailable">
-                    예약 가능한 시간대가 없습니다.
-                  </p>
-                </div>
-              )}
-              {timeSlots && timeSlots.length > 0 ? (
-                <>
-                  <div className="section-time-slot mb-[24px]">
-                    <Swiper className="timetable-list-sm">
-                      {timeSlots.map((item, index) => {
-                        const hour = item.time.slice(0, 2);
-                        const min = item.time.slice(2, 5);
-                        return (
-                          <SwiperSlide
-                            key={index}
-                            onClick={(e) => onReserveCalendar(item.time, e)}
-                          >
-                            <button className="timetable-list-item">
-                              <span className="time">
-                                {hour % 12 > 0
-                                  ? `오후 ${hour % 12}`
-                                  : `오전 ${hour}`}
-                                {min}
-                              </span>
-                            </button>
-                          </SwiperSlide>
-                        );
-                      })}
-                    </Swiper>
-                  </div>
-                </>
-              ) : (
-                <div className="time-slot-unavailable-box">
-                  <p className="time-slot-unavailable">예약 시간 나열!</p>
-                </div>
-              )}
+
+                    </div>
+                    <div className="section-body">
+                    <div className="mb-[8px]">
+                        <a
+                        className="btn btn-lg btn-outline btn-cta full-width arrowdown">
+                        <span>
+                          <span className="label calendar"> {date.getDate()==new Date().getDate() ? '오늘' : '내일'} ({week[date.getDay()]}) / 2 명</span>
+                        </span>
+                      </a>
+                    </div>
+                    { timeSlots && timeSlots.length > 0 ?
+                    <>
+                      <div className="section-time-slot mb-[24px]">
+                        <Swiper
+                          className="timetable-list-sm"
+                        >
+                          { timeSlots.map((item,index)=> {
+                            // console.log(item);
+                            const hour = item.time.slice(0,2);
+                            const min = item.time.slice(2,5);
+                              return(<SwiperSlide key={index} onClick={(e)=>onReserveCalendar(item.time,e)}>
+                              <button className="timetable-list-item">
+                                <span className="time">{hour%12>0 ? `오후 ${hour%12}` : `오전 ${hour}`}{min}</span>
+                              </button>
+                              </SwiperSlide>)
+                          })}
+                        </Swiper>
+                      </div>
+                      </>
+                      : 
+                      <div className="time-slot-unavailable-box">
+                        <p className="time-slot-unavailable">예약 가능한 시간대가 없습니다.</p>
+                      </div>
+                      }
+
             </div>
           </div>
         </div>

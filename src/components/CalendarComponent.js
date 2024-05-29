@@ -62,6 +62,12 @@ const CalendarComponent = ({
   const visitTimeHours = String(new Date().getHours()).padStart(2, "0");
   const visitTimeMinutes = String(new Date().getMinutes()).padStart(2, "0");
 
+  // 식당 휴일 리스트
+  const WEEK = ['SUNDAY','MONDAY','TUESDAY','WENDESDAY','THURSDAY','FRIDAY','SATURDAY'];
+  const [holidays, setHolidays] = useState(restaurant?.holidays?.days);
+  let holidaysList = [];
+  holidays?.forEach((item,index)=>(holidaysList.push(WEEK.indexOf(item))));
+
   /* 방문확인 모달추가 */
   const handleReserve = (e) => {
     toggleDrawer(e);
@@ -69,7 +75,7 @@ const CalendarComponent = ({
 
   let [isData, setIsData] = useState({
     restaurantId: Number(new URLSearchParams(location.search).get("id")),
-    numberOfPeople: 0,
+    numberOfPeople: 2,
     searchDate: SetDateYMD(date),
     visitTime: visitTimeHours + ":" + visitTimeMinutes + ":" + "00",
   });
@@ -96,7 +102,6 @@ const CalendarComponent = ({
   };
 
   useEffect(() => {
-    console.log("isData", isData);
     if (isOpen && !isLoading) {
       if (isData.visitTime > restaurant.lastOrderTime) {
         setIsData({ ...isData, visitTime: restaurant.lastOrderTime });
@@ -112,8 +117,6 @@ const CalendarComponent = ({
       memo: "창가 자리 부탁드려요.",
       amountToPay: 10000,
     };
-
-    // createReservat(isData.restaurantId, restaurantValue);
 
     navigate(
       `/paymentpage?id=${Number(
@@ -166,6 +169,7 @@ const CalendarComponent = ({
               setActiveStartDate(activeStartDate)
             }
             minDate={new Date()}
+            tileDisabled={({activeStartDate, date, view})=> holidaysList.includes(date.getDay())} // 휴일 선택 불가
           />
         </StyledCalendarWrapper>
         {/* 인원 수 */}
@@ -180,20 +184,11 @@ const CalendarComponent = ({
                 <SwiperSlide key={index}>
                   <span
                     onClick={(e) => {
-                      // setIsPeopleNum(index);
                       e.preventDefault();
                       setIsData({ ...isData, numberOfPeople: item });
-
-                      // 240508 예약화면으로 이동 -> 원래는 시간 선택시 이동해야함 (테스트용)
-                      // 예약정보넘기기
-                      // setReserveInfo({
-                      //   date : date,
-                      //   people : 2
-                      // });
-                      // toggleDrawer(e);
                     }}
                     className={`block size-[48px] rounded-[50%] text-center leading-[48px] font-light text-[14px] ${
-                      item === isData.numberOfPeople
+                      Number(item) === isData.numberOfPeople
                         ? `bg-[#ff3d00] text-[#fff]`
                         : `text-[#aaa] border-[1px] border-[#aaa]`
                     }`}
@@ -203,7 +198,6 @@ const CalendarComponent = ({
                 </SwiperSlide>
               );
             })
-            // </>
           }
         </Swiper>
 
@@ -213,8 +207,6 @@ const CalendarComponent = ({
             className=" pl-[20px] py-[15px]"
             spaceBetween={7}
             slidesPerView={4}
-            // onSlideChange={() => console.log("slide change")}
-            // onSwiper={(swiper) => console.log(swiper)}
           >
             {timeSlots &&
               timeSlots.map((item, index) => {
@@ -224,7 +216,6 @@ const CalendarComponent = ({
                     onClick={(e) => {
                       e.preventDefault();
 
-                      // 240508 예약화면으로 이동 -> 원래는 시간 선택시 이동해야함 (테스트용)
                       // 예약정보넘기기
                       setReserveInfo({
                         date: date,
@@ -254,8 +245,6 @@ const CalendarComponent = ({
                   : isTimes &&
                     isTimes.data.timeSlots.length === 0 &&
                     "예약이 모두 마감되었습니다."
-                // isTimes.data.timeSlots.length == 0 &&
-                // "예약이 모두 마감되었습니다."
               }
             </span>
           </div>
