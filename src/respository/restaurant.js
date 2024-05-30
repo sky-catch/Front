@@ -39,7 +39,7 @@ export const UpdateRestaurantRes = () => {
     mutationFn: updateRestaurant,
     onSuccess: (data) => {
       console.log("createPost success", data);
-      window.location.href = "/account";
+      // window.location.href = "/account";
     },
     onError: (error) => {
       console.log("createPost error", error);
@@ -55,7 +55,7 @@ export const UpdateRestaurantRes = () => {
 export const getRestaurant = async (name) => {
   // console.log("name", queryKey);
   try {
-    const [name] = queryKey;
+    // const [name] = queryKey;
     const res = await apiClient.get(`/restaurants/${name}`, {
       headers: {
         Authorization: `Bearer ${token}`,

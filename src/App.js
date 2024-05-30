@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import Header from "./components/Header.js";
@@ -33,30 +33,9 @@ function App() {
     setSearch(param);
   };
 
-  // sessionStorage.setItem(
-  //   "token",
-  //   "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFM1MTIifQ.eyJlbWFpbCI6InN1cGVyc3V0ZTE0MkBnbWFpbC5jb20iLCJpc093bmVyIjpmYWxzZSwiaWF0IjoxNzE2OTg3MTQwLCJleHAiOjE3MTcwNzM1NDB9.PQYbcEv1_dzq8aE1Foi-xVTeFSI8dMc1yqXlFO35X3pgoRybuUEZoYaeO_Z1aUvGxBUJ8uk49U5d1bCo660ZvA"
-  // );
-
-  // sessionStorage.setItem(
-  //   "data",
-  //   JSON.stringify({
-  //     email: "sykor@kakao.com",
-  //     id: 6,
-  //     name: "조소연",
-  //     nickname: "조소연",
-  //     owner: true,
-  //     profileImageUrl:
-  //       "http://k.kakaocdn.net/dn/2afaP/btsE5DK6vhb/Gl1oZJKX0wN2tVbjpVeBLk/img_640x640.jpg",
-  //     status: "ACTIVE",
-  //   })
-  // );
-
-
-  useEffect(()=>{
+  useEffect(() => {
     getTestLogin();
-  },[])
-  
+  }, []);
 
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {

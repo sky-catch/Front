@@ -116,7 +116,10 @@ export const createReservation = async (restaurantId, restaurantValue) => {
   }
 
   try {
-    const result = await apiClient.post(`/reservations/${restaurantId}`, JSON.stringify(restaurantValue),{
+    const result = await apiClient.post(
+      `/reservations/${restaurantId}`,
+      JSON.stringify(restaurantValue),
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -280,12 +283,13 @@ const createRestaurantImages = async ({
   files,
   restaurantId,
 }) => {
+  const formData = new FormData();
   const createImages = JSON.stringify(addRestaurantImagesReq);
+  console.log("createImages", createImages);
   const blob = new Blob([createImages], { type: "application/json" });
+  formData.append("addRestaurantImagesReq", blob);
 
   for (let index = 0; index < files.length; index++) {
-    const formData = new FormData();
-    formData.append("addRestaurantImagesReq", blob);
     formData.append("files", files[index].file);
 
     const response = await axios.post(
@@ -318,8 +322,6 @@ export const CreateRestaurantImagesItem = () => {
 
 //예약들 노쇼로 바꾸는 기능
 const changeReservationsItem = async (noShowIds) => {
-  const token = sessionStorage.getItem("token");
-
   return axios.patch(
     `http://15.164.89.177:8080/owner/reservations`,
     {

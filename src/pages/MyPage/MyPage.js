@@ -9,6 +9,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { LoginState, RestaurantState } from "../../States/LoginState";
 import { convertURLtoFile } from "../../apis/ApiClient";
+import defaultImage from "../../assets/icons/default.png";
 import Loading from "../../components/Loading";
 import { DeleteReview, UpdateReview } from "../../respository/reservation";
 import {
@@ -16,7 +17,6 @@ import {
   getOwner,
   getUserInfo,
 } from "../../respository/userInfo";
-import defaultImage from "../../assets/icons/default.png"
 
 /**
  * 마이페이지
@@ -118,9 +118,9 @@ function MyPage() {
       alert("최대 5장만 가능합니다.");
       photoToAddList.length = 5;
     }
-    console.log("photoToAddList", photoToAddList);
 
     return photoToAddList.map((photo) => {
+      console.log("photoToAddList", photo);
       let photoUrl = URL.createObjectURL(photo.file);
 
       return (
@@ -273,12 +273,10 @@ function MyPage() {
     return <Loading></Loading>;
   }
 
-
   // 이미지 없는 경우, default 이미지 노출
   const onErrorImg = (e) => {
     e.target.src = defaultImage;
-  }
-
+  };
 
   return (
     <MainContents className="main">
@@ -287,7 +285,11 @@ function MyPage() {
         <section className="container gutter-sm">
           <div className="mypage-profile flex items-start mb-[16px]">
             <div className="profile-pic mr-[12px]">
-              <img className="img" src={`${user?.profileImageUrl}`} alt={defaultImage}></img>
+              <img
+                className="img"
+                src={`${user?.profileImageUrl}`}
+                alt={defaultImage}
+              ></img>
             </div>
             <div className="mypage-profile-meta">
               <div className="userInfo flex items-center">
@@ -378,22 +380,36 @@ function MyPage() {
                   </div>
                   <div className="section-body pb-32">
                     <div className="saved-restaurant-list">
-
-                      { user?.saveRestaurants?.map((item,index)=>{
-                        return(
-                          <div className="saved-restaurant-list-item" key={index}>
-
+                      {user?.saveRestaurants?.map((item, index) => {
+                        return (
+                          <div
+                            className="saved-restaurant-list-item"
+                            key={index}
+                          >
                             <div className="restaurant-info">
                               <a className="tb">
-                                <div className="img"><img src={`${item.imageUrl}`} onError={onErrorImg}/></div>
+                                <div className="img">
+                                  <img
+                                    src={`${item.imageUrl}`}
+                                    onError={onErrorImg}
+                                  />
+                                </div>
                               </a>
                               <a className="detail">
-                                <h4 className="name">{item.savedRestaurantName || '식당 이름'}</h4>
-                                <p className="excerpt">{item.content || '식당 소개'}</p>
+                                <h4 className="name">
+                                  {item.savedRestaurantName || "식당 이름"}
+                                </h4>
+                                <p className="excerpt">
+                                  {item.content || "식당 소개"}
+                                </p>
                                 <div className="restaurant-meta">
                                   <div className="rating">
-                                    <span className="star">{item.rate || '식당 별점'}</span>
-                                    <span className="count">{item.reviewCount || '식당 리뷰수'}</span>
+                                    <span className="star">
+                                      {item.rate || "식당 별점"}
+                                    </span>
+                                    <span className="count">
+                                      {item.reviewCount || "식당 리뷰수"}
+                                    </span>
                                   </div>
                                 </div>
                               </a>
@@ -419,9 +435,7 @@ function MyPage() {
                       <div className="">
                         <div className="flex flex-col w-[100%] gap-y-[7px]">
                           <div className="flex justify-between">
-                            <span
-                              className="text-[16px] font-bold"
-                            >
+                            <span className="text-[16px] font-bold">
                               {info.restaurantName}
                             </span>
                             <div className="flex justify-end gap-x-[7px]">
@@ -435,8 +449,6 @@ function MyPage() {
                               </span>
 
                               {isUserInfo.comments.map((item, index) => {
-                                console.log(info.reviewId);
-                                console.log(item.reviewId);
                                 return info.reviewId !== item.reviewId ? (
                                   <span
                                     key={index}

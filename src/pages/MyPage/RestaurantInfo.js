@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { RestaurantState } from "../../States/LoginState";
-import { urlToFile } from "../../apis/ApiClient";
+import { convertURLtoFile } from "../../apis/ApiClient";
 import { geocodeAddress } from "../../apis/geocodeAddress";
 import { CreateRestaurantImagesItem } from "../../respository/reservation";
 import {
@@ -49,16 +49,6 @@ const facilityOptions = [
   "반려동물 동반",
   "장애인 편의시설",
 ];
-const days = [
-  { value: "MONDAY", label: "월" },
-  { value: "TUESDAY", label: "화" },
-  { value: "WEDNESDAY", label: "수" },
-  { value: "THURSDAY", label: "목" },
-  { value: "FRIDAY", label: "금" },
-  { value: "SATURDAY", label: "토" },
-  { value: "SUNDAY", label: "일" },
-];
-const daysOptions = ["월", "화", "수", "목", "금", "토", "일"];
 
 const testFile = (photoList) => {
   const photoArray = [];
@@ -95,6 +85,17 @@ export default function RestaurantInfo() {
   const [restaurant, setRestaurant] = useState(false);
   const [location, setLocation] = useState({ lat: 0, lng: 0 });
   const [isNumber, setIsNumber] = useState("");
+  const [inputValues, setInputValues] = useState({
+    name: user ? user.name : "",
+    content: user ? user.content : "",
+    openTime: user ? user.openTime : "",
+    lastOrderTime: user ? user.lastOrderTime : "",
+    closeTime: user ? user.closeTime : "",
+    address: user ? user.address : "",
+    detailAddress: user ? user.detailAddress : "",
+    reservationBeginDate: user ? user.reservationBeginDate : "",
+    reservationEndDate: user ? user.reservationEndDate : "",
+  });
   const theme = useTheme();
   const inputRef = useRef([]);
   const { mutate: updateRestaurant } = UpdateRestaurantRes();
@@ -120,10 +121,17 @@ export default function RestaurantInfo() {
     };
   }
 
+  const handleChange = (event) => {
+    const { id, value } = event.target;
+    setUser((prevValuse) => ({
+      ...prevValuse,
+      [id]: value,
+    }));
+  };
   /* 식당이 있으면 조회 */
   useEffect(() => {
     //내 식당 정보 조회 및 세팅
-
+    console.log("inputValues", inputValues);
     if (text.indexOf("add") > 0) {
       // 식당 정보 없을때
 
@@ -156,13 +164,12 @@ export default function RestaurantInfo() {
 
   /* Select 값 변경 Function */
   useEffect(() => {
-    // console.log('isphoto',)
-    if (userInfo.images) {
+    console.log("isphoto", isphoto);
+    if (isphoto) {
       const fetchAndConvertImages = async () => {
         const promises = isphoto.map(async (item) => {
-          console.log("userInfo.images", item);
           try {
-            const file = await urlToFile(item.path);
+            const file = await convertURLtoFile(item.path);
             console.log("file", file);
             return file;
           } catch (err) {
@@ -197,7 +204,6 @@ export default function RestaurantInfo() {
     const today = new Date();
     /* 값 설정 */
     const name = inputRef.current[0].value;
-
     const category = selectedCategory;
     const content = inputRef.current[2].value;
     const phone = inputRef.current[3].value;
@@ -229,9 +235,6 @@ export default function RestaurantInfo() {
       lng: Number(location.lng),
       lunchPrice: lunchPrice ? lunchPrice : 0,
       dinnerPrice: dinnerPrice ? dinnerPrice : 0,
-      // holidays: {
-      //   days: dataChage(selectedDays, days, "en"),
-      // },
       reservationBeginDate: reservationBeginDate,
       reservationEndDate: reservationEndDate,
       facilities: dataChage(selectedFacilities, facilites, "en"),
@@ -240,8 +243,7 @@ export default function RestaurantInfo() {
     console.log("location", location);
 
     /* 모두 필수 : 하나라도 입력하지 않은 경우 알림창 */
-    console.log("photoToAddList", photoToAddList);
-    // return;
+
     if (
       !name ||
       !selectedCategory ||
@@ -267,27 +269,28 @@ export default function RestaurantInfo() {
       console.log("식당 정보 없을때");
       createRestaurant(info)
         .then((res) => {
-          window.location.href = "/account";
+          // window.location.href = "/account";
           console.log(res);
         })
         .catch((err) => {
           console.log(err);
         });
-
-      // 사진 보내기
-      const restaurantItem = {
-        addRestaurantImagesReq: {
-          restaurantImageTypes: testFile(photoToAddList),
-        },
-        files: photoToAddList,
-        restaurantId: userInfo.restaurantId,
-      };
-      createImages(restaurantItem);
     } else {
       //식당 정보 있을때
-
       updateRestaurant(info);
     }
+
+    // 사진 보내기
+
+    const restaurantItem = {
+      addRestaurantImagesReq: {
+        restaurantImageTypes: testFile(photoToAddList),
+      },
+      files: photoToAddList,
+      restaurantId: userInfo.restaurantId,
+    };
+    console.log(restaurantItem);
+    createImages(restaurantItem);
   };
 
   const addressLocation = () => {
@@ -328,12 +331,11 @@ export default function RestaurantInfo() {
       alert("최대 10장만 가능합니다.");
       photoToAddList.length = 10;
     }
-    console.log("photoToAddList", photoToAddList);
 
     return photoToAddList.map((photo) => {
       if (!photo.file) return;
+
       let photoUrl = URL.createObjectURL(photo.file);
-      console.log(photoUrl);
       return (
         <div className="photoBox" key={photoUrl}>
           <div
@@ -370,7 +372,8 @@ export default function RestaurantInfo() {
               className="form-input"
               id="name"
               placeholder="식당이름을 입력해주세요."
-              defaultValue={user ? user.name : ""}
+              value={user.name || ""}
+              onChange={handleChange}
             />
           </div>
           <div className="form-block mb-[20px]">
@@ -413,7 +416,8 @@ export default function RestaurantInfo() {
               rows="3"
               maxLength="35"
               ref={(el) => (inputRef.current[2] = el)}
-              defaultValue={user ? user.content : ""}
+              value={user.content || ""}
+              onChange={handleChange}
             />
           </div>
           <div className="form-block mb-[20px]">
@@ -425,7 +429,7 @@ export default function RestaurantInfo() {
               className="form-input"
               ref={(el) => (inputRef.current[3] = el)}
               id="phone"
-              value={user ? user.phone : ""}
+              value={user.phone || ""}
               placeholder="식당 전화 번호 입력해주세요. 예시 : 02-0000-0000"
               maxLength={13}
               onChange={(e) => {
@@ -460,18 +464,9 @@ export default function RestaurantInfo() {
               ref={(el) => (inputRef.current[4] = el)}
               id="tablePersonMax"
               min={1}
-              value={user ? user.tablePersonMax : ""}
+              value={user.tablePersonMax || ""}
               placeholder="한 테이블 당 최대 인원을 입력해주세요."
-              onChange={(e) => {
-                const newValue = parseInt(e.target.value);
-                setUser((prevUser) => ({
-                  ...prevUser,
-                  shop: {
-                    ...prevUser,
-                    tablePersonMax: newValue,
-                  },
-                }));
-              }}
+              onChange={handleChange}
             />
           </div>
           <div className="form-block mb-[20px]">
@@ -486,18 +481,9 @@ export default function RestaurantInfo() {
               ref={(el) => (inputRef.current[5] = el)}
               min={1}
               id="tablePersonMin"
-              value={user ? user.tablePersonMin : ""}
+              value={user.tablePersonMin || ""}
               placeholder="한 테이블 당 최소 인원을 입력해주세요."
-              onChange={(e) => {
-                const newValue = parseInt(e.target.value);
-                setUser((prevUser) => ({
-                  ...prevUser,
-                  shop: {
-                    ...prevUser,
-                    tablePersonMin: newValue,
-                  },
-                }));
-              }}
+              onChange={handleChange}
             />
           </div>
           <div className="form-block mb-[20px]">
@@ -509,7 +495,8 @@ export default function RestaurantInfo() {
               className="form-input"
               ref={(el) => (inputRef.current[6] = el)}
               id="openTime"
-              defaultValue={user ? user.openTime : ""}
+              value={user.openTime || ""}
+              onChange={handleChange}
             />
           </div>
           <div className="form-block mb-[20px]">
@@ -523,7 +510,7 @@ export default function RestaurantInfo() {
               className="form-input"
               ref={(el) => (inputRef.current[7] = el)}
               id="lastOrderTime"
-              defaultValue={user ? user.lastOrderTime : ""}
+              defaultValue={user.lastOrderTime || ""}
             />
           </div>
           <div className="form-block mb-[20px]">
@@ -535,7 +522,8 @@ export default function RestaurantInfo() {
               className="form-input"
               ref={(el) => (inputRef.current[8] = el)}
               id="closeTime"
-              defaultValue={user ? user.closeTime : ""}
+              value={user.closeTime || ""}
+              onChange={handleChange}
             />
           </div>
           <div className="form-block mb-[20px]">
@@ -548,7 +536,8 @@ export default function RestaurantInfo() {
               ref={(el) => (inputRef.current[9] = el)}
               id="address"
               placeholder="식당 주소를 입력해주세요."
-              defaultValue={user ? user.address : ""}
+              value={user.address || ""}
+              onChange={handleChange}
               onBlur={addressLocation}
             />
             <input
@@ -557,7 +546,8 @@ export default function RestaurantInfo() {
               ref={(el) => (inputRef.current[10] = el)}
               id="detailAddress"
               placeholder="식당 상세 주소를 입력해주세요."
-              defaultValue={user ? user.detailAddress : ""}
+              value={user.detailAddress || ""}
+              onChange={handleChange}
             />
           </div>
           <div className="form-block mb-[20px]">
@@ -570,17 +560,8 @@ export default function RestaurantInfo() {
               id="lunchPrice"
               ref={(el) => (inputRef.current[11] = el)}
               placeholder="점심 시간을 입력해주세요."
-              value={user ? user.lunchPrice : ""}
-              onChange={(e) => {
-                const newValue = parseInt(e.target.value);
-                setUser((prevUser) => ({
-                  ...prevUser,
-                  shop: {
-                    ...prevUser,
-                    lunchPrice: newValue,
-                  },
-                }));
-              }}
+              value={user.lunchPrice || ""}
+              onChange={handleChange}
             />
           </div>
           <div className="form-block mb-[20px]">
@@ -592,18 +573,9 @@ export default function RestaurantInfo() {
               className="form-input"
               ref={(el) => (inputRef.current[12] = el)}
               id="dinnerPrice"
-              value={user ? user.dinnerPrice : ""}
+              value={user.dinnerPrice || ""}
               placeholder="저녁 가격을 입력해주세요."
-              onChange={(e) => {
-                const newValue = parseInt(e.target.value);
-                setUser((prevUser) => ({
-                  ...prevUser,
-                  shop: {
-                    ...prevUser,
-                    dinnerPrice: newValue,
-                  },
-                }));
-              }}
+              onChange={handleChange}
             />
           </div>
           <div className="form-block mb-[20px]">
@@ -618,7 +590,8 @@ export default function RestaurantInfo() {
               className="form-input"
               id="reservationBeginDate"
               required="required"
-              defaultValue={user ? user.reservationBeginDate : ""}
+              value={user.reservationBeginDate || ""}
+              onChange={handleChange}
             />
           </div>
           <div className="form-block mb-[20px]">
@@ -632,7 +605,8 @@ export default function RestaurantInfo() {
               className="form-input"
               ref={(el) => (inputRef.current[15] = el)}
               id="reservationEndDate"
-              defaultValue={user ? user.reservationEndDate : ""}
+              onChange={handleChange}
+              value={user.reservationEndDate || ""}
             />
           </div>
           <div className="form-block mb-[20px]">
@@ -694,11 +668,6 @@ export default function RestaurantInfo() {
               </div>
               {photoToAddList && photoToAddPreview()}
             </div>
-            {/* <FileUpLoad
-              photoToAddList={photoToAddList}
-              isphoto={isphoto}
-              setPhotoToAddList={setPhotoToAddList}
-            ></FileUpLoad> */}
           </div>
         </div>
       </div>
