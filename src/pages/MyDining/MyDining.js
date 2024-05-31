@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import "react-modern-drawer/dist/index.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Loading from "../../components/Loading";
 import Visitcomponent from "../../components/Visitcomponent";
 import { GetReservationRes } from "../../respository/restaurant";
 import RecommendPage from "./RecommendPage";
-
 const stateList = [
   {
     id: "PLANNED",
@@ -201,6 +201,9 @@ export default function MyDining() {
     enabled: loginState,
   });
 
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
   return (
     <MyDiningContents className="">
       <TabContens className="tab-contens">

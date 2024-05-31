@@ -24,7 +24,7 @@ import { DeleteOwnerReq } from "../../respository/userInfo";
  */
 
 const facilites = [
-  { value: "PARKING", label: "주차" },
+  { value: "PARKING", label: "주차 가능" },
   { value: "VALET_PARKING", label: "발렛 가능" },
   { value: "CORKAGE", label: "콜키지 가능" },
   { value: "CORKAGE_FREE", label: "콜키지 프리" },
@@ -54,13 +54,13 @@ const testFile = (photoList) => {
   const photoArray = [];
   const photoLength = photoList.length - 1;
   photoList.map((item, index) => {
-    photoArray.push(photoLength === index ? "REPRESENTATIVE" : "NORMAL");
+    photoArray.push(0 === index ? "REPRESENTATIVE" : "NORMAL");
   });
 
   return photoArray;
 };
 
-const dataChage = (items, data, lan) => {
+const dataChange = (items, data, lan) => {
   const array = [];
   items.map((item) => {
     if (lan === "ko") {
@@ -68,6 +68,7 @@ const dataChage = (items, data, lan) => {
       array.push(found.label);
     } else {
       const found = data.find((fa) => fa.label === item);
+      console.log(found);
       array.push(found.value);
     }
   });
@@ -150,41 +151,33 @@ export default function RestaurantInfo() {
         });
         setSelectedFacilities(facilities);
       }
-
       setLocation({ lat: prevUser.lat, lng: prevUser.lng });
       setRestaurant(true);
-
-      if (prevUser.images) {
-        prevUser.images.map((item) => {
-          isSetPhoto((prevList) => [...prevList, item]);
-        });
-      }
     }
   }, []);
 
   /* Select 값 변경 Function */
   useEffect(() => {
-    console.log("isphoto", isphoto);
-    if (isphoto) {
-      const fetchAndConvertImages = async () => {
-        const promises = isphoto.map(async (item) => {
-          try {
-            const file = await convertURLtoFile(item.path);
-            console.log("file", file);
-            return file;
-          } catch (err) {
-            console.error("Error converting URL to file:", err);
-            return null;
-          }
-        });
-        const files = await Promise.all(promises);
-        files.map((item) => {
-          setPhotoToAddList((prevList) => [...prevList, { file: item }]);
-        });
-      };
-      fetchAndConvertImages();
-    }
-  }, [isphoto]);
+    if (!user.images) return;
+
+    const fetchAndConvertImages = async () => {
+      const promises = user.images.map(async (item) => {
+        if (!item.path) return;
+        try {
+          const file = await convertURLtoFile(item.path);
+          console.log("file", file);
+          return file;
+        } catch (err) {
+          console.log("Error converting URL to file:", err);
+        }
+      });
+      const files = await Promise.all(promises);
+      files.map((item) => {
+        setPhotoToAddList((prevList) => [...prevList, { file: item }]);
+      });
+    };
+    fetchAndConvertImages();
+  }, [user]);
 
   const handleSelectFacility = (event) => {
     const selectedValue = event.target.value;
@@ -237,7 +230,7 @@ export default function RestaurantInfo() {
       dinnerPrice: dinnerPrice ? dinnerPrice : 0,
       reservationBeginDate: reservationBeginDate,
       reservationEndDate: reservationEndDate,
-      facilities: dataChage(selectedFacilities, facilites, "en"),
+      facilities: dataChange(selectedFacilities, facilites, "en"),
     };
 
     console.log("location", location);
@@ -326,6 +319,8 @@ export default function RestaurantInfo() {
     setPhotoToAddList(temp.concat(photoToAddList));
   };
   const photoToAddPreview = () => {
+    console.log("photoToAddList", photoToAddList);
+
     if (photoToAddList.length === 0) return;
     if (photoToAddList.length > 10) {
       alert("최대 10장만 가능합니다.");
@@ -334,8 +329,8 @@ export default function RestaurantInfo() {
 
     return photoToAddList.map((photo) => {
       if (!photo.file) return;
-
       let photoUrl = URL.createObjectURL(photo.file);
+      console.log("photo", photoUrl);
       return (
         <div className="photoBox" key={photoUrl}>
           <div

@@ -70,7 +70,6 @@ export const getRestaurant = async (name) => {
 
 //나의 예약 조회
 export const GetReservationRes = async (visitStatus) => {
-  console.log("visitStatus", visitStatus);
   try {
     const res = await apiClient.get(`/mydining/my/${visitStatus}`, {
       headers: {

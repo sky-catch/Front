@@ -22,15 +22,17 @@ export const urlToFile = async (url) => {
   const metadata = { type: `image/${ext}` };
   return new File([data], filename, metadata);
 };
+
 export const convertURLtoFile = async (url) => {
   const response = await fetch(url, {
+    // mode: "cors",
     headers: { "Access-Control-Allow-Origin": "*" },
   });
 
   const data = await response.blob();
   const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
   const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것
-  console.log("ext", ext);
+  console.log("url", url);
   const metadata = { type: `image/${ext}` };
   return new File([data], filename, metadata);
 };

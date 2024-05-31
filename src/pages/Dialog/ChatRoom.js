@@ -26,7 +26,7 @@ const ChatRoom = () => {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
-        chatRoomId: chatRoomId,
+        chatRoomId: chatRoomId.toString(),
         memberChat: memberChat.toString(),
       },
     })

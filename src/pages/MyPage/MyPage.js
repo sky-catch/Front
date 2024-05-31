@@ -28,7 +28,6 @@ function MyPage() {
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const { mutate: DeleteReviewItem } = DeleteReview();
   const [user, setUser] = useRecoilState(LoginState);
-
   const [restaurant, setRestaurant] = useRecoilState(RestaurantState);
   const textInput = useRef();
   const { mutate: review } = UpdateReview();
@@ -68,7 +67,6 @@ function MyPage() {
         }
       });
       const files = await Promise.all(promises);
-
       files.map((item) => {
         setPhotoToAddList((prevList) => [...prevList, { file: item }]);
       });
@@ -108,7 +106,6 @@ function MyPage() {
     for (let i = 0; i < photoToAdd.length; i++) {
       temp.push({ file: photoToAdd[i] });
     }
-
     setPhotoToAddList(temp.concat(photoToAddList));
   };
 
@@ -181,7 +178,9 @@ function MyPage() {
     queryFn: () => {
       return getMyRestaurant()
         .then((res) => {
-          console.log(res);
+          if (res !== undefined) {
+            console.log(res);
+          }
           return res;
         })
         .catch((err) => {
@@ -215,7 +214,7 @@ function MyPage() {
       setIsRestaurant(true);
       setRestaurant((prevUser) => ({ ...getRestaurantItem }));
     }
-  }, [getRestaurantItem]);
+  }, [getRestaurantItem, isUserInfo]);
 
   useEffect(() => {
     // 이미지 정보 설정
@@ -256,7 +255,6 @@ function MyPage() {
       },
       files: photoToAddList,
     };
-    console.log("안녕", reviewItem);
     review(reviewItem);
   };
 
@@ -311,7 +309,7 @@ function MyPage() {
             <button
               className="btn btn-md btn-outline btn-rounded mt-18"
               onClick={
-                user?.isOwner
+                isUserInfo.owner
                   ? isRestaurant
                     ? manageRestaurant
                     : createRestaurant
@@ -319,7 +317,7 @@ function MyPage() {
               }
             >
               <span className="label">
-                {user?.isOwner
+                {isUserInfo.owner
                   ? isRestaurant
                     ? "내 식당 관리"
                     : "내 식당 등록"
@@ -366,62 +364,74 @@ function MyPage() {
           </ul>
           {isSave ? (
             <div className="collection">
-              <section className="section pt-[20px]">
-                <div className="container gutter-sm">
-                  <div className="__d-flex">
-                    <div className="section-header justify-between full-width">
-                      <h3 className="section-title flex">
-                        저장한 레스토랑
-                        <span className="count">
-                          {user?.saveRestaurants?.length}
-                        </span>
-                      </h3>
+              {user?.saveRestaurants?.length > 0 ? (
+                <section className="section pt-[20px]">
+                  <div className="container gutter-sm">
+                    <div className="__d-flex">
+                      <div className="section-header justify-between full-width">
+                        <h3 className="section-title flex">
+                          저장한 레스토랑
+                          <span className="count">
+                            {user?.saveRestaurants?.length}
+                          </span>
+                        </h3>
+                      </div>
                     </div>
-                  </div>
-                  <div className="section-body pb-32">
-                    <div className="saved-restaurant-list">
-                      {user?.saveRestaurants?.map((item, index) => {
-                        return (
-                          <div
-                            className="saved-restaurant-list-item"
-                            key={index}
-                          >
-                            <div className="restaurant-info">
-                              <a className="tb">
-                                <div className="img">
-                                  <img
-                                    src={`${item.imageUrl}`}
-                                    onError={onErrorImg}
-                                  />
-                                </div>
-                              </a>
-                              <a className="detail">
-                                <h4 className="name">
-                                  {item.savedRestaurantName || "식당 이름"}
-                                </h4>
-                                <p className="excerpt">
-                                  {item.content || "식당 소개"}
-                                </p>
-                                <div className="restaurant-meta">
-                                  <div className="rating">
-                                    <span className="star">
-                                      {item.rate || "식당 별점"}
-                                    </span>
-                                    <span className="count">
-                                      {item.reviewCount || "식당 리뷰수"}
-                                    </span>
+                    <div className="section-body pb-[32px]">
+                      <div className="saved-restaurant-list">
+                        {user?.saveRestaurants?.map((item, index) => {
+                          return (
+                            <div
+                              className="saved-restaurant-list-item"
+                              key={index}
+                            >
+                              <div className="restaurant-info">
+                                <a className="tb">
+                                  <div className="img">
+                                    <img
+                                      src={`${item.imageUrl}`}
+                                      onError={onErrorImg}
+                                    />
                                   </div>
-                                </div>
-                              </a>
-                              <a className="btn-bookmark active"></a>
+                                </a>
+                                <a className="detail">
+                                  <h4 className="name">
+                                    {item.savedRestaurantName || "식당 이름"}
+                                  </h4>
+                                  <p className="excerpt">
+                                    {item.content || "식당 소개"}
+                                  </p>
+                                  <div className="restaurant-meta">
+                                    <div className="rating">
+                                      <span className="star">
+                                        {item.rate || "식당 별점"}
+                                      </span>
+                                      <span className="count">
+                                        {item.reviewCount || "식당 리뷰수"}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </a>
+                                <a className="btn-bookmark active"></a>
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
+                </section>
+              ) : (
+                <div className=" w-[100%] h-[220px] flex-col gap-y-[20px] flex items-center justify-center ">
+                  <img
+                    className=" size-[70px]"
+                    src={require("../../assets/icons/empty.png")}
+                  />
+                  <span className=" text-[#47566A] text-[16px] text-bold ">
+                    현재 저장된 레스토랑이 없습니다.
+                  </span>
                 </div>
-              </section>
+              )}
             </div>
           ) : (
             <div className="review container">

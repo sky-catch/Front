@@ -146,8 +146,6 @@ export const CreateNewReservation = () => {
 
 //예약 삭제
 const cancelReservationItem = async (reservationId) => {
-  console.log("reservationId", reservationId);
-  // const token = sessionStorage.getItem("token");
   return axios.patch(
     `http://15.164.89.177:8080/reservations/${reservationId}`,
     null,
@@ -162,7 +160,6 @@ export const CancelReservation = () => {
     mutationFn: cancelReservationItem,
     onSuccess: (data) => {
       navigate("/mydining/my");
-
       console.log("createPost success", data);
     },
     onError: (error) => {
@@ -212,11 +209,10 @@ export const CreateReview = () => {
 // 리뷰 수정
 const updateReviewItem = async ({ updateReviewReq, files }) => {
   const formData = new FormData();
-
   const createReviewString = JSON.stringify(updateReviewReq);
   const blob = new Blob([createReviewString], { type: "application/json" });
   await formData.append("updateReviewReq", blob);
-
+  console.log("createReviewString", createReviewString);
   for (let index = 0; index < files.length; index++) {
     await formData.append("files", files[index].file);
   }
@@ -283,27 +279,26 @@ const createRestaurantImages = async ({
   files,
   restaurantId,
 }) => {
-  const formData = new FormData();
   const createImages = JSON.stringify(addRestaurantImagesReq);
-  console.log("createImages", createImages);
+  const formData = new FormData();
   const blob = new Blob([createImages], { type: "application/json" });
   formData.append("addRestaurantImagesReq", blob);
 
   for (let index = 0; index < files.length; index++) {
     formData.append("files", files[index].file);
-
-    const response = await axios.post(
-      `http://15.164.89.177:8080/restaurants/${restaurantId}/images`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-    return response.data;
   }
+
+  const response = await axios.post(
+    `http://15.164.89.177:8080/restaurants/${restaurantId}/images`,
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response.data;
 };
 
 export const CreateRestaurantImagesItem = () => {
