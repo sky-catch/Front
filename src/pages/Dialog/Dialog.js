@@ -36,7 +36,6 @@ function Dialog() {
   });
 
   const searchRestaurant = (e) => {
-    console.log(roomList);
     let searchValue = e.target.value;
     setFilterText(searchValue);
   };
@@ -72,8 +71,6 @@ function Dialog() {
   if (error) {
     return <div>error....</div>;
   }
-
-  //FIXME 채팅방이 없을때 작업하기 위해 일부로 없앴음
 
   return (
     <DialogContents className="">

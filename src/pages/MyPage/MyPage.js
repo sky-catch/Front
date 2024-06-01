@@ -74,7 +74,16 @@ function MyPage() {
 
     fetchAndConvertImages();
   }, [isReviewOpen, isSelectInfo]);
-
+  useEffect(() => {
+    // 이미지 정보 설정
+    setUser((prevUser) => ({
+      ...prevUser,
+      profileImageUrl: isUserInfo?.profileImageUrl,
+      isOwner: isUserInfo?.owner,
+      saveRestaurants: isUserInfo?.savedRestaurants,
+    }));
+    console.log("isUserInfo", isUserInfo);
+  }, [isUserInfo]);
   const toggleDrawerReview = (e, info) => {
     setIsReviewOpen((prevState) => !prevState);
     if (isReviewOpen) {
@@ -216,23 +225,12 @@ function MyPage() {
     }
   }, [getRestaurantItem, isUserInfo]);
 
-  useEffect(() => {
-    // 이미지 정보 설정
-    setUser((prevUser) => ({
-      ...prevUser,
-      profileImageUrl: isUserInfo?.profileImageUrl,
-      isOwner: isUserInfo?.owner,
-      saveRestaurants: isUserInfo?.savedRestaurants,
-    }));
-    console.log("isUserInfo", isUserInfo);
-  }, [isUserInfo]);
-
   const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
   };
 
   const createRestaurant = () => {
-    navigate(`/my/myshop/edit/:add`);
+    navigate(`/my/myshop/edit/add`);
   };
 
   const rateBox = (count) => {
