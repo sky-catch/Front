@@ -29,7 +29,7 @@ export const getLogin = async (code) => {
 // 로그인 사용자 테스트용
 export const getTestLogin = async () => {
   try {
-    let id = 9;
+    let id = 15;
     const result = await apiClient.get(`/oauth/jwt/test/owner/${id}`, {
       headers: {},
     });
@@ -77,8 +77,8 @@ export const updateUserInfo = async ({ updateMemberReq, file }) => {
   try {
     const result = await apiClient.patch(`/member/profile`, formData, {
       headers: {
-        Authorization : `Bearer ${token}`,
-        "Content-Type" : "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
       },
     });
     console.log(result);
@@ -99,6 +99,7 @@ export const getMyRestaurant = async () => {
     return result.data;
   } catch (err) {
     console.log("Error >>", err);
+    // throw err;
   }
 };
 

@@ -9,9 +9,7 @@ const FileUpLoad = ({ setPhotoToAddList, photoToAddList, isphoto }) => {
 
     for (let i = 0; i < photoToAdd.length; i++) {
       temp.push({
-        // id: photoToAdd[i].name,
         file: photoToAdd[i],
-        // url: URL.createObjectURL(photoToAdd[i]),
       });
     }
     setPhotoToAddList(temp.concat(photoToAddList));
@@ -30,51 +28,31 @@ const FileUpLoad = ({ setPhotoToAddList, photoToAddList, isphoto }) => {
       photoToAddList.filter((photo) => photo.file.name != deleteName)
     );
   };
-  const photoToAdd = () => {
-    return isphoto.map((photo) => {
-      let photoUrl = photo.path;
-      if (photoToAddList.length + isphoto.length > 10) {
-        alert("최대 10장만 가능합니다.");
-        return;
-        // (photoToAddList.length + isphoto.length) = 10;
-      }
-      return (
-        <div className="photoBox" key={photoUrl}>
-          <div
-            className="photoBoxDelete icon delect-icon"
-            onClick={() => onRemoveToAdd(photo.file.name)}
-          />
-          <img className="photoPreview size-[100%]" src={photoUrl} />
-        </div>
-      );
-    });
-  };
+
   const photoToAddPreview = () => {
-    if (photoToAddList.length + isphoto.length > 10) {
+    if (photoToAddList.length > 10) {
       alert("최대 10장만 가능합니다.");
       return;
-      // (photoToAddList.length + isphoto.length) = 10;
     }
-
+    // console.log(photoToAddList);
     return photoToAddList.map((photo) => {
-      let photoUrl = URL.createObjectURL(photo.file);
-
-      return (
-        <div className="photoBox" key={photoUrl}>
-          <div
-            className="photoBoxDelete icon delect-icon"
-            onClick={() => onRemoveToAdd(photo.file.name)}
-          />
-          <img className="photoPreview size-[100%]" src={photoUrl} />
-        </div>
-      );
+      // console.log("photo.file", photo.file);
+      // let photoUrl = URL.createObjectURL(photo.file);
+      // return (
+      // <div className="photoBox" key={photoUrl}>
+      //   <div
+      //     className="photoBoxDelete icon delect-icon"
+      //     onClick={() => onRemoveToAdd(photo.file.name)}
+      //   />
+      //   <img className="photoPreview size-[100%]" src={photoUrl} />
+      // </div>
+      // );
     });
   };
   return (
     <div className="photoUploaderContent">
       <div className="photoBox addPhoto">
         <button className="icon add-icon" onClick={handleClick}></button>
-
         <PictureFilled onClick={handleClick} />
         <input
           type="file"
@@ -86,7 +64,6 @@ const FileUpLoad = ({ setPhotoToAddList, photoToAddList, isphoto }) => {
         />
       </div>
       {photoToAddPreview()}
-      {/* {photoToAdd()} */}
     </div>
   );
 };

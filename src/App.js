@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import Header from "./components/Header.js";
@@ -33,10 +33,10 @@ function App() {
     setSearch(param);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getTestLogin();
-  },[])
-  
+  }, []);
+
   const location = useLocation();
   if (useLocation().pathname === "/ct/shop") {
     document.title = `${location.state}`;

@@ -141,7 +141,7 @@ const Visitcomponent = ({ itemList }) => {
 
   return (
     <>
-      <div className=" py-[20px] px-[16px] bg-white rounded-[10px] shadow-lg min-h-[180px] relative mb-[15px]">
+      <div className=" py-[20px] px-[16px] bg-white rounded-[10px] shadow-lg min-h-[160px] relative mb-[15px]">
         <span className="text-[#666] text-[12px] bg-[#f4f4f4] py-[3px] px-[8px] rounded-full ">
           {itemList.status === "PLANNED"
             ? timeGap(new Date(itemList.time.split("T")[0]) - new Date())
@@ -189,9 +189,11 @@ const Visitcomponent = ({ itemList }) => {
             </ReviewBtn>
           )
         ) : (
-          <span className=" text-center text-[#727272] text-[12px] block mt-[15px]">
-            {itemList.memo}
-          </span>
+          itemList.memo && (
+            <span className=" text-center text-[#727272] text-[12px] block mt-[15px]">
+              {itemList.memo}
+            </span>
+          )
         )}
       </div>
       <Drawer

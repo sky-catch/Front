@@ -116,7 +116,10 @@ export const createReservation = async (restaurantId, restaurantValue) => {
   }
 
   try {
-    const result = await apiClient.post(`/reservations/${restaurantId}`, JSON.stringify(restaurantValue),{
+    const result = await apiClient.post(
+      `/reservations/${restaurantId}`,
+      JSON.stringify(restaurantValue),
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -143,8 +146,6 @@ export const CreateNewReservation = () => {
 
 //예약 삭제
 const cancelReservationItem = async (reservationId) => {
-  console.log("reservationId", reservationId);
-  // const token = sessionStorage.getItem("token");
   return axios.patch(
     `http://15.164.89.177:8080/reservations/${reservationId}`,
     null,
@@ -159,7 +160,6 @@ export const CancelReservation = () => {
     mutationFn: cancelReservationItem,
     onSuccess: (data) => {
       navigate("/mydining/my");
-
       console.log("createPost success", data);
     },
     onError: (error) => {
@@ -179,6 +179,7 @@ const createReviewItem = async ({ createReviewReq, files }) => {
   for (let index = 0; index < files.length; index++) {
     await formData.append("files", files[index].file);
   }
+
   const response = await axios.post(
     `http://15.164.89.177:8080/review`,
     formData,
@@ -205,7 +206,45 @@ export const CreateReview = () => {
     },
   });
 };
+// 리뷰 수정
+const updateReviewItem = async ({ updateReviewReq, files }) => {
+  const formData = new FormData();
+  const createReviewString = JSON.stringify(updateReviewReq);
+  const blob = new Blob([createReviewString], { type: "application/json" });
+  await formData.append("updateReviewReq", blob);
+  console.log("createReviewString", createReviewString);
+  for (let index = 0; index < files.length; index++) {
+    await formData.append("files", files[index].file);
+  }
 
+  const response = await axios.put(
+    `http://15.164.89.177:8080/review`,
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response.data;
+};
+
+export const UpdateReview = () => {
+  return useMutation({
+    mutationKey: ["updateReviewItem"],
+    mutationFn: updateReviewItem,
+    onSuccess: () => {
+      alert("리뷰 수정 완료됐습니다.");
+      window.location.reload();
+      // window.location.href = "/mydining/my";
+    },
+    onError: (error) => {
+      console.log("createPost error", error);
+    },
+  });
+};
+// 리뷰 삭제
 const deleteReviewItem = async (id) => {
   const response = await axios.delete(
     `http://15.164.89.177:8080/review/${id}`,
@@ -241,25 +280,25 @@ const createRestaurantImages = async ({
   restaurantId,
 }) => {
   const createImages = JSON.stringify(addRestaurantImagesReq);
+  const formData = new FormData();
   const blob = new Blob([createImages], { type: "application/json" });
+  formData.append("addRestaurantImagesReq", blob);
 
   for (let index = 0; index < files.length; index++) {
-    const formData = new FormData();
-    formData.append("addRestaurantImagesReq", blob);
     formData.append("files", files[index].file);
-
-    const response = await axios.post(
-      `http://15.164.89.177:8080/restaurants/${restaurantId}/images`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-    return response.data;
   }
+
+  const response = await axios.post(
+    `http://15.164.89.177:8080/restaurants/${restaurantId}/images`,
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response.data;
 };
 
 export const CreateRestaurantImagesItem = () => {
@@ -278,8 +317,6 @@ export const CreateRestaurantImagesItem = () => {
 
 //예약들 노쇼로 바꾸는 기능
 const changeReservationsItem = async (noShowIds) => {
-  const token = sessionStorage.getItem("token");
-
   return axios.patch(
     `http://15.164.89.177:8080/owner/reservations`,
     {

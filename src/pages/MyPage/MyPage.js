@@ -8,13 +8,15 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { LoginState, RestaurantState } from "../../States/LoginState";
-import { DeleteReview } from "../../respository/reservation";
+import { convertURLtoFile } from "../../apis/ApiClient";
+import defaultImage from "../../assets/icons/default.png";
+import Loading from "../../components/Loading";
+import { DeleteReview, UpdateReview } from "../../respository/reservation";
 import {
   getMyRestaurant,
   getOwner,
   getUserInfo,
 } from "../../respository/userInfo";
-import defaultImage from "../../assets/icons/default.png"
 
 /**
  * 마이페이지
@@ -26,21 +28,22 @@ function MyPage() {
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const { mutate: DeleteReviewItem } = DeleteReview();
   const [user, setUser] = useRecoilState(LoginState);
-
   const [restaurant, setRestaurant] = useRecoilState(RestaurantState);
   const textInput = useRef();
+  const { mutate: review } = UpdateReview();
   const photoInput = useRef();
-  const [isScore, setIsScore] = useState(0);
   const [isSelect, setIsSelect] = useState(true);
-
   const [isRestaurant, setIsRestaurant] = useState(false);
-
   const [photoToAddList, setPhotoToAddList] = useState([]);
   const [isSelectInfo, setIsSelectInfo] = useState([]);
+  const [isSelectItem, setSelectItem] = useState({ score: 0, reviewId: 0 });
   const [isSave, setIsSave] =
     useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
 
-  const { data: isUserInfo } = useQuery({ queryKey: [], queryFn: getUserInfo });
+  const { data: isUserInfo, isLoading: userLoading } = useQuery({
+    queryKey: ["getUserInfo"],
+    queryFn: getUserInfo,
+  });
   const [isOwner, setIsOwner] = useState(isUserInfo ? isUserInfo.owner : false);
   const [following, setFollowing] = useState(0); //isUserInfo 팔로잉,팔로워 수 리턴받아야함.(TODO)
   const [follower, setFollower] = useState(0); // 동일
@@ -49,45 +52,51 @@ function MyPage() {
   const updateUserInfo = () => {
     navigate("/my/myProfileInfo");
   };
-
   useEffect(() => {
     if (!isReviewOpen) return;
     if (!isSelectInfo) return;
-
-    console.log("isReviewOpen", isReviewOpen);
-    console.log("isSelectInfo", isSelectInfo[0].path);
-
-    const fetchFile = async () => {
-      try {
-        const response = await fetch(isSelectInfo[0].path);
-        const blob = await response.blob();
-        const file = new File([blob], isSelectInfo[0].path, {
-          type: blob.type,
-        });
-        console.log("file", file);
-        // setFile(file);
-      } catch (error) {
-        console.error("Error fetching and converting file: ", error);
-      }
+    const fetchAndConvertImages = async () => {
+      const promises = isSelectInfo.map(async (item) => {
+        try {
+          const file = await convertURLtoFile(item.path);
+          console.log("file", file);
+          return file;
+        } catch (err) {
+          console.error("Error converting URL to file:", err);
+          return null;
+        }
+      });
+      const files = await Promise.all(promises);
+      files.map((item) => {
+        setPhotoToAddList((prevList) => [...prevList, { file: item }]);
+      });
     };
 
-    fetchFile();
+    fetchAndConvertImages();
   }, [isReviewOpen, isSelectInfo]);
-
+  useEffect(() => {
+    // 이미지 정보 설정
+    setUser((prevUser) => ({
+      ...prevUser,
+      profileImageUrl: isUserInfo?.profileImageUrl,
+      isOwner: isUserInfo?.owner,
+      saveRestaurants: isUserInfo?.savedRestaurants,
+    }));
+    console.log("isUserInfo", isUserInfo);
+  }, [isUserInfo]);
   const toggleDrawerReview = (e, info) => {
     setIsReviewOpen((prevState) => !prevState);
     if (isReviewOpen) {
-      setIsScore(0);
+      setSelectItem({ score: 0, reviewId: 0 });
       document.querySelector(`.star span`).style.width = `0%`;
       textInput.current.value = "";
       setPhotoToAddList([]);
     } else {
-      setIsScore(info.rate);
+      setSelectItem({ score: info.rate, reviewId: info.reviewId });
       document.querySelector(`.star span`).style.width = `${
         info.rate * 2 * 10
       }%`;
       textInput.current.value = info.comment;
-      console.log("info", info);
       setIsSelectInfo(info.images);
     }
   };
@@ -106,7 +115,6 @@ function MyPage() {
     for (let i = 0; i < photoToAdd.length; i++) {
       temp.push({ file: photoToAdd[i] });
     }
-    console.log("photoToAdd", temp.concat(photoToAddList));
     setPhotoToAddList(temp.concat(photoToAddList));
   };
 
@@ -116,8 +124,11 @@ function MyPage() {
       alert("최대 5장만 가능합니다.");
       photoToAddList.length = 5;
     }
+
     return photoToAddList.map((photo) => {
+      console.log("photoToAddList", photo);
       let photoUrl = URL.createObjectURL(photo.file);
+
       return (
         <div className="photoBox" key={photoUrl}>
           <div
@@ -129,6 +140,7 @@ function MyPage() {
             src={photoUrl}
             alt="preview"
           />
+          {URL.revokeObjectURL(photo.file)}
         </div>
       );
     });
@@ -138,7 +150,8 @@ function MyPage() {
     document.querySelector(`.star span`).style.width = `${
       e.target.value * 10 * 2
     }%`;
-    setIsScore(e.target.value);
+
+    setSelectItem((prevState) => ({ ...prevState, score: e.target.value }));
   };
 
   const onRemoveToAdd = (deleteName) => {
@@ -147,7 +160,9 @@ function MyPage() {
     );
   };
   const onRemove = (deleteName) => {
-    setIsSelectInfo(isSelectInfo.filter((photo) => photo.path !== deleteName));
+    // setIsSelectInfo(
+    //   isSelectInfo.images.filter((photo) => photo.path !== deleteName)
+    // );
   };
   const createOwner = () => {
     navigate(`/owner`);
@@ -172,10 +187,14 @@ function MyPage() {
     queryFn: () => {
       return getMyRestaurant()
         .then((res) => {
+          if (res !== undefined) {
+            console.log(res);
+          }
           return res;
         })
         .catch((err) => {
           console.log("err1", err.response);
+          throw err;
         });
     },
     enabled: isUserInfo?.owner,
@@ -204,25 +223,14 @@ function MyPage() {
       setIsRestaurant(true);
       setRestaurant((prevUser) => ({ ...getRestaurantItem }));
     }
-  }, [getRestaurantItem]);
-
-  useEffect(() => {
-    // 이미지 정보 설정
-
-    setUser((prevUser) => ({
-      ...prevUser,
-      profileImageUrl: isUserInfo?.profileImageUrl,
-      isOwner: isUserInfo?.owner,
-      saveRestaurants: isUserInfo?.savedRestaurants,
-    }));
-  }, [isUserInfo]);
+  }, [getRestaurantItem, isUserInfo]);
 
   const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
   };
 
   const createRestaurant = () => {
-    navigate(`/my/myshop/edit/:add`);
+    navigate(`/my/myshop/edit/add`);
   };
 
   const rateBox = (count) => {
@@ -237,19 +245,17 @@ function MyPage() {
   };
 
   const reviewSend = () => {
-    const photoUploaderContent = document.querySelector(
-      ".photoUploaderContent"
-    );
-    if (photoUploaderContent) {
-      const imgElements = photoUploaderContent.querySelectorAll("img");
-      const imgCount = imgElements.length;
-      console.log(`Number of img elements: ${imgCount}`);
-    } else {
-      console.log(
-        "The element with class 'photoUploaderContent' was not found."
-      );
-    }
+    const reviewItem = {
+      updateReviewReq: {
+        reviewId: Number(isSelectItem.reviewId),
+        rate: Number(isSelectItem.score),
+        comment: textInput.current.value,
+      },
+      files: photoToAddList,
+    };
+    review(reviewItem);
   };
+
   const reviewDelect = (e, info) => {
     DeleteReviewItem(info.reviewId);
   };
@@ -259,10 +265,14 @@ function MyPage() {
     navigate(`/ct/shop/${restaurantName}`, { state: restaurantName });
   };
 
+  if (userLoading) {
+    return <Loading></Loading>;
+  }
+
   // 이미지 없는 경우, default 이미지 노출
   const onErrorImg = (e) => {
     e.target.src = defaultImage;
-  }
+  };
 
   return (
     <MainContents className="main">
@@ -271,11 +281,15 @@ function MyPage() {
         <section className="container gutter-sm">
           <div className="mypage-profile flex items-start mb-[16px]">
             <div className="profile-pic mr-[12px]">
-              <img className="img" src={`${user?.profileImageUrl}`} alt={defaultImage}></img>
+              <img
+                className="img"
+                src={`${user?.profileImageUrl}`}
+                alt={defaultImage}
+              ></img>
             </div>
             <div className="mypage-profile-meta">
               <div className="userInfo flex items-center">
-                <h4 className="name">{user?.nickname}</h4>
+                <h4 className="name">{isUserInfo?.nickname}</h4>
                 <div className="isOwner flex">
                   <FaStar color="#ff3d00"></FaStar>
                 </div>
@@ -293,7 +307,7 @@ function MyPage() {
             <button
               className="btn btn-md btn-outline btn-rounded mt-18"
               onClick={
-                user?.isOwner
+                isUserInfo.owner
                   ? isRestaurant
                     ? manageRestaurant
                     : createRestaurant
@@ -301,7 +315,7 @@ function MyPage() {
               }
             >
               <span className="label">
-                {user?.isOwner
+                {isUserInfo.owner
                   ? isRestaurant
                     ? "내 식당 관리"
                     : "내 식당 등록"
@@ -348,46 +362,74 @@ function MyPage() {
           </ul>
           {isSave ? (
             <div className="collection">
-              <section className="section pt-[20px]">
-                <div className="container gutter-sm">
-                  <div className="__d-flex">
-                    <div className="section-header justify-between full-width">
-                      <h3 className="section-title flex">
-                        저장한 레스토랑
-                        <span className="count">
-                          {user?.saveRestaurants?.length}
-                        </span>
-                      </h3>
+              {user?.saveRestaurants?.length > 0 ? (
+                <section className="section pt-[20px]">
+                  <div className="container gutter-sm">
+                    <div className="__d-flex">
+                      <div className="section-header justify-between full-width">
+                        <h3 className="section-title flex">
+                          저장한 레스토랑
+                          <span className="count">
+                            {user?.saveRestaurants?.length}
+                          </span>
+                        </h3>
+                      </div>
                     </div>
-                  </div>
-                  <div className="section-body pb-32">
-                    <div className="saved-restaurant-list">
-                      { user?.saveRestaurants?.map((item,index)=>{
-                        return(
-                          <div className="saved-restaurant-list-item" key={index}>
-                            <div className="restaurant-info">
-                              <a className="tb">
-                                <div className="img"><img src={`${item.imageUrl}`} onError={onErrorImg}/></div>
-                              </a>
-                              <a className="detail">
-                                <h4 className="name">{item.savedRestaurantName || '식당 이름'}</h4>
-                                <p className="excerpt">{item.content || '식당 소개'}</p>
-                                <div className="restaurant-meta">
-                                  <div className="rating">
-                                    <span className="star">{item.rate || '식당 별점'}</span>
-                                    <span className="count">{item.reviewCount || '식당 리뷰수'}</span>
+                    <div className="section-body pb-[32px]">
+                      <div className="saved-restaurant-list">
+                        {user?.saveRestaurants?.map((item, index) => {
+                          return (
+                            <div
+                              className="saved-restaurant-list-item"
+                              key={index}
+                            >
+                              <div className="restaurant-info">
+                                <a className="tb">
+                                  <div className="img">
+                                    <img
+                                      src={`${item.imageUrl}`}
+                                      onError={onErrorImg}
+                                    />
                                   </div>
-                                </div>
-                              </a>
-                              <a className="btn-bookmark active"></a>
+                                </a>
+                                <a className="detail">
+                                  <h4 className="name">
+                                    {item.savedRestaurantName || "식당 이름"}
+                                  </h4>
+                                  <p className="excerpt">
+                                    {item.content || "식당 소개"}
+                                  </p>
+                                  <div className="restaurant-meta">
+                                    <div className="rating">
+                                      <span className="star">
+                                        {item.rate || "식당 별점"}
+                                      </span>
+                                      <span className="count">
+                                        {item.reviewCount || "식당 리뷰수"}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </a>
+                                <a className="btn-bookmark active"></a>
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
+                </section>
+              ) : (
+                <div className=" w-[100%] h-[220px] flex-col gap-y-[20px] flex items-center justify-center ">
+                  <img
+                    className=" size-[70px]"
+                    src={require("../../assets/icons/empty.png")}
+                  />
+                  <span className=" text-[#47566A] text-[16px] text-bold ">
+                    현재 저장된 레스토랑이 없습니다.
+                  </span>
                 </div>
-              </section>
+              )}
             </div>
           ) : (
             <div className="review container">
@@ -401,9 +443,7 @@ function MyPage() {
                       <div className="">
                         <div className="flex flex-col w-[100%] gap-y-[7px]">
                           <div className="flex justify-between">
-                            <span
-                              className="text-[16px] font-bold"
-                            >
+                            <span className="text-[16px] font-bold">
                               {info.restaurantName}
                             </span>
                             <div className="flex justify-end gap-x-[7px]">
@@ -415,9 +455,9 @@ function MyPage() {
                               >
                                 수정
                               </span>
+
                               {isUserInfo.comments.map((item, index) => {
-                                return info.reviewId === item.reviewId &&
-                                  item.ownerId === 0 ? (
+                                return info.reviewId !== item.reviewId ? (
                                   <span
                                     key={index}
                                     className="w-[63px] text-center text-[#666] text-[12px] float-right rounded-full py-[1px] px-[8px] border border-[#d5d5d5]"
@@ -449,7 +489,7 @@ function MyPage() {
                               info.images.map((item) => {
                                 return (
                                   <img
-                                    className="rounded-[6px]"
+                                    className="rounded-[6px] size-[68px] border border-[#d5d5d5]"
                                     key={item.reviewImageId}
                                     src={`${item.path}`}
                                   />
@@ -526,7 +566,7 @@ function MyPage() {
                   <input
                     type="range"
                     onInput={drawStar}
-                    value={isScore}
+                    value={isSelectItem.score}
                     step="1"
                     min="0"
                     max="5"
@@ -568,23 +608,6 @@ function MyPage() {
                   />
                 </div>
                 {photoToAddPreview()}
-                {isSelectInfo &&
-                  isSelectInfo.map((image) => {
-                    console.log("image", image);
-                    return (
-                      <div className="photoBox" key={image.reviewImageId}>
-                        <div
-                          className="photoBoxDelete icon delete-icon"
-                          onClick={() => onRemove(image.path)}
-                        />
-                        <img
-                          className="photoPreview size-[100%]"
-                          src={image.path}
-                          alt="preview"
-                        />
-                      </div>
-                    );
-                  })}
               </div>
             </div>
           </div>

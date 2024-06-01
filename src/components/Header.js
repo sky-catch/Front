@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { searchByKeyword } from "../respository/search.js";
 
 /**
  * Header (헤더)
@@ -27,28 +26,28 @@ const Header = ({ setSearch, updateSearch }) => {
     }
   }, [location, inputTxt]);
 
-  const handleScroll =()=> {
-    console.log('scrolling');
-    if(window.scrollY >= 50) {
+  const handleScroll = () => {
+    console.log("scrolling");
+    if (window.scrollY >= 50) {
       setIsWhite(true);
     } else {
       setIsWhite(false);
     }
-  }
-  useEffect(()=> {
-    window.addEventListener('scroll',handleScroll)
-  },[])
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+  }, []);
 
   const onClickBack = () => {
     if (location === "/my/myshop/edit") {
       alert("변경한 내용이 저장되지 않습니다.");
     }
     window.history.back();
-    setInputTxt('');
+    setInputTxt("");
   };
 
   const onEditRestaurant = () => {
-    navigate("/my/myshop/edit/:update");
+    navigate("/my/myshop/edit/update");
   };
 
   const onClickMove = (param) => {
@@ -312,7 +311,11 @@ const Header = ({ setSearch, updateSearch }) => {
       default:
         /* 레스토랑 상세 정보 */
         if (location.indexOf("/ct/shop") != -1) {
-          if (location.indexOf("/reviewList") != -1 || location.indexOf("/menuList") != -1 || location.indexOf("/photoList") != -1) {
+          if (
+            location.indexOf("/reviewList") != -1 ||
+            location.indexOf("/menuList") != -1 ||
+            location.indexOf("/photoList") != -1
+          ) {
             return (
               <div className="header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] bg-white">
                 <div className="header-left items-center flex gap-[12px]">
@@ -328,13 +331,20 @@ const Header = ({ setSearch, updateSearch }) => {
             );
           } else {
             return (
-              <div className={`header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] ${isWhite ? 'bg-white' : 'bg-gradient'}`}>
+              <div
+                className={`header-tp-wrapper flex justify-between w-full px-[20px] items-center opacity-100 h-[48px] ${
+                  isWhite ? "bg-white" : "bg-gradient"
+                }`}
+              >
                 <div className="header-left items-center flex gap-[12px]">
-                  <a className={`${ isWhite ? 'back-b' : 'back-w'} header-icon`} onClick={onClickBack}>
+                  <a
+                    className={`${isWhite ? "back-b" : "back-w"} header-icon`}
+                    onClick={onClickBack}
+                  >
                     뒤로
                   </a>
                   <a
-                    className={`${ isWhite ? 'tohome-b' : 'tohome'} header-icon` }
+                    className={`${isWhite ? "tohome-b" : "tohome"} header-icon`}
                     onClick={(e) => onClickMove("home", e)}
                   >
                     홈
@@ -342,7 +352,9 @@ const Header = ({ setSearch, updateSearch }) => {
                 </div>
                 <div className="header-right flex gap-[12px]">
                   {/* <button className="bookmark header-icon">저장</button> */}
-                  <a className={`${isWhite ? 'share-b':'share'} header-icon`}>공유</a>
+                  <a className={`${isWhite ? "share-b" : "share"} header-icon`}>
+                    공유
+                  </a>
                 </div>
               </div>
             );

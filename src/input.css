@@ -3,21 +3,22 @@
 @tailwind utilities;
 
 * {
-  -webkit-font-smoothing : antialiased;
-  letter-spacing : -.05em;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.05em;
 }
 
-div, h3 {
-  margin : 0;
-  padding : 0;
-  border : 0;
-  font-size : 100%;
-  vertical-align : baseline;
+div,
+h3 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
 }
 
 h3 {
-  word-break : break-word;
-  line-height : normal;
+  word-break: break-word;
+  line-height: normal;
 }
 
 input {
@@ -147,7 +148,12 @@ header {
 }
 /* header */
 .bg-gradient {
-  background: linear-gradient(180deg, rgba(0, 0, 0, .3) 0%, rgba(0, 0, 0, .15) 37.5%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.15) 37.5%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 .header-wrapper {
@@ -281,7 +287,7 @@ header {
   border-radius: 4px;
 }
 .shortcut-list > .list-item .title {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   line-height: 16px;
   margin-top: 7px;
@@ -501,7 +507,7 @@ header {
   right: 0;
 }
 .restaurant-list .restaurant-list-item .detail .meta {
-  display : flex;
+  display: flex;
   align-items: baseline;
   line-height: 14px;
 }
@@ -629,8 +635,8 @@ header {
   background-color: #ff3d00;
   border-radius: 50%;
   position: absolute;
-  top: 50%;
-  left: -9px;
+  top: 25%;
+  left: 50px;
   transform: translateY(-50%);
 }
 .drawer-box {
@@ -1155,8 +1161,8 @@ hr.seperator {
   color: #ffffff;
 } */
 button {
-  margin : 0;
-  padding : 0;
+  margin: 0;
+  padding: 0;
 }
 .filter-wrapper footer .btn-grp button {
   display: flex;
@@ -1228,7 +1234,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #D5D5D5;
+  border: 1px solid #d5d5d5;
   border-radius: 8px;
   position: relative;
   background-color: #ffffff;
@@ -1252,11 +1258,11 @@ button {
   transform: translate(50%, -50%);
   width: 16px;
   height: 16px;
-  background-color: #FF3D00;
+  background-color: #ff3d00;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #FFFFFF;
+  color: #ffffff;
   border-radius: 50%;
   font-size: 10px;
   font-weight: 700;
@@ -1306,10 +1312,10 @@ header .keyword-search .btn-delete {
   margin-right: 12px;
 }
 .searched-keyword-left-item small {
-  margin-left : 5px !important;
+  margin-left: 5px !important;
 }
 .searched-keyword-left-item .tb {
-  background-color: #F1F1F1;
+  background-color: #f1f1f1;
   width: 48px;
   height: 64px;
   border-radius: 10px;
@@ -1343,15 +1349,15 @@ header .keyword-search .btn-delete {
   height: 64px;
   border-radius: 6px;
   background: 50% 50% no-repeat;
-  background-image : url("../src/assets/icons/restaurant.svg");
+  background-image: url("../src/assets/icons/restaurant.svg");
   background-size: cover;
   object-fit: cover;
-  overflow : hidden;
+  overflow: hidden;
   /* border : transparent; */
 }
 
-.searched-keyword-left-item .tb .img[src='']{
-  background-image : url("../src/assets/icons/restaurant.svg");
+.searched-keyword-left-item .tb .img[src=""] {
+  background-image: url("../src/assets/icons/restaurant.svg");
 }
 
 .recent-input-header {
@@ -1744,8 +1750,8 @@ textarea.form-input {
 }
 
 .kakao-address {
-  width : 100%;
-  height : 240px;
+  width: 100%;
+  height: 240px;
 }
 
 .drawer-box .drawer-box-body .kakao-address {
@@ -2008,8 +2014,8 @@ span {
 }
 
 .slide-image-wrapper {
-  position : relative;
-  cursor : grab;
+  position: relative;
+  cursor: grab;
 }
 
 .swiper-slide {
@@ -2023,12 +2029,12 @@ span {
   justify-content: center;
   background-color: gray;
   color: #ffffff;
-  height : 100%;
+  height: 100%;
   aspect-ratio: 375 / 220;
 }
 
 .slide-image-item .shopImg {
-  object-fit : cover;
+  object-fit: cover;
   aspect-ratio: 375 / 220;
 }
 
@@ -2208,9 +2214,8 @@ span {
   color: #aaa;
 }
 
-
 .mb-\[50px\] {
-  margin-bottom : 50px !important;
+  margin-bottom: 50px !important;
 }
 
 .section-body .details .addr {
@@ -2231,7 +2236,7 @@ span {
 
 .section-body .details .addr .btn-copy::before {
   content: "";
-  background: url('../src/assets/icons/copy.svg') 50% 50% no-repeat;
+  background: url("../src/assets/icons/copy.svg") 50% 50% no-repeat;
   background-size: contain;
   width: 18px;
   height: 18px;
@@ -2239,39 +2244,39 @@ span {
 }
 
 .saved-restaurant-list-item .restaurant-info {
-  display : flex;
-  margin-bottom : 16px;
-  position : relative;
+  display: flex;
+  margin-bottom: 16px;
+  position: relative;
 }
 .saved-restaurant-list-item .restaurant-info .tb .img {
-  position : relative;
-  overflow : hidden;
-  width : 78px;
-  height : 104px;
-  vorder-radius : 4px;
-  background : 50% 50% no-repeat;
-  background-size : cover;
-  object-fit : cover;
-  box-sizing : border-box;
-  border : 1px solid #f1f1f1;
+  position: relative;
+  overflow: hidden;
+  width: 78px;
+  height: 104px;
+  vorder-radius: 4px;
+  background: 50% 50% no-repeat;
+  background-size: cover;
+  object-fit: cover;
+  box-sizing: border-box;
+  border: 1px solid #f1f1f1;
 }
 .saved-restaurant-list-item .restaurant-info .tb {
   margin-top: 2px;
   overflow: hidden;
   margin-right: 15px;
 }
-.saved-restaurant-list-item .restaurant-info .detail{
-  flex : 1;
-  min-width : 1px;
+.saved-restaurant-list-item .restaurant-info .detail {
+  flex: 1;
+  min-width: 1px;
 }
-.saved-restaurant-list-item .restaurant-info .detail .name{
-  font-size : 20px;
-  margin-bottom : 3px;
-  font-weight : 700;
+.saved-restaurant-list-item .restaurant-info .detail .name {
+  font-size: 20px;
+  margin-bottom: 3px;
+  font-weight: 700;
   word-break: break-word;
   line-height: 1.4;
 }
-.saved-restaurant-list-item .restaurant-info .detail .excerpt{
+.saved-restaurant-list-item .restaurant-info .detail .excerpt {
   font-size: 11px;
   line-height: 15px;
   color: #000;
@@ -2294,9 +2299,9 @@ span {
   font-weight: 500;
 }
 .restaurant-meta .rating {
-  display : flex;
-  align-items : baseline;
-  margin-bottom : 5px;
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 5px;
 }
 .restaurant-meta .rating .star {
   font-size: 14px;
@@ -2324,11 +2329,11 @@ span {
   font-weight: 400;
 }
 .time-slot-unavailable {
-  display : flex;
-  justify-content : center;
-  padding : 1.5em 0;
-  font-size : 12px;
-  background : #f1f1f1;
+  display: flex;
+  justify-content: center;
+  padding: 1.5em 0;
+  font-size: 12px;
+  background: #f1f1f1;
 }
 .reservebtn.unAble > div {
   background-color: #f1f1f1;
@@ -2354,6 +2359,5 @@ span {
 }
 
 .saved-restaurant-list-item .tb .img img {
-  height : 100%;
+  height: 100%;
 }
-

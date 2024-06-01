@@ -1,63 +1,68 @@
-import { QueryClient, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-// import io from "socket.io";
-// import io from "socket.io-client";
-import { io } from "socket.io-client";
 import styled from "styled-components";
-import { getRestaurant } from "../../respository/restaurant";
-// import quer
+import Loading from "../../components/Loading";
 import { getChatRoom } from "../../respository/reservation";
+import { getRestaurant } from "../../respository/restaurant";
 
 const ChatRoom = () => {
-  // const message = useRef();
+  // const ws = useRef();
   const location = useLocation();
   const [isMessage, setIsMessage] = useState("");
+  const [messages, setMessages] = useState([]);
   // 웹 소켓 연결 이벤트
   // : "ws://15.164.89.177:8080/chat";
-
   let name = new URLSearchParams(location.search).get("name");
-  let roomId = new URLSearchParams(location.search).get("id");
-
-  const chatRoomId = roomId;
+  let chatRoomId = new URLSearchParams(location.search).get("id");
   const memberChat = true;
   const token = sessionStorage.getItem("token");
-  // const socket = io("http://localhost:3000", {
-  // const socket = io(`${window.location.origin}`, {
-  const socket = io("http://15.164.89.177:8080/chat", {
-    reconnection: true,
-    reconnectionAttempts: 5,
-    extraHeaders: {
-      Authorization: `Bearer ${token}`, // 여기서 token은 획득한 인증 토큰입니다.
-      chatRoomId: String(chatRoomId),
-      memberchat: String(memberChat),
-    },
-  });
+  const headers = {
+    authorization: `Bearer ${token}`,
+    chatRoomId: chatRoomId,
+    memberChat: memberChat,
+  };
 
-  socket.on("connect", () => {
-    console.log("Connected to server");
-  });
+  // const ws = new WebSocket("ws://localhost:8080/chat");
+  const ws = new WebSocket("ws://15.164.89.177:8080/chat", [
+    JSON.stringify(headers),
+  ]);
+  useEffect(() => {
+    // 연결 성공 시 실행될 콜백 함수
 
-  socket.on("disconnect", () => {
-    console.log("Disconnected from server");
-  });
+    ws.onopen = () => {
+      console.log("WebSocket connected");
 
-  socket.on("message", (message) => {
-    console.log("Received message:", message);
-    // 여기에서 메시지를 처리하거나 상태를 업데이트할 수 있습니다.
-  });
+      // 연결 후 서버에 데이터를 전송할 수 있음
+      // ws.send("Hello, server!");
+    };
+
+    // 메시지 수신 시 실행될 콜백 함수
+    ws.onmessage = (event) => {
+      console.log("Received message from server:", event.data);
+      const container = document.getElementById("messages");
+      // console.log("container", container);
+      // const htmlContent = `<div><div class="w-full  h-auto flex  items-end gap-x-[5px] "><div class="rounded-bl-lg rounded-r-lg float-left p-[7px] bg-[#fff] w-fit max-w-[70%] shadow-md">${event.data}</div><span class=" text-[12px]">오전 09:56</span><span class=" hidden size-[6px] rounded-full bg-[#ff3d00] mb-[5px]"></span></div></div>`;
+      // container.innerHTML = htmlContent;
+    };
+
+    // 연결 종료 시 실행될 콜백 함수
+    ws.onclose = () => {
+      console.log("WebSocket disconnected");
+    };
+
+    // 에러 발생 시 실행될 콜백 함수
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+  }, []);
 
   const sendMessage = (e) => {
-    e.preventDefault(); // 폼 제출 이벤트 기본 동작 방지
-    if (!isMessage.trim()) {
-      return;
-    }
-    socket.emit("message", isMessage);
-
-    // 메시지 입력 상태 초기화
+    e.preventDefault();
+    console.log("안녕", isMessage);
+    ws.send(isMessage);
     setIsMessage("");
   };
-  const queryClient = new QueryClient();
   const {
     data: chatRoomList,
     isLoding: roomLoding,
@@ -65,6 +70,7 @@ const ChatRoom = () => {
   } = useQuery({
     queryKey: ["chatRoomList", 1],
     queryFn: () => {
+      console.log("chatRoomId", chatRoomId);
       return getChatRoom(chatRoomId)
         .then((res) => {
           return res;
@@ -74,6 +80,12 @@ const ChatRoom = () => {
         });
     },
   });
+  useEffect(() => {
+    if (!chatRoomList) return;
+    chatRoomList.chatList.map((item) => {
+      setMessages((pevList) => [...pevList, item]);
+    });
+  }, [chatRoomList]);
 
   const {
     data: restaurant,
@@ -87,6 +99,10 @@ const ChatRoom = () => {
   });
 
   if (!chatRoomList || !restaurant) return;
+  if (restaurantLoding || roomLoding) {
+    return <Loading></Loading>;
+  }
+  console.log("restaurant", restaurant);
 
   return (
     <ChatBox>
@@ -96,11 +112,11 @@ const ChatRoom = () => {
       <div className="w-[calc(100vw-40px)] px-[7px] py-[4px] top-[50px] bg-white rounded-lg absolute left-0 right-0 mx-[auto] shadow-md">
         <span className="text-[12px] text-center">
           영업 시간 :
-          {String(restaurant.data.openTime).slice(0, 5) +
+          {String(restaurant.openTime).slice(0, 5) +
             " ~ " +
-            String(restaurant.data.closeTime).slice(0, 5) +
+            String(restaurant.closeTime).slice(0, 5) +
             " (LastOrder : " +
-            String(restaurant.data.lastOrderTime).slice(0, 5) +
+            String(restaurant.lastOrderTime).slice(0, 5) +
             ")"}
         </span>
       </div>
@@ -109,41 +125,43 @@ const ChatRoom = () => {
           id="messages"
           className=" flex flex-col gap-y-[7px] overflow-scroll"
         >
-          {chatRoomList.chatList.map((item, index) => {
-            return (
-              <div key={index}>
-                {item.content != null && (
-                  <div
-                    className={`w-full  h-auto flex  items-end gap-x-[5px] ${
-                      item.memberChat ? "flex-row-reverse" : ""
-                    }`}
-                  >
+          {messages &&
+            messages.map((item, index) => {
+              return (
+                <div key={index}>
+                  {item.content != null && (
                     <div
-                      className={`${
-                        item.memberChat
-                          ? " rounded-l-lg rounded-br-lg float-right"
-                          : "rounded-bl-lg rounded-r-lg float-left"
-                      } p-[7px] bg-[#fff] w-fit max-w-[70%] shadow-md`}
+                      className={`w-full  h-auto flex  items-end gap-x-[5px] ${
+                        item.memberChat ? "flex-row-reverse" : ""
+                      }`}
                     >
-                      {item.content}
-                    </div>
+                      <div
+                        className={`${
+                          item.memberChat
+                            ? " rounded-l-lg rounded-br-lg float-right"
+                            : "rounded-bl-lg rounded-r-lg float-left"
+                        } p-[7px] bg-[#fff] w-fit max-w-[70%] shadow-md`}
+                      >
+                        {item.content}
+                      </div>
 
-                    <span className=" text-[12px]">
-                      {(String(item.updatedDate).split("T")[1].slice(0, 2) > 12
-                        ? "오후 "
-                        : "오전 ") +
-                        String(item.updatedDate).split("T")[1].slice(0, 5)}
-                    </span>
-                    <span
-                      className={`${
-                        item.readChat ? " hidden" : " block"
-                      } size-[6px] rounded-full bg-[#ff3d00] mb-[5px]`}
-                    ></span>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                      <span className=" text-[12px]">
+                        {(String(item.updatedDate).split("T")[1].slice(0, 2) >
+                        12
+                          ? "오후 "
+                          : "오전 ") +
+                          String(item.updatedDate).split("T")[1].slice(0, 5)}
+                      </span>
+                      <span
+                        className={`${
+                          item.readChat ? " hidden" : " block"
+                        } size-[6px] rounded-full bg-[#ff3d00] mb-[5px]`}
+                      ></span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
         </MessageBox>
         <div className=" h-[47px] container bg-[#ff3d00] rounded-lg">
           <form name="publish" className=" flex">

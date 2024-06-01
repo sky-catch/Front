@@ -22,7 +22,7 @@ const restaurants = [
   {
     id: 14,
     img: "https://image.toast.com/aaaaaqx/catchtable/shopinfo/sFua-ZnyjLzjJjVMIJpjfCQ/fua-znyjlzjjjvmijpjfcq_2362215281096963.jpg?small400",
-    name: "한국 식당",
+    name: "하이디라오",
     meta: {
       star: 3,
       tags: "와인",
@@ -45,9 +45,7 @@ const Restaurants = () => {
     navigate(`/ct/shop/${name}`, { state: name });
   };
 
-  const saveRestaurant = (e) => {
-    
-  }
+  const saveRestaurant = (e) => {};
 
   return (
     <div className="restaurant-list">
@@ -67,7 +65,9 @@ const Restaurants = () => {
                 <h3 className="name">{item.name}</h3>
                 <div className="meta">
                   <span className="star">{item.meta.star}</span>
-                  <span className="tags" onClick={saveRestaurant}>{item.meta.tags}</span>
+                  <span className="tags" onClick={saveRestaurant}>
+                    {item.meta.tags}
+                  </span>
                 </div>
               </a>
             </div>

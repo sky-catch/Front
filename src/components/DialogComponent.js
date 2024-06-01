@@ -4,7 +4,6 @@ import restauranticon from "../assets/icons/not_restaurant.png";
 function dataReset(date) {
   if (!date) return;
 
-  console.log(date);
   const nowDate =
     new Date().getFullYear() +
     "-" +
@@ -35,7 +34,6 @@ function dataReset(date) {
   }
 }
 const DialogComponent = ({ item }) => {
-  console.log("item", item);
   const navigate = useNavigate();
   return (
     <div
