@@ -25,7 +25,6 @@ import ReviewList from "./pages/Restaurant/ReviewList.js";
 import Search from "./pages/Search/Search.js";
 import SearchList from "./pages/Search/SearchList.js";
 import SearchTotal from "./pages/Search/SearchTotal.js";
-import { getTestLogin } from "./respository/userInfo.js";
 
 function App() {
   const [search, setSearch] = useState();
@@ -34,7 +33,7 @@ function App() {
   };
 
   useEffect(() => {
-    getTestLogin();
+    // getTestLogin();
   }, []);
 
   const location = useLocation();
