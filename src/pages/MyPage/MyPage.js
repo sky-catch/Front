@@ -307,7 +307,7 @@ function MyPage() {
             <button
               className="btn btn-md btn-outline btn-rounded mt-18"
               onClick={
-                isUserInfo.owner
+                isUserInfo?.owner
                   ? isRestaurant
                     ? manageRestaurant
                     : createRestaurant
@@ -315,7 +315,7 @@ function MyPage() {
               }
             >
               <span className="label">
-                {isUserInfo.owner
+                {isUserInfo?.owner
                   ? isRestaurant
                     ? "내 식당 관리"
                     : "내 식당 등록"
