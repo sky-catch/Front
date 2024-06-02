@@ -215,7 +215,13 @@ function MyPage() {
       isOwner: isUserInfo?.owner,
       saveRestaurants: isUserInfo?.savedRestaurants,
     }));
+    if (isUserInfo) {
+      console.log("마이페이지 success", isUserInfo);
+      sessionStorage.setItem("data", JSON.stringify(isUserInfo));
+    } 
   }, [isUserInfo]);
+
+  useEffect(()=>{console.log(user);},[user])
 
   const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);

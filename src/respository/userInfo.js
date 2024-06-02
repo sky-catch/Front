@@ -29,18 +29,14 @@ export const getLogin = async (code) => {
 // 로그인 사용자 테스트용
 export const getTestLogin = async () => {
   try {
-    let id = 9;
+    let id = 7;
     const result = await apiClient.get(`/oauth/jwt/test/owner/${id}`, {
       headers: {},
     });
 
     if (result.data) {
-      console.log("로그인 토근 get");
       sessionStorage.setItem("token", result.data.accessToken.value);
-      sessionStorage.setItem("data", JSON.stringify(result.data.usersDTO));
-    } else {
-      console.log("로그인 토근 get 실패");
-    }
+    } 
   } catch (err) {
     console.log("Error >>", err);
     throw err;
@@ -55,6 +51,7 @@ export const getUserInfo = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
+   
     return result.data;
   } catch (err) {
     console.log("Error >>", err);
@@ -63,7 +60,6 @@ export const getUserInfo = async () => {
 
 // 마이페이지 회원 정보 수정
 export const updateUserInfo = async ({ updateMemberReq, file }) => {
-  // console.log(updateMemberReq,file);
   // 폼데이터 객체 생성
   const formData = new FormData();
   // file 추가
@@ -73,7 +69,7 @@ export const updateUserInfo = async ({ updateMemberReq, file }) => {
     type: "application/json",
   });
   formData.append("updateMemberReq", blob);
-
+  console.log('updateMemberReq',updateMemberReq, 'file', file);
   try {
     const result = await apiClient.patch(`/member/profile`, formData, {
       headers: {
@@ -81,7 +77,6 @@ export const updateUserInfo = async ({ updateMemberReq, file }) => {
         "Content-Type" : "multipart/form-data",
       },
     });
-    console.log(result);
     return result;
   } catch (err) {
     console.log("Error >>", err);

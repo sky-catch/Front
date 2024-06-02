@@ -15,64 +15,49 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
   const sliderRef = useRef([]);
 
   const [isContent, setIsContent] = useState(1);
-  const [isSelect, setIsSelect] = useState(0);
-  const [selectedCities, setSelectedCities] = useState(searchFilter?.hotPlace.split(',') || []);  //선택된 지역 필터
-  const [selectedCost, setSelectedCost] = useState({});
-  const [cities, setCities] = useState(); // 뉴 지역 필터
+  const [isSelect, setIsSelect] = useState("핫플");
+  const [selectedCities, setSelectedCities] = useState(typeof searchFilter?.hotPlace =='string' ? searchFilter?.hotPlace?.split(',').filter(item=>item!=='') : searchFilter?.hotPlace);  // 선택된 지역 필터 //searchFilter?.hotPlace.split(',')
+  const [selectedCost, setSelectedCost] = useState({}); // 선택된 가격 필터
+  const [cities, setCities] = useState([]); // 적용된 지역 필터
   const [cost, setCost] = useState(); /* rc-slider 값 */
   const [Value, setValue] = useState([searchFilter?.minPrice || 0, searchFilter?.maxPrice || 40]);
 
-  const cityItems = [
-    { name: "핫플" },
-    { name: "서울" },
-    { name: "경기" },
-    { name: "인천" },
-    { name: "부산" },
-    { name: "제주" },
-    { name: "울산" },
-    { name: "경남" },
-    { name: "대구" },
-    { name: "경북" },
-    { name: "강원" },
-    { name: "대전" },
-    { name: "충남" },
-    { name: "충북" },
-    { name: "세종" },
-    { name: "전남" },
-    { name: "광주" },
-    { name: "전북" },
+  const defaultCity = [
+    { city : "핫플",
+      detail : [ //핫플
+        "서울 전체", "강남/역삼/선릉", "강남구청", "건대/군자/구의", "금호/옥수/신당", "명동/을지로/충무로", "방이", "북촌/삼청", "삼성/대치", "상수/합정/망원", "서울역/회현", "서초/방배", "서촌", 
+        "성수/서울숲", "신사/논현", "신촌/홍대/서교", "압구정/청담", "양재/도곡", "연남", "영등포/여의도", "용산/삼각지", 
+      ]
+     },
+    { city : "서울",
+      detail :  [//서울
+        "서울 전체", "강남/역삼/선릉", "강남구청", "건대/군자/구의", "금호/옥수/신당", "명동/을지로/충무로", "방이", "북촌/삼청", "삼성/대치", "상수/합정/망원", "서울역/회현", "서초/방배", "서촌", 
+        "성수/서울숲", "신사/논현", "신촌/홍대/서교", "압구정/청담", "양재/도곡", "연남", "영등포/여의도", "용산/삼각지", 
+      ],
+     },
+    { city : "경기", detail : ["경기 전체"] },
+    { city : "인천", detail : ["인천 전체"] },
+    { city : "부산", detail : ["부산 전체"] },
+    { city : "제주", detail : ["제주도 전체"] },
+    { city : "울산", detail : ["울산 전체"] },
+    { city : "경남", detail : ["경남 전체"] },
+    { city : "대구", detail : ["대구 전체"] },
+    { city : "경북", detail : ["경북 전체"] },
+    { city : "강원", detail : ["강원 전체"] },
+    { city : "대전", detail : ["대전 전체"] },
+    { city : "충남", detail : ["충남 전체"] },
+    { city : "충북", detail : ["충북 전체"] },
+    { city : "세종", detail : ["세종 전체"] },
+    { city : "전남", detail : ["전남 전체"] },
+    { city : "광주", detail : ["광주 전체"] },
+    { city : "전북", detail : ["전북 전체"] },
   ];
-  const addressItems = [
-    [ //핫플
-      "서울 전체", "강남/역삼/선릉", "강남구청", "건대/군자/구의", "금호/옥수/신당", "명동/을지로/충무로", "방이", "북촌/삼청", "삼성/대치", "상수/합정/망원", "서울역/회현", "서초/방배", "서촌", 
-      "성수/서울숲", "신사/논현", "신촌/홍대/서교", "압구정/청담", "양재/도곡", "연남", "영등포/여의도", "용산/삼각지", 
-    ],
-    [ //서울
-      "서울 전체", "강남/역삼/선릉", "강남구청", "건대/군자/구의", "금호/옥수/신당", "명동/을지로/충무로", "방이", "북촌/삼청", "삼성/대치", "상수/합정/망원", "서울역/회현", "서초/방배", "서촌", 
-      "성수/서울숲", "신사/논현", "신촌/홍대/서교", "압구정/청담", "양재/도곡", "연남", "영등포/여의도", "용산/삼각지", 
-    ],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-  ];
+
   const costItems = [
     { name: "10만원 이하", min: 0, max: 10 },
     { name: "10만원대", min: 10, max: 20 },
     { name: "20만원대", min: 20, max: 30 },
-  { name: "30만원대", min: 30, max: 40 },
+    { name: "30만원대", min: 30, max: 40 },
     { name: "40만원대 이상", min: 40, max: 40 },
   ];
   const [selected, setSelected] = useState([]);
@@ -91,60 +76,48 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
   };
 
   /* button 클릭이벤트 */
-  const buttonClick = (e, index) => {
-    setIsSelect(index);
+  const buttonClick = (e, id) => {
+    setIsSelect(id);
   };
 
   /* function : 도시선택 */
   const onSelectCity = (e, newCity) => {
-    setSelectedCities([newCity, ...selectedCities]);
-
-    const recent = e.currentTarget.classList;
-    const recentText = e.currentTarget.innerText;
-    //서울 전체인 경우
     const list = placeRef.current;
-    if (recentText == "서울 전체") {
-      if (recent.length < 2) {
-        list.map((item) => {
-          const arr1 = item.classList;
-          arr1.add("active");
-        });
-        setSelectedCities([...addressItems[0].filter(item=>item!=="서울 전체")])
+    const recentClass = e.currentTarget.classList;
+    const isActive = e.currentTarget.classList.length > 1 ? true : false; //active 여부
+
+    let newCitiess = [];
+    // 서울 전체인경우
+    if(newCity=="서울 전체") { 
+      if(!isActive) {
+        list.map((item)=>item.classList.add('active'));
+        setSelectedCities(...defaultCity.filter(item=>item.city == '서울').map(item=>item.detail));
       } else {
-        list.map((item) => {
-          const arr1 = item.classList;
-          arr1.remove("active");
-        });
+        list.map((item)=>item.classList.remove('active'));
         setSelectedCities([]);
       }
-    } else {
-      // 각각인 경우
-      if (recent.length < 1) {
-        recent.add("active");
+    }else {
+      if(!isActive) {
+        recentClass.add('active');
+        setSelectedCities([...selectedCities, newCity]);
       } else {
-        recent.forEach((item, idx) => {
-          if (item == "active") {
-            recent.remove("active");
-            setSelectedCities(selectedCities.filter((word) => word !== newCity));
-          } else {
-            recent.add("active");
-          }
-        });
+        recentClass.remove('active');
+        setSelectedCities([...selectedCities.filter(city=>city!==newCity) ]);
       }
     }
   };
 
   /* function : 검색적용 */
   const handleSearch = (e) => {
+    console.log('?');
     setCities([...selectedCities]); // 필터 확정
     setFilterInfo((prevState)=> ({
       ...prevState, 
-      hotPlace : selectedCities?.length > 0 ? selectedCities : '',
-      koreanCity : selectedCities?.length > 0 ? cityItems[isSelect].name == "핫플" ? "서울" : cityItems[isSelect].name : '',
+      hotPlace : selectedCities?.length > 0 ? selectedCities : [],
+      koreanCity : isSelect=="핫플" ? "서울" : isSelect,
       minPrice : cost ? Number(cost?.min) : 0,
       maxPrice : cost ? Number(cost?.max) : 0
     }));
-    
     toggleFilterDrawer(e);
   };
 
@@ -177,14 +150,14 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
   /* function : 전체초기화 */
   const handleResetAll = (e) => {
     /* 1. 지역리셋 */
-    setCities([]);
-    const list = placeRef.current;
-    list.map((item) => {
-      const arr1 = item.classList;
-      arr1.remove("active");
-    });
+    // setSelectedCities([]);
+    // const list = placeRef.current;
+    // list.map((item) => {
+    //   const arr1 = item.classList;
+    //   arr1.remove("active");
+    // });
     /* 2. 가격리셋 */
-    setCost();
+    // setCost();
     setValue([0,40]);
   }
 
@@ -212,26 +185,8 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
 
     handleChange([min, max]);
   };
-
-  useEffect(()=>{
-    if(searchFilter?.hotPlace) { 
-      setCities((searchFilter.hotPlace.split(',')));
-    } else if(searchFilter?.maxPrice >0 || searchFilter?.minPrice >0) { 
-      setCost({min : searchFilter.minPrice, max : searchFilter.maxPrice});
-    }
-  },[searchFilter])
-
-  useEffect(()=>{
-    // console.log('selected', selectedCities);
-    // console.log('cities', cities);
-
-    let placeList = Array.from(document.querySelectorAll('#hotplace-list-item'));
-      placeList.map(button=>{
-        if(cities?.includes(button.textContent)) {
-          button.classList.add('active')
-        }
-      });
-  },[selectedCities, cities])
+  
+  console.log('selected!🌷', selectedCities, 'isSelect', isSelect, 'cities', cities,'searchFilter⭐️',searchFilter);
 
   return (
     <div className="filter-drawer">
@@ -279,36 +234,34 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
                 </div>
                 <div className="flex city-wrapper">
                   <div className="grid grid-cols-5">
-                    {cityItems.map((item, index) => {
+                    {defaultCity.map((item, index) => {
                       return (
                         <button
                           key={index}
-                          className={`${isSelect == index ? "active" : ""}`}
-                          onClick={(e) => buttonClick(e, index)}
-                          id={item}>
-                          {item.name}
+                          className={`${isSelect == item.city ? "active" : ""}`}
+                          onClick={(e) => buttonClick(e, item.city)}
+                          id={item.city}>
+                          {item.city}
                         </button>
                       );
                     })}
                   </div>
-                  <div></div>
                 </div>
                 <div className="flex hotplace-wrapper">
-                  {addressItems[isSelect].map((item, index) => {
-                    // console.log(item, selectedCities?.includes(item))
-                    return (
+                  {
+                    defaultCity.map(item=>(isSelect==item.city ? item.detail?.map((data,index)=>
                       <button
                         type="button"
                         id="hotplace-list-item"
-                        className={`hotplace-item`}
+                        className={`hotplace-item ${cities?.length < 1 ? selectedCities?.includes(data) ? 'active' : ''
+                          : cities?.includes(data) ? 'active' : ''
+                        }`}
                         key={index}
-                        onClick={(e) => {onSelectCity(e, item);}}
+                        onClick={(e) => {onSelectCity(e, data);}}
                         ref={(el) => (placeRef.current[index] = el)}
-                      >
-                        <span>{item}</span>
-                      </button>
-                    );
-                  })}
+                      ><span>{data}</span></button>
+                    ):<></>))
+                  }
                 </div>
               </section>
               <hr className="seperator"></hr>
@@ -359,7 +312,8 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
           </main>
           <footer className="fixed">
             <div className="gradient"></div>
-            { selectedCities?.length >0 || cost ? 
+            { selectedCities?.length >0
+            || cost ? 
             <div className="selected-itmes">
                     <div className="delete-button">
                       <button type="button" className="delete" onClick={handleResetAll}>
@@ -374,7 +328,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
                       </button>
                     </div>
                     <div className="items">
-                      {selectedCities?.map((item,index)=>{
+                      { selectedCities?.map((item,index)=>{
                         return(
                           <button className="item-btn font-md" id={item} key={index}>
                             <span>{item}</span>

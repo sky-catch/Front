@@ -68,7 +68,7 @@ export default function MyProfileInfo() {
 
   /* Function */
   const updateUser = (e) => {
-    console.log('name:',name,'imgFile',typeof imgFile === 'string');
+    console.log('name:',name,'imgFile',typeof imgFile === 'string','user',user);
     const obj = {nickname : name};
 
     // 기존 이미지 URL 기반 File 객체로 변경
