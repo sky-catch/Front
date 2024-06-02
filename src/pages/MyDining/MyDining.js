@@ -1,14 +1,12 @@
-// import useQuery from "@tanstack/react-query";
 import { QueryClient, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import "react-modern-drawer/dist/index.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Loading from "../../components/Loading";
 import Visitcomponent from "../../components/Visitcomponent";
-// import { getMyReserve } from "../../respository/reservation";
 import { GetReservationRes } from "../../respository/restaurant";
 import RecommendPage from "./RecommendPage";
-
 const stateList = [
   {
     id: "PLANNED",
@@ -24,16 +22,6 @@ const stateList = [
   },
 ];
 
-const alarmList = [
-  {
-    id: "0",
-    title: "빈자리알림",
-  },
-  {
-    id: "1",
-    title: "예약 오픈 알림",
-  },
-];
 const pageList = [
   {
     id: 1,
@@ -88,22 +76,8 @@ export default function MyDining() {
   const navigate = useNavigate();
   const location = useLocation();
   const [loginState, setLoginState] = useState(false);
-  const [isSelect, setIsSelect] = useState(true);
-  const [isRiseIcon, setIsRiseIcon] = useState(true);
   const [listSelect, setListSelect] = useState("PLANNED");
-  const [alarmSelect, setAlarmSelect] = useState(0);
   const queryClient = new QueryClient();
-
-  const menuClick = (e, index) => {
-    if (index === 0) {
-      setIsSelect(true);
-      setAlarmSelect(0);
-    } else {
-      setListSelect("PLANNED");
-      setIsSelect(false);
-      moveLoginPage();
-    }
-  };
 
   const [isOpen, setIsOpen] = useState(false);
   const toggleDrawer = () => {
@@ -121,8 +95,6 @@ export default function MyDining() {
     } else {
       setLoginState(true);
     }
-
-    // getMyReserve("PLANNED");
   }, [loginState]);
 
   const itemClick = (index) => {
@@ -137,9 +109,6 @@ export default function MyDining() {
         setListSelect("CANCEL");
         break;
     }
-  };
-  const alarmClick = (index) => {
-    setAlarmSelect(index);
   };
 
   const itemContainer = () => {
@@ -223,7 +192,6 @@ export default function MyDining() {
     queryFn: () => {
       return GetReservationRes(listSelect)
         .then((res) => {
-          // console.log("res1", res);
           return res.data;
         })
         .catch((err) => {
@@ -233,169 +201,67 @@ export default function MyDining() {
     enabled: loginState,
   });
 
-  console.log("reservationRes", reservationRes);
-
-  const alarmContainer = () => {
-    if (alarmSelect === 0) {
-      return (
-        <div className="mt-[30px]">
-          <div className=" bg-[#f9f9f9] py-[20px] px-[30px]">
-            <span className="text-[14px] flex items-center">
-              <i className="icon bg-[url('./assets/icons/alarm-normal.svg')] w-[16px] h-[16px]"></i>
-              이번 달
-              <em className="text-[#0091ff] font-bold ml-[7px]">
-                남은 신청 수 10개 (0개 사용)
-              </em>
-            </span>
-            <small className="text-[#666] text-[12px] ml-[27px]">
-              매월 1일 ~ 말일까지 10개의 빈자리 알림 신청이 가능합니다.
-            </small>
-          </div>
-          <div className="how-to">
-            <p className=" text-center  font-16 bold text-[#c8c8c8] text-[16px] font-medium mt-[70px] mb-[30px]">
-              신청하신 빈자리 알림이 없습니다.
-              <br />
-              원하는 레스토랑에 빈자리 알림을 신청하고
-              <br />
-              예약 취소 발생 시 알림을 받아보세요.
-            </p>
-            <div className=" border-t p-[30px]">
-              <Link to={"/emptySlotGuide"}>
-                <span className="text-[14px] font-bold">
-                  빈자리 알림 이용 방법
-                  <p className="text-[#ccc] text-[12px] mt-[6px]">
-                    예약 취소 등의 이유로 마감된 시간에 빈자리가 발생하게 <br />
-                    되면 알림을 발송해 알려드립니다.
-                  </p>
-                </span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <span className="block text-center mb-[20px] mt-[80px] text-[#c8c8c8] text-[16px] font-medium">
-          신청하신 예약 오픈 알림 내역이 존재하지 않습니다.
-        </span>
-      );
-    }
-  };
-
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
   return (
     <MyDiningContents className="">
-      <ul className="tab-menu sticky top-[47px]  bg-white">
-        <li
-          className={`w-[50%] leading-[48px] text-center ${
-            isSelect ? " active" : ""
-          }`}
-          onClick={(e) => menuClick(e, 0)}
-        >
-          나의 예약
-        </li>
-        <li
-          className={`w-[50%] leading-[48px] text-center ${
-            isSelect ? "" : "active"
-          }`}
-          onClick={(e) => {
-            menuClick(e, 1);
-            moveLoginPage();
-          }}
-        >
-          {loginState ? "나의 알림" : "빈자리 알림"}
-        </li>
-      </ul>
       <TabContens className="tab-contens">
         {loginState ? (
           <div className="login-tab">
-            {isSelect ? (
-              <section className={`reserve-wrap`}>
-                <div className="__banner">
-                  <img src={require("../../assets/icons/banner.webp")}></img>
+            <section className={`reserve-wrap`}>
+              <div className=" mt-[5px] mb-[20px] container">
+                <div className="flex gap-x-[10px] mb-[10px] sticky top-[5px] bg-white z-[9999] left-0">
+                  {stateList.map((item, index) => {
+                    return (
+                      <span
+                        key={item.id}
+                        onClick={() => itemClick(index)}
+                        className={` ${
+                          listSelect === item.id
+                            ? " rounded-full border-black "
+                            : " text-[#666] border-transparent"
+                        } px-[15px] box-border font-medium text-[14px] leading-[32px] h-8 cursor-pointer  border-[1px]`}
+                      >
+                        {item.title}
+                      </span>
+                    );
+                  })}
                 </div>
-                <div className=" my-[30px] container">
-                  <div className="flex gap-x-[10px] mb-[10px]">
-                    {stateList.map((item, index) => {
+                {reservationRes && reservationRes.length > 0
+                  ? reservationRes.map((item, index) => {
                       return (
-                        <span
-                          key={item.id}
-                          onClick={() => itemClick(index)}
-                          className={` ${
-                            listSelect === item.id
-                              ? " rounded-full border-black "
-                              : " text-[#666] border-transparent"
-                          } px-[15px] box-border font-medium text-[14px] leading-[32px] h-8 cursor-pointer  border-[1px]`}
-                        >
-                          {item.title}
-                        </span>
+                        <Visitcomponent
+                          key={index}
+                          itemList={item}
+                        ></Visitcomponent>
                       );
-                    })}
-                  </div>
-                  {reservationRes && reservationRes.length > 0
-                    ? reservationRes.map((item, index) => {
-                        return (
-                          <Visitcomponent
-                            key={index}
-                            itemList={item}
-                          ></Visitcomponent>
-                        );
-                      })
-                    : itemContainer()}
-                </div>
-              </section>
-            ) : (
-              <section className={`recommend-wrap`}>
-                <div className="__banner">
-                  <img src={require("../../assets/icons/banner.webp")}></img>
-                </div>
-                <div className=" my-[30px] ">
-                  <div className="flex gap-x-[10px] container">
-                    {alarmList.map((item, index) => {
-                      return (
-                        <span
-                          key={item.id}
-                          onClick={() => alarmClick(index)}
-                          className={` ${
-                            alarmSelect === index
-                              ? " rounded-full border-black "
-                              : " text-[#666] border-transparent"
-                          } px-[15px] box-border font-medium text-[14px] leading-[32px] h-8 cursor-pointer  border-[1px]`}
-                        >
-                          {item.title}
-                        </span>
-                      );
-                    })}
-                  </div>
-                  {alarmContainer()}
-                </div>
-              </section>
-            )}
+                    })
+                  : itemContainer()}
+              </div>
+            </section>
           </div>
         ) : (
           <div className="logout-tab">
-            {isSelect ? (
-              <section className={`reserve-wrap`}>
-                <div
-                  className=" my-[30px] cursor-pointer"
-                  onClick={moveLoginPage}
-                >
-                  <img
-                    src={require("../../assets/icons/mydining-img1-v3.png")}
-                  ></img>
-                </div>
-                <RecommendPage
-                  title={"미쉐린 가이드 2024"}
-                  pageList={pageList}
-                  toggleDrawerBox={toggleDrawer}
-                ></RecommendPage>
-                <RecommendPage
-                  title={"캐치테이블 ON"}
-                  pageList={pageList}
-                ></RecommendPage>
-              </section>
-            ) : (
-              <section className={`recommend-wrap`}></section>
-            )}
+            <section className={`reserve-wrap`}>
+              <div
+                className=" my-[30px] cursor-pointer"
+                onClick={moveLoginPage}
+              >
+                <img
+                  src={require("../../assets/icons/mydining-img1-v3.png")}
+                ></img>
+              </div>
+              <RecommendPage
+                title={"미쉐린 가이드 2024"}
+                pageList={pageList}
+                toggleDrawerBox={toggleDrawer}
+              ></RecommendPage>
+              <RecommendPage
+                title={"캐치테이블 ON"}
+                pageList={pageList}
+              ></RecommendPage>
+            </section>
           </div>
         )}
       </TabContens>
@@ -411,5 +277,5 @@ const MyDiningContents = styled.div`
 `;
 const TabContens = styled.div`
   overflow: auto;
-  height: calc(100vh - 48px - 48px - 49px);
+  height: calc(100vh - 48px - 49px);
 `;

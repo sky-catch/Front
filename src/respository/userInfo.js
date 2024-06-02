@@ -73,8 +73,8 @@ export const updateUserInfo = async ({ updateMemberReq, file }) => {
   try {
     const result = await apiClient.patch(`/member/profile`, formData, {
       headers: {
-        Authorization : `Bearer ${token}`,
-        "Content-Type" : "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
       },
     });
     return result;
@@ -94,6 +94,7 @@ export const getMyRestaurant = async () => {
     return result.data;
   } catch (err) {
     console.log("Error >>", err);
+    // throw err;
   }
 };
 

@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import DialogComponent from "../../components/DialogComponent";
+import Loading from "../../components/Loading";
 import { GetChatRoomListRes } from "../../respository/reservation";
 import Carousel from "../Home/Carousel";
-
 function Dialog() {
   const [isLogin, SetIsLogin] = useState(false);
   const [filterText, setFilterText] = useState("");
@@ -36,7 +36,6 @@ function Dialog() {
   });
 
   const searchRestaurant = (e) => {
-    console.log(roomList);
     let searchValue = e.target.value;
     setFilterText(searchValue);
   };
@@ -66,14 +65,12 @@ function Dialog() {
   }
 
   if (isLoading) {
-    return <div>로딩....</div>;
+    return <Loading></Loading>;
   }
 
   if (error) {
     return <div>error....</div>;
   }
-
-  //FIXME 채팅방이 없을때 작업하기 위해 일부로 없앴음
 
   return (
     <DialogContents className="">

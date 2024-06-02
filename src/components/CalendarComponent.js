@@ -5,6 +5,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import Drawer from "react-modern-drawer";
 import { useLocation, useNavigate } from "react-router-dom";
+import Loading from "./Loading";
 
 // import { useQueryClient } from "react-query";
 import { useQueryClient } from "@tanstack/react-query";
@@ -29,7 +30,7 @@ function SetDateYMD(isDate) {
 
 /**
  * 캘린더 Drawer
- * 
+ *
  * @author soyeon
  */
 const CalendarComponent = ({
@@ -38,7 +39,7 @@ const CalendarComponent = ({
   setReserveInfo,
   toggleDrawer,
   timeSlots,
-  isSearch  //필터검색 여부 (true/false)
+  isSearch, //필터검색 여부 (true/false)
 }) => {
   const location = useLocation();
   const [date, setDate] = useState(new Date());
@@ -132,7 +133,7 @@ const CalendarComponent = ({
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading></Loading>;
   }
 
   return (
