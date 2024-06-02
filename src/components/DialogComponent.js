@@ -39,7 +39,7 @@ const DialogComponent = ({ item }) => {
     <div
       className={`py-[10px] flex gap-x-[12px] cursor-pointer relative ${
         item.hasNewChat ? "read-icon" : ""
-      }`}
+      } custom-class`}
       onClick={(e) => {
         navigate(
           `/chat?name=${encodeURIComponent(

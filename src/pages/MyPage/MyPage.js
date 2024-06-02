@@ -329,7 +329,13 @@ function MyPage() {
         <section className="section section-overflow-hidden"></section>
         {/* 배너 */}
         <div>
-          <div className="mypage-ad flex items-center">
+          <div
+            className="mypage-ad flex items-center"
+            onClick={(e) => {
+              e.preventDefault();
+              alert("준비중 입니다.");
+            }}
+          >
             <img src="https://app.catchtable.co.kr/public/img/Anniversary/anniversary-cake.svg"></img>
             <div>
               <p>캐치테이블이 특별한 날을 축하해드릴게요</p>

@@ -272,6 +272,7 @@ export default function RestaurantInfo() {
           restaurantImageTypes: testFile(photoToAddList),
         },
         files: photoToAddList,
+        // restaurantId: 47,
         restaurantId: userInfo.restaurantId,
       };
       createImages(restaurantItem);
@@ -376,12 +377,12 @@ export default function RestaurantInfo() {
                   <MenuItem value={"한우오마카세"}>한우 오마카세</MenuItem>
                   <MenuItem value={"스테이크"}>스테이크</MenuItem>
                   <MenuItem value={"한식"}>한식</MenuItem>
-                  <MenuItem value={"쇠고기 그릴"}>쇠고기 그릴</MenuItem>
+                  <MenuItem value={"소고기구이"}>소고기구이</MenuItem>
                   <MenuItem value={"중국식"}>중국식</MenuItem>
-                  <MenuItem value={"일본식"}>일본식</MenuItem>
-                  <MenuItem value={"이탈리아식"}>이탈리아식</MenuItem>
-                  <MenuItem value={"프랑스식"}>프랑스식</MenuItem>
-                  <MenuItem value={"아시아식"}>아시아식</MenuItem>
+                  <MenuItem value={"일식"}>일식</MenuItem>
+                  <MenuItem value={"이탈리아음식"}>이탈리아음식</MenuItem>
+                  <MenuItem value={"프랑스음식"}>프랑스음식</MenuItem>
+                  <MenuItem value={"아시아음식"}>아시아음식</MenuItem>
                   <MenuItem value={"와인"}>와인</MenuItem>
                   <MenuItem value={"맥주"}>맥주</MenuItem>
                   <MenuItem value={"기타"}>기타</MenuItem>
