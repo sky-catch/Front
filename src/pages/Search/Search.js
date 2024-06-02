@@ -83,7 +83,7 @@ export default function Search() {
 
   useEffect(() => {
     let count = 0;
-    if( filterInfo?.koreanCity?.length > 0) count +=1;
+    if( filterInfo?.hotPlace?.length > 0) count +=1;
     if(filterInfo?.maxPrice !=0 || filterInfo?.minPrice != 0 ) count+=1;
     setFilterCnt(count);
     console.log(filterInfo);
@@ -142,7 +142,7 @@ export default function Search() {
                         key={index}
                         id={index} >
                         <button type="button" className={`slide-button
-                          ${ (filterInfo?.koreanCity?.length >0 && index==0 )
+                          ${ (filterInfo?.hotPlace?.length >0 && index==0 )
                             || ((filterInfo?.maxPrice>0 || filterInfo?.minPrice>0 )&& index ==1)? 'active' : ''}
                         `} onClick={toggleFilterDrawer}>
                           <span>{item.title}</span>
@@ -208,6 +208,7 @@ export default function Search() {
         isFilter={isFilter}
         toggleFilterDrawer={toggleFilterDrawer}
         setFilterInfo={setFilterInfo}
+        searchFilter={filterInfo}
       ></FilterDrawer>
       {/* 캘린더 패널 Drawer */}
       <CalendarComponent

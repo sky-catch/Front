@@ -223,7 +223,24 @@ function MyPage() {
       setIsRestaurant(true);
       setRestaurant((prevUser) => ({ ...getRestaurantItem }));
     }
-  }, [getRestaurantItem, isUserInfo]);
+  }, [getRestaurantItem]);
+
+  useEffect(() => {
+    // 이미지 정보 설정
+
+    setUser((prevUser) => ({
+      ...prevUser,
+      profileImageUrl: isUserInfo?.profileImageUrl,
+      isOwner: isUserInfo?.owner,
+      saveRestaurants: isUserInfo?.savedRestaurants,
+    }));
+    if (isUserInfo) {
+      console.log("마이페이지 success", isUserInfo);
+      sessionStorage.setItem("data", JSON.stringify(isUserInfo));
+    } 
+  }, [isUserInfo]);
+
+  useEffect(()=>{console.log(user);},[user])
 
   const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);

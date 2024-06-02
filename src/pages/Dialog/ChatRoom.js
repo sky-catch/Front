@@ -2,6 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
+// import Loading from "../../components/Loading";
+import { getChatRoom } from "../../respository/reservation";
+import { getRestaurant } from "../../respository/restaurant";
+import SockJS from 'sockjs-client';
+import { Stomp, CompatClient } from '@stomp/stompjs';
+import WebSocket from "ws";
+import { io } from "socket.io-client";
 import Loading from "../../components/Loading";
 import { getChatRoom } from "../../respository/reservation";
 import { getRestaurant } from "../../respository/restaurant";
@@ -17,6 +24,7 @@ const ChatRoom = () => {
   let chatRoomId = new URLSearchParams(location.search).get("id");
   const memberChat = true;
   const token = sessionStorage.getItem("token");
+  
   const headers = {
     authorization: `Bearer ${token}`,
     chatRoomId: chatRoomId,
@@ -63,6 +71,7 @@ const ChatRoom = () => {
     ws.send(isMessage);
     setIsMessage("");
   };
+
   const {
     data: chatRoomList,
     isLoding: roomLoding,
@@ -100,10 +109,9 @@ const ChatRoom = () => {
 
   if (!chatRoomList || !restaurant) return;
   if (restaurantLoding || roomLoding) {
-    return <Loading></Loading>;
+    // return <Loading></Loading>;
   }
-  console.log("restaurant", restaurant);
-
+  
   return (
     <ChatBox>
       <div className=" min-h-[40px] container border-solid  leading-[40px] border-b-[#d4d4d4] border-b-[1px]">
@@ -177,7 +185,7 @@ const ChatRoom = () => {
             />
             <button
               className="size-[47px] block text-[#fff]"
-              onClick={sendMessage}
+              // onClick={sendMessage}
             >
               전송
             </button>

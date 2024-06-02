@@ -19,11 +19,12 @@ export default function ReserveForm() {
 
   // 예약 시 필요 정보
   const [memo, setMemo] = useState();
-  const [deposit, setDeposit] = useState(state.cost);
+  const [deposit, setDeposit] = useState(state.restaurant.deposit);
   const [detail, setDetail] = useState(state.detail);
   const [restaurantId, setRestaurantId] = useState(
     state.restaurant.restaurantId
   );
+  console.log('deposit',deposit);
 
   /* Funciton : 결제 */
   const requestPay = (e) => {
