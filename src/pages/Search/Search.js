@@ -24,7 +24,7 @@ export default function Search() {
   const tomorrow = new Date(new Date().setDate(today.getDate()+1));
   const [date, setDate] = useState(today.getHours() >= 19 ? tomorrow : today); // 예약 날짜
   const dateStr = `${ String(date.getMonth() + 1).padStart(2, "0") }.${ String(date.getDate()).padStart(2, "0") }(${ week[date.getDay()] })`; // 예약날짜 노출문구
-  const [time, setTime] = useState(date.getHours()+1); // 기본 시간 : 현재 시간보다+1
+  const [time, setTime] = useState(String(date.getHours()+1).padStart(2,"0")); // 기본 시간 : 현재 시간보다+1
 
   // * 기본 검색 인원은 2명
   const [minNum, setMinNum] = useState(2); // 최소 인원

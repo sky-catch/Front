@@ -14,11 +14,15 @@ export const searchByFilter = async(params) => {
         const data = new URLSearchParams();
         Object.entries(params).forEach(([key,value])=> {
             if(key == 'hotPlace' || key == 'koreanCity') {
-                if(value) data.append(key,value);
+                console.log(key, value, value=='');
+                if(value!=="") { 
+                    data.append(key,value);
+                }
             }else {
                 data.append(key,value);
             }
         })
+        console.log(params, data.toString());
         const result = await apiClient.get(`/restaurants/search?${data.toString()}`, {
             headers : {
                 "Content-Type" : `application/json`,
