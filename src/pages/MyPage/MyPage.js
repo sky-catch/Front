@@ -43,6 +43,7 @@ function MyPage() {
   const { data: isUserInfo, isLoading: userLoading } = useQuery({
     queryKey: ["getUserInfo"],
     queryFn: getUserInfo,
+    retry: true,
   });
   const [isOwner, setIsOwner] = useState(isUserInfo ? isUserInfo.owner : false);
   const [following, setFollowing] = useState(0); //isUserInfo 팔로잉,팔로워 수 리턴받아야함.(TODO)
@@ -52,6 +53,48 @@ function MyPage() {
   const updateUserInfo = () => {
     navigate("/my/myProfileInfo");
   };
+  const {
+    data: getRestaurantItem,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["getMyRestaurant"],
+    queryFn: () => {
+      return getMyRestaurant()
+        .then((res) => {
+          if (res !== undefined) {
+            console.log(res);
+          }
+          return res;
+        })
+        .catch((err) => {
+          console.log("err1", err.response);
+          throw err;
+        });
+    },
+    retry: 1,
+    enabled: isUserInfo?.owner,
+  });
+
+  const { data: getOwnerItem } = useQuery({
+    queryKey: ["getOwner"],
+    queryFn: () => {
+      return getOwner()
+        .then((res) => {
+          if (res === undefined) {
+            throw new Error("Data is undefined");
+          }
+          return res;
+        })
+        .catch((err) => {
+          console.log("err2", err);
+          throw err;
+        });
+    },
+    retry: 1,
+    enabled: isUserInfo?.owner,
+  });
+
   useEffect(() => {
     if (!isReviewOpen) return;
     if (!isSelectInfo) return;
@@ -82,7 +125,6 @@ function MyPage() {
       isOwner: isUserInfo?.owner,
       saveRestaurants: isUserInfo?.savedRestaurants,
     }));
-    console.log("isUserInfo", isUserInfo);
   }, [isUserInfo]);
   const toggleDrawerReview = (e, info) => {
     setIsReviewOpen((prevState) => !prevState);
@@ -178,46 +220,6 @@ function MyPage() {
     }
   };
 
-  const {
-    data: getRestaurantItem,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["getMyRestaurant"],
-    queryFn: () => {
-      return getMyRestaurant()
-        .then((res) => {
-          if (res !== undefined) {
-            console.log(res);
-          }
-          return res;
-        })
-        .catch((err) => {
-          console.log("err1", err.response);
-          throw err;
-        });
-    },
-    enabled: isUserInfo?.owner,
-  });
-
-  const { data: getOwnerItem } = useQuery({
-    queryKey: ["getOwner"],
-    queryFn: () => {
-      return getOwner()
-        .then((res) => {
-          if (res === undefined) {
-            throw new Error("Data is undefined");
-          }
-          return res;
-        })
-        .catch((err) => {
-          console.log("err2", err);
-          throw err;
-        });
-    },
-    enabled: isUserInfo?.owner,
-  });
-
   useEffect(() => {
     if (isUserInfo?.owner && getRestaurantItem) {
       setIsRestaurant(true);
@@ -264,8 +266,8 @@ function MyPage() {
     console.log("name : ", restaurantName);
     navigate(`/ct/shop/${restaurantName}`, { state: restaurantName });
   };
-
-  if (userLoading) {
+  // 내 정보 프로필사진이나 닉네임 등등 없으면 로딩하게 제작
+  if (userLoading || !isUserInfo) {
     return <Loading></Loading>;
   }
 
@@ -273,7 +275,6 @@ function MyPage() {
   const onErrorImg = (e) => {
     e.target.src = defaultImage;
   };
-
   return (
     <MainContents className="main">
       {/* 프로필정보 */}
@@ -282,8 +283,8 @@ function MyPage() {
           <div className="mypage-profile flex items-start mb-[16px]">
             <div className="profile-pic mr-[12px]">
               <img
-                className="img"
-                src={`${user?.profileImageUrl}`}
+                className="img border border-[#d5d5d5]"
+                src={`${isUserInfo?.profileImageUrl}`}
                 alt={defaultImage}
               ></img>
             </div>

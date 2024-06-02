@@ -24,9 +24,7 @@ const ChatRoom = () => {
   };
 
   // const ws = new WebSocket("ws://localhost:8080/chat");
-  const ws = new WebSocket("ws://15.164.89.177:8080/chat", [
-    JSON.stringify(headers),
-  ]);
+  const ws = new WebSocket("ws://15.164.89.177:8080/chat");
   useEffect(() => {
     // 연결 성공 시 실행될 콜백 함수
 

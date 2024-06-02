@@ -54,8 +54,8 @@ export const RestaurantState = atom({
     notifications: [],
     facilities: [
       {
-        name: " ",
-        path: "",
+        name: null,
+        path: null,
       },
     ],
     holidays: {

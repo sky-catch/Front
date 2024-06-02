@@ -12,7 +12,6 @@ const apiClient = axios.create({
 
 export const convertURLtoFile = async (url) => {
   const response = await fetch(url, {
-    // mode: "cors",
     headers: { "Access-Control-Allow-Origin": "*" },
   });
 
