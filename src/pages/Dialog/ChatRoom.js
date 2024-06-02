@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 // import Loading from "../../components/Loading";
-import { getChatRoom } from "../../respository/reservation";
-import { getRestaurant } from "../../respository/restaurant";
 import SockJS from 'sockjs-client';
 import { Stomp, CompatClient } from '@stomp/stompjs';
 import WebSocket from "ws";

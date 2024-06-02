@@ -51,9 +51,9 @@ export const UpdateRestaurantRes = () => {
 };
 
 /* 식당 개별 조회 */
-
-export const getRestaurant = async (name) => {
-  // console.log("name", queryKey);
+export const getRestaurant = async ({queryKey}) => {
+  console.log("queryKey", queryKey[0]);
+  let name = queryKey[0];
   try {
     // const [name] = queryKey;
     const res = await apiClient.get(`/restaurants/${name}`, {
