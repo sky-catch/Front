@@ -132,10 +132,8 @@ export default function RestaurantInfo() {
   /* 식당이 있으면 조회 */
   useEffect(() => {
     //내 식당 정보 조회 및 세팅
-    console.log("inputValues", inputValues);
-    if (text.indexOf("add") > 0) {
+    if (text.indexOf("add") === 0) {
       // 식당 정보 없을때
-
       setRestaurant(false);
     } else {
       // 식당 정보 있을때
@@ -159,7 +157,6 @@ export default function RestaurantInfo() {
   /* Select 값 변경 Function */
   useEffect(() => {
     if (!user.images) return;
-
     const fetchAndConvertImages = async () => {
       const promises = user.images.map(async (item) => {
         if (!item.path) return;
@@ -234,14 +231,11 @@ export default function RestaurantInfo() {
     };
 
     console.log("location", location);
-
     /* 모두 필수 : 하나라도 입력하지 않은 경우 알림창 */
-
     if (
       !name ||
       !selectedCategory ||
       phone.length < 12 ||
-      photoToAddList.length < 1 ||
       !tablePersonMax ||
       !tablePersonMin ||
       !openTime ||
@@ -257,7 +251,7 @@ export default function RestaurantInfo() {
     }
 
     //식당 추가
-    if (text.indexOf("add") > 0) {
+    if (text.indexOf("add") === 0) {
       // 식당 정보 없을때
       console.log("식당 정보 없을때");
       createRestaurant(info)
@@ -271,19 +265,18 @@ export default function RestaurantInfo() {
     } else {
       //식당 정보 있을때
       updateRestaurant(info);
+      // 사진 보내기
+      if (!photoToAddList) return;
+      const restaurantItem = {
+        addRestaurantImagesReq: {
+          restaurantImageTypes: testFile(photoToAddList),
+        },
+        files: photoToAddList,
+        // restaurantId: 47,
+        restaurantId: userInfo.restaurantId,
+      };
+      createImages(restaurantItem);
     }
-
-    // 사진 보내기
-
-    const restaurantItem = {
-      addRestaurantImagesReq: {
-        restaurantImageTypes: testFile(photoToAddList),
-      },
-      files: photoToAddList,
-      restaurantId: userInfo.restaurantId,
-    };
-    console.log(restaurantItem);
-    createImages(restaurantItem);
   };
 
   const addressLocation = () => {
@@ -315,12 +308,9 @@ export default function RestaurantInfo() {
     for (let i = 0; i < photoToAdd.length; i++) {
       temp.push({ file: photoToAdd[i] });
     }
-
     setPhotoToAddList(temp.concat(photoToAddList));
   };
   const photoToAddPreview = () => {
-    console.log("photoToAddList", photoToAddList);
-
     if (photoToAddList.length === 0) return;
     if (photoToAddList.length > 10) {
       alert("최대 10장만 가능합니다.");
@@ -387,12 +377,12 @@ export default function RestaurantInfo() {
                   <MenuItem value={"한우오마카세"}>한우 오마카세</MenuItem>
                   <MenuItem value={"스테이크"}>스테이크</MenuItem>
                   <MenuItem value={"한식"}>한식</MenuItem>
-                  <MenuItem value={"쇠고기 그릴"}>쇠고기 그릴</MenuItem>
+                  <MenuItem value={"소고기구이"}>소고기구이</MenuItem>
                   <MenuItem value={"중국식"}>중국식</MenuItem>
-                  <MenuItem value={"일본식"}>일본식</MenuItem>
-                  <MenuItem value={"이탈리아식"}>이탈리아식</MenuItem>
-                  <MenuItem value={"프랑스식"}>프랑스식</MenuItem>
-                  <MenuItem value={"아시아식"}>아시아식</MenuItem>
+                  <MenuItem value={"일식"}>일식</MenuItem>
+                  <MenuItem value={"이탈리아음식"}>이탈리아음식</MenuItem>
+                  <MenuItem value={"프랑스음식"}>프랑스음식</MenuItem>
+                  <MenuItem value={"아시아음식"}>아시아음식</MenuItem>
                   <MenuItem value={"와인"}>와인</MenuItem>
                   <MenuItem value={"맥주"}>맥주</MenuItem>
                   <MenuItem value={"기타"}>기타</MenuItem>
@@ -637,33 +627,34 @@ export default function RestaurantInfo() {
               </Select>
             </FormControl>
           </div>
-          <div className="form-block mb-[20px]">
-            <div className="mb-[6px]">
-              <Serious className="color-gray text-[12px]">식당 이미지</Serious>
-            </div>
-            <span className="text-center text-[12px] block mb-[15px]">
-              최대 10장 가능합니다. 마지막 이미지가 메인 입니다.
-            </span>
-            <div className="photoUploaderContent">
-              <div className="photoBox addPhoto">
-                <button
-                  className="icon add-icon"
-                  onClick={handleClick}
-                ></button>
-
-                <PictureFilled onClick={handleClick} />
-                <input
-                  type="file"
-                  accept="image/jpg, image/jpeg, image/png"
-                  multiple
-                  ref={photoInput}
-                  onChange={(e) => handlePhoto(e)}
-                  style={{ display: "none" }}
-                />
+          {text.indexOf("update") === 0 && (
+            <div className="form-block mb-[20px]">
+              <div className="mb-[6px]">
+                <label className="color-gray text-[12px]">식당 이미지</label>
               </div>
-              {photoToAddList && photoToAddPreview()}
+              <span className="text-center text-[12px] block mb-[15px]">
+                최대 10장 가능합니다. 마지막 이미지가 메인 입니다.
+              </span>
+              <div className="photoUploaderContent">
+                <div className="photoBox addPhoto">
+                  <button
+                    className="icon add-icon"
+                    onClick={handleClick}
+                  ></button>
+                  <PictureFilled onClick={handleClick} />
+                  <input
+                    type="file"
+                    accept="image/jpg, image/jpeg, image/png"
+                    multiple
+                    ref={photoInput}
+                    onChange={(e) => handlePhoto(e)}
+                    style={{ display: "none" }}
+                  />
+                </div>
+                {photoToAddList && photoToAddPreview()}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
       {restaurant ? (
