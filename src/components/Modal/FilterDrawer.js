@@ -17,10 +17,10 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
   const [isContent, setIsContent] = useState(1);
   const [isSelect, setIsSelect] = useState("핫플");
   const [selectedCities, setSelectedCities] = useState(typeof searchFilter?.hotPlace =='string' ? searchFilter?.hotPlace?.split(',').filter(item=>item!=='') : searchFilter?.hotPlace);  // 선택된 지역 필터 //searchFilter?.hotPlace.split(',')
-  const [selectedCost, setSelectedCost] = useState({}); // 선택된 가격 필터
   const [cities, setCities] = useState([]); // 적용된 지역 필터
   const [cost, setCost] = useState(); /* rc-slider 값 */
   const [Value, setValue] = useState([searchFilter?.minPrice || 0, searchFilter?.maxPrice || 40]);
+  const [selectedCost, setSelectedCost] = useState(searchFilter?.minPrice ? { min: searchFilter?.minPrice, max:searchFilter?.maxPrice }: {}); // 선택된 가격 필터
 
   const defaultCity = [
     { city : "핫플",
@@ -115,9 +115,13 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
       ...prevState, 
       hotPlace : selectedCities?.length > 0 ? selectedCities : [],
       koreanCity : isSelect=="핫플" ? "서울" : isSelect,
-      minPrice : cost ? Number(cost?.min) : 0,
-      maxPrice : cost ? Number(cost?.max) : 0
+      minPrice : selectedCost ? Number(selectedCost?.min) : 0,
+      maxPrice : selectedCost ? Number(selectedCost?.max) : 0
     }));
+    setCost({
+      min:selectedCost?.min,
+      max:selectedCost?.max
+    })
     toggleFilterDrawer(e);
   };
 
@@ -150,13 +154,14 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
   /* function : 전체초기화 */
   const handleResetAll = (e) => {
     /* 1. 지역리셋 */
-    // setSelectedCities([]);
+    setSelectedCities([]);
     // const list = placeRef.current;
     // list.map((item) => {
     //   const arr1 = item.classList;
     //   arr1.remove("active");
     // });
     /* 2. 가격리셋 */
+    setSelectedCost({});
     // setCost();
     setValue([0,40]);
   }
@@ -171,7 +176,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
   const handleChange = (props) => {
     const [min, max] = props;
     if(max<1) return;
-    setCost({
+    setSelectedCost({
       min: min,
       max: max,
     });
@@ -186,7 +191,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
     handleChange([min, max]);
   };
   
-  console.log('selected!🌷', selectedCities, 'isSelect', isSelect, 'cities', cities,'searchFilter⭐️',searchFilter);
+  console.log('selected!🌷', selectedCities, 'selectedCost', selectedCost, selectedCost==null,'searchFilter⭐️',searchFilter);
 
   return (
     <div className="filter-drawer">
@@ -278,7 +283,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
                 <div className="slider-wrapper">
                   <h3 className="title">
                     {
-                      cost ? cost.min > 0 ? `${cost.min}만원 ~ ${cost.max}만원` : `${cost.min}원 ~ ${cost.max}만원` : `0원 ~ 40만원`
+                      Object.keys(selectedCost).length !== 0 ? `${selectedCost.min}만원 ~ ${selectedCost.max}만원` : `0원 ~ 40만원`
                     }
                   </h3>
                   <div className="slider-wrapper-inner">
@@ -313,7 +318,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
           <footer className="fixed">
             <div className="gradient"></div>
             { selectedCities?.length >0
-            || cost ? 
+            || Object.keys(selectedCost).length!==0 ? 
             <div className="selected-itmes">
                     <div className="delete-button">
                       <button type="button" className="delete" onClick={handleResetAll}>
@@ -340,7 +345,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
                         )
                       })}
                       { 
-                        (cost && (cost.min || cost.max)) ? <button className="item-btn font-md"><span>{cost.min}원 ~ {cost.max}만원</span>
+                        (selectedCost && (selectedCost.min || selectedCost.max)) ? <button className="item-btn font-md"><span>{selectedCost.min}원 ~ {selectedCost.max}만원</span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none" className="design_system_1mb4yfk4 design_system_1mb4yfk5 cost" onClick={handleReset}>
                           <path d="M9 1L1 9" stroke="currentColor" strokeWidth="0.75" strokeMiterlimit="10"></path>
                           <path d="M1 1L9 9" stroke="currentColor" strokeWidth="0.75" strokeMiterlimit="10"></path>
