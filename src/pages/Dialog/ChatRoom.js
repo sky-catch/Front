@@ -1,66 +1,58 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 // import Loading from "../../components/Loading";
-import SockJS from 'sockjs-client';
-import { Stomp, CompatClient } from '@stomp/stompjs';
-import WebSocket from "ws";
-import { io } from "socket.io-client";
-import Loading from "../../components/Loading";
 import { getChatRoom } from "../../respository/reservation";
 import { getRestaurant } from "../../respository/restaurant";
 
 const ChatRoom = () => {
-  // const ws = useRef();
   const location = useLocation();
   const [isMessage, setIsMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const ws = useRef();
   // 웹 소켓 연결 이벤트
   // : "ws://15.164.89.177:8080/chat";
   let name = new URLSearchParams(location.search).get("name");
   let chatRoomId = new URLSearchParams(location.search).get("id");
   const memberChat = true;
   const token = sessionStorage.getItem("token");
-  
+
   const headers = {
     authorization: `Bearer ${token}`,
     chatRoomId: chatRoomId,
     memberChat: memberChat,
   };
 
-  // const ws = new WebSocket("ws://localhost:8080/chat");
-  const ws = new WebSocket("ws://15.164.89.177:8080/chat", [
-    JSON.stringify(headers),
-  ]);
+  ws.current = new WebSocket("ws://localhost:8000/chat");
+  // ws.current = new WebSocket("ws://15.164.89.177:8080/chat");
   useEffect(() => {
     // 연결 성공 시 실행될 콜백 함수
-
-    ws.onopen = () => {
+    ws.current.onopen = () => {
       console.log("WebSocket connected");
-
-      // 연결 후 서버에 데이터를 전송할 수 있음
-      // ws.send("Hello, server!");
+      // 연결 후 서버에 데이터를 전송할 수 있습니다.
+      // ws.current.send(
+      //   JSON.stringify({
+      //     authorization: token,
+      //     chatRoomId: chatRoomId,
+      //     memberChat: memberChat,
+      //   })
+      // );
     };
-
-    // 메시지 수신 시 실행될 콜백 함수
-    ws.onmessage = (event) => {
-      console.log("Received message from server:", event.data);
-      const container = document.getElementById("messages");
-      // console.log("container", container);
-      // const htmlContent = `<div><div class="w-full  h-auto flex  items-end gap-x-[5px] "><div class="rounded-bl-lg rounded-r-lg float-left p-[7px] bg-[#fff] w-fit max-w-[70%] shadow-md">${event.data}</div><span class=" text-[12px]">오전 09:56</span><span class=" hidden size-[6px] rounded-full bg-[#ff3d00] mb-[5px]"></span></div></div>`;
-      // container.innerHTML = htmlContent;
-    };
-
-    // 연결 종료 시 실행될 콜백 함수
-    ws.onclose = () => {
-      console.log("WebSocket disconnected");
-    };
-
-    // 에러 발생 시 실행될 콜백 함수
-    ws.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
+    // ws.current.onmessage = (event) => {
+    //   const newMessage = event.data;
+    //   setMessages((prevMessages) => [...prevMessages, newMessage]);
+    // };
+    // ws.current.onclose = () => {
+    //   console.log("WebSocket disconnected");
+    // };
+    // ws.current.onerror = (error) => {
+    //   console.error("WebSocket error:", error);
+    // };
+    // // 컴포넌트 언마운트 시 WebSocket 연결 닫기
+    // return () => {
+    //   ws.current.close();
+    // };
   }, []);
 
   const sendMessage = (e) => {
@@ -109,7 +101,7 @@ const ChatRoom = () => {
   if (restaurantLoding || roomLoding) {
     // return <Loading></Loading>;
   }
-  
+
   return (
     <ChatBox>
       <div className=" min-h-[40px] container border-solid  leading-[40px] border-b-[#d4d4d4] border-b-[1px]">
