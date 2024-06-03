@@ -91,7 +91,6 @@ const Header = ({ setSearch, updateSearch }) => {
                   onClickMove("mypage", e);
                 }}
               ></a>
-              <button className="w-[30px] h-[30px] bg-alert bg-[30px] bg-no-repeat ml-[8px]"></button>
             </div>
           </div>
         );

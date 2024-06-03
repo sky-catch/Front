@@ -15,8 +15,9 @@ import apiClient from "../../apis/ApiClient";
 export default function MyProfileInfo() {
   const [user, setUser] = useRecoilState(LoginState);
   const [introduceLength, setIntroduceLength] = useState(0);
-  const [imgFile, setImgFile] = useState(user.profileImageUrl);
-  const [imgPreview, setImgPreview] = useState(user.profileImageUrl);
+  const [introduce, setIntroduce] = useState("");
+  const [imgFile, setImgFile] = useState(user.profileImg);
+  const [imgPreview, setImgPreview] = useState(user.profileImg);
   const [name, setName] = useState(user.nickname);
   const queryClient = useQueryClient();
 
@@ -29,6 +30,7 @@ export default function MyProfileInfo() {
   const handleChange = (e) => {
     e.preventDefault();
     setIntroduceLength(e.target.value.length);
+    setIntroduce(e.target.value);
   };
 
   /* Function : 자기 정보 세팅 */
