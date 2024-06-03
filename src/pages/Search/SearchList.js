@@ -18,11 +18,9 @@
         let restaurantList = searchList?.getRestaurantSearchListRes; // 레스토랑 리스트
         let filter = searchList?.searchFilter; // 검색 결과 필터 정보
         
-        // useEffect(()=>{setFilterInfo(filter);},[searchList]);
-        
         const isFilterOn = (filterInfo?.hotPlace || filterInfo?.koreanCity) || (state?.maxPrice > 0 || state?.minPrice > 0) ;
         const [isFilter, setIsFilter] = useState(false);  // 필터패널 open 여부 (false : 닫음, true : 열림)
-        console.log('filterInfo', filterInfo, 'state', state,'filter',filter);
+        console.log('filterInfo', filterInfo, 'state', state,'filter',filter, 'restaurantList', restaurantList);
 
         const menuItems = [{
             id: 1,
@@ -132,7 +130,7 @@
                             </div>
                             <section className="list-items">
                                 <div className="container gutter-sm">
-                                    <div className="search-list pb-[10px]">
+                                    <div className="search-list pb-[30px]">
                                         {   
                                         restaurantList && restaurantList.length > 0 ?
                                         restaurantList.map((item,index)=> {
@@ -141,7 +139,7 @@
                                                     onClick={()=>onClickRestaurant(item)}
                                                 >
                                                     <div className="tb">
-                                                        <div className="img"></div>
+                                                        <div className="img"><img src={item.imageUrl}></img></div>
                                                     </div>
                                                     <div className="detail flex">
                                                         <div className="detail-header flex">

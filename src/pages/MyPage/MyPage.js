@@ -39,14 +39,7 @@ function MyPage() {
   const [isSelectItem, setSelectItem] = useState({ score: 0, reviewId: 0 });
   const [isSave, setIsSave] =
     useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
-
-  const { data: isUserInfo, isLoading: userLoading } = useQuery({
-    queryKey: ["getUserInfo"],
-    queryFn: getUserInfo,
-  });
-  const [isOwner, setIsOwner] = useState(isUserInfo ? isUserInfo.owner : false);
-  const [following, setFollowing] = useState(0); //isUserInfo 팔로잉,팔로워 수 리턴받아야함.(TODO)
-  const [follower, setFollower] = useState(0); // 동일
+  const [isOwner, setIsOwner] = useState(user?.owner);
 
   /* Function : 프로필 수정 */
   const updateUserInfo = () => {
@@ -74,16 +67,7 @@ function MyPage() {
 
     fetchAndConvertImages();
   }, [isReviewOpen, isSelectInfo]);
-  useEffect(() => {
-    // 이미지 정보 설정
-    setUser((prevUser) => ({
-      ...prevUser,
-      profileImageUrl: isUserInfo?.profileImageUrl,
-      isOwner: isUserInfo?.owner,
-      saveRestaurants: isUserInfo?.savedRestaurants,
-    }));
-    console.log("isUserInfo", isUserInfo);
-  }, [isUserInfo]);
+
   const toggleDrawerReview = (e, info) => {
     setIsReviewOpen((prevState) => !prevState);
     if (isReviewOpen) {
@@ -159,11 +143,6 @@ function MyPage() {
       photoToAddList.filter((photo) => photo.file.name !== deleteName)
     );
   };
-  const onRemove = (deleteName) => {
-    // setIsSelectInfo(
-    //   isSelectInfo.images.filter((photo) => photo.path !== deleteName)
-    // );
-  };
   const createOwner = () => {
     navigate(`/owner`);
   };
@@ -197,7 +176,7 @@ function MyPage() {
           throw err;
         });
     },
-    enabled: isUserInfo?.owner,
+    enabled: user?.owner,
   });
 
   const { data: getOwnerItem } = useQuery({
@@ -215,32 +194,15 @@ function MyPage() {
           throw err;
         });
     },
-    enabled: isUserInfo?.owner,
+    enabled: user?.owner,
   });
 
   useEffect(() => {
-    if (isUserInfo?.owner && getRestaurantItem) {
+    if (user?.owner && getRestaurantItem) {
       setIsRestaurant(true);
       setRestaurant((prevUser) => ({ ...getRestaurantItem }));
     }
   }, [getRestaurantItem]);
-
-  useEffect(() => {
-    // 이미지 정보 설정
-
-    setUser((prevUser) => ({
-      ...prevUser,
-      profileImageUrl: isUserInfo?.profileImageUrl,
-      isOwner: isUserInfo?.owner,
-      saveRestaurants: isUserInfo?.savedRestaurants,
-    }));
-    if (isUserInfo) {
-      console.log("마이페이지 success", isUserInfo);
-      sessionStorage.setItem("data", JSON.stringify(isUserInfo));
-    } 
-  }, [isUserInfo]);
-
-  useEffect(()=>{console.log(user);},[user])
 
   const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
@@ -282,7 +244,7 @@ function MyPage() {
     navigate(`/ct/shop/${restaurantName}`, { state: restaurantName });
   };
 
-  if (userLoading) {
+  if (!user.nickname) {
     return <Loading></Loading>;
   }
 
@@ -300,13 +262,13 @@ function MyPage() {
             <div className="profile-pic mr-[12px]">
               <img
                 className="img"
-                src={`${user?.profileImageUrl}`}
+                src={`${user?.profileImg}`}
                 alt={defaultImage}
               ></img>
             </div>
             <div className="mypage-profile-meta">
               <div className="userInfo flex items-center">
-                <h4 className="name">{isUserInfo?.nickname}</h4>
+                <h4 className="name">{user?.nickname}</h4>
                 <div className="isOwner flex">
                   <FaStar color="#ff3d00"></FaStar>
                 </div>
@@ -324,7 +286,7 @@ function MyPage() {
             <button
               className="btn btn-md btn-outline btn-rounded mt-18"
               onClick={
-                isUserInfo?.owner
+                user?.owner
                   ? isRestaurant
                     ? manageRestaurant
                     : createRestaurant
@@ -332,7 +294,7 @@ function MyPage() {
               }
             >
               <span className="label">
-                {isUserInfo?.owner
+                {user?.owner
                   ? isRestaurant
                     ? "내 식당 관리"
                     : "내 식당 등록"
@@ -411,18 +373,18 @@ function MyPage() {
                                 </a>
                                 <a className="detail">
                                   <h4 className="name">
-                                    {item.savedRestaurantName || "식당 이름"}
+                                    {item.savedRestaurantName}
                                   </h4>
                                   <p className="excerpt">
-                                    {item.content || "식당 소개"}
+                                    {item.content}
                                   </p>
                                   <div className="restaurant-meta">
                                     <div className="rating">
                                       <span className="star">
-                                        {item.rate || "식당 별점"}
+                                        {item.rate}
                                       </span>
                                       <span className="count">
-                                        {item.reviewCount || "식당 리뷰수"}
+                                        {item.reviewCount}
                                       </span>
                                     </div>
                                   </div>
@@ -450,8 +412,8 @@ function MyPage() {
             </div>
           ) : (
             <div className="review container">
-              {isUserInfo && isUserInfo.reviews.length > 0 ? (
-                isUserInfo.reviews.map((info, index) => {
+              {user && user.reviews.length > 0 ? (
+                user.reviews.map((info, index) => {
                   return (
                     <div
                       key={index}
@@ -473,7 +435,7 @@ function MyPage() {
                                 수정
                               </span>
 
-                              {isUserInfo.comments.map((item, index) => {
+                              {user.comments?.map((item, index) => {
                                 return info.reviewId !== item.reviewId ? (
                                   <span
                                     key={index}
@@ -513,7 +475,7 @@ function MyPage() {
                                 );
                               })}
                           </div>
-                          {isUserInfo.comments.map((item) => {
+                          {user.comments?.map((item) => {
                             return info.reviewId === item.reviewId &&
                               item.ownerId !== 0 ? (
                               <div

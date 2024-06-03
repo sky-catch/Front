@@ -51,7 +51,7 @@ export const getUserInfo = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-   
+    
     return result.data;
   } catch (err) {
     console.log("Error >>", err);
