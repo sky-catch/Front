@@ -25,7 +25,11 @@ export const LoginState = atom({
     updatedDate: "",
   },
 });
-
+// 식당 리스트
+export const RestaurantsAll = atom({
+  key: "RestaurantsAll",
+  default: null,
+});
 export const RestaurantState = atom({
   key: "RestaurantState",
   default: {

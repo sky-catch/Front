@@ -324,7 +324,7 @@ export default function RestaurantInfo() {
       return (
         <div className="photoBox" key={photoUrl}>
           <div
-            className="photoBoxDelete icon delect-icon"
+            className="photoBoxDelete icon delete-icon"
             onClick={() => onRemoveToAdd(photo.file.name)}
           />
           <img

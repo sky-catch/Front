@@ -2092,6 +2092,7 @@ header {
   display: block;
   border-radius: 10px;
   border: 1px solid #f4f4f4;
+  height: 200px;
   overflow: hidden;
   margin-bottom: 8px;
   -webkit-mask-image: -webkit-radial-gradient(white, black);
@@ -2380,8 +2381,7 @@ header {
   background-image: url("./assets/icons/icon-addition.png");
 }
 
-.icon.delect-icon {
-  /* width: 35px; */
+.icon.delete-icon {
   position: absolute;
   right: 5px;
   top: 5px;

@@ -54,7 +54,7 @@ em {
   background-color: #fff;
   width: auto;
   position: relative;
-  height: 100vh;
+  /* height: 100vh; */
   overflow: auto;
   min-height: 100%;
   box-shadow: 0 0 20px #0000000d;
@@ -480,32 +480,34 @@ header {
   flex-wrap: nowrap;
 }
 .restaurant-list .restaurant-list-item {
-  width: 200px;
+  width: 180px;
   margin-right: 10px;
 }
-
+.restaurant-list .restaurant-list-item:last-child {
+  margin-right: 0px;
+}
 .restaurant-list .restaurant-list-item .tb {
   display: block;
   border-radius: 10px;
   border: 1px solid #f4f4f4;
+  height: 180px;
+  width: 100%;
   overflow: hidden;
   margin-bottom: 8px;
   -webkit-mask-image: -webkit-radial-gradient(white, black);
   position: relative;
 }
 .restaurant-list .restaurant-list-item .tb img {
-  width: 200px;
-  heigth: 200px;
+  width: 100%;
+  height: 100%;
   border-radius: 8px;
 }
 .restaurant-list .restaurant-list-item .detail {
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.restaurant-list .restaurant-list-item .detail .btn-bookmark {
-  position: absolute;
-  top: 8px;
-  right: 0;
-}
+
 .restaurant-list .restaurant-list-item .detail .meta {
   display: flex;
   align-items: baseline;
@@ -1785,7 +1787,7 @@ textarea.form-input {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  margin-bottom: 4px;
+  margin-bottom: 7px;
   line-height: 1.12;
 }
 

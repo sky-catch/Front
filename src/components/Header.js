@@ -12,6 +12,7 @@ const Header = ({ setSearch, updateSearch }) => {
   const [inputTxt, setInputTxt] = useState(); // 검색어
   const location = useLocation().pathname;
   const state = useLocation().state;
+  const scroll = useLocation();
   const navigate = new useNavigate();
   const searchInput = useRef();
   let [isWhite, setIsWhite] = useState(false);
@@ -27,15 +28,16 @@ const Header = ({ setSearch, updateSearch }) => {
   }, [location, inputTxt]);
 
   const handleScroll = () => {
-    console.log("scrolling");
-    if (window.scrollY >= 50) {
+    if (window.scrollY >= 170) {
       setIsWhite(true);
     } else {
       setIsWhite(false);
     }
   };
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", () => {
+      handleScroll();
+    });
   }, []);
 
   const onClickBack = () => {

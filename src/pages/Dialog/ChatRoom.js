@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-// import Loading from "../../components/Loading";
 import { getChatRoom } from "../../respository/reservation";
 import { getRestaurant } from "../../respository/restaurant";
 
@@ -14,47 +13,54 @@ const ChatRoom = () => {
   // 웹 소켓 연결 이벤트
   // : "ws://15.164.89.177:8080/chat";
   let name = new URLSearchParams(location.search).get("name");
-  let chatRoomId = new URLSearchParams(location.search).get("id");
+  const chatRoomId = new URLSearchParams(location.search).get("id");
   const memberChat = true;
   const token = sessionStorage.getItem("token");
 
-  const headers = {
-    authorization: `Bearer ${token}`,
-    chatRoomId: chatRoomId,
-    memberChat: memberChat,
-  };
-
-  ws.current = new WebSocket("ws://localhost:8000/chat");
   // ws.current = new WebSocket("ws://15.164.89.177:8080/chat");
 
   useEffect(() => {
     // 연결 성공 시 실행될 콜백 함수
+    // ws.current = new WebSocket(`ws://15.164.89.177:8080/chat`);
+
+    // ws.current = new WebSocket("ws://localhost:3000/chat");
+    ws.current = new WebSocket(`ws://15.164.89.177:8080/chat`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        chatRoomId: chatRoomId,
+        memberChat: true,
+      },
+    });
     ws.current.onopen = () => {
       console.log("WebSocket connected");
-      // 연결 후 서버에 데이터를 전송할 수 있습니다.
       // ws.current.send(
       //   JSON.stringify({
-      //     authorization: token,
+      //     Authorization: token,
       //     chatRoomId: chatRoomId,
       //     memberChat: memberChat,
       //   })
       // );
+      ws.current.send("Hello, server!");
     };
-    // ws.current.onmessage = (event) => {
-    //   const newMessage = event.data;
-    //   setMessages((prevMessages) => [...prevMessages, newMessage]);
-    // };
-    // ws.current.onclose = () => {
-    //   console.log("WebSocket disconnected");
-    // };
-    // ws.current.onerror = (error) => {
-    //   console.error("WebSocket error:", error);
-    // };
-    // // 컴포넌트 언마운트 시 WebSocket 연결 닫기
-    // return () => {
-    //   ws.current.close();
-    // };
-  }, []);
+
+    ws.current.onmessage = (event) => {
+      console.log("Received message from server:", event.data);
+    };
+
+    ws.current.onclose = () => {
+      console.log("WebSocket disconnected");
+    };
+
+    ws.current.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+    return () => {
+      if (ws.current) {
+        ws.current.close();
+      }
+    };
+  }, [token, chatRoomId, memberChat]);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -70,9 +76,9 @@ const ChatRoom = () => {
   } = useQuery({
     queryKey: ["chatRoomList", 1],
     queryFn: () => {
-      console.log("chatRoomId", chatRoomId);
       return getChatRoom(chatRoomId)
         .then((res) => {
+          console.log("res", res);
           return res;
         })
         .catch((err) => {
@@ -98,10 +104,12 @@ const ChatRoom = () => {
     },
   });
 
+  // console.log("chatRoomList", chatRoomList);
+  // console.log("restaurant", restaurant);
   if (!chatRoomList || !restaurant) return;
-  if (restaurantLoding || roomLoding) {
-    // return <Loading></Loading>;
-  }
+  // if (restaurantLoding || roomLoding) {
+  //   return <Loading></Loading>;
+  // }
 
   return (
     <ChatBox>

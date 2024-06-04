@@ -47,7 +47,7 @@ export const ReservationTimes = () => {
 };
 
 // 채팅 추가
-const postChatRoom = (id) => {
+const createChatRoom = (id) => {
   const token = sessionStorage.getItem("token");
   return axios.post(
     `http://15.164.89.177:8080/chat/${id}`,
@@ -60,10 +60,10 @@ const postChatRoom = (id) => {
   );
 };
 
-export const PostChatRoomItem = () => {
+export const CreateChatRoomItem = () => {
   return useMutation({
     mutationKey: ["postChatRoom"],
-    mutationFn: postChatRoom,
+    mutationFn: createChatRoom,
     onSuccess: (data) => {
       window.location.href = "/dialog";
       console.log("createPost success", data);
@@ -355,4 +355,8 @@ export const getMyReserve = async (param) => {
   } catch (err) {
     console.log("err >>", err);
   }
+};
+//식당 전부 보기
+export const getRestaurantsAll = async () => {
+  return axios.get(`http://15.164.89.177:8080/restaurants/all`);
 };

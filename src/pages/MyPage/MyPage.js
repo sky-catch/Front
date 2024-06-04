@@ -174,7 +174,7 @@ function MyPage() {
       return (
         <div className="photoBox" key={photoUrl}>
           <div
-            className="photoBoxDelete icon delect-icon"
+            className="photoBoxDelete icon delete-icon"
             onClick={() => onRemoveToAdd(photo.file.name)}
           />
           <img
@@ -239,10 +239,12 @@ function MyPage() {
     if (isUserInfo) {
       console.log("마이페이지 success", isUserInfo);
       sessionStorage.setItem("data", JSON.stringify(isUserInfo));
-    } 
+    }
   }, [isUserInfo]);
 
-  useEffect(()=>{console.log(user);},[user])
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
