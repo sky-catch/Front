@@ -28,6 +28,7 @@ export const LoginState = atom({
 // 식당 리스트
 export const RestaurantsAll = atom({
   key: "RestaurantsAll",
+  effects_UNSTABLE: [persistAtom],
   default: null,
 });
 export const RestaurantState = atom({

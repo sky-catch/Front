@@ -2,7 +2,9 @@ import { QueryClient, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import "react-modern-drawer/dist/index.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { RestaurantsAll } from "../../States/LoginState";
 import Loading from "../../components/Loading";
 import Visitcomponent from "../../components/Visitcomponent";
 import { GetReservationRes } from "../../respository/restaurant";
@@ -78,7 +80,7 @@ export default function MyDining() {
   const [loginState, setLoginState] = useState(false);
   const [listSelect, setListSelect] = useState("PLANNED");
   const queryClient = new QueryClient();
-
+  const restaurantValue = useRecoilValue(RestaurantsAll);
   const [isOpen, setIsOpen] = useState(false);
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState);
@@ -200,7 +202,7 @@ export default function MyDining() {
     },
     enabled: loginState,
   });
-
+  console.log("restaurantValue", restaurantValue);
   if (isLoading) {
     return <Loading></Loading>;
   }
@@ -254,12 +256,13 @@ export default function MyDining() {
               </div>
               <RecommendPage
                 title={"미쉐린 가이드 2024"}
-                pageList={pageList}
+                pageList={restaurantValue}
                 toggleDrawerBox={toggleDrawer}
               ></RecommendPage>
               <RecommendPage
                 title={"캐치테이블 ON"}
-                pageList={pageList}
+                pageList={restaurantValue}
+                toggleDrawerBox={toggleDrawer}
               ></RecommendPage>
             </section>
           </div>
