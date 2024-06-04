@@ -73,6 +73,7 @@ export default function Restaurant() {
   const deleteSave = useMutation({
     mutationFn: useDeleteRestaurant,
     onSuccess: () => {
+      window.location.reload();
       queryClient.invalidateQueries({ queryKey: [state] });
     },
   });
@@ -80,6 +81,7 @@ export default function Restaurant() {
   const saveSave = useMutation({
     mutationFn: useSaveRestaurant,
     onSuccess: () => {
+      window.location.reload();
       queryClient.invalidateQueries({ queryKey: [state] });
     },
   });
@@ -188,7 +190,7 @@ export default function Restaurant() {
 
   const week = ["일", "월", "화", "수", "목", "금", "토", "일"];
   if (isLoading) return <Loading></Loading>;
-  // console.log("restaurant", restaurant);
+  console.log("restaurant", restaurant);
   return (
     <main className="pb-[74px]">
       {/* 1. 식당 이미지 */}

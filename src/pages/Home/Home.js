@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { RestaurantsAll } from "../../States/LoginState.js";
 import BottomSheet from "../../components/BottomSheet.js";
 import Loading from "../../components/Loading.js";
+import { TempDrawer } from "../../components/Modal/TempDrawer.js";
 import ModalDrawer from "../../components/ModalDrawer.js";
 import Restaurants from "../../components/Restaurants.js";
 import { getRestaurantsAll } from "../../respository/reservation.js";
@@ -18,6 +19,7 @@ export default function Home() {
   const [visible, setVisible] = useState(false);
   const [restaurantsList, setRestaurantsList] = useRecoilState(RestaurantsAll);
   const [isModalOpen, setIsModalOpen] = useState(false); // Drawer 오픈여부 (true : 오픈, false : 닫음)
+  const [isOpen, setIsOpen] = useState(false); // 준비중입니다.Drawer 오픈여부 (true : 오픈, false : 닫음)
   const { data, isLoading, isError } = useQuery({
     queryKey: ["getRestaurantsAll"],
     queryFn: () => {
@@ -43,21 +45,21 @@ export default function Home() {
     setIsModalOpen((prevState) => !prevState);
   };
 
+  const handleRank = (e) => {
+    setIsOpen((prevState) => !prevState);
+  };
   const handleWhereTogo = (e) => {
-    // console.log(e.currentTarget.id);
     const num = e.currentTarget.id;
+    setIsModalOpen(true);
     if (num == 0) {
-      setIsModalOpen(true);
-    } else {
     }
   };
-  if (isLoading) {
+
+  useEffect(() => {}, [restaurantsList]);
+
+  if (isLoading || !restaurantsList) {
     return <Loading></Loading>;
   }
-
-  // useEffect(() => {
-  //   console.log("restaurantsList", restaurantsList);
-  // }, [restaurantsList]);
 
   return (
     <>
@@ -97,7 +99,15 @@ export default function Home() {
             <div className="section-header section-header-v">
               <h3 className="font-bold">웨이팅 핫플레이스 BEST</h3>
               <p>핫 한 웨이팅 라인업, 이제 캐치테이블에서!</p>
-              <a className="btn-more">전체보기</a>
+              <a
+                className="btn-more"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleRank();
+                }}
+              >
+                전체보기
+              </a>
             </div>
             <div className="section-body">
               <div className="v-scroll">
@@ -114,6 +124,15 @@ export default function Home() {
             <div className="section-header section-header-v">
               <h3 className="font-bold">유저의 리얼리뷰 Pick</h3>
               <p>방문자들이 남긴 솔직한 리뷰를 만나보세요</p>
+              <a
+                className="btn-more"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleRank();
+                }}
+              >
+                전체보기
+              </a>
             </div>
             <div className="section-body">
               <div className="v-scroll">
@@ -130,16 +149,24 @@ export default function Home() {
             <div className="px-[20px]">
               <div className="section-header section-header-v">
                 <h3 className="font-bold">
-                  {JSON.parse(sessionStorage.getItem("data")).nickname} 님이
+                  {/* {JSON.parse(sessionStorage.getItem("data")).nickname} 님이 */}
                   좋아할 매장
                 </h3>
                 <p>마음에 들 만한 곳을 모아봤어요</p>
-                <a className="btn-more">전체보기</a>
+                <a
+                  className="btn-more"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleRank();
+                  }}
+                >
+                  전체보기
+                </a>
               </div>
               <div className="section-body">
                 <div className="v-scroll">
                   <div className="v-scroll-inner">
-                    <Restaurants data={data} index={3} />
+                    <Restaurants data={data} index={2} />
                   </div>
                 </div>
               </div>
@@ -153,12 +180,20 @@ export default function Home() {
             <div className="section-header section-header-v">
               <h3 className="font-bold">놓치면 안되는 혜택 가득!</h3>
               <p>미식생활을 더욱 스마트하게 즐겨보세요</p>
-              <a className="btn-more">전체보기</a>
+              <a
+                className="btn-more"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleRank();
+                }}
+              >
+                전체보기
+              </a>
             </div>
             <div className="section-body">
               <div className="v-scroll">
                 <div className="v-scroll-inner">
-                  <Restaurants data={data} index={4} />
+                  <Restaurants data={data} index={3} />
                 </div>
               </div>
             </div>
@@ -170,12 +205,20 @@ export default function Home() {
             <div className="section-header section-header-v">
               <h3 className="font-bold">캐치테이블 ON!</h3>
               <p>편리한 캐치테이블 예약이 오픈되었어요</p>
-              <a className="btn-more">전체보기</a>
+              <a
+                className="btn-more"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleRank();
+                }}
+              >
+                전체보기
+              </a>
             </div>
             <div className="section-body">
               <div className="v-scroll">
                 <div className="v-scroll-inner">
-                  <Restaurants data={data} index={5} />
+                  <Restaurants data={data} index={4} />
                 </div>
               </div>
             </div>
@@ -187,12 +230,20 @@ export default function Home() {
             <div className="section-header section-header-v">
               <h3 className="font-bold">미쉐린 가이드 2024</h3>
               <p>미쉐린 맛집도 이제 캐치테이블에서!</p>
-              <a className="btn-more">전체보기</a>
+              <a
+                className="btn-more"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleRank();
+                }}
+              >
+                전체보기
+              </a>
             </div>
             <div className="section-body">
               <div className="v-scroll">
                 <div className="v-scroll-inner">
-                  <Restaurants data={data} index={6} />
+                  <Restaurants data={data} index={5} />
                 </div>
               </div>
             </div>
@@ -205,6 +256,7 @@ export default function Home() {
         isOpen={isModalOpen}
         toggleDrawer={toggleDrawer}
       ></ModalDrawer>
+      <TempDrawer isOpen={isOpen} toggleDrawer={handleRank}></TempDrawer>
     </>
   );
 }

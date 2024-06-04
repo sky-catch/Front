@@ -439,13 +439,13 @@ header {
 .quick-search a {
   display: block;
   min-width: 60px;
-  width: 60px;
-  height: 60px;
+  width: 65px;
+  height: 65px;
   border-radius: 50%;
   background: 50% 50% no-repeat;
   background-size: cover;
   position: relative;
-  margin-right: 15px;
+  margin-right: 10px;
   white-space: pre-wrap;
 }
 .quick-search a:first-child {
@@ -460,12 +460,16 @@ header {
   inset: 0;
   border-radius: 50%;
 }
+.quick-search a > img {
+  width: 65px;
+  height: 65px;
+}
 .quick-search a > span {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 14px;
+  font-size: 13px;
   text-align: center;
   text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
   font-weight: 700;

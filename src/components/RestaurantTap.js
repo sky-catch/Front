@@ -52,10 +52,12 @@ export default function RestaurantTap({ restaurant }) {
   }, [restaurant]);
   //부모 요소에 height: 100vh이 있으면 스크롤 인식 안됨, 반대로 없으면 sticky 인식 안됨
   useEffect(() => {
-    if (!tabBox.current) return;
     const tabTop = tabBox.current.offsetTop;
+    if (!tabTop) return;
+    window.scrollTo({ top: 0 });
+    setTabPosition(false);
     window.addEventListener("scroll", () => {
-      if (tabTop - 48 <= window.scrollY) {
+      if (tabTop <= window.scrollY) {
         setTabPosition(true);
       } else {
         setTabPosition(false);
@@ -69,8 +71,8 @@ export default function RestaurantTap({ restaurant }) {
   return (
     <>
       <ul
-        className={`tab-menu top-[47px] ${
-          !tabPosition ? "relative" : "fixed left-0 right-0"
+        className={`tab-menu ${
+          !tabPosition ? "relative" : "fixed top-[48px] left-0 right-0"
         } bg-white`}
         ref={tabBox}
       >

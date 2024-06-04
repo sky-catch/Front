@@ -24,7 +24,7 @@ export const MenuList = () => {
       <RestaurantTap restaurant={restaurant}></RestaurantTap>
       <hr className="seperator" />
       {!images ? (
-        <div className="container gutter-sm">
+        <div className="container h-[calc(100vh-153px)] gutter-sm">
           <div className="flex justify-center pt-[20px] color-gray">
             메뉴 준비중 입니다.
           </div>

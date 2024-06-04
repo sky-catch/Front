@@ -14,7 +14,6 @@ const RestaurantInfor = ({ isInforOpen, restaurant, toggleDrawerInfor }) => {
     setRestaurantId(id);
   };
   useEffect(() => {
-    console.log("moveChatRoom", moveChat);
     if (moveChat) {
       createChatRoom(restaurantId);
     }

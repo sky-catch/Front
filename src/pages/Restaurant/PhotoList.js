@@ -17,7 +17,7 @@ export const PhotoList = () => {
       <RestaurantTap restaurant={restaurant}></RestaurantTap>
       <hr className="seperator"></hr>
       {restaurant && restaurant.images.length === 0 ? (
-        <div className=" w-[100%] h-[220px] flex-col gap-y-[20px] flex items-center justify-center ">
+        <div className=" w-[100%] h-[calc(100vh-153px)] flex-col gap-y-[20px] flex items-center justify-center ">
           <img
             className=" size-[70px]"
             src={require("../../assets/icons/empty.png")}
@@ -27,7 +27,7 @@ export const PhotoList = () => {
           </span>
         </div>
       ) : (
-        <div className="grid grid-cols-3 justify-center py-[20px] gap-[10px] container">
+        <div className="grid grid-cols-3 h-[calc(100vh-153px)] justify-center py-[20px] gap-[10px] container">
           {restaurant &&
             restaurant.images.map((item) => {
               return (

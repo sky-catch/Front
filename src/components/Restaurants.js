@@ -73,8 +73,8 @@ const Restaurants = ({ data, index = 0 }) => {
   useEffect(() => {
     if (!data) return;
     const arr = [];
-    for (let index = 0; index < data.length; index += 6) {
-      arr.push(data.slice(index, index + 6));
+    for (let index = 0; index < data.length; index += 5) {
+      arr.push(data.slice(index, index + 5));
     }
     setRestaurantList(arr);
   }, [data]);
@@ -98,7 +98,7 @@ const Restaurants = ({ data, index = 0 }) => {
 
   return (
     <div className="restaurant-list">
-      {restaurantList.length > 0 &&
+      {restaurantList[index] &&
         restaurantList[index].map((item) => {
           return (
             <div
@@ -122,7 +122,9 @@ const Restaurants = ({ data, index = 0 }) => {
                   </div>
                 </div>
                 <a
-                  className={`btn-bookmark ${item.savedRestaurant && "active"}`}
+                  className={`btn-bookmark ${
+                    item.savedRestaurant ? "active" : ""
+                  }`}
                   onClick={(e) => {
                     saveRestaurant(e, item);
                   }}

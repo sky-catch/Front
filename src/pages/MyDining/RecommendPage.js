@@ -6,13 +6,13 @@ const RecommendPage = ({ title, pageList, toggleDrawerBox }) => {
         array.push(
           <div className="" key={index}>
             <img className="  size-[100%]" src={pageItem[index].imageUrl} />
-            <span className=" text-[16px] text-white font-medium">
+            <span className=" text-[14px] text-white font-medium">
               {pageItem[index].name}
             </span>
-            <span className="text-[14px] text-[#bcbcbc] font-light">
+            <span className="text-[12px] text-[#bcbcbc] font-light">
               {pageItem[index].category} • {pageItem[index].address}
             </span>
-            <span className="score text-[16px] text-white font-bold ">
+            <span className="score text-[14px] text-white font-bold ">
               {Number(pageItem[index].reviewAvg).toFixed(1)}
             </span>
           </div>
@@ -42,7 +42,13 @@ const RecommendPage = ({ title, pageList, toggleDrawerBox }) => {
       <div className=" my-[20px] recommend-box">
         {pageList && listContainer(pageList)}
       </div>
-      <button className="w-[100%] h-[60px] border-[2px] border-black rounded-[5px] more-btn">
+      <button
+        className="w-[100%] h-[60px] border-[2px] border-black rounded-[5px] more-btn"
+        onClick={(e) => {
+          e.preventDefault();
+          alert("준비중 입니다.");
+        }}
+      >
         <span className=" mr-[5px]">{title}</span>전체보기
       </button>
     </div>
