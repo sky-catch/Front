@@ -6,6 +6,7 @@ import { getChatRoom } from "../../respository/reservation";
 import { getRestaurant } from "../../respository/restaurant";
 
 const ChatRoom = () => {
+  const { state } = useLocation();
   const location = useLocation();
   const [isMessage, setIsMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -16,51 +17,51 @@ const ChatRoom = () => {
   const chatRoomId = new URLSearchParams(location.search).get("id");
   const memberChat = true;
   const token = sessionStorage.getItem("token");
-
+  console.log("name", name);
   // ws.current = new WebSocket("ws://15.164.89.177:8080/chat");
 
-  useEffect(() => {
-    // 연결 성공 시 실행될 콜백 함수
-    // ws.current = new WebSocket(`ws://15.164.89.177:8080/chat`);
+  // useEffect(() => {
+  // 연결 성공 시 실행될 콜백 함수
+  // ws.current = new WebSocket(`ws://15.164.89.177:8080/chat`);
 
-    // ws.current = new WebSocket("ws://localhost:3000/chat");
-    ws.current = new WebSocket(`ws://15.164.89.177:8080/chat`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        chatRoomId: chatRoomId,
-        memberChat: true,
-      },
-    });
-    ws.current.onopen = () => {
-      console.log("WebSocket connected");
-      // ws.current.send(
-      //   JSON.stringify({
-      //     Authorization: token,
-      //     chatRoomId: chatRoomId,
-      //     memberChat: memberChat,
-      //   })
-      // );
-      ws.current.send("Hello, server!");
-    };
+  // ws.current = new WebSocket("ws://localhost:3000/chat");
+  //   ws.current = new WebSocket(`ws://15.164.89.177:8080/chat`, {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       chatRoomId: chatRoomId,
+  //       memberChat: true,
+  //     },
+  //   });
+  //   ws.current.onopen = () => {
+  //     console.log("WebSocket connected");
+  //     // ws.current.send(
+  //     //   JSON.stringify({
+  //     //     Authorization: token,
+  //     //     chatRoomId: chatRoomId,
+  //     //     memberChat: memberChat,
+  //     //   })
+  //     // );
+  //     ws.current.send("Hello, server!");
+  //   };
 
-    ws.current.onmessage = (event) => {
-      console.log("Received message from server:", event.data);
-    };
+  //   ws.current.onmessage = (event) => {
+  //     console.log("Received message from server:", event.data);
+  //   };
 
-    ws.current.onclose = () => {
-      console.log("WebSocket disconnected");
-    };
+  //   ws.current.onclose = () => {
+  //     console.log("WebSocket disconnected");
+  //   };
 
-    ws.current.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
+  //   ws.current.onerror = (error) => {
+  //     console.error("WebSocket error:", error);
+  //   };
 
-    return () => {
-      if (ws.current) {
-        ws.current.close();
-      }
-    };
-  }, [token, chatRoomId, memberChat]);
+  //   return () => {
+  //     if (ws.current) {
+  //       ws.current.close();
+  //     }
+  //   };
+  // }, [token, chatRoomId, memberChat]);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -98,10 +99,8 @@ const ChatRoom = () => {
     isLoding: restaurantLoding,
     isError: restaurantError,
   } = useQuery({
-    queryKey: ["restaurantName"],
-    queryFn: () => {
-      return getRestaurant(name);
-    },
+    queryKey: [name],
+    queryFn: getRestaurant,
   });
 
   // console.log("chatRoomList", chatRoomList);

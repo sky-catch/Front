@@ -27,6 +27,7 @@ function MyPage() {
 
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const { mutate: DeleteReviewItem } = DeleteReview();
+
   const [user, setUser] = useRecoilState(LoginState);
   const [restaurant, setRestaurant] = useRecoilState(RestaurantState);
   const textInput = useRef();
@@ -243,8 +244,8 @@ function MyPage() {
   }, [isUserInfo]);
 
   useEffect(() => {
-    console.log(user);
-  }, [user]);
+    // console.log("restaurant", restaurant);
+  }, [restaurant]);
 
   const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
@@ -278,6 +279,7 @@ function MyPage() {
   };
 
   const reviewDelect = (e, info) => {
+    // deleteReviewItem(info.reviewId);
     DeleteReviewItem(info.reviewId);
   };
 
@@ -294,6 +296,7 @@ function MyPage() {
   const onErrorImg = (e) => {
     e.target.src = defaultImage;
   };
+  console.log("isUserInfo", isUserInfo);
   return (
     <MainContents className="main">
       {/* 프로필정보 */}
@@ -404,6 +407,7 @@ function MyPage() {
                     <div className="section-body pb-[32px]">
                       <div className="saved-restaurant-list">
                         {user?.saveRestaurants?.map((item, index) => {
+                          console.log("item", item);
                           return (
                             <div
                               className="saved-restaurant-list-item"
@@ -570,7 +574,7 @@ function MyPage() {
         open={isReviewOpen}
         onClose={toggleDrawerReview}
         direction="right"
-        className="drawer-box right"
+        className="drawer-box right z-999"
         size="100%"
       >
         <div className="container">

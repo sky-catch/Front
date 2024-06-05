@@ -24,56 +24,6 @@ const stateList = [
   },
 ];
 
-const pageList = [
-  {
-    id: 1,
-    storeName: "매장이름",
-    type: "한식",
-    score: "10",
-    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    location: "혜화",
-  },
-  {
-    id: 2,
-    storeName: "매장이름",
-    type: "한식",
-    score: "10",
-    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    location: "혜화",
-  },
-  {
-    id: 3,
-    storeName: "매장이름",
-    type: "한식",
-    score: "10",
-    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    location: "혜화",
-  },
-  {
-    id: 4,
-    storeName: "매장이름",
-    type: "한식",
-    score: "10",
-    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    location: "혜화",
-  },
-  {
-    id: 5,
-    storeName: "매장이름",
-    type: "한식",
-    score: "10",
-    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    location: "혜화",
-  },
-  {
-    id: 6,
-    storeName: "매장이름",
-    type: "한식",
-    score: "10",
-    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    location: "혜화",
-  },
-];
 export default function MyDining() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -190,7 +140,7 @@ export default function MyDining() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["reservationRes", listSelect],
+    queryKey: [listSelect],
     queryFn: () => {
       return GetReservationRes(listSelect)
         .then((res) => {
@@ -202,7 +152,8 @@ export default function MyDining() {
     },
     enabled: loginState,
   });
-  console.log("restaurantValue", restaurantValue);
+  // console.log("restaurantValue", restaurantValue);
+  console.log("reservationRes", reservationRes);
   if (isLoading) {
     return <Loading></Loading>;
   }
@@ -212,8 +163,8 @@ export default function MyDining() {
         {loginState ? (
           <div className="login-tab">
             <section className={`reserve-wrap`}>
-              <div className=" mt-[5px] mb-[20px] container">
-                <div className="flex gap-x-[10px] mb-[10px] sticky top-[5px] bg-white z-[9999] left-0">
+              <div className=" mb-[20px] container">
+                <div className="flex gap-x-[10px] py-[10px] sticky top-0 bg-white z-[99] left-0">
                   {stateList.map((item, index) => {
                     return (
                       <span

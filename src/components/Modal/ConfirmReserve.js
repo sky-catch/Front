@@ -17,14 +17,21 @@ const ConfirmReserve = ({
 
   const [detail, setDetail] = useState();
 
-  const onReserve = () => {
-    const params = {
-      cost: 0,
-      detail: detail,
-      restaurant: restaurant,
-    };
-
-    navigate(`/ct/shop/reservation/form`, { state: params });
+  const onReserve = (e) => {
+    e.preventDefault();
+    if (sessionStorage.getItem("token")) {
+      // 로그인 한 상태
+      const params = {
+        cost: 0,
+        detail: detail,
+        restaurant: restaurant,
+      };
+      navigate(`/ct/shop/reservation/form`, { state: params });
+    } else {
+      // 로그인 안한 상태 > 로그인 페이지 이동
+      alert("로그인 해주세요");
+      navigate("/account");
+    }
   };
 
   const onClose = (e) => {
@@ -33,7 +40,6 @@ const ConfirmReserve = ({
 
   useEffect(() => {
     setDetail(reserveInfo);
-    // console.log(detail,reserveInfo);
   }, [restaurant, reserveInfo]);
 
   return (
@@ -46,7 +52,15 @@ const ConfirmReserve = ({
       >
         <DrawerContents className="drawer-box">
           <div className="drawer-header flex justify-between">
-            <h2>내일 방문이 맞으신가요?</h2>
+            <h2>
+              {String(detail?.date.getFullYear()).substr(2, 2) +
+                "년 " +
+                (detail?.date.getMonth() + 1) +
+                "월 " +
+                detail?.date.getDate() +
+                "일 "}
+              방문이 맞으신가요?
+            </h2>
           </div>
           <div className="progress">
             <div className="bar"></div>

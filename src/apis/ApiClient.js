@@ -11,10 +11,13 @@ const apiClient = axios.create({
 });
 
 export const convertURLtoFile = async (url) => {
+  // const response = await fetch(url, {
+  //   headers: { "Access-Control-Allow-Origin": "*" },
+  // });
   const response = await fetch(url, {
-    headers: { "Access-Control-Allow-Origin": "*" },
+    mode: "cors", // 기본값이지만 명시적으로 설정
   });
-
+  console.log("response", response);
   const data = await response.blob();
   const ext = url.split(".").pop(); // url 구조에 맞게 수정할 것
   const filename = url.split("/").pop(); // url 구조에 맞게 수정할 것

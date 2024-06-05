@@ -26,6 +26,7 @@ export default function Home() {
       return getRestaurantsAll()
         .then((res) => {
           setRestaurantsList(res.data);
+
           return res.data;
         })
         .catch((error) => {
@@ -55,7 +56,9 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {}, [restaurantsList]);
+  useEffect(() => {
+    console.log("restaurantsList", restaurantsList);
+  }, [restaurantsList]);
 
   if (isLoading || !restaurantsList) {
     return <Loading></Loading>;

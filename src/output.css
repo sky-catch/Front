@@ -660,10 +660,6 @@ video {
   top: 50px;
 }
 
-.top-\[5px\] {
-  top: 5px;
-}
-
 .z-0 {
   z-index: 0;
 }
@@ -680,12 +676,12 @@ video {
   z-index: 50;
 }
 
-.z-\[9999\] {
-  z-index: 9999;
-}
-
 .z-\[999\] {
   z-index: 999;
+}
+
+.z-\[99\] {
+  z-index: 99;
 }
 
 .col-span-2 {
@@ -1040,6 +1036,10 @@ video {
   height: calc(100% - 88px - 45px);
 }
 
+.h-\[calc\(100vh-153px\)\] {
+  height: calc(100vh - 153px);
+}
+
 .h-\[calc\(100vh-47px-47px\)\] {
   height: calc(100vh - 47px - 47px);
 }
@@ -1054,10 +1054,6 @@ video {
 
 .h-full {
   height: 100%;
-}
-
-.h-\[calc\(100vh-153px\)\] {
-  height: calc(100vh - 153px);
 }
 
 .max-h-\[120px\] {
@@ -1188,6 +1184,10 @@ video {
   cursor: pointer;
 }
 
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .grid-cols-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -1262,6 +1262,10 @@ video {
 
 .gap-x-\[12px\] {
   column-gap: 12px;
+}
+
+.gap-x-\[15px\] {
+  column-gap: 15px;
 }
 
 .gap-x-\[20px\] {
@@ -2886,6 +2890,24 @@ header {
   text-align: center;
 }
 
+.btn-sm {
+  line-height: 32px;
+  text-align: center;
+  padding: 0 20px;
+  position: relative;
+  border: 1px solid #666;
+  border-radius: 6px;
+}
+
+.btn-md {
+  line-height: 39px;
+  text-align: center;
+  padding: 0 20px;
+  position: relative;
+  border: 1px solid #666;
+  border-radius: 6px;
+}
+
 .btn-lg {
   line-height: 46px;
   text-align: center;
@@ -2895,6 +2917,8 @@ header {
   border-radius: 6px;
 }
 
+.btn-sm.btn-red,
+.btn-md.btn-red,
 .btn-lg.btn-red {
   background: #ff3d00;
   border-color: #ff3d00;
@@ -3517,10 +3541,6 @@ header .keyword-search .btn-delete {
 }
 
 /* button */
-
-.btn-md {
-  line-height: 38px;
-}
 
 .btn-md.btn-outline {
   border: 1px solid #d5d5d5;
@@ -4485,7 +4505,8 @@ span {
   content: "";
   position: absolute;
   left: 0;
-  top: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .restaurant-meta .rating .count {

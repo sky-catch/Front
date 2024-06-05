@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import "react-modern-drawer/dist/index.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -32,19 +32,19 @@ import RestaurantInfor from "./RestaurantInfor";
 export default function Restaurant() {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const test = useParams();
+
   const location = useLocation();
   const [save, setSave] = useState(0);
 
   // 식당 개별 정보 조희
-  console.log("state", state);
+  console.log("location", location);
   const { data: restaurant, isLoading } = useQuery({
-    queryKey: ["getRestaurant"],
-    queryFn: () => {
-      return getRestaurant(state);
-    },
+    queryKey: [state],
+    queryFn: getRestaurant,
   }); /* 식당 정보 */
   const shopId = restaurant?.restaurantId;
-
+  console.log(restaurant);
   // * 기본 검색 날짜는 '금일 오후 7시', 만일 시간이 넘은 경우 '내일 오후 7시'로 세팅
   const today = new Date();
   const tomorrow = new Date(new Date().setDate(today.getDate() + 1));
@@ -73,15 +73,12 @@ export default function Restaurant() {
   const deleteSave = useMutation({
     mutationFn: useDeleteRestaurant,
     onSuccess: () => {
-      window.location.reload();
       queryClient.invalidateQueries({ queryKey: [state] });
     },
   });
-
   const saveSave = useMutation({
     mutationFn: useSaveRestaurant,
     onSuccess: () => {
-      window.location.reload();
       queryClient.invalidateQueries({ queryKey: [state] });
     },
   });
@@ -126,7 +123,6 @@ export default function Restaurant() {
       setIsOpen((prevState) => !prevState);
     }
   };
-
   const toggleDrawerInfor = () => {
     setIsInforOpen((prevState) => !prevState);
   };
@@ -170,6 +166,11 @@ export default function Restaurant() {
   const useSaveMyRestaurant = (e) => {
     const restaurantId = restaurant.restaurantId;
 
+    if (!sessionStorage.getItem("token")) {
+      navigate("/account");
+      alert("로그인하고 이용해주세요.");
+      return;
+    }
     if (restaurant.saved) {
       deleteSave.mutate({ id: restaurantId });
     } else {
@@ -189,8 +190,9 @@ export default function Restaurant() {
   };
 
   const week = ["일", "월", "화", "수", "목", "금", "토", "일"];
+
   if (isLoading) return <Loading></Loading>;
-  console.log("restaurant", restaurant);
+
   return (
     <main className="pb-[74px]">
       {/* 1. 식당 이미지 */}

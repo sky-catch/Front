@@ -13,17 +13,21 @@ const FormData = require("form-data");
 const token = sessionStorage.getItem("token");
 
 export const checkReservationTimes = async ({ queryKey }) => {
-  console.log("queryKey", queryKey);
   const [isdata] = queryKey;
-  if (isdata.numberOfPeople === 0) return;
-  const result = await axios.post(
-    "http://15.164.89.177:8080/reservations/availTimeSlots",
+  const config = token
+    ? {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    : {};
+  console.log("config", config);
+
+  if (!isdata || isdata.numberOfPeople === 0) return;
+  const result = await apiClient.post(
+    "/reservations/availTimeSlots",
     isdata,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+    config
   );
   return result.data;
 };
@@ -246,6 +250,7 @@ export const UpdateReview = () => {
 };
 // 리뷰 삭제
 const deleteReviewItem = async (id) => {
+  console.log("id", id);
   const response = await axios.delete(
     `http://15.164.89.177:8080/review/${id}`,
 
@@ -317,8 +322,8 @@ export const CreateRestaurantImagesItem = () => {
 
 //예약들 노쇼로 바꾸는 기능
 const changeReservationsItem = async (noShowIds) => {
-  return axios.patch(
-    `http://15.164.89.177:8080/owner/reservations`,
+  return await apiClient.patch(
+    `/owner/reservations`,
     {
       noShowIds: noShowIds,
     },
@@ -344,7 +349,30 @@ export const ChangeReservations = () => {
     },
   });
 };
+//예약 상태 변경
+const changeReservationsStatusItem = async (status) => {
+  console.log(status);
+  return await apiClient.patch(`/reservations/status`, status, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 
+export const ChangeReservationsStatus = () => {
+  return useMutation({
+    mutationKey: ["changeReservationsStatusItem"],
+    mutationFn: changeReservationsStatusItem,
+    onSuccess: (data) => {
+      console.log("createPost success", data);
+      alert("상태 변경이 완료됐습니다.");
+      window.location.reload();
+    },
+    onError: (error) => {
+      console.log("createPost error", error);
+    },
+  });
+};
 // 예약 조회
 export const getMyReserve = async (param) => {
   try {
@@ -358,5 +386,12 @@ export const getMyReserve = async (param) => {
 };
 //식당 전부 보기
 export const getRestaurantsAll = async () => {
-  return axios.get(`http://15.164.89.177:8080/restaurants/all`);
+  const config = token
+    ? {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    : {};
+  return await apiClient.get(`/restaurants/all`, config);
 };

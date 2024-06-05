@@ -57,16 +57,17 @@ const Restaurants = ({ data, index = 0 }) => {
   const saveSave = useMutation({
     mutationKey: "useSaveRestaurant",
     mutationFn: useSaveRestaurant,
-    onSuccess: (data) => {
-      window.location.reload();
-      // queryClient.invalidateQueries({ queryKey: [state] });
+    onSuccess: ({ id }) => {
+      console.log("data", id);
+      // window.location.reload();
+      queryClient.invalidateQueries({ queryKey: [id] });
     },
   });
   //식당 삭제
   const deleteSave = useMutation({
     mutationFn: useDeleteRestaurant,
     onSuccess: () => {
-      window.location.reload();
+      // window.location.reload();
       // queryClient.invalidateQueries({ queryKey: [state] });
     },
   });
@@ -85,9 +86,11 @@ const Restaurants = ({ data, index = 0 }) => {
       //로그인함
       if (item.savedRestaurant) {
         // 저장 된 식당
+        console.log("저장 된 식당");
         deleteSave.mutate({ id: item.restaurantId });
       } else {
         // 저장 안된 식당
+        console.log("저장 안된 식당");
         saveSave.mutate({ id: item.restaurantId });
       }
     } else {

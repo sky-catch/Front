@@ -893,7 +893,22 @@ header {
 .btn-centered {
   text-align: center;
 }
-
+.btn-sm {
+  line-height: 32px;
+  text-align: center;
+  padding: 0 20px;
+  position: relative;
+  border: 1px solid #666;
+  border-radius: 6px;
+}
+.btn-md {
+  line-height: 39px;
+  text-align: center;
+  padding: 0 20px;
+  position: relative;
+  border: 1px solid #666;
+  border-radius: 6px;
+}
 .btn-lg {
   line-height: 46px;
   text-align: center;
@@ -902,6 +917,8 @@ header {
   border: 1px solid #666;
   border-radius: 6px;
 }
+.btn-sm.btn-red,
+.btn-md.btn-red,
 .btn-lg.btn-red {
   background: #ff3d00;
   border-color: #ff3d00;
@@ -1444,9 +1461,7 @@ header .keyword-search .btn-delete {
   color: #000;
 }
 /* button */
-.btn-md {
-  line-height: 38px;
-}
+
 .btn-md.btn-outline {
   border: 1px solid #d5d5d5;
 }
@@ -2325,7 +2340,8 @@ span {
   content: "";
   position: absolute;
   left: 0;
-  top: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .restaurant-meta .rating .count {
   vertical-align: middle;

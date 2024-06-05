@@ -12,7 +12,6 @@ const Header = ({ setSearch, updateSearch }) => {
   const [inputTxt, setInputTxt] = useState(); // 검색어
   const location = useLocation().pathname;
   const state = useLocation().state;
-  const scroll = useLocation();
   const navigate = new useNavigate();
   const searchInput = useRef();
   let [isWhite, setIsWhite] = useState(false);
@@ -43,6 +42,10 @@ const Header = ({ setSearch, updateSearch }) => {
   const onClickBack = () => {
     if (location === "/my/myshop/edit") {
       alert("변경한 내용이 저장되지 않습니다.");
+    } else if (location.indexOf("/ct/shop") === 0) {
+      const name = JSON.parse(state).name;
+      navigate(`/ct/shop/:${name}`, { state: name });
+      return;
     }
     window.history.back();
     setInputTxt("");

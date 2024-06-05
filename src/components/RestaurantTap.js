@@ -57,7 +57,10 @@ export default function RestaurantTap({ restaurant }) {
     window.scrollTo({ top: 0 });
     setTabPosition(false);
     window.addEventListener("scroll", () => {
-      if (tabTop <= window.scrollY) {
+      // console.log("tabTop", tabTop);
+      // console.log("window.scrollY", window.scrollY + 48);
+      // console.log("");
+      if (tabTop <= window.scrollY + 48) {
         setTabPosition(true);
       } else {
         setTabPosition(false);
