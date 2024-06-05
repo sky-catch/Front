@@ -85,23 +85,10 @@ export default function RestaurantInfo() {
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [restaurant, setRestaurant] = useState(false);
   const [location, setLocation] = useState({ lat: 0, lng: 0 });
-  const [isNumber, setIsNumber] = useState("");
-  const [inputValues, setInputValues] = useState({
-    name: user ? user.name : "",
-    content: user ? user.content : "",
-    openTime: user ? user.openTime : "",
-    lastOrderTime: user ? user.lastOrderTime : "",
-    closeTime: user ? user.closeTime : "",
-    address: user ? user.address : "",
-    detailAddress: user ? user.detailAddress : "",
-    reservationBeginDate: user ? user.reservationBeginDate : "",
-    reservationEndDate: user ? user.reservationEndDate : "",
-  });
   const theme = useTheme();
   const inputRef = useRef([]);
   const { mutate: updateRestaurant } = UpdateRestaurantRes();
   const [photoToAddList, setPhotoToAddList] = useState([]);
-  const [isphoto, isSetPhoto] = useState([]);
   const ITEM_HEIGHT = 40;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {

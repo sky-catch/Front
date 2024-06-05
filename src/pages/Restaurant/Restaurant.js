@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import "react-modern-drawer/dist/index.css";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -32,13 +32,11 @@ import RestaurantInfor from "./RestaurantInfor";
 export default function Restaurant() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const test = useParams();
-
   const location = useLocation();
   const [save, setSave] = useState(0);
 
   // 식당 개별 정보 조희
-  console.log("location", location);
+
   const { data: restaurant, isLoading } = useQuery({
     queryKey: [state],
     queryFn: getRestaurant,
