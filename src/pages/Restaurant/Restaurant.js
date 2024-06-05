@@ -24,6 +24,8 @@ import {
   useSaveRestaurant,
 } from "../../respository/restaurant";
 import RestaurantInfor from "./RestaurantInfor";
+import { useRecoilState } from "recoil";
+import { LoginState } from "../../States/LoginState";
 
 /**
  * 식당 상세 정보 페이지
@@ -34,6 +36,7 @@ export default function Restaurant() {
   const navigate = useNavigate();
   const location = useLocation();
   const [save, setSave] = useState(0);
+  const [user, setUser] = useRecoilState(LoginState);
 
   // 식당 개별 정보 조희
   const { data: restaurant, isLoading } = useQuery({
@@ -114,7 +117,14 @@ export default function Restaurant() {
   const toggleDrawerInfor = () => {
     setIsInforOpen((prevState) => !prevState);
   };
+  
   const onReserveCalendar = (param, e) => {
+    //로그인 유저아닌 경우 불가능
+    if(!sessionStorage.getItem("token")) {
+      alert("로그인이 필요합니다.");
+      navigate("/account")
+      return;
+    }
     console.log(param, e);
     setIsOpen((prevState) => !prevState);
   };
@@ -153,6 +163,13 @@ export default function Restaurant() {
   /* Function : 식당 저장 */
   const useSaveMyRestaurant = (e) => {
     const restaurantId = restaurant.restaurantId;
+
+    //로그인 유저아닌 경우 불가능
+    if(!sessionStorage.getItem("token")) {
+      alert("로그인이 필요합니다.");
+      navigate("/account")
+      return;
+    }
 
     if (restaurant.saved) {
       deleteSave.mutate({ id: restaurantId });

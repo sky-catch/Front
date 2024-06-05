@@ -13,7 +13,6 @@ const FormData = require("form-data");
 const token = sessionStorage.getItem("token");
 
 export const checkReservationTimes = async ({ queryKey }) => {
-  console.log("queryKey", queryKey);
   const [isdata] = queryKey;
   if (isdata.numberOfPeople === 0) return;
   const result = await axios.post(

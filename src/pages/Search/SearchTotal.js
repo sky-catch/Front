@@ -23,7 +23,6 @@ export default function SearhTotal({ search }) {
     queryFn : ()=>searchByKeyword(search)
   }); // 식당
   restaurantList = searchResult?.restaurantSummaryDTOList;  // 식당 목록 세팅
-  console.log(searchResult);
   
   //지역 목록 세팅
   for (let key in searchResult) {
