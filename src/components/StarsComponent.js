@@ -15,10 +15,6 @@ const StarsComponent = ({startAvg}) => {
         <FaStar color={selected ? "FFC94A" : "gray"}  />
     )
 
-    useEffect(()=>{
-        console.log(startAvg);
-    },[])
-
     return(
         <StarRate className="flex align-center">
             {createArray(totalStars).map((n, i) => (

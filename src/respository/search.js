@@ -22,7 +22,7 @@ export const searchByFilter = async(params) => {
                 data.append(key,value);
             }
         })
-        console.log(params, data.toString());
+        
         const result = await apiClient.get(`/restaurants/search?${data.toString()}`, {
             headers : {
                 "Content-Type" : `application/json`,

@@ -21,7 +21,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
   const [cost, setCost] = useState(); /* rc-slider 값 */
   const [Value, setValue] = useState([searchFilter?.minPrice || 0, searchFilter?.maxPrice || 40]);
   const [selectedCost, setSelectedCost] = useState(searchFilter?.minPrice ? { min: searchFilter?.minPrice, max:searchFilter?.maxPrice }: {}); // 선택된 가격 필터
-
+ 
   const defaultCity = [
     { city : "핫플",
       detail : [ //핫플
@@ -35,10 +35,10 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
         "성수/서울숲", "신사/논현", "신촌/홍대/서교", "압구정/청담", "양재/도곡", "연남", "영등포/여의도", "용산/삼각지", 
       ],
      },
-    { city : "경기", detail : ["경기 전체"] },
+    { city : "경기", detail : ["경기 전체", "성남/분당", "수원/광교", "판교"] },
     { city : "인천", detail : ["인천 전체"] },
     { city : "부산", detail : ["부산 전체"] },
-    { city : "제주", detail : ["제주도 전체"] },
+    { city : "제주", detail : ["제주 전체"] },
     { city : "울산", detail : ["울산 전체"] },
     { city : "경남", detail : ["경남 전체"] },
     { city : "대구", detail : ["대구 전체"] },
@@ -61,7 +61,6 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
     { name: "40만원대 이상", min: 40, max: 40 },
   ];
   const [selected, setSelected] = useState([]);
-  // console.log(searchFilter)
 
 
   /* tap 클릭이벤트 */
@@ -77,6 +76,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
 
   /* button 클릭이벤트 */
   const buttonClick = (e, id) => {
+    placeRef.current = [];
     setIsSelect(id);
   };
 
@@ -86,14 +86,13 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
     const recentClass = e.currentTarget.classList;
     const isActive = e.currentTarget.classList.length > 1 ? true : false; //active 여부
 
-    let newCitiess = [];
-    // 서울 전체인경우
-    if(newCity=="서울 전체") { 
+    // 전체인 경우
+    if(newCity.indexOf('전체') > -1) { 
       if(!isActive) {
-        list.map((item)=>item.classList.add('active'));
-        setSelectedCities(...defaultCity.filter(item=>item.city == '서울').map(item=>item.detail));
+        list.map((item)=>item && item.classList.add('active'));
+        setSelectedCities(...defaultCity.filter(item=>item.city === newCity.slice(0,-3)).map(item=>item.detail));
       } else {
-        list.map((item)=>item.classList.remove('active'));
+        list.map((item)=>item && item.classList.remove('active'));
         setSelectedCities([]);
       }
     }else {
@@ -109,15 +108,15 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
 
   /* function : 검색적용 */
   const handleSearch = (e) => {
-    console.log('?');
     setCities([...selectedCities]); // 필터 확정
     setFilterInfo((prevState)=> ({
       ...prevState, 
-      hotPlace : selectedCities?.length > 0 ? selectedCities : [],
+      hotPlace : selectedCities?.length > 0 ? selectedCities.filter(item=>item.indexOf("전체") < 1) : [],
       koreanCity : isSelect=="핫플" ? "서울" : isSelect,
-      minPrice : selectedCost ? Number(selectedCost?.min) : 0,
-      maxPrice : selectedCost ? Number(selectedCost?.max) : 0
+      minPrice : selectedCost?.min || 0,
+      maxPrice : selectedCost?.max || 0
     }));
+    
     setCost({
       min:selectedCost?.min,
       max:selectedCost?.max
@@ -155,11 +154,8 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
   const handleResetAll = (e) => {
     /* 1. 지역리셋 */
     setSelectedCities([]);
-    // const list = placeRef.current;
-    // list.map((item) => {
-    //   const arr1 = item.classList;
-    //   arr1.remove("active");
-    // });
+    setIsSelect("핫플");
+
     /* 2. 가격리셋 */
     setSelectedCost({});
     // setCost();
@@ -254,18 +250,38 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
                 </div>
                 <div className="flex hotplace-wrapper">
                   {
-                    defaultCity.map(item=>(isSelect==item.city ? item.detail?.map((data,index)=>
-                      <button
-                        type="button"
-                        id="hotplace-list-item"
-                        className={`hotplace-item ${cities?.length < 1 ? selectedCities?.includes(data) ? 'active' : ''
-                          : cities?.includes(data) ? 'active' : ''
-                        }`}
-                        key={index}
-                        onClick={(e) => {onSelectCity(e, data);}}
-                        ref={(el) => (placeRef.current[index] = el)}
-                      ><span>{data}</span></button>
-                    ):<></>))
+                    // defaultCity.map(item=>{
+                    //   if(isSelect===item.city) {
+                    //     item.detail.map((place, index)=>(
+                    //         <button
+                    //           type="button"
+                    //           id="hotplace-list-item"
+                    //           // className={`hotplace-item ${cities?.length < 1 ? selectedCities?.includes(place) ? 'active' : ''
+                    //           //   : cities?.includes(place) ? 'active' : ''
+                    //           // }`}
+                    //           // key={index}
+                    //           // onClick={(e) => {onSelectCity(e, place);}}
+                    //           // ref={(el) => (placeRef.current[index] = el)}
+                    //         ><span>{place}</span></button>
+                    //       )
+                        
+                    //   })
+                    // })
+                    defaultCity.map(item=>(
+                      isSelect===item.city ? item.detail.map((place, index)=> (
+                        <button
+                          type="button"
+                          id="hotplace-list-item"
+                          key={index}
+                          className={`hotplace-item
+                            ${selectedCities?.includes(place) ? 'active' : ''}
+                          `}
+                          onClick={(e)=>onSelectCity(e, place)}
+                          ref={(el)=> placeRef.current[index] = el}
+                        >
+                          {place}</button>
+                      )) :<></>
+                    ))
                   }
                 </div>
               </section>

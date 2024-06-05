@@ -12,7 +12,7 @@ const RestaurantInfor = ({ isInforOpen, restaurant, toggleDrawerInfor }) => {
     setRestaurantId(id);
   };
   useEffect(() => {
-    console.log("moveChatRoom", moveChat);
+    // console.log("moveChatRoom", moveChat);
     if (moveChat) {
       postChatRoom(restaurantId);
     }
