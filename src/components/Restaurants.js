@@ -53,22 +53,19 @@ const Restaurants = ({ data, index = 0 }) => {
     e.preventDefault();
     navigate(`/ct/shop/:${name}`, { state: name });
   };
-  // 식당 저장
+  // 식당 저장 생성
   const saveSave = useMutation({
     mutationKey: "useSaveRestaurant",
     mutationFn: useSaveRestaurant,
     onSuccess: ({ id }) => {
-      console.log("data", id);
-      // window.location.reload();
-      queryClient.invalidateQueries({ queryKey: [id] });
+      queryClient.invalidateQueries(data, { queryKey: [id] });
     },
   });
-  //식당 삭제
+  //식당 저장 삭제
   const deleteSave = useMutation({
     mutationFn: useDeleteRestaurant,
-    onSuccess: () => {
-      // window.location.reload();
-      // queryClient.invalidateQueries({ queryKey: [state] });
+    onSuccess: ({ id }) => {
+      queryClient.invalidateQueries(data, { queryKey: [id] });
     },
   });
   useEffect(() => {

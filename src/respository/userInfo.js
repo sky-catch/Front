@@ -29,7 +29,7 @@ export const getLogin = async (code) => {
 // 로그인 사용자 테스트용
 export const getTestLogin = async () => {
   try {
-    let id = 12;
+    let id = 9;
     const result = await apiClient.get(`/oauth/jwt/test/owner/${id}`, {
       headers: {},
     });

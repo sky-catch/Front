@@ -152,8 +152,7 @@ export default function MyDining() {
     },
     enabled: loginState,
   });
-  // console.log("restaurantValue", restaurantValue);
-  console.log("reservationRes", reservationRes);
+
   if (isLoading) {
     return <Loading></Loading>;
   }

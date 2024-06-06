@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Drawer from "react-modern-drawer";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -30,12 +30,11 @@ const stateList = [
 ];
 export default function Restaurantsetting() {
   const user = useRecoilValue(RestaurantState);
-  const [listSelect, setListSelect] = useState("PLANNED");
 
   const { mutate: changeStatus } = ChangeReservationsStatus();
-  const [isSelectItems, setIsSelectItems] = useState([]);
+  const [listSelect, setListSelect] = useState("PLANNED");
   const { data: reservationItems, isLoading } = useQuery({
-    queryKey: ["reservation"],
+    queryKey: ["selectData", listSelect],
     queryFn: () => {
       return getReservation()
         .then((res) => {
@@ -46,7 +45,14 @@ export default function Restaurantsetting() {
           console.log(err);
         });
     },
+    select: (data) => {
+      return data.list.filter((item) => {
+        console.log("item", item.status === listSelect);
+        return item.status === listSelect;
+      });
+    },
   });
+  console.log("reservationItems", reservationItems);
   const [isOpen, setIsOpen] = useState(false);
 
   const [isCreate, setIsCreate] = useState(false);
@@ -106,13 +112,6 @@ export default function Restaurantsetting() {
       setIsSave(false);
     }
   };
-
-  useEffect(() => {
-    const items = reservationItems?.list.filter((item) => {
-      return item.status === listSelect;
-    });
-    setIsSelectItems(items);
-  }, [reservationItems, listSelect]);
 
   //댓글 수정
   const commentEdit = (index, time) => {
@@ -181,10 +180,10 @@ export default function Restaurantsetting() {
     };
     updateComment(commentItems);
   };
-  if (isLoading || !isSelectItems) {
+  if (isLoading) {
     return <Loading></Loading>;
   }
-  console.log("reservationItems", reservationItems.list);
+
   return (
     <MainContents>
       <ul className="tab-menu sticky top-[0px] bg-white">
@@ -226,9 +225,9 @@ export default function Restaurantsetting() {
               );
             })}
           </div>
-          {isSelectItems?.length > 0 ? (
+          {reservationItems?.length > 0 ? (
             <div className="">
-              {isSelectItems?.map((item, index) => {
+              {reservationItems?.map((item, index) => {
                 return (
                   <div
                     className="py-[10px] px-[15px] flex flex-col gap-y-[5px] rounded-md shadow mb-[15px]"

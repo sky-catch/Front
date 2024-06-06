@@ -1,10 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../apis/ApiClient";
 
 const FormData = require("form-data");
-// import { useQueryClient } from "@tanstack/react-query";
 /**
  * 예약 API
  *
@@ -240,8 +239,8 @@ export const UpdateReview = () => {
     mutationFn: updateReviewItem,
     onSuccess: () => {
       alert("리뷰 수정 완료됐습니다.");
+
       window.location.reload();
-      // window.location.href = "/mydining/my";
     },
     onError: (error) => {
       console.log("createPost error", error);
@@ -265,13 +264,13 @@ const deleteReviewItem = async (id) => {
 };
 
 export const DeleteReview = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["deleteReviewItem"],
     mutationFn: deleteReviewItem,
     onSuccess: (data) => {
-      console.log("createPost success", data);
       alert("리뷰 삭제가 완료됐습니다.");
-      window.location.reload();
+      queryClient.invalidateQueries("getUserInfo");
     },
     onError: (error) => {
       console.log("createPost error", error);
@@ -360,13 +359,15 @@ const changeReservationsStatusItem = async (status) => {
 };
 
 export const ChangeReservationsStatus = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["changeReservationsStatusItem"],
     mutationFn: changeReservationsStatusItem,
     onSuccess: (data) => {
       console.log("createPost success", data);
       alert("상태 변경이 완료됐습니다.");
-      window.location.reload();
+      // window.location.reload();
+      queryClient.invalidateQueries("selectData");
     },
     onError: (error) => {
       console.log("createPost error", error);

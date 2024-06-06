@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import "moment/locale/ko";
 import { useEffect, useRef, useState } from "react";
@@ -12,6 +12,7 @@ import { convertURLtoFile } from "../../apis/ApiClient";
 import defaultImage from "../../assets/icons/default.png";
 import Loading from "../../components/Loading";
 import { DeleteReview, UpdateReview } from "../../respository/reservation";
+import { useDeleteRestaurant } from "../../respository/restaurant";
 import {
   getMyRestaurant,
   getOwner,
@@ -23,11 +24,10 @@ import {
  */
 
 function MyPage() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
-
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const { mutate: DeleteReviewItem } = DeleteReview();
-
   const [user, setUser] = useRecoilState(LoginState);
   const [restaurant, setRestaurant] = useRecoilState(RestaurantState);
   const textInput = useRef();
@@ -47,9 +47,14 @@ function MyPage() {
     retry: true,
   });
   const [isOwner, setIsOwner] = useState(isUserInfo ? isUserInfo.owner : false);
-  const [following, setFollowing] = useState(0); //isUserInfo 팔로잉,팔로워 수 리턴받아야함.(TODO)
-  const [follower, setFollower] = useState(0); // 동일
-
+  //식당 삭제
+  const deleteSave = useMutation({
+    mutationKey: "useDeleteRestaurant",
+    mutationFn: useDeleteRestaurant,
+    onSuccess: ({ id }) => {
+      queryClient.invalidateQueries("getUserInfo", { queryKey: [id] });
+    },
+  });
   /* Function : 프로필 수정 */
   const updateUserInfo = () => {
     navigate("/my/myProfileInfo");
@@ -99,6 +104,7 @@ function MyPage() {
   useEffect(() => {
     if (!isReviewOpen) return;
     if (!isSelectInfo) return;
+
     const fetchAndConvertImages = async () => {
       const promises = isSelectInfo.map(async (item) => {
         try {
@@ -118,15 +124,7 @@ function MyPage() {
 
     fetchAndConvertImages();
   }, [isReviewOpen, isSelectInfo]);
-  useEffect(() => {
-    // 이미지 정보 설정
-    setUser((prevUser) => ({
-      ...prevUser,
-      profileImageUrl: isUserInfo?.profileImageUrl,
-      isOwner: isUserInfo?.owner,
-      saveRestaurants: isUserInfo?.savedRestaurants,
-    }));
-  }, [isUserInfo]);
+
   const toggleDrawerReview = (e, info) => {
     setIsReviewOpen((prevState) => !prevState);
     if (isReviewOpen) {
@@ -242,10 +240,6 @@ function MyPage() {
       sessionStorage.setItem("data", JSON.stringify(isUserInfo));
     }
   }, [isUserInfo]);
-
-  useEffect(() => {
-    // console.log("restaurant", restaurant);
-  }, [restaurant]);
 
   const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
@@ -440,7 +434,14 @@ function MyPage() {
                                     </div>
                                   </div>
                                 </a>
-                                <a className="btn-bookmark active"></a>
+                                <a
+                                  className="btn-bookmark active"
+                                  onClick={(e) => {
+                                    deleteSave.mutate({
+                                      id: item.restaurantId,
+                                    });
+                                  }}
+                                ></a>
                               </div>
                             </div>
                           );
