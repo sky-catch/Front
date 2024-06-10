@@ -34,7 +34,7 @@ function MyPage() {
   const { mutate: review } = UpdateReview();
   const photoInput = useRef();
   const [isSelect, setIsSelect] = useState(true);
-  const [isRestaurant, setIsRestaurant] = useState(false);
+
   const [photoToAddList, setPhotoToAddList] = useState([]);
   const [isSelectInfo, setIsSelectInfo] = useState([]);
   const [isSelectItem, setSelectItem] = useState({ score: 0, reviewId: 0 });
@@ -46,7 +46,7 @@ function MyPage() {
     queryFn: getUserInfo,
     retry: true,
   });
- // const [isOwner, setIsOwner] = useState(isUserInfo ? isUserInfo.owner : false);
+  // const [isOwner, setIsOwner] = useState(isUserInfo ? isUserInfo.owner : false);
   //식당 삭제
   const deleteSave = useMutation({
     mutationKey: "useDeleteRestaurant",
@@ -58,52 +58,10 @@ function MyPage() {
 
   const [isOwner, setIsOwner] = useState(user?.owner);
 
-
   /* Function : 프로필 수정 */
   const updateUserInfo = () => {
     navigate("/my/myprofileinfo");
   };
-  const {
-    data: getRestaurantItem,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["getMyRestaurant"],
-    queryFn: () => {
-      return getMyRestaurant()
-        .then((res) => {
-          if (res !== undefined) {
-            console.log(res);
-          }
-          return res;
-        })
-        .catch((err) => {
-          console.log("err1", err.response);
-          throw err;
-        });
-    },
-    retry: 1,
-    enabled: isUserInfo?.owner,
-  });
-
-  const { data: getOwnerItem } = useQuery({
-    queryKey: ["getOwner"],
-    queryFn: () => {
-      return getOwner()
-        .then((res) => {
-          if (res === undefined) {
-            throw new Error("Data is undefined");
-          }
-          return res;
-        })
-        .catch((err) => {
-          console.log("err2", err);
-          throw err;
-        });
-    },
-    retry: 1,
-    enabled: isUserInfo?.owner,
-  });
 
   useEffect(() => {
     if (!isReviewOpen) return;
@@ -218,7 +176,6 @@ function MyPage() {
     }
   };
 
-
   const {
     data: getRestaurantItem,
     isLoading,
@@ -260,12 +217,11 @@ function MyPage() {
   });
 
   useEffect(() => {
+    console.log("getRestaurantItem", !!getRestaurantItem);
     if (user?.owner && getRestaurantItem) {
-      setIsRestaurant(true);
       setRestaurant((prevUser) => ({ ...getRestaurantItem }));
     }
   }, [getRestaurantItem]);
-
 
   useEffect(() => {
     // 이미지 정보 설정
@@ -324,11 +280,9 @@ function MyPage() {
   };
 
   // 내 정보 프로필사진이나 닉네임 등등 없으면 로딩하게 제작
- // if (userLoading || !isUserInfo) {
-
+  // if (userLoading || !isUserInfo) {
 
   if (!user.nickname) {
-
     return <Loading></Loading>;
   }
 
@@ -336,7 +290,7 @@ function MyPage() {
   const onErrorImg = (e) => {
     e.target.src = defaultImage;
   };
-  console.log("isUserInfo", isUserInfo);
+
   return (
     <MainContents className="main">
       {/* 프로필정보 */}
@@ -371,7 +325,7 @@ function MyPage() {
               className="btn btn-md btn-outline btn-rounded mt-18"
               onClick={
                 user?.owner
-                  ? isRestaurant
+                  ? !!getRestaurantItem
                     ? manageRestaurant
                     : createRestaurant
                   : createOwner
@@ -379,7 +333,7 @@ function MyPage() {
             >
               <span className="label">
                 {user?.owner
-                  ? isRestaurant
+                  ? !!getRestaurantItem
                     ? "내 식당 관리"
                     : "내 식당 등록"
                   : "사장님 등록"}
@@ -466,14 +420,10 @@ function MyPage() {
                                   <h4 className="name">
                                     {item.savedRestaurantName}
                                   </h4>
-                                  <p className="excerpt">
-                                    {item.content}
-                                  </p>
+                                  <p className="excerpt">{item.content}</p>
                                   <div className="restaurant-meta">
                                     <div className="rating">
-                                      <span className="star">
-                                        {item.rate}
-                                      </span>
+                                      <span className="star">{item.rate}</span>
                                       <span className="count">
                                         {item.reviewCount}
                                       </span>

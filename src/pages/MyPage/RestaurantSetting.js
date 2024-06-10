@@ -38,7 +38,6 @@ export default function Restaurantsetting() {
     queryFn: () => {
       return getReservation()
         .then((res) => {
-          console.log("res", res);
           return res;
         })
         .catch((err) => {
@@ -47,12 +46,10 @@ export default function Restaurantsetting() {
     },
     select: (data) => {
       return data.list.filter((item) => {
-        console.log("item", item.status === listSelect);
         return item.status === listSelect;
       });
     },
   });
-  console.log("reservationItems", reservationItems);
   const [isOpen, setIsOpen] = useState(false);
 
   const [isCreate, setIsCreate] = useState(false);
@@ -134,7 +131,6 @@ export default function Restaurantsetting() {
   };
   //방문 완료 변경
   const doneBtn = (item) => {
-    console.log("item", item);
     const statusItem = {
       reservationId: item.reservationId,
       reservationStatus: "DONE",
@@ -143,7 +139,6 @@ export default function Restaurantsetting() {
   };
   //방문 예정 변경
   const plannedBtn = (item) => {
-    console.log("item", item);
     const statusItem = {
       reservationId: item.reservationId,
       reservationStatus: "PLANNED",
@@ -152,7 +147,6 @@ export default function Restaurantsetting() {
   };
   //방문 취소 변경
   const cancelBtn = (item) => {
-    console.log("item", item);
     const statusItem = {
       reservationId: item.reservationId,
       reservationStatus: "CANCEL",
