@@ -1,10 +1,10 @@
+import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import { LoginState } from "../States/LoginState";
-import { getUserInfo } from "../respository/userInfo.js"
+import { getUserInfo } from "../respository/userInfo.js";
 
 const navItem = [
   {
@@ -52,22 +52,22 @@ const navItem = [
 const Navbar = () => {
   const location = useLocation().pathname;
   const [user, setUser] = useRecoilState(LoginState);
+
   const { data: userData, isLoading: userLoading } = useQuery({
     queryKey: ["getUserInfo"],
     queryFn: getUserInfo,
   });
 
-
   useEffect(() => {
     // recoil 및 user 세팅
-    setUser((prevUser)=> ({
+    setUser((prevUser) => ({
       ...prevUser,
-      nickname : userData?.nickname,
-      name : userData?.name,
-      owner : userData?.owner,
-      profileImg : userData?.profileImageUrl,
-      saveRestaurants : userData?.savedRestaurants,
-      reviews : userData?.reviews,
+      nickname: userData?.nickname,
+      name: userData?.name,
+      owner: userData?.owner,
+      profileImg: userData?.profileImageUrl,
+      saveRestaurants: userData?.savedRestaurants,
+      reviews: userData?.reviews,
     }));
   }, [userData]);
 

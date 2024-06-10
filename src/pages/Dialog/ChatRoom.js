@@ -70,6 +70,7 @@ const ChatRoom = () => {
         });
     },
   });
+
   useEffect(() => {
     if (!chatRoomList) return;
     chatRoomList.chatList.map((item) => {

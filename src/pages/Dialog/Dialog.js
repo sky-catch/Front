@@ -23,20 +23,13 @@ function Dialog() {
     error,
   } = useQuery({
     queryKey: ["roomList"],
-    queryFn: async () => {
-      try {
-        const result = await GetChatRoomListRes();
-        return result;
-      } catch (err) {
-        console.log("Error >>", err.message);
-        throw err;
-      }
-    },
+    queryFn: GetChatRoomListRes,
     enabled: isLogin,
-    retry: 5,
+    retry: 3,
     retryDelay: 500,
   });
 
+  console.log("roomList", roomList);
   const searchRestaurant = (e) => {
     let searchValue = e.target.value;
     setFilterText(searchValue);
