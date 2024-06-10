@@ -235,7 +235,7 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
                 </div>
                 <div className="flex city-wrapper">
                   <div className="grid grid-cols-5">
-                    {defaultCity.map((item, index) => {
+                    {defaultCity?.map((item, index) => {
                       return (
                         <button
                           key={index}
@@ -250,23 +250,6 @@ const FilterDrawer = ({ isFilter, toggleFilterDrawer, setFilterInfo , searchFilt
                 </div>
                 <div className="flex hotplace-wrapper">
                   {
-                    // defaultCity.map(item=>{
-                    //   if(isSelect===item.city) {
-                    //     item.detail.map((place, index)=>(
-                    //         <button
-                    //           type="button"
-                    //           id="hotplace-list-item"
-                    //           // className={`hotplace-item ${cities?.length < 1 ? selectedCities?.includes(place) ? 'active' : ''
-                    //           //   : cities?.includes(place) ? 'active' : ''
-                    //           // }`}
-                    //           // key={index}
-                    //           // onClick={(e) => {onSelectCity(e, place);}}
-                    //           // ref={(el) => (placeRef.current[index] = el)}
-                    //         ><span>{place}</span></button>
-                    //       )
-                        
-                    //   })
-                    // })
                     defaultCity.map(item=>(
                       isSelect===item.city ? item.detail.map((place, index)=> (
                         <button
