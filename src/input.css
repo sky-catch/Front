@@ -2383,6 +2383,14 @@ span {
 .saved-restaurant-list-item .tb .img img {
   height: 100%;
 }
+
 .custom-class:not(:last-child) {
   border-bottom: 1px solid #d5d5d5;
 }
+
+
+.list-items .search-list .tb .img img {
+  height : 100%;
+  width : 100%;
+}
+

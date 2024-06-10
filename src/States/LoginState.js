@@ -23,6 +23,8 @@ export const LoginState = atom({
     ownerId: null,
     status: "",
     updatedDate: "",
+    profileImg : "",
+    reviews : []
   },
 });
 // 식당 리스트

@@ -11,6 +11,7 @@ const StarsComponent = ({ startAvg }) => {
   const [stars, setStars] = useState(startAvg <= 5 ? startAvg.toFixed(1) : 5);
   const createArray = (length) => [...Array(length)];
 
+
   const Stars = ({ selected = false, onSelect = (f) => f }) => (
     <FaStar color={selected ? "FFC94A" : "gray"} />
   );
@@ -29,6 +30,7 @@ const StarsComponent = ({ startAvg }) => {
     </StarRate>
   );
 };
+
 export default StarsComponent;
 
 const StarRate = styled.div`

@@ -24,7 +24,7 @@ export default function ReserveForm() {
   const [restaurantId, setRestaurantId] = useState(
     state.restaurant.restaurantId
   );
-  console.log("deposit", deposit);
+
 
   /* Funciton : 결제 */
   const requestPay = (e) => {
