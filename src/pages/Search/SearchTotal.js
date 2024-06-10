@@ -35,9 +35,8 @@ export default function SearhTotal({ search }) {
     }
   }
   let allRegion = [...region, ...place];
-  // console.log('allRegion',allRegion);
 
-
+  console.log('searchResult', searchResult);
   // funtion : 식당 이동
   const handleMovePage = (e) => {
     var param = e.currentTarget.id;
@@ -49,10 +48,17 @@ export default function SearhTotal({ search }) {
     // 선택한 지역으로 검색!
     const date = new Date();
     let id = e.currentTarget.id;
-    let [city, place] = '';
-    if (id.indexOf('koreanCity') > -1) city = id.split(' ')[1];
-    else place = id.split(' ')[1];
-    // console.log(city, place);
+    let arr = id.split(' ');
+
+    let place = [];
+    let city = '';
+
+    if(arr[0].indexOf('koreanCity') > -1) {
+      city = arr[1];
+    } else {
+      place = arr[1];
+    }
+    
     const filter = {
       date : `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`,
       time : `07:00`,
