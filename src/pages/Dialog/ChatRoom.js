@@ -23,8 +23,8 @@ const ChatRoom = () => {
   // });
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:8080/chat");
-    // const socket = new WebSocket("ws://15.164.89.177:8080/chat");
+    // const socket = new WebSocket("ws://localhost:8080/chat");
+    const socket = new WebSocket("ws://15.164.89.177:8080/chat");
 
     socket.onopen = () => {
       console.log("웹소켓 연결이 열렸습니다.");
