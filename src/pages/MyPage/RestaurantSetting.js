@@ -1,36 +1,57 @@
-// import { useEffect } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Drawer from "react-modern-drawer";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { RestaurantState } from "../../States/LoginState";
-import { ChangeReservations } from "../../respository/reservation";
+import Loading from "../../components/Loading";
+import { ChangeReservationsStatus } from "../../respository/reservation";
+
 import {
   CreateCommentReq,
   DeleteComment,
+  UpdateCommentReq,
   getReservation,
 } from "../../respository/userInfo";
-// import { createRestaurant } from "../../respository/restaurant";
-import { UpdateCommentReq } from "../../respository/userInfo";
+const stateList = [
+  {
+    id: "PLANNED",
+    title: "방문예정",
+  },
+  {
+    id: "DONE",
+    title: "방문완료",
+  },
+  {
+    id: "CANCEL",
+    title: "취소/노쇼",
+  },
+];
 export default function Restaurantsetting() {
   const user = useRecoilValue(RestaurantState);
-  const { mutate: changeStatus } = ChangeReservations();
+
+  const { mutate: changeStatus } = ChangeReservationsStatus();
+  const [listSelect, setListSelect] = useState("PLANNED");
   const { data: reservationItems, isLoading } = useQuery({
-    queryKey: ["reservation"],
+    queryKey: ["selectData", listSelect],
     queryFn: () => {
       return getReservation()
         .then((res) => {
-          console.log("res", res);
           return res;
         })
         .catch((err) => {
           console.log(err);
         });
     },
+    select: (data) => {
+      return data.list.filter((item) => {
+        return item.status === listSelect;
+      });
+    },
   });
   const [isOpen, setIsOpen] = useState(false);
+
   const [isCreate, setIsCreate] = useState(false);
   const [isSelect, setIsSelect] = useState(true);
   const [isSave, setIsSave] = useState(true);
@@ -65,10 +86,18 @@ export default function Restaurantsetting() {
     textInput.current.value = "";
   };
 
-  const handleChange = (event, idNumber) => {
-    let noShowIdArray = new Array();
-    noShowIdArray[0] = idNumber;
-    changeStatus(noShowIdArray);
+  const itemClick = (index) => {
+    switch (index) {
+      case 0:
+        setListSelect("PLANNED");
+        break;
+      case 1:
+        setListSelect("DONE");
+        break;
+      default:
+        setListSelect("CANCEL");
+        break;
+    }
   };
   /* Tap 선택 */
   const menuClick = (e, index) => {
@@ -80,20 +109,6 @@ export default function Restaurantsetting() {
       setIsSave(false);
     }
   };
-  const addRestaurant = () => {
-    // createRestaurant()
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-  };
-  useEffect(() => {
-    console.log("user", user);
-    console.log("reservationItems", reservationItems);
-    // console.log("moment", moment().startOf("day").fromNow());
-  }, []);
 
   //댓글 수정
   const commentEdit = (index, time) => {
@@ -114,7 +129,30 @@ export default function Restaurantsetting() {
     alert("정말로 삭제하겠습니까?");
     deleteComment(index);
   };
-
+  //방문 완료 변경
+  const doneBtn = (item) => {
+    const statusItem = {
+      reservationId: item.reservationId,
+      reservationStatus: "DONE",
+    };
+    changeStatus(statusItem);
+  };
+  //방문 예정 변경
+  const plannedBtn = (item) => {
+    const statusItem = {
+      reservationId: item.reservationId,
+      reservationStatus: "PLANNED",
+    };
+    changeStatus(statusItem);
+  };
+  //방문 취소 변경
+  const cancelBtn = (item) => {
+    const statusItem = {
+      reservationId: item.reservationId,
+      reservationStatus: "CANCEL",
+    };
+    changeStatus(statusItem);
+  };
   const commentCreateAction = () => {
     const currentTime = new Date();
     const commentItems = {
@@ -123,7 +161,6 @@ export default function Restaurantsetting() {
       reviewId: isReviewId,
       content: textInput.current.value,
     };
-
     createComment(commentItems);
   };
 
@@ -138,11 +175,12 @@ export default function Restaurantsetting() {
     updateComment(commentItems);
   };
   if (isLoading) {
-    return <div>...isLoading</div>;
+    return <Loading></Loading>;
   }
+
   return (
     <MainContents>
-      <ul className="tab-menu sticky top-[0px] mb-[10px] bg-white">
+      <ul className="tab-menu sticky top-[0px] bg-white">
         <li
           className={`w-[50%] leading-[48px] text-center ${
             isSelect ? " active" : ""
@@ -163,26 +201,32 @@ export default function Restaurantsetting() {
         </li>
       </ul>
       {isSave ? (
-        <div className="collection">
-          {reservationItems && reservationItems.list.length > 0 ? (
-            <div className=" container">
-              {reservationItems.list.map((item, index) => {
+        <div className="collection container">
+          <div className="flex gap-x-[10px] py-[10px] sticky top-[48px] bg-white z-[99] left-0">
+            {stateList.map((item, index) => {
+              return (
+                <span
+                  key={item.id}
+                  onClick={() => itemClick(index)}
+                  className={` ${
+                    listSelect === item.id
+                      ? " rounded-full border-black "
+                      : " text-[#666] border-transparent"
+                  } px-[15px] box-border font-medium text-[14px] leading-[32px] h-8 cursor-pointer  border-[1px]`}
+                >
+                  {item.title}
+                </span>
+              );
+            })}
+          </div>
+          {reservationItems?.length > 0 ? (
+            <div className="">
+              {reservationItems?.map((item, index) => {
                 return (
                   <div
                     className="py-[10px] px-[15px] flex flex-col gap-y-[5px] rounded-md shadow mb-[15px]"
                     key={index}
                   >
-                    <div className="self-end">
-                      <span
-                        className={`text-center text-[#666] text-[12px] float-right rounded-full py-[2px] px-[8px] border border-[#d5d5d5]`}
-                      >
-                        {item.status === "CANCEL"
-                          ? "방문 취소"
-                          : item.status === "PLANNED"
-                          ? "방문 예정"
-                          : "방문 완료"}
-                      </span>
-                    </div>
                     <span className="text-[14px] text-[#2c2c2c]">
                       <em className="">예약자 : </em>
                       <em className="">
@@ -209,16 +253,67 @@ export default function Restaurantsetting() {
                         {item.time.split("T")[1].slice(0, 5)}
                       </em>
                     </span>
-                    {item.status === "PLANNED" && (
-                      <CancelBtn
-                        className=""
-                        onClick={(e) => {
-                          handleChange(e, item.reservationId);
-                        }}
-                      >
-                        방문 취소
-                      </CancelBtn>
-                    )}
+
+                    <div className=" grid grid-cols-2 gap-x-[15px] h-[32px] mt-[10px]">
+                      {listSelect === "PLANNED" ? (
+                        <>
+                          <button
+                            className="btn btn-sm btn-red  "
+                            onClick={() => {
+                              doneBtn(item);
+                            }}
+                          >
+                            방문 완료
+                          </button>
+                          <button
+                            className="btn btn-sm btn-red"
+                            onClick={() => {
+                              cancelBtn(item);
+                            }}
+                          >
+                            취소/노쇼
+                          </button>
+                        </>
+                      ) : listSelect === "CANCEL" ? (
+                        <>
+                          <button
+                            className="btn btn-sm btn-red "
+                            onClick={() => {
+                              doneBtn(item);
+                            }}
+                          >
+                            방문 완료
+                          </button>
+                          <button
+                            className="btn btn-sm btn-red "
+                            onClick={() => {
+                              plannedBtn(item);
+                            }}
+                          >
+                            방문 예정
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            className="btn btn-sm btn-red "
+                            onClick={() => {
+                              plannedBtn(item);
+                            }}
+                          >
+                            방문 예정
+                          </button>
+                          <button
+                            className="btn btn-sm btn-red "
+                            onClick={() => {
+                              cancelBtn(item);
+                            }}
+                          >
+                            취소/노쇼
+                          </button>
+                        </>
+                      )}
+                    </div>
                   </div>
                 );
               })}
@@ -230,7 +325,11 @@ export default function Restaurantsetting() {
                 src={require("../../assets/icons/empty.png")}
               />
               <span className=" text-[#47566A] text-[16px] text-bold ">
-                예약된 식당이 없습니다.
+                {listSelect === "PLANNED"
+                  ? "방문 예약된 식당이 없습니다."
+                  : listSelect === "CANCEL"
+                  ? "취소된 식당이 없습니다."
+                  : "방문 완료된 식당이 없습니다."}
               </span>
             </div>
           )}
@@ -408,8 +507,6 @@ const Btn = styled.button`
   text-align: center;
   padding: 3px 8px;
   font-size: 12px;
-  /* width: 100%; */
-  /* margin-top: 0.75rem; */
   background-color: #ff3d00;
   color: #fff;
   ${(prop) =>
@@ -419,7 +516,7 @@ const Btn = styled.button`
 `;
 const CancelBtn = styled.button`
   border-radius: 6px;
-  line-height: 30px;
+  line-height: 36px;
   text-align: center;
   font-size: 14px;
   width: 100%;

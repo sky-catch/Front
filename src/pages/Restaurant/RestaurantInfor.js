@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { PostChatRoomItem } from "../../respository/reservation";
+import { CreateChatRoomItem } from "../../respository/reservation";
 const RestaurantInfor = ({ isInforOpen, restaurant, toggleDrawerInfor }) => {
   const [moveChat, setMoveChat] = useState(false);
+  const navigate = useNavigate();
   const [restaurantId, setRestaurantId] = useState("");
-  const { mutate: postChatRoom, loading, error, data } = PostChatRoomItem();
+  const { mutate: createChatRoom, loading, error, data } = CreateChatRoomItem();
   const openChatRoom = (id) => {
     setMoveChat(true);
     setRestaurantId(id);
   };
   useEffect(() => {
-    // console.log("moveChatRoom", moveChat);
     if (moveChat) {
-      postChatRoom(restaurantId);
+      createChatRoom(restaurantId);
     }
   }, [moveChat]);
 
@@ -110,7 +111,9 @@ const RestaurantInfor = ({ isInforOpen, restaurant, toggleDrawerInfor }) => {
             open={isInforOpen}
             onClick={() => {
               toggleDrawerInfor();
-              openChatRoom(restaurant.restaurantId);
+              sessionStorage.getItem("token")
+                ? openChatRoom(restaurant.restaurantId)
+                : navigate("/account");
             }}
           >
             사장님과 대화하기

@@ -25,7 +25,7 @@ import ReviewList from "./pages/Restaurant/ReviewList.js";
 import Search from "./pages/Search/Search.js";
 import SearchList from "./pages/Search/SearchList.js";
 import SearchTotal from "./pages/Search/SearchTotal.js";
-import { getTestLogin } from "./respository/userInfo.js";
+// import { getTestLogin } from "./respository/userInfo.js";
 
 function App() {
   const [search, setSearch] = useState();
@@ -34,7 +34,7 @@ function App() {
   };
 
   useEffect(() => {
-    getTestLogin();
+    // getTestLogin();
   }, []);
 
   const location = useLocation();
@@ -60,7 +60,7 @@ function App() {
           <Route path="/account" element={<Account />}></Route>
           <Route path="/login" element={<Login />} />
           <Route path="my" element={<MyPage />} />
-          <Route path="my/myProfileInfo" element={<MyProfileInfo />} />
+          <Route path="my/myprofileinfo" element={<MyProfileInfo />} />
           <Route path="my/myshop" element={<RestaurantSetting />} />
           <Route path="my/myshop/edit/:text" element={<RestaurantInfo />} />
           <Route

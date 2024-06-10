@@ -5,7 +5,7 @@ const ImageUpload = ({ image }) => {
   return (
     <div className="photoBox">
       <div
-        className="photoBoxDelete icon delect-icon"
+        className="photoBoxDelete icon delete-icon"
         //   onClick={() => onRemoveToAdd(photo.file.name)}
       />
       <img className="photoPreview size-[100%]" src={image.path} />

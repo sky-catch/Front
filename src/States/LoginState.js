@@ -27,7 +27,12 @@ export const LoginState = atom({
     reviews : []
   },
 });
-
+// 식당 리스트
+export const RestaurantsAll = atom({
+  key: "RestaurantsAll",
+  effects_UNSTABLE: [persistAtom],
+  default: null,
+});
 export const RestaurantState = atom({
   key: "RestaurantState",
   default: {
@@ -56,8 +61,8 @@ export const RestaurantState = atom({
     notifications: [],
     facilities: [
       {
-        name: " ",
-        path: "",
+        name: null,
+        path: null,
       },
     ],
     holidays: {

@@ -87,5 +87,5 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.4"
   },
-  "proxy" : "https://skyware-toy-project-imgae-bucket.s3.ap-northeast-2.amazonaws.com"
+  "proxy": "https://skyware-toy-project-imgae-bucket.s3.ap-northeast-2.amazonaws.com"
 }

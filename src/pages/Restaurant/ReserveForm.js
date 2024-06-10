@@ -25,6 +25,7 @@ export default function ReserveForm() {
     state.restaurant.restaurantId
   );
 
+
   /* Funciton : 결제 */
   const requestPay = (e) => {
     if (!isReserveAble) return;
@@ -92,7 +93,7 @@ export default function ReserveForm() {
       memo: memo,
       amountToPay: deposit,
     };
-    
+
     // 1. 예약 생성하기
     createReservation(restaurantId, info)
       .then((res) => {
@@ -329,7 +330,7 @@ export default function ReserveForm() {
                   className="flex justify-center align-center color-btn"
                   onClick={requestReserve}
                 >
-                  에약하기
+                  예약하기
                 </button>
               )}
             </div>

@@ -29,14 +29,14 @@ export const getLogin = async (code) => {
 // 로그인 사용자 테스트용
 export const getTestLogin = async () => {
   try {
-    let id = 7;
+    let id = 15;
     const result = await apiClient.get(`/oauth/jwt/test/owner/${id}`, {
       headers: {},
     });
 
     if (result.data) {
       sessionStorage.setItem("token", result.data.accessToken.value);
-    } 
+    }
   } catch (err) {
     console.log("Error >>", err);
     throw err;
@@ -51,7 +51,6 @@ export const getUserInfo = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    
     return result.data;
   } catch (err) {
     console.log("Error >>", err);
@@ -69,7 +68,7 @@ export const updateUserInfo = async ({ updateMemberReq, file }) => {
     type: "application/json",
   });
   formData.append("updateMemberReq", blob);
-  console.log('updateMemberReq',updateMemberReq, 'file', file);
+  console.log("updateMemberReq", updateMemberReq, "file", file);
   try {
     const result = await apiClient.patch(`/member/profile`, formData, {
       headers: {

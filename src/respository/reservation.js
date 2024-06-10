@@ -1,10 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../apis/ApiClient";
 
 const FormData = require("form-data");
-// import { useQueryClient } from "@tanstack/react-query";
 /**
  * 예약 API
  *
@@ -14,15 +13,20 @@ const token = sessionStorage.getItem("token");
 
 export const checkReservationTimes = async ({ queryKey }) => {
   const [isdata] = queryKey;
-  if (isdata.numberOfPeople === 0) return;
-  const result = await axios.post(
-    "http://15.164.89.177:8080/reservations/availTimeSlots",
+  const config = token
+    ? {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    : {};
+  console.log("config", config);
+
+  if (!isdata || isdata.numberOfPeople === 0) return;
+  const result = await apiClient.post(
+    "/reservations/availTimeSlots",
     isdata,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
+    config
   );
   return result.data;
 };
@@ -46,7 +50,7 @@ export const ReservationTimes = () => {
 };
 
 // 채팅 추가
-const postChatRoom = (id) => {
+const createChatRoom = (id) => {
   const token = sessionStorage.getItem("token");
   return axios.post(
     `http://15.164.89.177:8080/chat/${id}`,
@@ -59,10 +63,10 @@ const postChatRoom = (id) => {
   );
 };
 
-export const PostChatRoomItem = () => {
+export const CreateChatRoomItem = () => {
   return useMutation({
     mutationKey: ["postChatRoom"],
-    mutationFn: postChatRoom,
+    mutationFn: createChatRoom,
     onSuccess: (data) => {
       window.location.href = "/dialog";
       console.log("createPost success", data);
@@ -235,8 +239,8 @@ export const UpdateReview = () => {
     mutationFn: updateReviewItem,
     onSuccess: () => {
       alert("리뷰 수정 완료됐습니다.");
+
       window.location.reload();
-      // window.location.href = "/mydining/my";
     },
     onError: (error) => {
       console.log("createPost error", error);
@@ -245,6 +249,7 @@ export const UpdateReview = () => {
 };
 // 리뷰 삭제
 const deleteReviewItem = async (id) => {
+  console.log("id", id);
   const response = await axios.delete(
     `http://15.164.89.177:8080/review/${id}`,
 
@@ -259,13 +264,13 @@ const deleteReviewItem = async (id) => {
 };
 
 export const DeleteReview = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["deleteReviewItem"],
     mutationFn: deleteReviewItem,
     onSuccess: (data) => {
-      console.log("createPost success", data);
       alert("리뷰 삭제가 완료됐습니다.");
-      window.location.reload();
+      queryClient.invalidateQueries("getUserInfo");
     },
     onError: (error) => {
       console.log("createPost error", error);
@@ -316,8 +321,8 @@ export const CreateRestaurantImagesItem = () => {
 
 //예약들 노쇼로 바꾸는 기능
 const changeReservationsItem = async (noShowIds) => {
-  return axios.patch(
-    `http://15.164.89.177:8080/owner/reservations`,
+  return await apiClient.patch(
+    `/owner/reservations`,
     {
       noShowIds: noShowIds,
     },
@@ -343,7 +348,32 @@ export const ChangeReservations = () => {
     },
   });
 };
+//예약 상태 변경
+const changeReservationsStatusItem = async (status) => {
+  console.log(status);
+  return await apiClient.patch(`/reservations/status`, status, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 
+export const ChangeReservationsStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["changeReservationsStatusItem"],
+    mutationFn: changeReservationsStatusItem,
+    onSuccess: (data) => {
+      console.log("createPost success", data);
+      alert("상태 변경이 완료됐습니다.");
+      // window.location.reload();
+      queryClient.invalidateQueries("selectData");
+    },
+    onError: (error) => {
+      console.log("createPost error", error);
+    },
+  });
+};
 // 예약 조회
 export const getMyReserve = async (param) => {
   try {
@@ -354,4 +384,15 @@ export const getMyReserve = async (param) => {
   } catch (err) {
     console.log("err >>", err);
   }
+};
+//식당 전부 보기
+export const getRestaurantsAll = async () => {
+  const config = token
+    ? {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    : {};
+  return await apiClient.get(`/restaurants/all`, config);
 };

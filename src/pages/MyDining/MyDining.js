@@ -2,7 +2,9 @@ import { QueryClient, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import "react-modern-drawer/dist/index.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { RestaurantsAll } from "../../States/LoginState";
 import Loading from "../../components/Loading";
 import Visitcomponent from "../../components/Visitcomponent";
 import { GetReservationRes } from "../../respository/restaurant";
@@ -22,63 +24,13 @@ const stateList = [
   },
 ];
 
-const pageList = [
-  {
-    id: 1,
-    storeName: "매장이름",
-    type: "한식",
-    score: "10",
-    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    location: "혜화",
-  },
-  {
-    id: 2,
-    storeName: "매장이름",
-    type: "한식",
-    score: "10",
-    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    location: "혜화",
-  },
-  {
-    id: 3,
-    storeName: "매장이름",
-    type: "한식",
-    score: "10",
-    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    location: "혜화",
-  },
-  {
-    id: 4,
-    storeName: "매장이름",
-    type: "한식",
-    score: "10",
-    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    location: "혜화",
-  },
-  {
-    id: 5,
-    storeName: "매장이름",
-    type: "한식",
-    score: "10",
-    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    location: "혜화",
-  },
-  {
-    id: 6,
-    storeName: "매장이름",
-    type: "한식",
-    score: "10",
-    img: "https://ugc-images.catchtable.co.kr/catchtable/shopinfo/stwQPDWOYfWA52EG2k_1v2g/b435c102ae5d42ef8db5729ac781e208?small400",
-    location: "혜화",
-  },
-];
 export default function MyDining() {
   const navigate = useNavigate();
   const location = useLocation();
   const [loginState, setLoginState] = useState(false);
   const [listSelect, setListSelect] = useState("PLANNED");
   const queryClient = new QueryClient();
-
+  const restaurantValue = useRecoilValue(RestaurantsAll);
   const [isOpen, setIsOpen] = useState(false);
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState);
@@ -188,7 +140,7 @@ export default function MyDining() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["reservationRes", listSelect],
+    queryKey: [listSelect],
     queryFn: () => {
       return GetReservationRes(listSelect)
         .then((res) => {
@@ -210,8 +162,8 @@ export default function MyDining() {
         {loginState ? (
           <div className="login-tab">
             <section className={`reserve-wrap`}>
-              <div className=" mt-[5px] mb-[20px] container">
-                <div className="flex gap-x-[10px] mb-[10px] sticky top-[5px] bg-white z-[9999] left-0">
+              <div className=" mb-[20px] container">
+                <div className="flex gap-x-[10px] py-[10px] sticky top-0 bg-white z-[99] left-0">
                   {stateList.map((item, index) => {
                     return (
                       <span
@@ -254,12 +206,13 @@ export default function MyDining() {
               </div>
               <RecommendPage
                 title={"미쉐린 가이드 2024"}
-                pageList={pageList}
+                pageList={restaurantValue}
                 toggleDrawerBox={toggleDrawer}
               ></RecommendPage>
               <RecommendPage
                 title={"캐치테이블 ON"}
-                pageList={pageList}
+                pageList={restaurantValue}
+                toggleDrawerBox={toggleDrawer}
               ></RecommendPage>
             </section>
           </div>

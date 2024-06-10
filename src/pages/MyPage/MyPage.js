@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import "moment/locale/ko";
 import { useEffect, useRef, useState } from "react";
@@ -12,6 +12,7 @@ import { convertURLtoFile } from "../../apis/ApiClient";
 import defaultImage from "../../assets/icons/default.png";
 import Loading from "../../components/Loading";
 import { DeleteReview, UpdateReview } from "../../respository/reservation";
+import { useDeleteRestaurant } from "../../respository/restaurant";
 import {
   getMyRestaurant,
   getOwner,
@@ -23,8 +24,8 @@ import {
  */
 
 function MyPage() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
-
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const { mutate: DeleteReviewItem } = DeleteReview();
   const [user, setUser] = useRecoilState(LoginState);
@@ -33,21 +34,39 @@ function MyPage() {
   const { mutate: review } = UpdateReview();
   const photoInput = useRef();
   const [isSelect, setIsSelect] = useState(true);
-  const [isRestaurant, setIsRestaurant] = useState(false);
+
   const [photoToAddList, setPhotoToAddList] = useState([]);
   const [isSelectInfo, setIsSelectInfo] = useState([]);
   const [isSelectItem, setSelectItem] = useState({ score: 0, reviewId: 0 });
   const [isSave, setIsSave] =
     useState(true); /* 탭 true : 나의 저장, false : 리뷰 */
+
+  const { data: isUserInfo, isLoading: userLoading } = useQuery({
+    queryKey: ["getUserInfo"],
+    queryFn: getUserInfo,
+    retry: true,
+  });
+  // const [isOwner, setIsOwner] = useState(isUserInfo ? isUserInfo.owner : false);
+  //식당 삭제
+  const deleteSave = useMutation({
+    mutationKey: "useDeleteRestaurant",
+    mutationFn: useDeleteRestaurant,
+    onSuccess: ({ id }) => {
+      queryClient.invalidateQueries("getUserInfo", { queryKey: [id] });
+    },
+  });
+
   const [isOwner, setIsOwner] = useState(user?.owner);
 
   /* Function : 프로필 수정 */
   const updateUserInfo = () => {
-    navigate("/my/myProfileInfo");
+    navigate("/my/myprofileinfo");
   };
+
   useEffect(() => {
     if (!isReviewOpen) return;
     if (!isSelectInfo) return;
+
     const fetchAndConvertImages = async () => {
       const promises = isSelectInfo.map(async (item) => {
         try {
@@ -116,7 +135,7 @@ function MyPage() {
       return (
         <div className="photoBox" key={photoUrl}>
           <div
-            className="photoBoxDelete icon delect-icon"
+            className="photoBoxDelete icon delete-icon"
             onClick={() => onRemoveToAdd(photo.file.name)}
           />
           <img
@@ -198,11 +217,26 @@ function MyPage() {
   });
 
   useEffect(() => {
+    console.log("getRestaurantItem", !!getRestaurantItem);
     if (user?.owner && getRestaurantItem) {
-      setIsRestaurant(true);
       setRestaurant((prevUser) => ({ ...getRestaurantItem }));
     }
   }, [getRestaurantItem]);
+
+  useEffect(() => {
+    // 이미지 정보 설정
+
+    setUser((prevUser) => ({
+      ...prevUser,
+      profileImageUrl: isUserInfo?.profileImageUrl,
+      isOwner: isUserInfo?.owner,
+      saveRestaurants: isUserInfo?.savedRestaurants,
+    }));
+    if (isUserInfo) {
+      console.log("마이페이지 success", isUserInfo);
+      sessionStorage.setItem("data", JSON.stringify(isUserInfo));
+    }
+  }, [isUserInfo]);
 
   const manageRestaurant = () => {
     navigate(`/my/myshop?owner=${getOwnerItem.ownerId}`);
@@ -236,6 +270,7 @@ function MyPage() {
   };
 
   const reviewDelect = (e, info) => {
+    // deleteReviewItem(info.reviewId);
     DeleteReviewItem(info.reviewId);
   };
 
@@ -243,6 +278,9 @@ function MyPage() {
     console.log("name : ", restaurantName);
     navigate(`/ct/shop/${restaurantName}`, { state: restaurantName });
   };
+
+  // 내 정보 프로필사진이나 닉네임 등등 없으면 로딩하게 제작
+  // if (userLoading || !isUserInfo) {
 
   if (!user.nickname) {
     return <Loading></Loading>;
@@ -287,7 +325,7 @@ function MyPage() {
               className="btn btn-md btn-outline btn-rounded mt-18"
               onClick={
                 user?.owner
-                  ? isRestaurant
+                  ? !!getRestaurantItem
                     ? manageRestaurant
                     : createRestaurant
                   : createOwner
@@ -295,7 +333,7 @@ function MyPage() {
             >
               <span className="label">
                 {user?.owner
-                  ? isRestaurant
+                  ? !!getRestaurantItem
                     ? "내 식당 관리"
                     : "내 식당 등록"
                   : "사장님 등록"}
@@ -307,7 +345,13 @@ function MyPage() {
         <section className="section section-overflow-hidden"></section>
         {/* 배너 */}
         <div>
-          <div className="mypage-ad flex items-center">
+          <div
+            className="mypage-ad flex items-center"
+            onClick={(e) => {
+              e.preventDefault();
+              alert("준비중 입니다.");
+            }}
+          >
             <img src="https://app.catchtable.co.kr/public/img/Anniversary/anniversary-cake.svg"></img>
             <div>
               <p>캐치테이블이 특별한 날을 축하해드릴게요</p>
@@ -357,6 +401,7 @@ function MyPage() {
                     <div className="section-body pb-[32px]">
                       <div className="saved-restaurant-list">
                         {user?.saveRestaurants?.map((item, index) => {
+                          console.log("item", item);
                           return (
                             <div
                               className="saved-restaurant-list-item"
@@ -375,21 +420,24 @@ function MyPage() {
                                   <h4 className="name">
                                     {item.savedRestaurantName}
                                   </h4>
-                                  <p className="excerpt">
-                                    {item.content}
-                                  </p>
+                                  <p className="excerpt">{item.content}</p>
                                   <div className="restaurant-meta">
                                     <div className="rating">
-                                      <span className="star">
-                                        {item.rate}
-                                      </span>
+                                      <span className="star">{item.rate}</span>
                                       <span className="count">
                                         {item.reviewCount}
                                       </span>
                                     </div>
                                   </div>
                                 </a>
-                                <a className="btn-bookmark active"></a>
+                                <a
+                                  className="btn-bookmark active"
+                                  onClick={(e) => {
+                                    deleteSave.mutate({
+                                      id: item.restaurantId,
+                                    });
+                                  }}
+                                ></a>
                               </div>
                             </div>
                           );
@@ -523,7 +571,7 @@ function MyPage() {
         open={isReviewOpen}
         onClose={toggleDrawerReview}
         direction="right"
-        className="drawer-box right"
+        className="drawer-box right z-999"
         size="100%"
       >
         <div className="container">

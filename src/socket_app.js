@@ -1,22 +1,41 @@
 const express = require("express");
+const http = require("http");
+const socketIo = require("socket.io");
+
 const app = express();
-const WebSocket = require("ws");
-
-app.use("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
 });
 
-const server = app.listen(8080, () => {
-  console.log("HTTP 서버가 8080 포트에서 실행 중입니다.");
+io.use((socket, next) => {
+  const token = socket.handshake.headers["authorization"];
+  const query = socket.handshake.query;
+  // if (isValidToken(token)) {
+  socket.userData = query; // 쿼리 파라미터를 저장
+  next();
+  // } else {
+  next(new Error("Unauthorized"));
+  // }
 });
 
-const wss = new WebSocket.Server({ server });
+io.on("connection", (socket) => {
+  console.log("a user connected", socket.userData);
 
-wss.on("connection", (ws) => {
-  console.log("웹소켓 클라이언트가 연결되었습니다.");
-
-  ws.on("message", (message) => {
-    console.log("메시지를 받았습니다:", message);
-    ws.send("메시지를 받았습니다.");
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
   });
+
+  socket.on("chat message", (msg) => {
+    io.emit("chat message", { user: socket.userData.name, msg });
+  });
+});
+
+const PORT = 8080;
+server.listen(PORT, () => {
+  console.log(`listening on *:${PORT}`);
 });

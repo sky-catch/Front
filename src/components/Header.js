@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 /**
  * Header (헤더)
@@ -13,6 +13,7 @@ const Header = ({ setSearch, updateSearch }) => {
   const location = useLocation().pathname;
   const state = useLocation().state;
   const navigate = new useNavigate();
+  const params = useParams();
   const searchInput = useRef();
   let [isWhite, setIsWhite] = useState(false);
 
@@ -27,20 +28,36 @@ const Header = ({ setSearch, updateSearch }) => {
   }, [location, inputTxt]);
 
   const handleScroll = () => {
-    console.log("scrolling");
-    if (window.scrollY >= 50) {
+    if (window.scrollY >= 170) {
       setIsWhite(true);
     } else {
       setIsWhite(false);
     }
   };
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", () => {
+      handleScroll();
+    });
   }, []);
 
+  const linkShare = () => {
+    const urlToShare = window.location.href;
+    navigator.clipboard
+      .writeText(urlToShare)
+      .then(() => {
+        alert("URL이 클립보드에 복사되었습니다.");
+      })
+      .catch((err) => {
+        console.error("클립보드에 복사하는 중 오류가 발생했습니다: ", err);
+      });
+  };
   const onClickBack = () => {
     if (location === "/my/myshop/edit") {
       alert("변경한 내용이 저장되지 않습니다.");
+    } else if (location.indexOf("/ct/shop") === 0) {
+      const name = JSON.parse(state).name;
+      navigate(`/ct/shop/:${name}`, { state: name });
+      return;
     }
     window.history.back();
     setInputTxt("");
@@ -102,8 +119,9 @@ const Header = ({ setSearch, updateSearch }) => {
               <a className="tohome header-icon">홈</a>
             </div>
             <div className="header-right flex gap-[12px]">
-              {/* <button className="bookmark header-icon">저장</button> */}
-              <a className="share header-icon">공유</a>
+              <a className="share header-icon" onClick={linkShare}>
+                공유
+              </a>
             </div>
           </div>
         );
@@ -176,7 +194,7 @@ const Header = ({ setSearch, updateSearch }) => {
             </div>
           </div>
         );
-      case "/my/myProfileInfo":
+      case "/my/myprofileinfo":
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex gap-[12px]">
@@ -324,7 +342,9 @@ const Header = ({ setSearch, updateSearch }) => {
                   <h1>{state ? JSON.parse(state).name : ""}</h1>
                 </div>
                 <div className="header-right flex gap-[12px]">
-                  <a className="share-b header-icon">공유</a>
+                  <a className="share-b header-icon" onClick={linkShare}>
+                    공유
+                  </a>
                 </div>
               </div>
             );
@@ -351,7 +371,10 @@ const Header = ({ setSearch, updateSearch }) => {
                 </div>
                 <div className="header-right flex gap-[12px]">
                   {/* <button className="bookmark header-icon">저장</button> */}
-                  <a className={`${isWhite ? "share-b" : "share"} header-icon`}>
+                  <a
+                    className={`${isWhite ? "share-b" : "share"} header-icon`}
+                    onClick={linkShare}
+                  >
                     공유
                   </a>
                 </div>

@@ -51,15 +51,18 @@ export const UpdateRestaurantRes = () => {
 };
 
 /* 식당 개별 조회 */
-export const getRestaurant = async ({queryKey}) => {
+export const getRestaurant = async ({ queryKey }) => {
   let name = queryKey[0];
   try {
-    // const [name] = queryKey;
-    const res = await apiClient.get(`/restaurants/${name}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const config = token
+      ? {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      : {};
+
+    const res = await apiClient.get(`/restaurants/${name}`, config);
     return res.data;
   } catch (err) {
     console.log("Error >>", err);
@@ -83,6 +86,7 @@ export const GetReservationRes = async (visitStatus) => {
 
 /* 식당 저장 */
 export const useSaveRestaurant = async ({ id }) => {
+  console.log("id", id);
   const restaurantId = id;
   try {
     const res = await apiClient.post(

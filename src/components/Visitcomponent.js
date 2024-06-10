@@ -37,7 +37,7 @@ const Visitcomponent = ({ itemList }) => {
       return (
         <div className="photoBox" key={photoUrl}>
           <div
-            className="photoBoxDelete icon delect-icon"
+            className="photoBoxDelete icon delete-icon"
             onClick={() => onRemoveToAdd(photo.file.name)}
           />
           <img className="photoPreview" src={photoUrl} />
@@ -257,7 +257,7 @@ const Visitcomponent = ({ itemList }) => {
         size="100%"
       >
         <div className="container">
-          <div className="header-left items-center flex gap-[12px]">
+          <div className="header-left items-center flex gap-[12px] h-[47px]">
             <a
               className="header-close-black h-[47px] leading-[47px] z-50"
               onClick={toggleDrawerReview}
