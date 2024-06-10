@@ -60,7 +60,7 @@ function App() {
           <Route path="/account" element={<Account />}></Route>
           <Route path="/login" element={<Login />} />
           <Route path="my" element={<MyPage />} />
-          <Route path="my/myProfileInfo" element={<MyProfileInfo />} />
+          <Route path="my/myprofileinfo" element={<MyProfileInfo />} />
           <Route path="my/myshop" element={<RestaurantSetting />} />
           <Route path="my/myshop/edit/:text" element={<RestaurantInfo />} />
           <Route

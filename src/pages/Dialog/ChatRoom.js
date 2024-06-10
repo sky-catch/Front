@@ -13,55 +13,38 @@ const ChatRoom = () => {
   const ws = useRef();
   // 웹 소켓 연결 이벤트
   // : "ws://15.164.89.177:8080/chat";
-  let name = new URLSearchParams(location.search).get("name");
+  const name = new URLSearchParams(location.search).get("name");
   const chatRoomId = new URLSearchParams(location.search).get("id");
   const memberChat = true;
   const token = sessionStorage.getItem("token");
-  console.log("name", name);
-  // ws.current = new WebSocket("ws://15.164.89.177:8080/chat");
+  const WEBSOCKET_URL = "ws://15.164.89.177:8080/chat";
+  // const socket = io(WEBSOCKET_URL, {
+  //   transports: ["websocket"],
+  // });
 
-  // useEffect(() => {
-  // 연결 성공 시 실행될 콜백 함수
-  // ws.current = new WebSocket(`ws://15.164.89.177:8080/chat`);
+  useEffect(() => {
+    const socket = new WebSocket("ws://localhost:8080/chat");
+    // const socket = new WebSocket("ws://15.164.89.177:8080/chat");
 
-  // ws.current = new WebSocket("ws://localhost:3000/chat");
-  //   ws.current = new WebSocket(`ws://15.164.89.177:8080/chat`, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //       chatRoomId: chatRoomId,
-  //       memberChat: true,
-  //     },
-  //   });
-  //   ws.current.onopen = () => {
-  //     console.log("WebSocket connected");
-  //     // ws.current.send(
-  //     //   JSON.stringify({
-  //     //     Authorization: token,
-  //     //     chatRoomId: chatRoomId,
-  //     //     memberChat: memberChat,
-  //     //   })
-  //     // );
-  //     ws.current.send("Hello, server!");
-  //   };
+    socket.onopen = () => {
+      console.log("웹소켓 연결이 열렸습니다.");
+    };
 
-  //   ws.current.onmessage = (event) => {
-  //     console.log("Received message from server:", event.data);
-  //   };
+    socket.onmessage = (event) => {
+      console.log("서버에서 받은 메시지:", event.data);
+      // setReceivedMessage(event.data);
+    };
 
-  //   ws.current.onclose = () => {
-  //     console.log("WebSocket disconnected");
-  //   };
+    socket.onclose = () => {
+      console.log("웹소켓 연결이 닫혔습니다.");
+    };
 
-  //   ws.current.onerror = (error) => {
-  //     console.error("WebSocket error:", error);
-  //   };
+    // setWs(socket);
 
-  //   return () => {
-  //     if (ws.current) {
-  //       ws.current.close();
-  //     }
-  //   };
-  // }, [token, chatRoomId, memberChat]);
+    return () => {
+      socket.close();
+    };
+  }, []);
 
   const sendMessage = (e) => {
     e.preventDefault();

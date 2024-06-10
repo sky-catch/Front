@@ -195,7 +195,7 @@ const Header = ({ setSearch, updateSearch }) => {
             </div>
           </div>
         );
-      case "/my/myProfileInfo":
+      case "/my/myprofileinfo":
         return (
           <div className="header-wrapper flex px-[20px]">
             <div className="header-left items-center flex gap-[12px]">

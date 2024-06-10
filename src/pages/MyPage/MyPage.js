@@ -57,7 +57,7 @@ function MyPage() {
   });
   /* Function : 프로필 수정 */
   const updateUserInfo = () => {
-    navigate("/my/myProfileInfo");
+    navigate("/my/myprofileinfo");
   };
   const {
     data: getRestaurantItem,
