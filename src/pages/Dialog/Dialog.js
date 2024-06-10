@@ -33,6 +33,8 @@ function Dialog() {
       }
     },
     enabled: isLogin,
+    retry: 5,
+    retryDelay: 500,
   });
 
   const searchRestaurant = (e) => {
