@@ -1,70 +1,52 @@
-# Getting Started with Create React App
+# 식당 예약 서비스
+<img width="484" alt="스크린샷 2024-06-18 오전 10 59 47" src="https://github.com/sky-catch/Front/assets/68106646/1421cc32-ddf9-49a2-a3d5-7a5e9b1909b4">
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 프로젝트 소개
+- 식당 예약 서비스인 '캐치테이블' 서비스의 기능들을 클론코딩한다. 실제 운영되는 서비스를 직접 개발해보며 개발 실력을 향상하고 팀 협업 경험을 쌓는다.
 
-## Available Scripts
+## 기술 스택
 
-In the project directory, you can run:
+| JavaScript |  React   |  Node   |
+| :--------: | :------: | :-----: |
+|   ![js]    | ![react] | ![node] |
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 구현 기능
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 카카오 로그인
+- 사용자의 카카오 계정으로 로그인하여 JWT Token 활용
+![login]
 
-### `npm test`
+### 식당 검색 및 필터링
+- 검색어 기반 검색 과 필터 검색 기능 구현
+![search]
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 식당 예약
+- 예약 가능 시간에 해당 식당 예약 기능 구현
+![reservation]
 
-### `npm run build`
+### 식당 리뷰
+- 예약하여 방문한 식당에 리뷰 작성 및 수정 기능 구현
+![review]
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<br>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 배운 점 & 아쉬운 점
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<p align="justify">
+프로젝트 시작 시, 개발 범위에 대해 명확하게 설정하지 않아 일정 상 프로젝트 후반부에 몇몇 기능을 제외시킴. 모든 프로젝트에 있어 기획의 중요성을 깨달음.
+</p>
 
-### `npm run eject`
+<br>
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 라이센스
+wnwlals1372 &copy; [Jimin](mailto:wnwlals1372@gmail.com)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<!-- Stack Icon Refernces -->
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[js]: /images/stack/javascript.svg
+[react]: /images/stack/react.svg
+[login] : /images/page/login.svg
+[search] : /images/page/search.svg
+[reservation] : /images/page/reservation.svg
+[review] : /images/page/review.svg
