@@ -6,36 +6,40 @@
 
 ## 기술 스택
 
-| JavaScript |  React   |  Node   |
-| :--------: | :------: | :-----: |
-|   ![js]    | ![react] | ![node] |
+| JavaScript |  React   |  
+| :--------: | :------: | 
+|   ![js]    | ![react] | 
 
 
 ## 구현 기능
 
 ### 카카오 로그인
 - 사용자의 카카오 계정으로 로그인하여 JWT Token 활용
-![login]
+![login](https://github.com/sky-catch/Front/assets/68106646/81c7e31c-4861-4ded-b08b-c80aaa6c9dd1)
 
 ### 식당 조회
 - 식당 상세 내용 조회 화면
-![restaurant]
+![restaurant](https://github.com/sky-catch/Front/assets/68106646/5698d9c4-1bfb-45e9-8cd0-cfc1f9da049f)
+
 
 ### 식당 검색 및 필터링
 - 검색어 기반 검색 과 필터 검색 기능 구현
-![search1]
-![search2]
+![search1](https://github.com/sky-catch/Front/assets/68106646/c1319fe4-beb1-45e0-91d8-341648491abc)
+![search2](https://github.com/sky-catch/Front/assets/68106646/3c0435c6-034c-4fc4-a34c-2cb2acf697a4)
+![search3](https://github.com/sky-catch/Front/assets/68106646/6f586e2b-80ee-48c8-81f8-8b1db40cba2e)
+
 
 ### 식당 예약
 - 예약 가능 시간에 해당 식당 예약 기능 구현
-![reservation1]
-![reservation2]
-![reservation3]
-![reservation4]
+![reservation1](https://github.com/sky-catch/Front/assets/68106646/922c84bc-aead-4db7-8c40-804a2f794cd7)
+![reservation2](https://github.com/sky-catch/Front/assets/68106646/7d149b80-392c-4b49-968c-320e739db28f)
+![reservation3](https://github.com/sky-catch/Front/assets/68106646/f04129a9-1905-4f09-acdf-22ba4a365cf9)
+![reservation4](https://github.com/sky-catch/Front/assets/68106646/287be1f7-70c9-46f2-a429-617401e4d371)
+
 
 ### 식당 리뷰
 - 예약하여 방문한 식당에 리뷰 작성 및 수정 기능 구현
-![review]
+![review](https://github.com/sky-catch/Front/assets/68106646/a075ee90-055f-4b8c-9280-4e6041263f34)
 
 <br>
 
@@ -51,16 +55,5 @@
 wnwlals1372 &copy; [Jimin](mailto:wnwlals1372@gmail.com)
 
 <!-- Stack Icon Refernces -->
-
 [js]: /images/stack/javascript.svg
 [react]: /images/stack/react.svg
-[login] : /images/page/login.svg
-[search1] : /images/page/search1.png
-[search2] : /images/page/search2.png
-[search3] : /images/page/search3.png
-[reservation1] : /images/page/reservation1.png
-[reservation2] : /images/page/reservation2.png
-[reservation3] : /images/page/reservation3.png
-[reservation4] : /images/page/reservation4.png
-[review] : /images/page/review.png
-[restaurant] : /images/page/restaurant.png
