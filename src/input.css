@@ -7,6 +7,12 @@
   letter-spacing: -0.05em;
 }
 
+html,body, #root {
+  margin : 0;
+  height : 0;
+  height : 100%;
+}
+
 div,
 h3 {
   margin: 0;
