@@ -17,13 +17,21 @@
 - 사용자의 카카오 계정으로 로그인하여 JWT Token 활용
 ![login]
 
+### 식당 조회
+- 식당 상세 내용 조회 화면
+![restaurant]
+
 ### 식당 검색 및 필터링
 - 검색어 기반 검색 과 필터 검색 기능 구현
-![search]
+![search1]
+![search2]
 
 ### 식당 예약
 - 예약 가능 시간에 해당 식당 예약 기능 구현
-![reservation]
+![reservation1]
+![reservation2]
+![reservation3]
+![reservation4]
 
 ### 식당 리뷰
 - 예약하여 방문한 식당에 리뷰 작성 및 수정 기능 구현
@@ -47,6 +55,12 @@ wnwlals1372 &copy; [Jimin](mailto:wnwlals1372@gmail.com)
 [js]: /images/stack/javascript.svg
 [react]: /images/stack/react.svg
 [login] : /images/page/login.svg
-[search] : /images/page/search.svg
-[reservation] : /images/page/reservation.svg
-[review] : /images/page/review.svg
+[search1] : /images/page/search1.png
+[search2] : /images/page/search2.png
+[search3] : /images/page/search3.png
+[reservation1] : /images/page/reservation1.png
+[reservation2] : /images/page/reservation2.png
+[reservation3] : /images/page/reservation3.png
+[reservation4] : /images/page/reservation4.png
+[review] : /images/page/review.png
+[restaurant] : /images/page/restaurant.png
